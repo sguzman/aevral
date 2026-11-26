@@ -19,3 +19,6 @@ AEV-013 passed 45877542890, attention MAE 1.55932750, 3168 parameters, all 62 re
 
 ## C002 phase 6
 AEV-014A all 18 jobs passed 45877715589; all 1908 records archived in results/AEV-014A, best mean MAE MLP64/30 = 1.35698070. Adam protocol predeclared, implementation pending. Next implement AEV-014B with same six models, three seeds, checkpoints 10/30, .001, beta .9/.999 eps 1e-8, existing clipping. Then collect actual scores and freeze lowest mean MAE recipe, seed42, new 2026 holdout. No holdout access.
+
+## C002 phase 7
+AEV-014B implemented: Adam .001, beta .9/.999, eps 1e-8, bias correction, same six models, 3 seeds, 10/30 epochs, previous clipping policy, one update per sample. Tests include changing/constant gradients and dispatch smoke; new CI pending. Original SGD runner retained. Next check CI and archive actual measurements in batches (max 6 job-log fetches per call); compare means across A/B, freeze seed42 winner and evaluate new 2026 holdout only after recipe freeze. No holdout access.

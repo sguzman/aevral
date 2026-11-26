@@ -130,3 +130,5 @@ pub mod convolution;
 pub mod attention;
 
 pub mod architecture;
+
+pub mod adam;

@@ -99,6 +99,15 @@ impl Recurrent{
             }dh=prev;dc=prev_c;
         }(loss,gw,go)
     }
+    pub fn adam_step(&mut self,x:&[f64],y:&[f64],opt:&mut crate::adam::Adam)->(f64,bool){
+        let(loss,gw,go)=self.gradients(x,y);
+        let norm=gw.iter().chain(&go).map(|v|v*v).sum::<f64>().sqrt();
+        let clipped=norm>5.;let scale=if clipped{5./norm}else{1.};
+        opt.begin();
+        for(w,g)in self.w.iter_mut().zip(gw){opt.update(w,scale*g)}
+        for(w,g)in self.head.iter_mut().zip(go){opt.update(w,scale*g)}
+        opt.finish();(loss,clipped)
+    }
     pub fn train_step(&mut self,x:&[f64],y:&[f64],lr:f64)->(f64,bool){
         let(loss,gw,go)=self.gradients(x,y);
         let norm=gw.iter().chain(&go).map(|v|v*v).sum::<f64>().sqrt();

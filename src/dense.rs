@@ -26,6 +26,18 @@ impl Dense{
         }a
     }
     pub fn predict(&self,x:&[f64])->Vec<f64>{self.activations(x).pop().unwrap()}
+    pub fn adam_step(&mut self,x:&[f64],target:&[f64],opt:&mut crate::adam::Adam)->(f64,bool){
+        let a=self.activations(x);let n=*self.dims.last().unwrap();assert_eq!(target.len(),n);
+        let errors:Vec<_>=a.last().unwrap().iter().zip(target).map(|(p,t)|p-t).collect();
+        let mut d:Vec<_>=errors.iter().map(|e|2.*e/n as f64).collect();
+        opt.begin();
+        for l in (0..self.weights.len()).rev(){
+            let n=self.dims[l];let m=self.dims[l+1];
+            let prev:Vec<f64>=if l==0{vec![]}else{(0..n).map(|i|(1.-a[l][i]*a[l][i])*(0..m).map(|j|self.weights[l][j*n+i]*d[j]).sum::<f64>()).collect()};
+            for j in 0..m{for i in 0..n{opt.update(&mut self.weights[l][j*n+i],d[j]*a[l][i])}opt.update(&mut self.biases[l][j],d[j])}
+            d=prev;
+        }opt.finish();(errors.iter().map(|e|e*e).sum::<f64>()/target.len()as f64,false)
+    }
     pub fn train_step(&mut self,x:&[f64],target:&[f64],lr:f64)->f64{
         assert!(lr.is_finite()&&lr>0.);
         let a=self.activations(x);let n=*self.dims.last().unwrap();assert_eq!(target.len(),n);

@@ -69,6 +69,14 @@ impl Attention{
             self.layers[0].backward(&x[t*P..(t+1)*P],&de[t],&mut g[0],&mut [0.;P]);
         }(loss,g,de)
     }
+    pub fn adam_step(&mut self,x:&[f64],y:&[f64],opt:&mut crate::adam::Adam)->(f64,bool){
+        let(loss,g,p)=self.gradients(x,y);let norm=g.iter().flatten().chain(p.iter().flatten()).map(|v|v*v).sum::<f64>().sqrt();
+        let clipped=norm>5.;let scale=if clipped{5./norm}else{1.};
+        opt.begin();
+        for(l,d)in self.layers.iter_mut().zip(g){for(w,v)in l.w.iter_mut().zip(d){opt.update(w,scale*v)}}
+        for(t,d)in self.pos.iter_mut().zip(p){for(w,v)in t.iter_mut().zip(d){opt.update(w,scale*v)}}
+        opt.finish();(loss,clipped)
+    }
     pub fn train_step(&mut self,x:&[f64],y:&[f64],lr:f64)->(f64,bool){
         let(loss,g,p)=self.gradients(x,y);let norm=g.iter().flatten().chain(p.iter().flatten()).map(|v|v*v).sum::<f64>().sqrt();
         let clipped=norm>5.;let scale=if clipped{5./norm}else{1.};

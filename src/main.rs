@@ -1,7 +1,7 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
-    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows"|"calendar"|"covariates"|"features"|"locked-test"|"architectures"|"rnn"|"gru"|"lstm"|"cnn"|"tcn"|"attention"|"architecture-budget")){
+    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows"|"calendar"|"covariates"|"features"|"locked-test"|"architectures"|"rnn"|"gru"|"lstm"|"cnn"|"tcn"|"attention"|"architecture-budget"|"architecture-adam")){
         if let Err(e)=audit(&args[2..],&args[1]){eprintln!("{e}");std::process::exit(1)}
         return
     }
@@ -37,7 +37,7 @@ fn main() {
 fn audit(args:&[String],mode:&str)->Result<(),String>{
     use aevral::weather::{Archive,minute,examples};
     use std::io::BufReader;
-    if (mode=="architecture-budget"&&args.len()!=5)||(mode!="architecture-budget"&&args.len()!=3){return Err("Usage: aevral MODE FIRST_YEAR LAST_YEAR DATA_DIR [MODEL SEED]".into())}
+    if (matches!(mode,"architecture-budget"|"architecture-adam")&&args.len()!=5)||(!matches!(mode,"architecture-budget"|"architecture-adam")&&args.len()!=3){return Err("Usage: aevral MODE FIRST_YEAR LAST_YEAR DATA_DIR [MODEL SEED]".into())}
     let first=args[0].parse::<i64>().map_err(|e|e.to_string())?;
     let last=args[1].parse::<i64>().map_err(|e|e.to_string())?;
     if first<2000||last>2025||first>last{return Err("invalid year range".into())}
@@ -49,7 +49,7 @@ fn audit(args:&[String],mode:&str)->Result<(),String>{
         let p=std::path::Path::new(&args[2]).join(format!("SEA-{y}.csv"));
         let f=std::fs::File::open(&p).map_err(|e|format!("{}: {e}",p.display()))?;
         a.ingest_policy(BufReader::new(f),mode=="locked-test").map_err(|e|format!("{}: {e}",p.display()))?;
-        if matches!(mode,"covariates"|"features"|"locked-test"|"architectures"|"rnn"|"gru"|"lstm"|"cnn"|"tcn"|"attention"|"architecture-budget"){cov.ingest_policy(BufReader::new(std::fs::File::open(&p).map_err(|e|e.to_string())?),mode=="locked-test").map_err(|e|format!("{}: {e}",p.display()))?;}
+        if matches!(mode,"covariates"|"features"|"locked-test"|"architectures"|"rnn"|"gru"|"lstm"|"cnn"|"tcn"|"attention"|"architecture-budget"|"architecture-adam"){cov.ingest_policy(BufReader::new(std::fs::File::open(&p).map_err(|e|e.to_string())?),mode=="locked-test").map_err(|e|format!("{}: {e}",p.display()))?;}
     }
     if a.is_empty(){return Err("empty archive".into())}
     let start=minute(&format!("{first}-01-01 00:00"))?+60;
@@ -61,7 +61,7 @@ fn audit(args:&[String],mode:&str)->Result<(),String>{
     }
     let bins=a.hourly(start,end);
     if mode=="locked-test"{let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;return aevral::features::locked_test(&c,start)}
-    if mode=="architecture-budget"{let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;let seed=args[4].parse::<u64>().map_err(|e|e.to_string())?;return aevral::features::architecture_budget(&c,start,&args[3],seed)}
+    if matches!(mode,"architecture-budget"|"architecture-adam"){let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;let seed=args[4].parse::<u64>().map_err(|e|e.to_string())?;return aevral::features::architecture_budget(&c,start,&args[3],seed,mode=="architecture-adam")}
     if mode=="attention"{let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;return aevral::features::attention_screen(&c,start,mode)}
     if matches!(mode,"cnn"|"tcn"){let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;return aevral::features::convolution_screen(&c,start,mode)}
     if matches!(mode,"rnn"|"gru"|"lstm"){let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;return aevral::features::recurrent_screen(&c,start,mode)}
