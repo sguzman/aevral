@@ -1,6 +1,11 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
+    if args.get(1).map(String::as_str)==Some("basis"){
+        if args.len()!=6{eprintln!("Usage: aevral basis DATA_DIR FOLD OUTPUT.csv FAMILY[:LAMBDA]");std::process::exit(2)}
+        if let Err(e)=aevral::features::tournament::basis::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("latent"){
         if args.len()!=6{eprintln!("Usage: aevral latent DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
         if let Err(e)=aevral::features::tournament::latent::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}

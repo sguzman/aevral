@@ -27,3 +27,6 @@ L07–L09 implemented 12 configs, train-only Gram shared with sparse regression,
 
 ## C004 phase 8
 L07–L09 passed CI 45897005852, 48 tests, all 12 measured, 465 result records archived. Best PCR64 1.46788769, PLS32 1.46782162, RRR16 1.46770656; RRR8 1.46814017. Promote top two per family as documented. 36/54 measured. Next L10 polynomial and L11 GAM six configs each, then L12 MARS six configs, preflight workspace/time per manifest. Full polynomial 3320 basis slopes (80 linear + 3240 degree-two monomials) may exceed compute budget; predeclare faithful restricted recent-weather interaction basis and test full basis resource feasibility or explicitly block before fit. No new data. Multi-year finalists pending. No human action required.
+
+## C004 phase 9
+L10/L11 implemented 12 planned configs, full/restricted degree-two and additive 3/7 knot splines, train-only expansion, streamed Gram, ridge numerical checks, timed preflight/resource guard, synthetic tests, four CI jobs. 36/54 measured prior to batch. Next verify scores or explicit resource blocks, archive; L12 MARS adaptive hinges/pruning remaining, then multi-year finalists. No new data.
