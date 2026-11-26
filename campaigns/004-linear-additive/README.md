@@ -1,6 +1,6 @@
 # C004 — Linear, regularized and additive models
 
-Status: active. [Predeclared finite experiment manifest](manifest.md). No results yet.
+Status: complete within budget; 54 screening fits, 67 additional measured finalist fits, two explicitly resource-blocked. [Manifest](manifest.md) · [Final report](../../results/C004/REPORT.md) · [Ranking](../../results/C004/pooled.csv). MLP64 remains the best complete four-year model.
 
 ## Scope
 OLS (QR/SVD or verified stable solver), ridge, lasso, elastic net, Huber, quantile median regression, partial least squares, reduced-rank regression, principal-component regression, polynomial/interactions, GAM/splines, MARS.

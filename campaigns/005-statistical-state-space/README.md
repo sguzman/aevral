@@ -1,6 +1,6 @@
 # C005 — Classical statistical and state-space forecasting
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: active; [finite manifest](manifest.md) frozen before fitting. No C005 results yet.
 
 ## Scope
 AR/ARX, VAR/VARX where causal histories available, ARIMA/ARIMAX, seasonal ARIMA, ETS/Holt-Winters, harmonic regression with AR errors, structural/unobserved components, Kalman dynamic linear model, switching/regime models, GARCH-style conditional variance (uncertainty only).
