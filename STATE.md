@@ -12,3 +12,6 @@ L01/L02 CI 45896077849 passed, all seven scores and 168 leads archived in result
 
 ## C004 phase 3
 L03/L04 ten-config sparse screen implemented, centered Gram cyclic coordinate descent, KKT 1e-7/10000 sweeps, unpenalized intercept, tests analytic shrinkage/direct objective/exact zeros, CLI and CI. Await verify actual CI and archive scores/blocked configs, then L05/L06 robust/median objectives. 7/54 measured before this batch, no sparse scores yet.
+
+## C004 phase 4
+L03/L04 passed CI 45896275859, all ten converged KKT <=1e-7, 41 tests, archived 388 records in results/C004/L03-L04-2019.txt, README and registry. Best lasso-1e-4 MAE 1.46776943, best enet-1e-3-a25 1.46814867. Promote top two per family as documented. 17/54 measured. Next L05/L06 Huber and median regression, seven predeclared configs. Implement faithful robust loss solvers with finite iteration/convergence gates and synthetic tests, no evaluation-driven changes. Same 2019 cohort. No human action required.
