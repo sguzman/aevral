@@ -105,3 +105,6 @@ Archived 4 S10–S11 outcomes and 184 log records; 4/5 Kalman outcomes, 31/36 to
 
 ## C005 phase 13
 All five Kalman jobs passed; final dlm-trend-harmonic archived (46 records) from CI 45913783874, 32/36 measured. Finalists {"S10":["struct-season","struct-level"],"S11":["dlm-harmonic","dlm-trend-harmonic"]}. Next implement S12 two Markov-switching AR models and S13 two GARCH conditional variance models; separate variance metrics from point ranking. No new data.
+
+## C005 phase 14
+Implemented S12/S13 switching and GARCH four configurations with train-only bounded approximate EM, exact regime-weighted first moment, GARCH conditional variance recursion and AR impulse propagation. Batch spec S12-S13.md. Four numerical tests and four CI jobs pending. 32/36 previously measured. Next verify/repair and archive all four outcomes, separate variance metrics; freeze finalist manifest and annual CI. No new data.
