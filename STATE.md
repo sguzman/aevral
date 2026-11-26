@@ -45,3 +45,6 @@ Full polynomial still active at check. Froze 21 finalists from 11 completely scr
 
 ## C004 phase 14
 Full quadratic CI 45897341015 passed, three results archived with original code SHA, all 54 screens measured. New 2019 leader poly-full-1e-3 MAE 1.32019462, RMSE 1.75294745 vs MLP64 1.32617622/1.76544057; only development. Frozen L10 finalists poly-full-1e-3 and poly-full-1e-2, FINALISTS-B.md. B workflow three sequential annual jobs, two configs sharing Gram per fold; added comma-separated selection to basis CLI only. A CI 45898046310 at check 8/18 completed, 6 running, 4 queued; none archived yet. A logs duplicate score lines via grep: deduplicate exact score/blocked rows per job before registry; preserve lead/month records, fit and RSS per model. Next archive completed A jobs in batches <=6, verify B and archive as completed, then pooled 23-model ranking. Do not duplicate 2019. No test years or new data.
+
+## C004 phase 15
+Finalists B CI 45898314791 queued. Finalists A CI 45898046310: archived first 6 completed groups (20 outcomes, 1273 log records) into results/C004/finalists-a-YEAR-GROUP.txt and registry. Deduplicate by job ID registry column 11, exact duplicate score/blocked lines in logs; verify all 24 leads for each measured model. Continue remaining A jobs in batches <=6 and B as complete. No new fits launched this iteration.
