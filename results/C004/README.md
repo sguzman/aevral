@@ -109,3 +109,6 @@ Promote mars-grid-2-64 and mars-grid-1-64 by MAE. 51/54 screens measured at MARS
 | poly-full-0.1 | 1.38050452 | 1.81236693 | 6.138044 |
 
 All 54 screens measured. Full quadratic ridge 1e-3 beats MLP64 on 2019 only (MAE 1.32019462 vs 1.32617622, RMSE 1.75294745 vs 1.76544057). Fit cost includes basis, Gram and solve; runner timing not controlled. Promote poly-full-1e-3 and poly-full-1e-2. Multi-year assessment pending.
+
+## Final outcomes
+See [REPORT.md](REPORT.md) and [pooled.csv](pooled.csv). All 54 screens measured; 67/69 annual finalist fits measured and two explicitly blocked. 21 complete non-neural four-year models; MLP64 remains best among complete models. Full quadratic incomplete due to the 2022 predeclared resource guard. All planned outcomes recorded.

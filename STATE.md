@@ -63,3 +63,6 @@ Part A all 18 jobs passed; archived final 2022 robust group (4 outcomes, 193 rec
 
 ## C004 phase 20
 2021 polynomial job 140177628161 passed 53 tests and both frozen fits. Archived 88 records and 2 outcomes. 67/69 additional outcomes archived. Poly-full-1e-3 2021 MAE 1.40918983 vs incumbent 1.39099523. Part B 2022 job 140177628573 running; only two outcomes pending. Archive and calculate final pooled ranking, then close C004. No new fits launched.
+
+## C004 phase 21 — accuracy ranking complete
+Part B all jobs completed successfully; 2022 both polynomial fits explicitly blocked by predeclared 1400s conservative preflight (1402.636s). No retry/guard relaxation. Archived final 13 records. Registry 123 outcomes (121 measured, 2 blocked), 54 screens and 69 additional outcomes, all unique, cohort counts checked. REPORT.md and pooled.csv contain 21 complete non-neural models plus incumbent; partial matched 2019–21 comparison separately. MLP64 remains best complete model, best non-neural mars-grid-2-64. C004 accuracy results complete under budget; before declaring final closure verify report resource accounting/manifest and update master campaign index if required. Next C005 statistical/state-space finite manifest. No new data.

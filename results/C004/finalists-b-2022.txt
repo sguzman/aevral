@@ -1,0 +1,13 @@
+test result: ok. 53 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+basis-seconds,2022,poly-full,3320,0,0.667255
+basis-preflight,2022,poly-full,178376960,512,611.317939
+blocked,2022,poly-full-1e-3,conservative Gram preflight estimate 1402.636s exceeds budget
+blocked,2022,poly-full-1e-2,conservative Gram preflight estimate 1402.636s exceeds budget
+Command being timed: "target/release/aevral basis data/raw/ksea 2022 predictions.csv poly-full:1e-3,1e-2"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.55
+Maximum resident set size (kbytes): 367784
