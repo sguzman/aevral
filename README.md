@@ -10,6 +10,12 @@ The first campaign studies neural networks for hourly air-temperature forecastin
 
 ![Independent forecast errors by horizon](results/AEV-009/lead-mae.svg)
 
+## Second research milestone completed
+
+**1.353°C MAE on the independent January–October 2026 holdout**, 1.83% lower than the original MLP and 37.67% lower than daily persistence, over 6,521 matched origins. Eleven initial architecture configurations and a 36-run multi-seed optimization comparison. [Campaign report](campaigns/002-architecture/REPORT.md) · [Independent results](results/AEV-015/README.md).
+
+![2026 forecast errors by horizon](results/AEV-015/lead-mae.svg)
+
 ## Research principles
 
 - Define the forecast origin, target, horizon and information available at issue time.

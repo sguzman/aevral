@@ -2,6 +2,8 @@
 
 Goal: improve the C001 80-input direct 24-hour KSEA temperature forecast by comparing architectures, not changing the observations initially.
 
+**Completed:** [final report](REPORT.md), [independent evaluation](../../results/AEV-015/README.md). Protocol below is retained as the original plan; the holdout has now been evaluated and is exposed.
+
 ## Protocol
 - Preserve C001 unchanged as historical benchmark; 2023–2025 is exposed and never described as independent again.
 - Use the same frozen 2000–2022 data, 121849 training and 30207 validation origins, same 80 inputs, train-only scaling and 24 output labels.

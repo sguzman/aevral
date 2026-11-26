@@ -25,4 +25,6 @@
 
 - [AEV-014B Adam and combined optimizer ranking](AEV-014B/README.md).
 
+- [AEV-015 independent 2026 evaluation](AEV-015/README.md) — complete.
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.

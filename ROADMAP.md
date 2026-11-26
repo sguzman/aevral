@@ -2,7 +2,7 @@
 
 ## C001: Weather / neural fundamentals
 
-Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neural-weather/REPORT.md). Step 8 is future research, not part of the completed initial milestone. The 2023–2025 test set is now exposed.
+Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neural-weather/REPORT.md). Step 8 architecture comparisons were completed separately in C002; probabilistic predictions and GPU acceleration remain future research. The 2023–2025 test set is now exposed.
 
 1. Bootstrap ontology, campaign protocol and transparent neural primitives.
 2. Acquire and fingerprint annual KSEA observations, 2000–2025. Audit coverage, gaps, report timing and units.
@@ -15,7 +15,7 @@ Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neura
 
 ## C002: Architecture comparison
 
-[Active campaign protocol](campaigns/002-architecture/README.md): dense, recurrent, convolutional and attention models; optimization and seed sensitivity; new 2026 holdout. C001 remains a completed milestone.
+**Complete.** [Final report](campaigns/002-architecture/REPORT.md): dense, recurrent, convolutional and attention models; optimization and seed sensitivity; independent 2026 holdout. Both previous test periods are now exposed. No automatic new campaign.
 
 ## Later campaigns
 
