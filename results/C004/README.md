@@ -47,3 +47,23 @@ Lasso 1e-4 removes 526/1920 slopes with negligible accuracy change relative to O
 | huber-2 | 1.46769903 | 1.93429318 | 20 | 2.514277 |
 
 Huber .25 is best non-neural model so far, but only marginally improves ridge. Promote huber-0.25, huber-0.5, median-1e-4 and median-0 by MAE. Median optimizes pinball loss (half absolute error) rather than squared error; no claim of independent test performance. 24/54 measured.
+
+## L07–L09 PCR, PLS2, reduced-rank regression
+[CI passed](https://github.com/sguzman/aevral/actions/runs/45897005852), code d61616dfe6197d8588d8426ea04264c239bd8b4e, 48 tests, frozen cohort and archive verified. Gram 0.367793 s; shared eigensystem 0.007953 s; process peak RSS 314448 kB. Standalone cost includes Gram, eigensystem for PCR/RRR, and per-config fit. Dense prediction implementation uses 1944 coefficients; latent rank is not a measured compression ratio.
+
+| Configuration | MAE °C | RMSE °C | Latent rank | Additional fit s |
+|---|---:|---:|---:|---:|
+| rrr-16 | 1.46770656 | 1.93427248 | 16 | 0.000816 |
+| pls-32 | 1.46782162 | 1.93435761 | 32 | 0.010656 |
+| pcr-64 | 1.46788769 | 1.93442285 | 64 | 0.000207 |
+| rrr-8 | 1.46814017 | 1.93478966 | 8 | 0.000720 |
+| pcr-32 | 1.47943917 | 1.94460980 | 32 | 0.000102 |
+| pls-16 | 1.48933475 | 1.95309473 | 16 | 0.004602 |
+| rrr-4 | 1.49962065 | 1.96391690 | 4 | 0.000726 |
+| pcr-16 | 1.57135276 | 2.03785400 | 16 | 0.000052 |
+| pls-8 | 1.57848706 | 2.04098669 | 8 | 0.002297 |
+| pcr-8 | 1.68897924 | 2.16728177 | 8 | 0.000022 |
+| pls-4 | 1.73035750 | 2.23964347 | 4 | 0.001233 |
+| rrr-2 | 1.96469435 | 2.55911565 | 2 | 0.000770 |
+
+All 12 configurations measured; none beats Huber or ridge. RRR rank 8 nearly reproduces OLS. Promote pcr-64/pcr-32, pls-32/pls-16, rrr-16/rrr-8. [Full records](L07-L09-2019.txt). 36/54 screens measured.

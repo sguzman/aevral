@@ -24,3 +24,6 @@ All seven L05/L06 jobs passed CI 45896640395; 45 tests, all converged, 331 recor
 
 ## C004 phase 7
 L07–L09 implemented 12 configs, train-only Gram shared with sparse regression, Jacobi eigensolver residual/orthogonality checks, PCR, covariance PLS2 regression deflation, RRR fitted-response spectral projection; synthetic tests. CLI and CI pending verification. 24/54 measured. Next check latent screen results, archive or repair, then L10–L12 polynomial/GAM/MARS. No new data.
+
+## C004 phase 8
+L07–L09 passed CI 45897005852, 48 tests, all 12 measured, 465 result records archived. Best PCR64 1.46788769, PLS32 1.46782162, RRR16 1.46770656; RRR8 1.46814017. Promote top two per family as documented. 36/54 measured. Next L10 polynomial and L11 GAM six configs each, then L12 MARS six configs, preflight workspace/time per manifest. Full polynomial 3320 basis slopes (80 linear + 3240 degree-two monomials) may exceed compute budget; predeclare faithful restricted recent-weather interaction basis and test full basis resource feasibility or explicitly block before fit. No new data. Multi-year finalists pending. No human action required.
