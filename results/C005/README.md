@@ -57,3 +57,13 @@ All nine ARIMA outcomes archived. 19/36 screens measured. Provisional finalists:
 | harmonic-1-ar6 | 1.88142584 | 2.51775159 |
 
 All eight S08–S09 outcomes archived; 27/36 measured. Provisional finalists: S08: ets-aaa, ets-ann; S09: harmonic-2-ar1, harmonic-1-ar1.
+
+## S10–S11 structural/Kalman measurements
+[CI](https://github.com/sguzman/aevral/actions/runs/45913783874), code a08a2cf6bf26c64058457a0217f2a1a3091c3c64. 4/5 archived; 72 numerical tests passed in completed jobs.
+
+| Model | MAE | RMSE |
+|---|---:|---:|
+| struct-season | 1.67113899 | 2.20514152 |
+| struct-level | 2.91876103 | 3.87648582 |
+| dlm-harmonic | 1.67113899 | 2.20514152 |
+| struct-trend | 7.31826143 | 10.09863143 |

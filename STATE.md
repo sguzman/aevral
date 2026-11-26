@@ -99,3 +99,6 @@ Remaining three S08–S09 outcomes archived from CI 45901037832, 140 records. 27
 
 ## C005 phase 11
 S10–S11 five Gaussian structural/Kalman configurations implemented, causal fixed-window filtering, train-only NLL grid, PSD check, one-harmonic structural season explicitly documented in S10-S11.md. Five synthetic tests and five CI jobs pending. 27/36 previously measured. Next verify and archive, then S12 Markov switching and S13 GARCH. No new data.
+
+## C005 phase 12
+Archived 4 S10–S11 outcomes and 184 log records; 4/5 Kalman outcomes, 31/36 total screen outcomes. CI 45913783874. Next collect unarchived Kalman jobs, then implement S12 Markov switching and S13 GARCH. No new data.
