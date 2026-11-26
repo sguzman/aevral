@@ -116,3 +116,5 @@ pub mod weather;
 pub mod benchmark;
 
 pub mod windows;
+
+pub mod covariates;

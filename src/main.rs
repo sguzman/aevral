@@ -1,7 +1,7 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
-    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows"|"calendar")){
+    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows"|"calendar"|"covariates")){
         if let Err(e)=audit(&args[2..],&args[1]){eprintln!("{e}");std::process::exit(1)}
         return
     }
@@ -43,15 +43,18 @@ fn audit(args:&[String],mode:&str)->Result<(),String>{
     if first<2000||last>2025||first>last{return Err("invalid year range".into())}
     if mode!="audit" && last>2022{return Err("validation must not open locked test years".into())}
     let mut a=Archive::default();
+    let mut cov=aevral::covariates::Archive::default();
     for y in first..=last{
         let p=std::path::Path::new(&args[2]).join(format!("SEA-{y}.csv"));
         let f=std::fs::File::open(&p).map_err(|e|format!("{}: {e}",p.display()))?;
         a.ingest(BufReader::new(f)).map_err(|e|format!("{}: {e}",p.display()))?;
+        if mode=="covariates"{cov.ingest(BufReader::new(std::fs::File::open(&p).map_err(|e|e.to_string())?)).map_err(|e|format!("{}: {e}",p.display()))?;}
     }
     if a.is_empty(){return Err("empty archive".into())}
     let start=minute(&format!("{first}-01-01 00:00"))?+60;
     let end=minute(&format!("{}-01-01 00:00",last+1))?-60;
     let bins=a.hourly(start,end);
+    if mode=="covariates"{println!("invalid_dew_pressure_direction_speed={:?}",cov.invalid);return aevral::covariates::audit(&cov.hourly(start,end),start,&bins)}
     if mode=="calendar"{return aevral::windows::calendar(&bins,start)}
     if mode=="windows"{return aevral::windows::run(&bins,start)}
     let (rows,report)=examples(&bins,start);

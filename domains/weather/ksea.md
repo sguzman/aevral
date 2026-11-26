@@ -10,3 +10,7 @@
 - IEM historical archive is minimally quality controlled. Audit range, duplicate/conflicting timestamps and coverage; never silently invent values.
 - Download script: scripts/fetch-ksea.sh; caches one annual file and SHA-256 sidecar per year. Existing verified files are reused, not re-downloaded.
 - Snapshot status: not acquired; hashes and actual coverage pending. Data rights/attribution review pending before redistributing raw bytes.
+
+## Origin-time covariate audit
+
+The first weather feature comparison will use the same selected routine report as the origin temperature: dew point converted F to C, altimeter setting in hPa (not sea-level pressure), and horizontal wind vector in m/s (meteorological direction denotes where wind comes from). Calm speed zero implies zero vector even if direction missing. Missing or malformed/out-of-broad-range non-temperature values are kept missing, counted rather than imputed. Audit joint coverage on the 72+24 complete temperature cohort, and require identical temperature timestamps/values to the original parser. No future covariate availability is required. No model configuration chosen here; calendar results and joint coverage must be checked first.
