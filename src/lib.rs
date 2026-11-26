@@ -124,3 +124,5 @@ pub mod features;
 pub mod dense;
 
 pub mod recurrent;
+
+pub mod convolution;

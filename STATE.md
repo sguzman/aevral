@@ -6,3 +6,6 @@ User approved exploration of other neural architectures. C002 protocol at campai
 
 ## C002 phase 2
 AEV-010 passed 45876819315, original MAE reproduced, matched linear 1.56557755, MLP16 1.43482265, MLP32 1.39610378, MLP64 1.38652827, MLP32x32 1.39090582. All 206 records archived. AEV-011 recurrent screen implemented RNN/GRU/LSTM BPTT, 12 chronological 6h patches, hidden16, 8 static inputs appended to readout, 24 linear outputs; global norm clipping 5 logged. Matrix CI pending. Same training and validation snapshots. Next verify all three runs and persist scores, then CNN/TCN. Holdout untouched. No new model superiority claim until results. User confirmed fixed data and architecture swaps. Keep tool outputs compact.
+
+## C002 phase 3
+AEV-011 run 45877263961: all three matrix jobs reached training, results pending. AEV-012 CNN/TCN implemented and predeclared in parallel, identical three-layer residual causal convolution with dilation [1,1,1] vs [1,2,4], 3072 parameters each, same 12 six-hour patches and 8 static inputs. Finite-difference, synthetic learning, causal-prefix tests; same frozen 2000–2022 data and matched cohort. CI pending. Next gather both recurrent and convolution results; persist all measured records before attention comparison. No new holdout access.
