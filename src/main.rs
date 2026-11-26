@@ -1,6 +1,11 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
+    if args.get(1).map(String::as_str)==Some("tournament"){
+        if args.len()!=5{eprintln!("Usage: aevral tournament DATA_DIR FOLD OUTPUT.csv");std::process::exit(2)}
+        if let Err(e)=aevral::features::tournament::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4])){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows"|"calendar"|"covariates"|"features"|"locked-test"|"architectures"|"rnn"|"gru"|"lstm"|"cnn"|"tcn"|"attention"|"architecture-budget"|"architecture-adam"|"holdout-audit"|"holdout-score")){
         if let Err(e)=audit(&args[2..],&args[1]){eprintln!("{e}");std::process::exit(1)}
         return

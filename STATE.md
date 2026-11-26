@@ -1,3 +1,7 @@
 # Fixed-data temperature program authorized — 2026-11-26
 
 C001/C002 completed, immutable reports and exposed historical test periods. Incumbent MLP64 seed42 SGD .005 30 epochs, historical MAE 1.35264044°C. Verified closure commit 7c57333a56ffb2b4a6560029b1f0f6d078b5083f. User authorized intense model-family coverage on this particular dataset; C003–C015 bounded plan in campaigns/TEMPERATURE-PROGRAM.md, each campaign README. No new experiments run in this planning step. Next C003: inspect current features, benchmark, architecture APIs and CI; implement reusable fixed 80-input matched-origin export/fit/score harness, chronological folds and registry, verify 27 hashes and reproduce C002 validation 1.35014439, then publish counts and protocol before searching. Preserve old tests. No external data, paid compute or local downloads. Track B only from existing archive. Both prior test periods exposed, final tournament retrospective, optional truly fresh evaluation separately approved. Continue from C003, not C002. No human action required.
+
+
+## C003 phase 1
+New reusable fold loader, normalized training/evaluation rows, predictor trait, shared Celsius scorer and prediction CSV, incumbent and three baseline recipes, strict fold boundary tests, five-job harness CI and manifest implemented. Await CI (verify exact legacy reproduction, all 27 hashes, annual fold coverage, actual metrics, tests). Archive records and fill registry; additional missingness/leakage and export validation required before C003 completion. No search yet. No new data.

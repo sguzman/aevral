@@ -1,0 +1,39 @@
+name: C003 benchmark harness
+on:
+  push:
+    paths:
+      - '.github/workflows/tournament-harness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        fold: [legacy, '2019', '2020', '2021', '2022']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify all frozen hashes
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Test and score
+        run: |
+          set -o pipefail
+          cargo test --locked --release
+          /usr/bin/time -v cargo run --locked --release -- tournament data/raw/ksea ${{ matrix.fold }} predictions.csv | tee metrics.txt
+          gzip predictions.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c003-${{ matrix.fold }}
+          path: |
+            metrics.txt
+            predictions.csv.gz
+          retention-days: 30

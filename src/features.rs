@@ -423,3 +423,6 @@ pub fn holdout_score(bins:&[Option<Weather>],first:i64)->Result<(),String>{
     for(m,metrics)in monthly.iter().enumerate(){for(j,v)in metrics.iter().enumerate(){if v.count>0{println!("month,{},{},{},{:.8},{:.8}",m+1,names[j],v.count,v.mae(),v.rmse());}}}
     println!("winner_skill_vs_original={:.8}",1.-all[4].mae()/all[3].mae());Ok(())
 }
+
+// C003 reusable chronological tournament; legacy experiments unchanged.
+pub mod tournament;
