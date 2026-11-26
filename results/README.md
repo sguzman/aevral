@@ -17,4 +17,6 @@
 
 - [AEV-011 recurrent architectures](AEV-011/README.md).
 
+- [AEV-012 temporal convolution](AEV-012/README.md).
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.
