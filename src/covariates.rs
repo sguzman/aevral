@@ -1,5 +1,5 @@
 //! Origin-time weather covariates from the same routine report as temperature.
-use std::{collections::BTreeMap,io::BufRead};
+use std::{collections::{BTreeMap,BTreeSet},io::BufRead};
 use crate::weather::{minute,Report,Split,split_for};
 #[derive(Clone,Copy,Debug,PartialEq)]
 pub struct Weather {
@@ -13,6 +13,7 @@ pub struct Weather {
 pub struct Archive {
     reports:BTreeMap<i64,Weather>,
     pub invalid:[usize;4],
+    pub conflicts:BTreeSet<i64>,
 }
 fn numeric(s:&str,lo:f64,hi:f64,invalid:&mut usize)->Option<f64>{
     let s=s.trim();
@@ -23,7 +24,8 @@ fn numeric(s:&str,lo:f64,hi:f64,invalid:&mut usize)->Option<f64>{
     }
 }
 impl Archive{
-    pub fn ingest(&mut self,reader:impl BufRead)->Result<(),String>{
+    pub fn ingest(&mut self,reader:impl BufRead)->Result<(),String>{self.ingest_policy(reader,false)}
+    pub fn ingest_policy(&mut self,reader:impl BufRead,quarantine_test:bool)->Result<(),String>{
         let mut header=None;
         for(i,line)in reader.lines().enumerate(){
             let line=line.map_err(|e|e.to_string())?;
@@ -52,10 +54,18 @@ impl Archive{
                 _=>None
             };
             let report=Weather{minute:t,temperature,dew_c,pressure_hpa,wind_ms};
-            if let Some(old)=self.reports.get(&t){if *old!=report{return Err(format!("conflicting covariates at {t}"))}}
+            if self.conflicts.contains(&t){continue}
+            if let Some(old)=self.reports.get(&t){if *old!=report{
+                if quarantine_test&&t>=minute("2023-01-01 00:00")?{self.quarantine(t);continue}
+                return Err(format!("conflicting covariates at {t}"))
+            }}
             else{self.reports.insert(t,report);}
         }
         if header.is_none(){return Err("missing CSV header".into())}Ok(())
+    }
+    pub fn quarantine(&mut self,t:i64){
+        self.conflicts.insert(t);
+        self.reports.insert(t,Weather{minute:t,temperature:None,dew_c:None,pressure_hpa:None,wind_ms:None});
     }
     pub fn hourly(&self,first:i64,last:i64)->Vec<Option<Weather>>{
         assert!(first%60==0&&last%60==0&&first<=last);
@@ -103,5 +113,23 @@ mod tests{
         a.ingest("station,valid,tmpf,dwpf,alti,drct,sknt\nSEA,2000-01-01 00:59,50,NaN,0,999,10\n".as_bytes()).unwrap();
         let r=a.hourly(60,60)[0].unwrap();
         assert_eq!(a.invalid,[1,1,1,0]);assert_eq!(r.dew_c,None);assert_eq!(r.pressure_hpa,None);assert_eq!(r.wind_ms,None);
+    }
+}
+
+#[cfg(test)]
+mod quarantine_tests{
+    use super::*;
+    #[test]fn ambiguous_test_report_never_recovers_or_falls_back(){
+        let s="station,valid,tmpf,dwpf,alti,drct,sknt\nSEA,2024-01-01 00:01,50,41,30,90,10\nSEA,2024-01-01 00:59,50,41,30,90,10\nSEA,2024-01-01 00:59,51,41,30,90,10\nSEA,2024-01-01 00:59,50,41,30,90,10\n";
+        let mut a=Archive::default();let mut b=crate::weather::Archive::default();
+        a.ingest_policy(s.as_bytes(),true).unwrap();b.ingest_policy(s.as_bytes(),true).unwrap();
+        let end=minute("2024-01-01 01:00").unwrap();
+        assert_eq!(a.conflicts.len(),1);assert_eq!(b.conflicts.len(),1);
+        let r=a.hourly(end,end)[0].unwrap();
+        assert_eq!(r.minute,end-1);assert_eq!(r.temperature,None);assert_eq!(r.wind_ms,None);
+        assert_eq!(b.hourly(end,end)[0].unwrap().celsius,None);
+        let old=s.replace("2024","2018");
+        assert!(Archive::default().ingest_policy(old.as_bytes(),true).is_err());
+        assert!(crate::weather::Archive::default().ingest_policy(old.as_bytes(),true).is_err());
     }
 }

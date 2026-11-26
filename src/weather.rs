@@ -1,5 +1,5 @@
 //! UTC routine-report ingestion and causal forecast windows.
-use std::{collections::BTreeMap,io::BufRead};
+use std::{collections::{BTreeMap,BTreeSet},io::BufRead};
 pub const WINDOW:usize=24;
 pub const HORIZON:usize=24;
 fn leap(y:i64)->bool{y%4==0&&(y%100!=0||y%400==0)}
@@ -16,9 +16,10 @@ pub fn minute(s:&str)->Result<i64,String>{
 #[derive(Clone,Copy,Debug,PartialEq)]
 pub struct Report{pub minute:i64,pub celsius:Option<f64>}
 #[derive(Default,Debug)]
-pub struct Archive{reports:BTreeMap<i64,Option<f64>>,pub duplicates:usize}
+pub struct Archive{reports:BTreeMap<i64,Option<f64>>,pub duplicates:usize,pub conflicts:BTreeSet<i64>}
 impl Archive{
-    pub fn ingest(&mut self,reader:impl BufRead)->Result<(),String>{
+    pub fn ingest(&mut self,reader:impl BufRead)->Result<(),String>{self.ingest_policy(reader,false)}
+    pub fn ingest_policy(&mut self,reader:impl BufRead,quarantine_test:bool)->Result<(),String>{
         let mut header=None;
         for(i,line)in reader.lines().enumerate(){
             let line=line.map_err(|e|e.to_string())?;
@@ -38,13 +39,18 @@ impl Archive{
                 if !f.is_finite()||!(-130.0..=150.0).contains(&f){return Err(format!("temperature out of range row {}",i+1))}
                 Some((f-32.0)*5.0/9.0)
             };
+            if self.conflicts.contains(&t){continue}
             if let Some(old)=self.reports.get(&t){
-                if *old!=value{return Err(format!("conflicting report at minute {t}"))}
+                if *old!=value{
+                    if quarantine_test&&t>=minute("2023-01-01 00:00")?{self.quarantine(t);continue}
+                    return Err(format!("conflicting report at minute {t}"))
+                }
                 self.duplicates+=1;
             }else{self.reports.insert(t,value);}
         }
         if header.is_none(){return Err("missing CSV header".into())}Ok(())
     }
+    pub fn quarantine(&mut self,t:i64){self.conflicts.insert(t);self.reports.insert(t,None);}
     pub fn len(&self)->usize{self.reports.len()}
     pub fn is_empty(&self)->bool{self.reports.is_empty()}
     /// Bins (end-60,end]; choose latest report even if missing temperature.

@@ -25,7 +25,7 @@ jobs:
       - name: Fingerprint and evaluate frozen model
         run: |
           set -o pipefail
-          (cd data/raw/ksea && sha256sum -c ../../../results/AEV-001/snapshot.sha256 && sha256sum -c SEA-*.csv.sha256 && cat SEA-*.csv.sha256) | tee snapshot.txt
+          (cd data/raw/ksea && sha256sum -c ../../../results/AEV-001/snapshot.sha256 && sha256sum -c ../../../results/AEV-009/snapshot.sha256 && sha256sum -c SEA-*.csv.sha256 && cat SEA-*.csv.sha256) | tee snapshot.txt
           git rev-parse HEAD > commit.txt
           cargo run --locked --release -- locked-test 2000 2025 data/raw/ksea | tee locked-test.txt
       - uses: actions/upload-artifact@v4

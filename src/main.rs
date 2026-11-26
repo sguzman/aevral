@@ -48,12 +48,17 @@ fn audit(args:&[String],mode:&str)->Result<(),String>{
     for y in first..=last{
         let p=std::path::Path::new(&args[2]).join(format!("SEA-{y}.csv"));
         let f=std::fs::File::open(&p).map_err(|e|format!("{}: {e}",p.display()))?;
-        a.ingest(BufReader::new(f)).map_err(|e|format!("{}: {e}",p.display()))?;
-        if matches!(mode,"covariates"|"features"|"locked-test"){cov.ingest(BufReader::new(std::fs::File::open(&p).map_err(|e|e.to_string())?)).map_err(|e|format!("{}: {e}",p.display()))?;}
+        a.ingest_policy(BufReader::new(f),mode=="locked-test").map_err(|e|format!("{}: {e}",p.display()))?;
+        if matches!(mode,"covariates"|"features"|"locked-test"){cov.ingest_policy(BufReader::new(std::fs::File::open(&p).map_err(|e|e.to_string())?),mode=="locked-test").map_err(|e|format!("{}: {e}",p.display()))?;}
     }
     if a.is_empty(){return Err("empty archive".into())}
     let start=minute(&format!("{first}-01-01 00:00"))?+60;
     let end=minute(&format!("{}-01-01 00:00",last+1))?-60;
+    if mode=="locked-test"{
+        let conflicts:Vec<_>=a.conflicts.union(&cov.conflicts).copied().collect();
+        println!("quarantined_test_timestamps={} utc_minutes={conflicts:?}",conflicts.len());
+        for t in conflicts{a.quarantine(t);cov.quarantine(t);}
+    }
     let bins=a.hourly(start,end);
     if mode=="locked-test"{let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;return aevral::features::locked_test(&c,start)}
     if mode=="features"{let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;return aevral::features::run(&c,start)}
