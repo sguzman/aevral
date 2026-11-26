@@ -1,0 +1,30 @@
+name: AEV-015C frozen holdout evaluation
+on:
+  push:
+    paths:
+      - '.github/workflows/holdout-score.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify all frozen hashes
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Verify and score frozen models
+        run: |
+          set -o pipefail
+          cargo test --locked --release
+          cargo run --locked --release -- holdout-score 2000 2026 data/raw/ksea | tee score.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aev-015c-score
+          path: score.txt

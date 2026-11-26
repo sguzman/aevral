@@ -6,3 +6,6 @@ AEV-015A snapshot acquisition workflow and dedicated partial-year fetcher implem
 
 ## C002 phase 11
 Snapshot CI 45880006747 passed, 27 hashes and provenance archived results/AEV-015. Holdout audit runner and CI implemented, no scoring. Strict first target >= Jan1 and last target < Nov1, 7273 possible origins; historical exact counts/scales and alignment required. Calendar year search extended to 2026. Next verify audit, archive coverage and conflicts before implementing frozen scoring. No test scores yet.
+
+## C002 phase 12
+AEV-015B audit passed 45880124408, 29 tests, original counts/scales exact, 7273 possible, 6762 complete temperature, 6521 joint origins; only two old conflicts, no new. Audit archived results/AEV-015/audit.txt. Fixed calendar 2026 end-of-year calculation (2027 parser boundary) and added regression test. Frozen scoring runner implemented, verifies audited counts and both validation MAEs before scoring, 5 matched forecasts, monthly and lead breakdown. CI pending. Next verify score CI, archive actual results and publish C002 final report; stop at approved acceptance criteria. No tuning after score.

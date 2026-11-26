@@ -95,7 +95,7 @@ impl Calendar {
             let mut y=2000;
             while y<2026&&t>=crate::weather::minute(&format!("{}-01-01 00:00",y+1)).unwrap(){y+=1}
             let a=crate::weather::minute(&format!("{y}-01-01 00:00")).unwrap();
-            let b=crate::weather::minute(&format!("{}-01-01 00:00",y+1)).unwrap();
+            let b=a+1440*if y%4==0&&(y%100!=0||y%400==0){366}else{365};
             let p=TAU*(t-a)as f64/(b-a)as f64;x.extend([p.sin(),p.cos()]);
         }x
     }
@@ -144,5 +144,15 @@ mod calendar_tests{
         let b=Calendar::Hour.features(minute("2020-02-29 06:00").unwrap());
         assert!((b[0]-1.).abs()<1e-12&&b[1].abs()<1e-12);
         assert_eq!(Calendar::None.features(0).len(),0);
+    }
+}
+
+#[cfg(test)]
+mod calendar_2026_tests{
+    use super::*;
+    #[test]fn year_phase_2026(){
+        let t=crate::weather::minute("2026-01-01 00:00").unwrap();
+        let v=Calendar::Both.features(t);assert_eq!(v,vec![0.,1.,0.,1.]);
+        let v=Calendar::Year.features(t+182*1440+720);assert!(v[0].abs()<1e-12);assert!((v[1]+1.).abs()<1e-12);
     }
 }

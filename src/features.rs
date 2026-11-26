@@ -373,3 +373,53 @@ mod holdout_tests{
         assert_eq!((a-60..b-24*60).step_by(60).count(),7273);
     }
 }
+
+pub fn holdout_score(bins:&[Option<Weather>],first:i64)->Result<(),String>{
+    use crate::{dense::Dense,benchmark::{Climatology,persistence,daily as daily_prediction},weather::Example};
+    let historical=cases(bins,first);
+    let train:Vec<_>=historical.iter().filter(|r|r.split==Split::Train).collect();
+    let val:Vec<_>=historical.iter().filter(|r|r.split==Split::Validation).collect();
+    let(test,counts)=holdout_cases(bins,first);
+    if train.len()!=121849||val.len()!=30207||counts!=[7273,6762,6521]{return Err("frozen cohort mismatch".into())}
+    let temp=Scale::fit(train.iter().flat_map(|r|r.x))?;
+    let weather:[Scale;4]=(0..4).map(|i|Scale::fit(train.iter().map(move|r|r.weather[i]))).collect::<Result<Vec<_>,_>>()?.try_into().unwrap();
+    let tr:Vec<_>=train.iter().map(|r|input(r,7,temp,weather)).collect();
+    let va:Vec<_>=val.iter().map(|r|input(r,7,temp,weather)).collect();
+    let targets:Vec<_>=train.iter().map(|r|r.y.map(|v|temp.norm(v))).collect();
+    let mut models=Vec::new();
+    for (label,width,epochs,expected) in [("original-mlp32",32,10,1.39610378),("winner-mlp64",64,30,1.35014439)]{
+        let mut model=Dense::new(&[80,width,24],42);
+        let mut order:Vec<_>=(0..train.len()).collect();let mut rng=42u64;
+        for e in 1..=epochs{
+            for i in (1..order.len()).rev(){rng^=rng<<13;rng^=rng>>7;rng^=rng<<17;order.swap(i,(rng%(i as u64+1))as usize);}
+            let mut loss=0.;
+            for &i in &order{loss+=model.train_step(&tr[i],&targets[i],0.005);}
+            if !loss.is_finite(){return Err("nonfinite training".into())}
+            println!("frozen-train,{label},{e},{:.8}",loss/train.len()as f64);
+        }
+        let mut m=Metrics::default();
+        for(i,r)in val.iter().enumerate(){let p:Vec<_>=model.predict(&va[i]).into_iter().map(|v|temp.restore(v)).collect();m.add(&r.y,&p)}
+        println!("frozen-validation,{label},{:.8},{:.8}",m.mae(),m.rmse());
+        if (m.mae()-expected).abs()>1e-6{return Err(format!("frozen recipe reproduction failed: {label}"))}
+        models.push(model);
+    }
+    let ex=|r:&Case|Example{origin:r.origin,split:r.split,x:r.x[H-Y..].try_into().unwrap(),y:r.y};
+    let clim_rows:Vec<_>=train.iter().map(|r|ex(r)).collect();
+    let clim=Climatology::fit(&clim_rows.iter().collect::<Vec<_>>())?;
+    let names=["persistence","daily","climatology","original-mlp32","winner-mlp64"];
+    let mut all:[Metrics;5]=std::array::from_fn(|_|Metrics::default());
+    let mut monthly:[[Metrics;5];10]=std::array::from_fn(|_|std::array::from_fn(|_|Metrics::default()));
+    let edges:Vec<_>=(1..=11).map(|m|crate::weather::minute(&format!("2026-{m:02}-01 00:00")).unwrap()).collect();
+    println!("AEV-015 score train={} validation={} test={}",train.len(),val.len(),test.len());
+    for(i,r)in test.iter().enumerate(){
+        let e=ex(r);let x=input(r,7,temp,weather);
+        let pred=|m:&Dense|-> [f64;Y]{m.predict(&x).into_iter().map(|v|temp.restore(v)).collect::<Vec<_>>().try_into().unwrap()};
+        let p=[persistence(&e),daily_prediction(&e),clim.predict(&e),pred(&models[0]),pred(&models[1])];
+        let month=edges.partition_point(|&t|t<=r.origin+60)-1;
+        for j in 0..5{all[j].add(&r.y,&p[j]);monthly[month][j].add(&r.y,&p[j]);}
+        if i==0{for h in 0..Y{println!("example,{},{},{:.8},{:.8},{:.8},{:.8}",r.origin,h+1,r.y[h],p[3][h],p[4][h],p[1][h]);}}
+    }
+    for j in 0..5{report(names[j],&all[j],all[1].mae())?;}
+    for(m,metrics)in monthly.iter().enumerate(){for(j,v)in metrics.iter().enumerate(){if v.count>0{println!("month,{},{},{},{:.8},{:.8}",m+1,names[j],v.count,v.mae(),v.rmse());}}}
+    println!("winner_skill_vs_original={:.8}",1.-all[4].mae()/all[3].mae());Ok(())
+}

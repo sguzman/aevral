@@ -1,0 +1,18 @@
+CI: https://github.com/sguzman/aevral/actions/runs/45880124408
+Code: 02438808df3112ac6496b0034e5a57ebf6cb2383
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+quarantined_test_timestamps=2 utc_minutes=[13087380, 13508970]
+AEV-015 audit train=121849 validation=30207 possible=7273 temperature_complete=6762 joint_complete=6521
+AEV-015 training_scales=[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+coverage-month,1,639
+coverage-month,2,663
+coverage-month,3,721
+coverage-month,4,601
+coverage-month,5,599
+coverage-month,6,696
+coverage-month,7,609
+coverage-month,8,704
+coverage-month,9,693
+coverage-month,10,596

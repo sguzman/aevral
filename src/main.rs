@@ -1,7 +1,7 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
-    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows"|"calendar"|"covariates"|"features"|"locked-test"|"architectures"|"rnn"|"gru"|"lstm"|"cnn"|"tcn"|"attention"|"architecture-budget"|"architecture-adam"|"holdout-audit")){
+    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows"|"calendar"|"covariates"|"features"|"locked-test"|"architectures"|"rnn"|"gru"|"lstm"|"cnn"|"tcn"|"attention"|"architecture-budget"|"architecture-adam"|"holdout-audit"|"holdout-score")){
         if let Err(e)=audit(&args[2..],&args[1]){eprintln!("{e}");std::process::exit(1)}
         return
     }
@@ -41,11 +41,11 @@ fn audit(args:&[String],mode:&str)->Result<(),String>{
     let first=args[0].parse::<i64>().map_err(|e|e.to_string())?;
     let last=args[1].parse::<i64>().map_err(|e|e.to_string())?;
     if first<2000||last>2026||first>last{return Err("invalid year range".into())}
-    if mode=="holdout-audit" && (first!=2000||last!=2026){return Err("holdout requires 2000–2026 archive".into())}
+    if matches!(mode,"holdout-audit"|"holdout-score") && (first!=2000||last!=2026){return Err("holdout requires 2000–2026 archive".into())}
     if mode=="locked-test" && (first!=2000||last!=2025){return Err("locked test requires exact 2000–2025 archive".into())}
-    if mode!="audit" && mode!="locked-test" && mode!="holdout-audit" && last>2022{return Err("validation must not open locked test years".into())}
-    if last==2026&&mode!="holdout-audit"{return Err("2026 reserved for holdout".into())}
-    let holdout=mode=="holdout-audit";
+    if mode!="audit" && mode!="locked-test" && !matches!(mode,"holdout-audit"|"holdout-score") && last>2022{return Err("validation must not open locked test years".into())}
+    if last==2026&&!matches!(mode,"holdout-audit"|"holdout-score"){return Err("2026 reserved for holdout".into())}
+    let holdout=matches!(mode,"holdout-audit"|"holdout-score");
     let quarantine=mode=="locked-test"||holdout;
     let mut a=Archive::default();
     let mut cov=aevral::covariates::Archive::default();
@@ -53,7 +53,7 @@ fn audit(args:&[String],mode:&str)->Result<(),String>{
         let p=std::path::Path::new(&args[2]).join(format!("SEA-{y}.csv"));
         let f=std::fs::File::open(&p).map_err(|e|format!("{}: {e}",p.display()))?;
         a.ingest_policy(BufReader::new(f),quarantine).map_err(|e|format!("{}: {e}",p.display()))?;
-        if matches!(mode,"covariates"|"features"|"locked-test"|"architectures"|"rnn"|"gru"|"lstm"|"cnn"|"tcn"|"attention"|"architecture-budget"|"architecture-adam"|"holdout-audit"){cov.ingest_policy(BufReader::new(std::fs::File::open(&p).map_err(|e|e.to_string())?),quarantine).map_err(|e|format!("{}: {e}",p.display()))?;}
+        if matches!(mode,"covariates"|"features"|"locked-test"|"architectures"|"rnn"|"gru"|"lstm"|"cnn"|"tcn"|"attention"|"architecture-budget"|"architecture-adam"|"holdout-audit"|"holdout-score"){cov.ingest_policy(BufReader::new(std::fs::File::open(&p).map_err(|e|e.to_string())?),quarantine).map_err(|e|format!("{}: {e}",p.display()))?;}
     }
     if a.is_empty(){return Err("empty archive".into())}
     let start=minute(&format!("{first}-01-01 00:00"))?+60;
@@ -64,7 +64,7 @@ fn audit(args:&[String],mode:&str)->Result<(),String>{
         for t in conflicts{a.quarantine(t);cov.quarantine(t);}
     }
     let bins=a.hourly(start,end);
-    if holdout{let c=cov.hourly(start,end);return aevral::features::holdout_audit(&c,start,&bins)}
+    if holdout{let c=cov.hourly(start,end);aevral::features::holdout_audit(&c,start,&bins)?;if mode=="holdout-score"{return aevral::features::holdout_score(&c,start)}return Ok(())}
     if mode=="locked-test"{let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;return aevral::features::locked_test(&c,start)}
     if matches!(mode,"architecture-budget"|"architecture-adam"){let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;let seed=args[4].parse::<u64>().map_err(|e|e.to_string())?;return aevral::features::architecture_budget(&c,start,&args[3],seed,mode=="architecture-adam")}
     if mode=="attention"{let c=cov.hourly(start,end);aevral::covariates::audit(&c,start,&bins)?;return aevral::features::attention_screen(&c,start,mode)}
