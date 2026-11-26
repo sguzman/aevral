@@ -1,0 +1,43 @@
+name: AEV-014A multi-seed budget screen
+on:
+  push:
+    paths:
+      - 'src/architecture.rs'
+      - '.github/workflows/architecture-budget.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        model: [mlp32, mlp64, mlp32x32, rnn, cnn, attention]
+        seed: [42, 123, 2026]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2022-v1
+      - name: Verify code
+        run: cargo test --locked --release
+      - name: Restore snapshot
+        run: bash scripts/fetch-ksea.sh 2000 2022
+      - name: Verify frozen hashes
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-001/snapshot.sha256
+      - name: Train and compare checkpoints
+        run: |
+          set -o pipefail
+          git rev-parse HEAD > commit.txt
+          cargo run --locked --release -- architecture-budget 2000 2022 data/raw/ksea ${{ matrix.model }} ${{ matrix.seed }} | tee budget.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aev-014a-${{ matrix.model }}-${{ matrix.seed }}
+          path: |
+            commit.txt
+            budget.txt

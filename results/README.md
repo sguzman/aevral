@@ -19,4 +19,6 @@
 
 - [AEV-012 temporal convolution](AEV-012/README.md).
 
+- [AEV-013 compact attention](AEV-013/README.md).
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.

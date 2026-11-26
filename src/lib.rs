@@ -128,3 +128,5 @@ pub mod recurrent;
 pub mod convolution;
 
 pub mod attention;
+
+pub mod architecture;

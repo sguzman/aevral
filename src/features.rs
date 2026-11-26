@@ -278,3 +278,40 @@ pub fn attention_screen(bins:&[Option<Weather>],first:i64,label:&str)->Result<()
     for(i,r)in val.iter().enumerate(){let p=model.predict(&va[i]).map(|v|temp.restore(v));m.add(&r.y,&p)}
     report(label,&m,daily.mae())
 }
+
+pub fn architecture_budget(bins:&[Option<Weather>],first:i64,label:&str,seed:u64)->Result<(),String>{
+    use crate::architecture::Model;
+    if ![42,123,2026].contains(&seed){return Err("seed outside predeclared schedule".into())}
+    let expected=match label{"mlp32"=>1.39610378,"mlp64"=>1.38652827,"mlp32x32"=>1.39090582,"rnn"=>1.52718775,"cnn"=>1.54584788,"attention"=>1.55932750,_=>return Err("unknown architecture".into())};
+    let rows=cases(bins,first);
+    let train:Vec<_>=rows.iter().filter(|r|r.split==Split::Train).collect();
+    let val:Vec<_>=rows.iter().filter(|r|r.split==Split::Validation).collect();
+    if train.len()!=121849||val.len()!=30207{return Err("frozen cohort mismatch".into())}
+    let temp=Scale::fit(train.iter().flat_map(|r|r.x))?;
+    let weather:[Scale;4]=(0..4).map(|i|Scale::fit(train.iter().map(move|r|r.weather[i]))).collect::<Result<Vec<_>,_>>()?.try_into().unwrap();
+    let tr:Vec<_>=train.iter().map(|r|input(r,7,temp,weather)).collect();
+    let va:Vec<_>=val.iter().map(|r|input(r,7,temp,weather)).collect();
+    let targets:Vec<_>=train.iter().map(|r|r.y.map(|v|temp.norm(v))).collect();
+    let mut daily=Metrics::default();for r in &val{daily.add(&r.y,&r.x[H-Y..])}
+    println!("AEV-014A model={label} seed={seed} train={} validation={}",train.len(),val.len());
+    report("daily",&daily,daily.mae())?;
+    let mut model=Model::new(label,seed)?;
+    let mut order:Vec<_>=(0..train.len()).collect();let mut rng=seed;
+    let mut seconds=0.;let mut total_clips=0usize;
+    for epoch in 1..=30{
+        let start=std::time::Instant::now();
+        for i in (1..order.len()).rev(){rng^=rng<<13;rng^=rng>>7;rng^=rng<<17;order.swap(i,(rng%(i as u64+1))as usize);}
+        let(mut loss,mut clips)=(0.,0usize);
+        for &i in &order{let(l,c)=model.train_step(&tr[i],&targets[i],0.005);loss+=l;clips+=usize::from(c)}
+        if !loss.is_finite(){return Err(format!("nonfinite training loss: {label} seed {seed}"))}
+        seconds+=start.elapsed().as_secs_f64();total_clips+=clips;
+        println!("budget,{label},{seed},{epoch},{:.8},{clips}",loss/train.len()as f64);
+        if epoch==10||epoch==30{
+            let mut m=Metrics::default();
+            for(i,r)in val.iter().enumerate(){let p=model.predict(&va[i]).map(|v|temp.restore(v));m.add(&r.y,&p)}
+            if seed==42&&epoch==10&&(m.mae()-expected).abs()>1e-6{return Err(format!("screen reproduction failed: {label} {}",m.mae()))}
+            println!("checkpoint,{label},{seed},{epoch},{},{:.8},{:.8},{:.8},{},{seconds:.3},{total_clips}",m.count,m.mae(),m.rmse(),1.-m.mae()/daily.mae(),model.parameters());
+            for h in 0..Y{let(a,b)=m.lead(h);println!("checkpoint-lead,{label},{seed},{epoch},{},{a:.8},{b:.8}",h+1)}
+        }
+    }Ok(())
+}

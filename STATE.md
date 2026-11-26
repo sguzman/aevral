@@ -13,3 +13,6 @@ AEV-011 run 45877263961: all three matrix jobs reached training, results pending
 ## C002 phase 4
 AEV-011 passed all jobs, RNN 1.52718775, GRU 1.53676733, LSTM 1.56212105; all worse than MLP64 1.38652827. Results archived (186 records). AEV-012 CNN/TCN running. AEV-013 compact attention encoder implemented, 3168 parameters, predeclared same cohort and training recipe. Pending verification. Next collect CNN/TCN and attention results, then AEV-014 multi-seed and training-budget sensitivity. Keep 2026 holdout untouched.
 AEV-012 passed 45877397897: CNN 1.54584788, TCN 1.56940238 MAE, both 3072 parameters, all 124 records archived. MLP64 still leads. AEV-013 attention run 45877542890 queued. Next collect attention scores and proceed to predeclared AEV-014 fair comparison, keeping same cohort and holdout locked.
+
+## C002 phase 5
+AEV-013 passed 45877542890, attention MAE 1.55932750, 3168 parameters, all 62 records archived. AEV-014A protocol/runner implemented: MLP32,64,32x32, RNN, CNN, attention × seeds42/123/2026 × 10/30 epochs, same cohort, original SGD/clipping, seed42/10 exact prior-screen check. 18 matrix jobs, 36 checkpoints. CI pending. Next collect actual scores, persist all records, summarize mean/SD across seeds and training budget. AEV-014B optimizer sensitivity still required, then freeze winner and new 2026 holdout evaluation. No holdout access.

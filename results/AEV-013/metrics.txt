@@ -1,0 +1,62 @@
+AEV-013 model=attention train=121849 validation=30207
+aggregate,daily,30207,2.05315123,2.71391287,0.00000000
+lead,daily,1,2.04847294,2.70981140
+lead,daily,2,2.04684161,2.70838886
+lead,daily,3,2.04702920,2.70740555
+lead,daily,4,2.04792855,2.70832086
+lead,daily,5,2.04770601,2.70673095
+lead,daily,6,2.04782924,2.70701282
+lead,daily,7,2.04912769,2.70843354
+lead,daily,8,2.05162343,2.71141729
+lead,daily,9,2.05326580,2.71285071
+lead,daily,10,2.05592707,2.71650228
+lead,daily,11,2.05793543,2.71946272
+lead,daily,12,2.06005231,2.72211744
+lead,daily,13,2.06061877,2.72298985
+lead,daily,14,2.06198894,2.72385573
+lead,daily,15,2.06142432,2.72321213
+lead,daily,16,2.05985735,2.72092938
+lead,daily,17,2.05988678,2.72113054
+lead,daily,18,2.05850741,2.71971333
+lead,daily,19,2.05653399,2.71731587
+lead,daily,20,2.05307085,2.71383694
+lead,daily,21,2.05160320,2.71243423
+lead,daily,22,2.04961139,2.71049878
+lead,daily,23,2.04558362,2.70684940
+lead,daily,24,2.04320375,2.70250939
+architecture=attention epoch=1 normalized_mse=0.12205960 clips=1291
+architecture=attention epoch=2 normalized_mse=0.10709285 clips=729
+architecture=attention epoch=3 normalized_mse=0.10531313 clips=491
+architecture=attention epoch=4 normalized_mse=0.10416193 clips=414
+architecture=attention epoch=5 normalized_mse=0.10334694 clips=365
+architecture=attention epoch=6 normalized_mse=0.10274160 clips=336
+architecture=attention epoch=7 normalized_mse=0.10233667 clips=326
+architecture=attention epoch=8 normalized_mse=0.10191707 clips=295
+architecture=attention epoch=9 normalized_mse=0.10169793 clips=306
+architecture=attention epoch=10 normalized_mse=0.10142403 clips=288
+architecture=attention parameters=3168 training_seconds=19.032
+aggregate,attention,30207,1.55932750,2.05720942,0.24051990
+lead,attention,1,0.63181306,0.83880482
+lead,attention,2,0.84380889,1.10827250
+lead,attention,3,1.01764291,1.32639339
+lead,attention,4,1.17226925,1.52334366
+lead,attention,5,1.29673190,1.68163630
+lead,attention,6,1.39322601,1.80246543
+lead,attention,7,1.46428255,1.89419371
+lead,attention,8,1.54126680,1.98947945
+lead,attention,9,1.59370421,2.05674787
+lead,attention,10,1.62084854,2.09408377
+lead,attention,11,1.65492688,2.13928728
+lead,attention,12,1.68214046,2.17058241
+lead,attention,13,1.70206399,2.19499924
+lead,attention,14,1.73221666,2.23021456
+lead,attention,15,1.75204788,2.25178381
+lead,attention,16,1.76996346,2.27818603
+lead,attention,17,1.77873530,2.28817390
+lead,attention,18,1.78702770,2.30081759
+lead,attention,19,1.79646682,2.31430003
+lead,attention,20,1.80908436,2.33225060
+lead,attention,21,1.82259365,2.35052129
+lead,attention,22,1.83927688,2.36967388
+lead,attention,23,1.85729162,2.39533098
+lead,attention,24,1.86443032,2.40362337
