@@ -16,6 +16,10 @@ The first campaign studies neural networks for hourly air-temperature forecastin
 
 ![2026 forecast errors by horizon](results/AEV-015/lead-mae.svg)
 
+## Active research program
+
+[C003–C015: comprehensive fixed-data temperature forecasting](campaigns/TEMPERATURE-PROGRAM.md). Same KSEA archive, broad model families, controlled rolling-origin development folds, bounded optimization and final retrospective ranking. Next: common benchmark harness.
+
 ## Research principles
 
 - Define the forecast origin, target, horizon and information available at issue time.

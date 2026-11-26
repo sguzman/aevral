@@ -15,7 +15,11 @@ Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neura
 
 ## C002: Architecture comparison
 
-**Complete.** [Final report](campaigns/002-architecture/REPORT.md): dense, recurrent, convolutional and attention models; optimization and seed sensitivity; independent 2026 holdout. Both previous test periods are now exposed. No automatic new campaign.
+**Complete.** [Final report](campaigns/002-architecture/REPORT.md): dense, recurrent, convolutional and attention models; optimization and seed sensitivity; independent 2026 holdout. Both previous test periods are now exposed.
+
+## C003–C015: Fixed-data temperature research program
+
+**Authorized, next C003.** [Program and benchmark contract](campaigns/TEMPERATURE-PROGRAM.md). Extensive but bounded model-family tournament, advanced feature representations from the same frozen observations, optimization, ensembles and uncertainty, followed by retrospective ranking. No new external data or domains. C003–C015 are planned, not measured yet.
 
 ## Later campaigns
 
