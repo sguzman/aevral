@@ -9,4 +9,6 @@
 
 - [Origin-time covariate coverage](covariate-audit.md).
 
+- [AEV-005–008 meteorological features](AEV-005-008/README.md).
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.

@@ -1,0 +1,38 @@
+name: AEV-009 locked test
+on:
+  push:
+    paths:
+      - '.github/workflows/locked-test.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2025-v1
+          restore-keys: |
+            ksea-routine-utc-2000-2022-v1
+      - name: Verify code before test acquisition
+        run: cargo test --locked
+      - name: Restore and extend snapshot
+        run: bash scripts/fetch-ksea.sh 2000 2025
+      - name: Fingerprint and evaluate frozen model
+        run: |
+          set -o pipefail
+          (cd data/raw/ksea && sha256sum -c ../../../results/AEV-001/snapshot.sha256 && sha256sum -c SEA-*.csv.sha256 && cat SEA-*.csv.sha256) | tee snapshot.txt
+          git rev-parse HEAD > commit.txt
+          cargo run --locked --release -- locked-test 2000 2025 data/raw/ksea | tee locked-test.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aev-009-locked-test
+          path: |
+            commit.txt
+            snapshot.txt
+            locked-test.txt
