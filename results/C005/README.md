@@ -37,3 +37,14 @@ All S01–S04 jobs passed. Best ARX72 MAE 1.53087031; best AR72 1.54626475. Prom
 | sarima-101-100 | 2.13723251 | 2.82288611 | true |
 
 All nine ARIMA outcomes archived. 19/36 screens measured. Provisional finalists: S05: arima-101, arima-211; S06: arimax-101, arimax-111; S07: sarima-101-010, sarima-101-100. Preserve capped-fit flags in comparisons.
+
+## S08–S09 smoothing and harmonic regression (first batch)
+[CI](https://github.com/sguzman/aevral/actions/runs/45901037832), code 1f1bd8c09d360fca15948dc794774ff9e291bb0a. All eight jobs succeeded. First five archived; remaining three pending ingestion.
+
+| Model | MAE | RMSE |
+|---|---:|---:|
+| harmonic-2-ar1 | 1.77158598 | 2.35050457 |
+| ets-aan | 7.33301973 | 10.16491189 |
+| ets-ann | 2.93355531 | 3.91434094 |
+| harmonic-2-ar6 | 1.88417564 | 2.54701774 |
+| ets-aaa | 2.06852752 | 2.71455735 |

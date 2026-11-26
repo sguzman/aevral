@@ -90,3 +90,6 @@ Remaining three ARIMA outcomes archived from CI 45900629055, 141 records. 19/36 
 
 ## C005 phase 8
 Implemented S08–S09 eight configs, conditional additive ETS incl damped/seasonal and two-stage harmonic regression with recursive AR residuals. Predeclared grid/sample in S08-S09.md; shared QR visibility only. Five tests, eight CI jobs pending. 19/36 measured beforehand. Next verify/repair, archive results; S10–S11 structural/Kalman, S12 switching, S13 GARCH pending. No new data.
+
+## C005 phase 9
+All eight S08–S09 jobs succeeded (CI 45901037832); first five archived, 232 records, 24/36 screen outcomes. Next archive remaining three jobs by registry ID, then S10–S11 structural models/Kalman. No new data.
