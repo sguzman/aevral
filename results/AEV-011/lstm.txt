@@ -1,0 +1,62 @@
+AEV-011 model=lstm train=121849 validation=30207
+aggregate,daily,30207,2.05315123,2.71391287,0.00000000
+lead,daily,1,2.04847294,2.70981140
+lead,daily,2,2.04684161,2.70838886
+lead,daily,3,2.04702920,2.70740555
+lead,daily,4,2.04792855,2.70832086
+lead,daily,5,2.04770601,2.70673095
+lead,daily,6,2.04782924,2.70701282
+lead,daily,7,2.04912769,2.70843354
+lead,daily,8,2.05162343,2.71141729
+lead,daily,9,2.05326580,2.71285071
+lead,daily,10,2.05592707,2.71650228
+lead,daily,11,2.05793543,2.71946272
+lead,daily,12,2.06005231,2.72211744
+lead,daily,13,2.06061877,2.72298985
+lead,daily,14,2.06198894,2.72385573
+lead,daily,15,2.06142432,2.72321213
+lead,daily,16,2.05985735,2.72092938
+lead,daily,17,2.05988678,2.72113054
+lead,daily,18,2.05850741,2.71971333
+lead,daily,19,2.05653399,2.71731587
+lead,daily,20,2.05307085,2.71383694
+lead,daily,21,2.05160320,2.71243423
+lead,daily,22,2.04961139,2.71049878
+lead,daily,23,2.04558362,2.70684940
+lead,daily,24,2.04320375,2.70250939
+architecture=lstm epoch=1 normalized_mse=0.14301678 clips=6
+architecture=lstm epoch=2 normalized_mse=0.11230268 clips=19
+architecture=lstm epoch=3 normalized_mse=0.10885767 clips=30
+architecture=lstm epoch=4 normalized_mse=0.10724993 clips=39
+architecture=lstm epoch=5 normalized_mse=0.10621225 clips=47
+architecture=lstm epoch=6 normalized_mse=0.10529514 clips=59
+architecture=lstm epoch=7 normalized_mse=0.10447150 clips=79
+architecture=lstm epoch=8 normalized_mse=0.10362725 clips=89
+architecture=lstm epoch=9 normalized_mse=0.10292165 clips=88
+architecture=lstm epoch=10 normalized_mse=0.10226403 clips=102
+architecture=lstm parameters=2072 training_seconds=55.797
+aggregate,lstm,30207,1.56212105,2.06542693,0.23915929
+lead,lstm,1,0.62273345,0.82591440
+lead,lstm,2,0.84346748,1.10894355
+lead,lstm,3,1.01852419,1.33237696
+lead,lstm,4,1.17115904,1.53101185
+lead,lstm,5,1.29490650,1.68620855
+lead,lstm,6,1.40313913,1.82136760
+lead,lstm,7,1.48269937,1.92597382
+lead,lstm,8,1.55820632,2.01820267
+lead,lstm,9,1.61561415,2.08712172
+lead,lstm,10,1.64218591,2.12385727
+lead,lstm,11,1.66198379,2.14919592
+lead,lstm,12,1.68948800,2.17999606
+lead,lstm,13,1.71406211,2.20947915
+lead,lstm,14,1.75034944,2.25050028
+lead,lstm,15,1.78075754,2.28918344
+lead,lstm,16,1.78174298,2.29283605
+lead,lstm,17,1.78192459,2.29486546
+lead,lstm,18,1.78784084,2.30346376
+lead,lstm,19,1.79185689,2.31438567
+lead,lstm,20,1.79708806,2.32755915
+lead,lstm,21,1.81136948,2.34438080
+lead,lstm,22,1.81885099,2.35566244
+lead,lstm,23,1.82557273,2.36781307
+lead,lstm,24,1.84538221,2.39354504

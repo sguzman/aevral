@@ -248,3 +248,33 @@ pub fn convolution_screen(bins:&[Option<Weather>],first:i64,label:&str)->Result<
     for(i,r)in val.iter().enumerate(){let p=model.predict(&va[i]).map(|v|temp.restore(v));m.add(&r.y,&p)}
     report(label,&m,daily.mae())
 }
+
+pub fn attention_screen(bins:&[Option<Weather>],first:i64,label:&str)->Result<(),String>{
+    use crate::attention::Attention;
+    let rows=cases(bins,first);
+    let train:Vec<_>=rows.iter().filter(|r|r.split==Split::Train).collect();
+    let val:Vec<_>=rows.iter().filter(|r|r.split==Split::Validation).collect();
+    if train.len()!=121849||val.len()!=30207{return Err("frozen cohort mismatch".into())}
+    let temp=Scale::fit(train.iter().flat_map(|r|r.x))?;
+    let weather:[Scale;4]=(0..4).map(|i|Scale::fit(train.iter().map(move|r|r.weather[i]))).collect::<Result<Vec<_>,_>>()?.try_into().unwrap();
+    let tr:Vec<_>=train.iter().map(|r|input(r,7,temp,weather)).collect();
+    let va:Vec<_>=val.iter().map(|r|input(r,7,temp,weather)).collect();
+    let targets:Vec<_>=train.iter().map(|r|r.y.map(|v|temp.norm(v))).collect();
+    let mut daily=Metrics::default();for r in &val{daily.add(&r.y,&r.x[H-Y..])}
+    println!("AEV-013 model={label} train={} validation={}",train.len(),val.len());
+    report("daily",&daily,daily.mae())?;
+    let mut model=Attention::new(42);
+    let mut order:Vec<_>=(0..train.len()).collect();let mut rng=42u64;
+    let start=std::time::Instant::now();
+    for epoch in 0..10{
+        for i in (1..order.len()).rev(){rng^=rng<<13;rng^=rng>>7;rng^=rng<<17;order.swap(i,(rng%(i as u64+1))as usize);}
+        let(mut loss,mut clips)=(0.,0usize);
+        for &i in &order{let(l,c)=model.train_step(&tr[i],&targets[i],0.005);loss+=l;clips+=usize::from(c)}
+        if !loss.is_finite(){return Err(format!("nonfinite training loss: {label}"))}
+        println!("architecture={label} epoch={} normalized_mse={:.8} clips={clips}",epoch+1,loss/train.len()as f64);
+    }
+    println!("architecture={label} parameters={} training_seconds={:.3}",model.parameters(),start.elapsed().as_secs_f64());
+    let mut m=Metrics::default();
+    for(i,r)in val.iter().enumerate(){let p=model.predict(&va[i]).map(|v|temp.restore(v));m.add(&r.y,&p)}
+    report(label,&m,daily.mae())
+}

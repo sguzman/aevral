@@ -9,3 +9,6 @@ AEV-010 passed 45876819315, original MAE reproduced, matched linear 1.56557755, 
 
 ## C002 phase 3
 AEV-011 run 45877263961: all three matrix jobs reached training, results pending. AEV-012 CNN/TCN implemented and predeclared in parallel, identical three-layer residual causal convolution with dilation [1,1,1] vs [1,2,4], 3072 parameters each, same 12 six-hour patches and 8 static inputs. Finite-difference, synthetic learning, causal-prefix tests; same frozen 2000–2022 data and matched cohort. CI pending. Next gather both recurrent and convolution results; persist all measured records before attention comparison. No new holdout access.
+
+## C002 phase 4
+AEV-011 passed all jobs, RNN 1.52718775, GRU 1.53676733, LSTM 1.56212105; all worse than MLP64 1.38652827. Results archived (186 records). AEV-012 CNN/TCN running. AEV-013 compact attention encoder implemented, 3168 parameters, predeclared same cohort and training recipe. Pending verification. Next collect CNN/TCN and attention results, then AEV-014 multi-seed and training-budget sensitivity. Keep 2026 holdout untouched.
