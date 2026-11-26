@@ -32,3 +32,18 @@ Promote OLS and ridge-1e-4, ridge-1e-6 by manifest (not yet measured on other ye
 | lasso-0.1 | 1.78597604 | 2.32658327 | 141 | 1028 |
 
 Lasso 1e-4 removes 526/1920 slopes with negligible accuracy change relative to OLS. Sparse regularization does not improve the best ridge result. Promote lasso-1e-4, lasso-1e-3, enet-1e-3-a25 and enet-1e-3-a75 after screening. [Full records](L03-L04-2019.txt). 17/54 screens measured.
+
+## L05/L06 Huber and median regression
+[CI passed](https://github.com/sguzman/aevral/actions/runs/45896640395), code 8546ecef5d3f72b4b365f2331383b9c2648f4052. All seven jobs passed 45 tests and frozen cohort/hash checks; all seven converged under the declared primal and stationarity tolerances. Full records in L05-L06-*-2019.txt.
+
+| Configuration | MAE °C | RMSE °C | Iterations | Fit s |
+|---|---:|---:|---:|---:|
+| huber-0.25 | 1.46480324 | 1.93582492 | 20 | 3.258994 |
+| huber-0.5 | 1.46516741 | 1.93388172 | 20 | 2.991646 |
+| median-1e-4 | 1.46546481 | 1.93801795 | 340 | 50.944243 |
+| median-0 | 1.46548444 | 1.93805607 | 340 | 49.204258 |
+| huber-1 | 1.46710856 | 1.93375828 | 20 | 3.158634 |
+| median-1e-2 | 1.46756977 | 1.93998691 | 330 | 59.592293 |
+| huber-2 | 1.46769903 | 1.93429318 | 20 | 2.514277 |
+
+Huber .25 is best non-neural model so far, but only marginally improves ridge. Promote huber-0.25, huber-0.5, median-1e-4 and median-0 by MAE. Median optimizes pinball loss (half absolute error) rather than squared error; no claim of independent test performance. 24/54 measured.

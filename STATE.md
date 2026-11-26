@@ -18,3 +18,6 @@ L03/L04 passed CI 45896275859, all ten converged KKT <=1e-7, 41 tests, archived 
 
 ## C004 phase 5
 L05/L06 robust ADMM screen implemented, exact Huber and median prox, 1000 iteration cap, 1e-4 primal/stationarity tolerance, unpenalized intercept, four synthetic tests; seven independent CI jobs. Next check CI, archive all successful/blocked outcomes; then latent regressions L07–L09. No scores yet; 17/54 measured. No test data access.
+
+## C004 phase 6
+All seven L05/L06 jobs passed CI 45896640395; 45 tests, all converged, 331 records archived and registry updated. Best huber-0.25 MAE 1.46480324, best median-1e-4 1.46546481. Promote top two each as documented. 24/54 measured. Next implement L07–L09 PCR, PLS and reduced-rank regression (12 configs), training-only centered covariance/eigendecomposition, explicit numerical tests and no test data. No human action required.
