@@ -72,3 +72,6 @@ Closure audit persisted at results/C004/closure-audit.md; master program and cam
 
 ## C005 phase 2
 Implemented S01–S04 ten configurations, recursive AR/ARX/VAR/VARX, streamed QR, causal known calendar and fixed origin weather for ARX, joint VAR state recursion, adjacency guard; four synthetic tests, three CI jobs. S01-S04.md batch specification. Compilation and measured results pending. Next verify/repair CI, archive all ten outcomes with diagnostics, then S05–S07 genuine conditional ARIMA variants. No new data.
+
+## C005 phase 3
+S01–S04 CI 45900349024, code efa95b5624c26666fb3e9cbf2dbb4b2e16a0e3ff: archived 2 completed jobs, 6 outcomes, 414 records. 57 tests passed per successful job. 6/36 measured. screen (arx-all) 140184313394 pending Registry initialized; do not duplicate archived jobs. Next collect any remaining autoreg outcomes, then implement S05–S07 conditional ARIMA/ARIMAX/SARIMA; no new data.
