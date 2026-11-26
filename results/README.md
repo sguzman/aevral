@@ -5,4 +5,6 @@
 
 - [AEV-002 history length](AEV-002/README.md) — matched comparison.
 
+- [AEV-003/004 calendar features](AEV-003-004/README.md) — matched comparison.
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.

@@ -1,0 +1,170 @@
+AEV-003/004 matched train=126093 validation=31045
+aggregate,daily,31045,2.05052217,2.71029815,0.00000000
+lead,daily,1,2.05097797,2.71216005
+lead,daily,2,2.05096187,2.71211553
+lead,daily,3,2.05134303,2.71240172
+lead,daily,4,2.05152198,2.71239072
+lead,daily,5,2.05159178,2.71203830
+lead,daily,6,2.05166336,2.71160273
+lead,daily,7,2.05129114,2.71109558
+lead,daily,8,2.05122313,2.71077312
+lead,daily,9,2.05086702,2.71032490
+lead,daily,10,2.05054670,2.70994850
+lead,daily,11,2.05019595,2.70974529
+lead,daily,12,2.04971278,2.70928807
+lead,daily,13,2.04936562,2.70885162
+lead,daily,14,2.04916698,2.70864277
+lead,daily,15,2.04911508,2.70825392
+lead,daily,16,2.04901666,2.70795885
+lead,daily,17,2.04909003,2.70792799
+lead,daily,18,2.04942467,2.70822486
+lead,daily,19,2.04957857,2.70830970
+lead,daily,20,2.05002595,2.70900740
+lead,daily,21,2.05073639,2.71026336
+lead,daily,22,2.05145935,2.71129345
+lead,daily,23,2.05171704,2.71198371
+lead,daily,24,2.05193894,2.71254211
+calendar=temp epoch=1 normalized_mse=0.13258537
+calendar=temp epoch=2 normalized_mse=0.12174751
+calendar=temp epoch=3 normalized_mse=0.11929810
+calendar=temp epoch=4 normalized_mse=0.11681037
+calendar=temp epoch=5 normalized_mse=0.11485581
+calendar=temp epoch=6 normalized_mse=0.11322895
+calendar=temp epoch=7 normalized_mse=0.11215446
+calendar=temp epoch=8 normalized_mse=0.11129903
+calendar=temp epoch=9 normalized_mse=0.11064048
+calendar=temp epoch=10 normalized_mse=0.10998597
+calendar=temp inputs=72 parameters=3128
+aggregate,temp,31045,1.59702117,2.12970750,0.22116366
+lead,temp,1,0.67797918,0.91072352
+lead,temp,2,0.87593767,1.15501088
+lead,temp,3,1.02377211,1.34793361
+lead,temp,4,1.16739722,1.53324978
+lead,temp,5,1.28135925,1.68536501
+lead,temp,6,1.37480017,1.80688168
+lead,temp,7,1.45840422,1.91740567
+lead,temp,8,1.53203552,2.00779372
+lead,temp,9,1.60203711,2.09321329
+lead,temp,10,1.64834490,2.15194407
+lead,temp,11,1.70011363,2.21389145
+lead,temp,12,1.74108872,2.26112936
+lead,temp,13,1.77789546,2.30603269
+lead,temp,14,1.79486685,2.32903204
+lead,temp,15,1.81451349,2.35523737
+lead,temp,16,1.82456555,2.36824340
+lead,temp,17,1.83139431,2.37891407
+lead,temp,18,1.84141646,2.39180851
+lead,temp,19,1.85313670,2.40947725
+lead,temp,20,1.86494875,2.42786445
+lead,temp,21,1.88029656,2.44831437
+lead,temp,22,1.89658893,2.46936673
+lead,temp,23,1.91587598,2.49212876
+lead,temp,24,1.94973947,2.53068395
+calendar=hour epoch=1 normalized_mse=0.13204773
+calendar=hour epoch=2 normalized_mse=0.11926217
+calendar=hour epoch=3 normalized_mse=0.11655766
+calendar=hour epoch=4 normalized_mse=0.11407026
+calendar=hour epoch=5 normalized_mse=0.11200384
+calendar=hour epoch=6 normalized_mse=0.11030474
+calendar=hour epoch=7 normalized_mse=0.10898495
+calendar=hour epoch=8 normalized_mse=0.10799708
+calendar=hour epoch=9 normalized_mse=0.10732344
+calendar=hour epoch=10 normalized_mse=0.10666247
+calendar=hour inputs=74 parameters=3192
+aggregate,hour,31045,1.57779346,2.10346568,0.23054065
+lead,hour,1,0.71345684,0.94511310
+lead,hour,2,0.87135782,1.15298897
+lead,hour,3,1.02045686,1.34825945
+lead,hour,4,1.14930532,1.52013084
+lead,hour,5,1.25256413,1.65783588
+lead,hour,6,1.34824859,1.77852664
+lead,hour,7,1.42139395,1.87480090
+lead,hour,8,1.49097757,1.96110274
+lead,hour,9,1.55097650,2.03651710
+lead,hour,10,1.60834315,2.10698443
+lead,hour,11,1.65910372,2.16754180
+lead,hour,12,1.70057180,2.21534011
+lead,hour,13,1.73678796,2.25563568
+lead,hour,14,1.76728580,2.28979625
+lead,hour,15,1.78539277,2.31213428
+lead,hour,16,1.80559672,2.33956739
+lead,hour,17,1.81887452,2.35671315
+lead,hour,18,1.83374709,2.37652008
+lead,hour,19,1.85314533,2.39952316
+lead,hour,20,1.86112908,2.41299769
+lead,hour,21,1.87570442,2.43364554
+lead,hour,22,1.88864393,2.45278086
+lead,hour,23,1.91039689,2.48003622
+lead,hour,24,1.94358223,2.52014167
+calendar=year epoch=1 normalized_mse=0.13057342
+calendar=year epoch=2 normalized_mse=0.11786249
+calendar=year epoch=3 normalized_mse=0.11500695
+calendar=year epoch=4 normalized_mse=0.11235992
+calendar=year epoch=5 normalized_mse=0.11036782
+calendar=year epoch=6 normalized_mse=0.10878579
+calendar=year epoch=7 normalized_mse=0.10746546
+calendar=year epoch=8 normalized_mse=0.10659458
+calendar=year epoch=9 normalized_mse=0.10582948
+calendar=year epoch=10 normalized_mse=0.10510369
+calendar=year inputs=74 parameters=3192
+aggregate,year,31045,1.56422061,2.08641754,0.23715986
+lead,year,1,0.68264164,0.90520445
+lead,year,2,0.86074005,1.13636188
+lead,year,3,1.01227814,1.33463964
+lead,year,4,1.14399148,1.50874767
+lead,year,5,1.25561374,1.65921647
+lead,year,6,1.35556685,1.78664686
+lead,year,7,1.43832510,1.89263625
+lead,year,8,1.50949019,1.98080044
+lead,year,9,1.56848591,2.05244159
+lead,year,10,1.62028013,2.11496206
+lead,year,11,1.66320445,2.16610939
+lead,year,12,1.69700551,2.20420165
+lead,year,13,1.72689843,2.23767490
+lead,year,14,1.75067055,2.26702040
+lead,year,15,1.76786342,2.29221174
+lead,year,16,1.78161320,2.31415056
+lead,year,17,1.79033640,2.32867099
+lead,year,18,1.80375770,2.34815684
+lead,year,19,1.81504718,2.36503837
+lead,year,20,1.82348333,2.37917042
+lead,year,21,1.84165919,2.40189823
+lead,year,22,1.85744055,2.42176370
+lead,year,23,1.87521359,2.43954557
+lead,year,24,1.89968800,2.46743030
+calendar=both epoch=1 normalized_mse=0.12925231
+calendar=both epoch=2 normalized_mse=0.11487320
+calendar=both epoch=3 normalized_mse=0.11117978
+calendar=both epoch=4 normalized_mse=0.10854204
+calendar=both epoch=5 normalized_mse=0.10671401
+calendar=both epoch=6 normalized_mse=0.10524181
+calendar=both epoch=7 normalized_mse=0.10393916
+calendar=both epoch=8 normalized_mse=0.10295875
+calendar=both epoch=9 normalized_mse=0.10210388
+calendar=both epoch=10 normalized_mse=0.10131202
+calendar=both inputs=76 parameters=3256
+aggregate,both,31045,1.54146757,2.06081463,0.24825608
+lead,both,1,0.69100066,0.90919932
+lead,both,2,0.85198540,1.12317228
+lead,both,3,0.99279864,1.31061409
+lead,both,4,1.11507737,1.47597270
+lead,both,5,1.22460062,1.62238092
+lead,both,6,1.31930418,1.74514503
+lead,both,7,1.39318678,1.84178343
+lead,both,8,1.45389502,1.91863041
+lead,both,9,1.51228587,1.99007232
+lead,both,10,1.56851785,2.05637358
+lead,both,11,1.61373057,2.11097425
+lead,both,12,1.65075559,2.15318747
+lead,both,13,1.68566622,2.19295651
+lead,both,14,1.71542265,2.22619422
+lead,both,15,1.73560907,2.25341459
+lead,both,16,1.76381333,2.29002938
+lead,both,17,1.78085080,2.31403036
+lead,both,18,1.79900604,2.33827038
+lead,both,19,1.81412569,2.35987606
+lead,both,20,1.82513381,2.37795947
+lead,both,21,1.84263866,2.40087420
+lead,both,22,1.85787708,2.42095343
+lead,both,23,1.87907380,2.44742385
+lead,both,24,1.90886588,2.48233685
