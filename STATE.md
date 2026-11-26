@@ -39,3 +39,6 @@ Full polynomial job 140174402045 still running at check; its original code 77848
 
 ## C004 phase 12
 All six MARS jobs passed 45897731820, 53 tests, 816 records archived; best mars-grid-2-64 MAE 1.43531178, second mars-grid-1-64 1.47772393. 51/54 measured. Full polynomial job 140174402045 still in progress at last check; archive remaining three results using original 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82. No duplicate runs. Then freeze top two per method (OLS one) by 2019 MAE, run 2020–22 finalists with <=6 parallel and 30min/job; record all results. No additional data or models.
+
+## C004 phase 13
+Full polynomial still active at check. Froze 21 finalists from 11 completely screened methods (L01–L09,L11,L12) based solely on 2019 registry; see campaigns/004-linear-additive/FINALISTS-A.md. Launched grouped 2020–22 evaluation workflow, 18 jobs/63 additional fits, max five concurrent while full poly runs. No L10 promotion until its 2019 results resolve; separate finalists B then. Verify all jobs and archive each completed group without duplication, preserve code SHA and per-config records; report blocked/nonconverged explicitly. Reuse 2019 scores, no fresh holdout claims. Screening remains 51/54. No new data.
