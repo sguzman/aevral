@@ -81,3 +81,6 @@ All three S01–S04 jobs passed, 57 tests, 10/36 measured; last ARX job 14018431
 
 ## C005 phase 5
 S05–S07 nine conditional ARIMA/ARIMAX/SARIMA configurations implemented; bounded train-only sample objective, stationarity/invertibility via parameter bounds, seasonal cross terms and integration, causal zero future innovations. S05-S07.md specifies approximate conditional ARMAX/finite optimizer; five tests and nine CI jobs pending. 10/36 previously measured. Next verify/repair, archive nine outcomes and convergence/capped flags, then S08–S11 smoothing and state-space. No new data.
+
+## C005 phase 6
+All nine ARIMA CI jobs 45900629055 passed. Archived six outcomes and 282 records, 16/36 measured total. Remaining three jobs (arima-211, arima-201, sarima-101-100) need ingestion, check registry for existing IDs. ARIMAX111 hit optimizer cap; recorded as bounded approximate fit, not converged. Next archive remaining three then S08–S11. No new data.

@@ -16,3 +16,15 @@ S01–S04 [CI](https://github.com/sguzman/aevral/actions/runs/45900349024), code
 | S02 | arx-72 | 1.53087031 | 2.01724040 |
 
 All S01–S04 jobs passed. Best ARX72 MAE 1.53087031; best AR72 1.54626475. Promote AR72/48, ARX72/48, VAR1 and VARX1.
+
+## S05–S07 conditional ARIMA (batch 1)
+[CI](https://github.com/sguzman/aevral/actions/runs/45900629055), code 58fbc0f94d4df47b34a8d963f47cef0d6b2d6091. All nine jobs completed successfully; first six results archived here, remaining three pending ingestion. 62 tests passed. Conditional optimizer uses 2048 train-only windows; finite capped fits are approximate, not exact ML.
+
+| Model | MAE | RMSE | Optimizer converged |
+|---|---:|---:|---|
+| arimax-101 | 1.81305519 | 2.46355131 | true |
+| arimax-111 | 2.07347384 | 2.71867701 | false |
+| arima-101 | 2.89296435 | 3.84514565 | true |
+| sarima-111-100 | 2.74570304 | 3.67784674 | true |
+| arima-111 | 3.44694169 | 4.66211547 | true |
+| sarima-101-010 | 1.70594491 | 2.27617711 | true |
