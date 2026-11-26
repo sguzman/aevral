@@ -69,3 +69,6 @@ Part B all jobs completed successfully; 2022 both polynomial fits explicitly blo
 
 ## C004 closed; C005 phase 1
 Closure audit persisted at results/C004/closure-audit.md; master program and campaign README updated. Registry 123 unique outcomes, 41 log files/job IDs, sample eight logs checked; no independent full prediction recomputation. C005 active, predeclared 36 configs in campaigns/005-statistical-state-space/manifest.md, including 34 point and 2 variance-only. No C005 fits yet. Next implement S01–S04 genuine AR/ARX/VAR(1)/VARX(1), predeclare exact batch details, tests, launch 2019 CI. Retain same fixed cohort; origin weather frozen for ARX, VAR uses joint predicted weather with adjacent training origins. No extra history, no new data.
+
+## C005 phase 2
+Implemented S01–S04 ten configurations, recursive AR/ARX/VAR/VARX, streamed QR, causal known calendar and fixed origin weather for ARX, joint VAR state recursion, adjacency guard; four synthetic tests, three CI jobs. S01-S04.md batch specification. Compilation and measured results pending. Next verify/repair CI, archive all ten outcomes with diagnostics, then S05–S07 genuine conditional ARIMA variants. No new data.

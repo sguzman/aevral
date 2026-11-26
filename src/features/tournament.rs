@@ -177,3 +177,5 @@ pub mod latent;
 pub mod basis;
 
 pub mod mars;
+
+pub mod autoreg;
