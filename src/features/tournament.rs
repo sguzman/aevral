@@ -165,3 +165,5 @@ mod causal_tests{
         assert!(c.eval.iter().all(|r|missing<r.input.origin-71*60||missing>r.input.origin+24*60));
     }
 }
+
+pub mod linear;
