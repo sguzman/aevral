@@ -1,0 +1,39 @@
+name: AEV-005-008 meteorological features
+on:
+  push:
+    paths:
+      - 'src/features.rs'
+      - '.github/workflows/features.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2022-v1
+          restore-keys: |
+            ksea-routine-utc-2018-v1
+      - name: Restore or acquire snapshot
+        run: bash scripts/fetch-ksea.sh 2000 2022
+      - name: Verify frozen hashes
+        run: |
+          cd data/raw/ksea
+          sha256sum -c ../../../results/AEV-001/snapshot.sha256
+      - name: Compare meteorological feature subsets
+        run: |
+          set -o pipefail
+          git rev-parse HEAD > commit.txt
+          cargo run --locked --release -- features 2000 2022 data/raw/ksea | tee features.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aev-005-008-features
+          path: |
+            commit.txt
+            features.txt

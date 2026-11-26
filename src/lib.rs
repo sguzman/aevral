@@ -118,3 +118,5 @@ pub mod benchmark;
 pub mod windows;
 
 pub mod covariates;
+
+pub mod features;

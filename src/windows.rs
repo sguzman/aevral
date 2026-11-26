@@ -81,11 +81,11 @@ mod tests{
 }
 
 #[derive(Clone,Copy,Debug)]
-enum Calendar { None, Hour, Year, Both }
+pub(crate) enum Calendar { None, Hour, Year, Both }
 impl Calendar {
     fn label(self)->&'static str {match self{Self::None=>"temp",Self::Hour=>"hour",Self::Year=>"year",Self::Both=>"both"}}
     fn dims(self)->usize {match self{Self::None=>0,Self::Both=>4,_=>2}}
-    fn features(self,t:i64)->Vec<f64>{
+    pub(crate) fn features(self,t:i64)->Vec<f64>{
         use std::f64::consts::TAU;
         let mut x=Vec::with_capacity(self.dims());
         if matches!(self,Self::Hour|Self::Both){
