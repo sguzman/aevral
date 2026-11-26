@@ -1,0 +1,35 @@
+name: AEV-015A freeze 2026 archive
+on:
+  push:
+    paths:
+      - '.github/workflows/holdout-snapshot.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          restore-keys: |
+            ksea-routine-utc-2000-2025-v1
+            ksea-routine-utc-2000-2022-v1
+      - name: Restore and verify historical archive
+        run: |
+          bash scripts/fetch-ksea.sh 2000 2025
+          cd data/raw/ksea
+          sha256sum -c ../../../results/AEV-009/snapshot.sha256
+      - name: Acquire partial-year holdout without scoring
+        run: |
+          set -o pipefail
+          bash scripts/fetch-ksea-holdout-2026.sh
+          (cd data/raw/ksea && sha256sum -c SEA-2026.csv.sha256 && cat SEA-*.csv.sha256 && printf 'source=' && cat SEA-2026.csv.url && printf 'retrieved=' && cat SEA-2026.csv.retrieved) | tee snapshot.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aev-015a-snapshot-manifest
+          path: snapshot.txt
