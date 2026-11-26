@@ -22,3 +22,6 @@ AEV-014A all 18 jobs passed 45877715589; all 1908 records archived in results/AE
 
 ## C002 phase 7
 AEV-014B implemented: Adam .001, beta .9/.999, eps 1e-8, bias correction, same six models, 3 seeds, 10/30 epochs, previous clipping policy, one update per sample. Tests include changing/constant gradients and dispatch smoke; new CI pending. Original SGD runner retained. Next check CI and archive actual measurements in batches (max 6 job-log fetches per call); compare means across A/B, freeze seed42 winner and evaluate new 2026 holdout only after recipe freeze. No holdout access.
+
+## C002 phase 8 — partial Adam archive
+AEV-014B run 45878735829: 17 passed, 1 active as checked. All 17 completed job logs (1802 records) archived in results/AEV-014B. Pending attention seed2026 job 140112353223. Next verify final job success, archive its 106 records, compute all A/B means and SDs, publish results and freeze winner per AEV-014 protocol. Then evaluate unopened 2026 holdout. No holdout access. Use batched tool calls, avoid full log output.
