@@ -1,3 +1,6 @@
-# Results
+# Research results
 
-No measured weather results yet. Synthetic checks belong in implementation logs, not this research ledger. Each real result must identify experiment, code commit, data snapshot, split, count, metrics and caveats.
+- [2018 ingestion audit](2018-ingestion.md)
+- [AEV-001 initial validation](AEV-001/README.md) — first measured neural benchmark; independent test still locked.
+
+Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.
