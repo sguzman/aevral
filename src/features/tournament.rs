@@ -179,3 +179,5 @@ pub mod basis;
 pub mod mars;
 
 pub mod autoreg;
+
+pub mod arima;
