@@ -102,3 +102,6 @@ S10–S11 five Gaussian structural/Kalman configurations implemented, causal fix
 
 ## C005 phase 12
 Archived 4 S10–S11 outcomes and 184 log records; 4/5 Kalman outcomes, 31/36 total screen outcomes. CI 45913783874. Next collect unarchived Kalman jobs, then implement S12 Markov switching and S13 GARCH. No new data.
+
+## C005 phase 13
+All five Kalman jobs passed; final dlm-trend-harmonic archived (46 records) from CI 45913783874, 32/36 measured. Finalists {"S10":["struct-season","struct-level"],"S11":["dlm-harmonic","dlm-trend-harmonic"]}. Next implement S12 two Markov-switching AR models and S13 two GARCH conditional variance models; separate variance metrics from point ranking. No new data.

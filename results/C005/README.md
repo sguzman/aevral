@@ -67,3 +67,10 @@ All eight S08–S09 outcomes archived; 27/36 measured. Provisional finalists: S0
 | struct-level | 2.91876103 | 3.87648582 |
 | dlm-harmonic | 1.67113899 | 2.20514152 |
 | struct-trend | 7.31826143 | 10.09863143 |
+
+### Final Kalman outcome
+| Model | MAE | RMSE |
+|---|---:|---:|
+| dlm-trend-harmonic | 1.92420168 | 2.55612939 |
+
+All five S10–S11 jobs succeeded. 32/36 screening outcomes archived. Structural seasonal and dynamic harmonic models have identical scores, consistent with rotation-equivalent state parameterizations and isotropic seasonal process noise; not independent evidence. Provisional finalists: {"S10":["struct-season","struct-level"],"S11":["dlm-harmonic","dlm-trend-harmonic"]}.

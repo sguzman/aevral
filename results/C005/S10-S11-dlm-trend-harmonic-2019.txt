@@ -1,0 +1,46 @@
+test result: ok. 72 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+kalman-config,2019,dlm-trend-harmonic,1024,108,4,4,0.01,1,0.001,0.1,-5.246753055196e-1,0.671478
+score,2019,dlm-trend-harmonic,7455,1.92420168,2.55612939,0.101
+lead,2019,dlm-trend-harmonic,1,0.66203127,0.87209540
+lead,2019,dlm-trend-harmonic,2,0.97401927,1.26856155
+lead,2019,dlm-trend-harmonic,3,1.25090877,1.61485704
+lead,2019,dlm-trend-harmonic,4,1.48404251,1.90502820
+lead,2019,dlm-trend-harmonic,5,1.67240711,2.13760711
+lead,2019,dlm-trend-harmonic,6,1.80508203,2.30270364
+lead,2019,dlm-trend-harmonic,7,1.89564046,2.41492951
+lead,2019,dlm-trend-harmonic,8,1.93696666,2.47627431
+lead,2019,dlm-trend-harmonic,9,1.95091468,2.50670746
+lead,2019,dlm-trend-harmonic,10,1.95400140,2.52293027
+lead,2019,dlm-trend-harmonic,11,1.95996242,2.53751862
+lead,2019,dlm-trend-harmonic,12,1.98312242,2.56428583
+lead,2019,dlm-trend-harmonic,13,2.01848601,2.60563778
+lead,2019,dlm-trend-harmonic,14,2.06475182,2.66352397
+lead,2019,dlm-trend-harmonic,15,2.11055609,2.72708347
+lead,2019,dlm-trend-harmonic,16,2.15592695,2.78953564
+lead,2019,dlm-trend-harmonic,17,2.20373836,2.85235874
+lead,2019,dlm-trend-harmonic,18,2.24282006,2.90382725
+lead,2019,dlm-trend-harmonic,19,2.26887287,2.94273927
+lead,2019,dlm-trend-harmonic,20,2.28245155,2.97113367
+lead,2019,dlm-trend-harmonic,21,2.28921287,2.99501070
+lead,2019,dlm-trend-harmonic,22,2.29834336,3.02341231
+lead,2019,dlm-trend-harmonic,23,2.32478007,3.07128079
+lead,2019,dlm-trend-harmonic,24,2.39180134,3.16289492
+month,2019,dlm-trend-harmonic,1,736,2.11369615,2.69823347
+month,2019,dlm-trend-harmonic,2,567,1.62484160,2.15643035
+month,2019,dlm-trend-harmonic,3,634,1.87500304,2.50807861
+month,2019,dlm-trend-harmonic,4,706,1.80345872,2.33597799
+month,2019,dlm-trend-harmonic,5,716,2.34603810,3.13365175
+month,2019,dlm-trend-harmonic,6,505,1.95349672,2.72278130
+month,2019,dlm-trend-harmonic,7,715,2.15153433,2.82412783
+month,2019,dlm-trend-harmonic,8,706,1.99500682,2.65169342
+month,2019,dlm-trend-harmonic,9,508,1.71183508,2.15343735
+month,2019,dlm-trend-harmonic,10,441,2.05067545,2.72329156
+month,2019,dlm-trend-harmonic,11,615,1.89863195,2.44789737
+month,2019,dlm-trend-harmonic,12,606,1.40469383,1.87062899
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.26
+Maximum resident set size (kbytes): 314480
