@@ -1,4 +1,4 @@
-# KSEA dataset manifest (planned)
+# KSEA dataset manifest
 
 - Station: Seattle–Tacoma International Airport, IEM SEA / WA_ASOS.
 - Coordinates: 47.4447, -122.3144; elevation 137 m.
@@ -9,7 +9,7 @@
 - Variables: tmpf (F), dwpf (F), relh (%), drct (degrees true), sknt (knots), alti (inHg), mslp (millibar). Missing code M.
 - IEM historical archive is minimally quality controlled. Audit range, duplicate/conflicting timestamps and coverage; never silently invent values.
 - Download script: scripts/fetch-ksea.sh; caches one annual file and SHA-256 sidecar per year. Existing verified files are reused, not re-downloaded.
-- Snapshot status: not acquired; hashes and actual coverage pending. Data rights/attribution review pending before redistributing raw bytes.
+- Snapshot: acquired 2000–2025; [26 frozen checksums](../../results/AEV-009/snapshot.sha256), [coverage and scores](../../results/AEV-009/README.md). Data rights/attribution review pending before redistributing raw bytes.
 
 ## Origin-time covariate audit
 

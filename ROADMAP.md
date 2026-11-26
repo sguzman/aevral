@@ -2,6 +2,8 @@
 
 ## C001: Weather / neural fundamentals
 
+Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neural-weather/REPORT.md). Step 8 is future research, not part of the completed initial milestone. The 2023–2025 test set is now exposed.
+
 1. Bootstrap ontology, campaign protocol and transparent neural primitives.
 2. Acquire and fingerprint annual KSEA observations, 2000–2025. Audit coverage, gaps, report timing and units.
 3. Construct leakage-safe hourly examples and chronological partitions; test boundary and missing-data behavior.

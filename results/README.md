@@ -1,7 +1,7 @@
 # Research results
 
 - [2018 ingestion audit](2018-ingestion.md)
-- [AEV-001 initial validation](AEV-001/README.md) — first measured neural benchmark; independent test still locked.
+- [AEV-001 initial validation](AEV-001/README.md) — first measured neural benchmark.
 
 - [AEV-002 history length](AEV-002/README.md) — matched comparison.
 
@@ -10,5 +10,7 @@
 - [Origin-time covariate coverage](covariate-audit.md).
 
 - [AEV-005–008 meteorological features](AEV-005-008/README.md).
+
+- [AEV-009 frozen independent test](AEV-009/README.md) — complete.
 
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.
