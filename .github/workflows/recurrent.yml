@@ -1,0 +1,41 @@
+name: AEV-011 recurrent architecture screen
+on:
+  push:
+    paths:
+      - 'src/recurrent.rs'
+      - '.github/workflows/recurrent.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    strategy:
+      fail-fast: false
+      matrix:
+        model: [rnn, gru, lstm]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2022-v1
+      - name: Verify model tests
+        run: cargo test --locked --release
+      - name: Restore snapshot
+        run: bash scripts/fetch-ksea.sh 2000 2022
+      - name: Verify frozen hashes
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-001/snapshot.sha256
+      - name: Train recurrent model
+        run: |
+          set -o pipefail
+          git rev-parse HEAD > commit.txt
+          cargo run --locked --release -- ${{ matrix.model }} 2000 2022 data/raw/ksea | tee recurrent.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aev-011-${{ matrix.model }}
+          path: |
+            commit.txt
+            recurrent.txt

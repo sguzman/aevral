@@ -13,4 +13,6 @@
 
 - [AEV-009 frozen independent test](AEV-009/README.md) — complete.
 
+- [AEV-010 dense architectures](AEV-010/README.md).
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.

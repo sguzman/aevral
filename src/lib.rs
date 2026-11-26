@@ -122,3 +122,5 @@ pub mod covariates;
 pub mod features;
 
 pub mod dense;
+
+pub mod recurrent;

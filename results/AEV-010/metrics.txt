@@ -1,0 +1,206 @@
+AEV-010 matched train=121849 validation=30207
+aggregate,daily,30207,2.05315123,2.71391287,0.00000000
+lead,daily,1,2.04847294,2.70981140
+lead,daily,2,2.04684161,2.70838886
+lead,daily,3,2.04702920,2.70740555
+lead,daily,4,2.04792855,2.70832086
+lead,daily,5,2.04770601,2.70673095
+lead,daily,6,2.04782924,2.70701282
+lead,daily,7,2.04912769,2.70843354
+lead,daily,8,2.05162343,2.71141729
+lead,daily,9,2.05326580,2.71285071
+lead,daily,10,2.05592707,2.71650228
+lead,daily,11,2.05793543,2.71946272
+lead,daily,12,2.06005231,2.72211744
+lead,daily,13,2.06061877,2.72298985
+lead,daily,14,2.06198894,2.72385573
+lead,daily,15,2.06142432,2.72321213
+lead,daily,16,2.05985735,2.72092938
+lead,daily,17,2.05988678,2.72113054
+lead,daily,18,2.05850741,2.71971333
+lead,daily,19,2.05653399,2.71731587
+lead,daily,20,2.05307085,2.71383694
+lead,daily,21,2.05160320,2.71243423
+lead,daily,22,2.04961139,2.71049878
+lead,daily,23,2.04558362,2.70684940
+lead,daily,24,2.04320375,2.70250939
+architecture=mlp32 epoch=1 normalized_mse=0.12037006
+architecture=mlp32 epoch=2 normalized_mse=0.09760959
+architecture=mlp32 epoch=3 normalized_mse=0.09146486
+architecture=mlp32 epoch=4 normalized_mse=0.08861745
+architecture=mlp32 epoch=5 normalized_mse=0.08720662
+architecture=mlp32 epoch=6 normalized_mse=0.08606267
+architecture=mlp32 epoch=7 normalized_mse=0.08526724
+architecture=mlp32 epoch=8 normalized_mse=0.08462208
+architecture=mlp32 epoch=9 normalized_mse=0.08416135
+architecture=mlp32 epoch=10 normalized_mse=0.08369641
+architecture=mlp32 parameters=3384 training_seconds=8.334
+aggregate,mlp32,30207,1.39610378,1.86723672,0.32001903
+lead,mlp32,1,0.66843972,0.87904319
+lead,mlp32,2,0.82380907,1.08118356
+lead,mlp32,3,0.94994743,1.24634324
+lead,mlp32,4,1.04515926,1.37954122
+lead,mlp32,5,1.12142226,1.48735082
+lead,mlp32,6,1.18794588,1.57861193
+lead,mlp32,7,1.24103054,1.64778552
+lead,mlp32,8,1.28356563,1.69985264
+lead,mlp32,9,1.32716246,1.75206580
+lead,mlp32,10,1.36744865,1.80361880
+lead,mlp32,11,1.41195533,1.85310868
+lead,mlp32,12,1.44819409,1.89765705
+lead,mlp32,13,1.47732268,1.93545593
+lead,mlp32,14,1.51420806,1.98125970
+lead,mlp32,15,1.55206263,2.02673297
+lead,mlp32,16,1.58808788,2.07080994
+lead,mlp32,17,1.61588669,2.10247911
+lead,mlp32,18,1.64218146,2.13538104
+lead,mlp32,19,1.65863241,2.15627095
+lead,mlp32,20,1.66987707,2.17043120
+lead,mlp32,21,1.69410462,2.20107939
+lead,mlp32,22,1.72101176,2.23603765
+lead,mlp32,23,1.73914748,2.26335085
+lead,mlp32,24,1.75788757,2.28857142
+architecture=linear epoch=1 normalized_mse=0.11898359
+architecture=linear epoch=2 normalized_mse=0.10835719
+architecture=linear epoch=3 normalized_mse=0.10705880
+architecture=linear epoch=4 normalized_mse=0.10648361
+architecture=linear epoch=5 normalized_mse=0.10619729
+architecture=linear epoch=6 normalized_mse=0.10599059
+architecture=linear epoch=7 normalized_mse=0.10595747
+architecture=linear epoch=8 normalized_mse=0.10575433
+architecture=linear epoch=9 normalized_mse=0.10576709
+architecture=linear epoch=10 normalized_mse=0.10573754
+architecture=linear parameters=1944 training_seconds=4.060
+aggregate,linear,30207,1.56557755,2.07096501,0.23747578
+lead,linear,1,0.56617976,0.75582084
+lead,linear,2,0.81579521,1.06772593
+lead,linear,3,1.01165930,1.31371112
+lead,linear,4,1.17692710,1.52908193
+lead,linear,5,1.30595581,1.69772833
+lead,linear,6,1.40209642,1.82045988
+lead,linear,7,1.48428330,1.92687058
+lead,linear,8,1.54677546,2.00922978
+lead,linear,9,1.59848293,2.07263700
+lead,linear,10,1.63894314,2.12113145
+lead,linear,11,1.67923263,2.16933407
+lead,linear,12,1.70967712,2.20571674
+lead,linear,13,1.73027880,2.23179379
+lead,linear,14,1.75294371,2.25778582
+lead,linear,15,1.76571634,2.27412338
+lead,linear,16,1.78140212,2.29474466
+lead,linear,17,1.78168017,2.29597104
+lead,linear,18,1.80017251,2.31895577
+lead,linear,19,1.81298835,2.33577856
+lead,linear,20,1.80970830,2.33243351
+lead,linear,21,1.82480890,2.35201020
+lead,linear,22,1.84111862,2.37479354
+lead,linear,23,1.86337093,2.40195310
+lead,linear,24,1.87366425,2.41738542
+architecture=mlp16 epoch=1 normalized_mse=0.12436706
+architecture=mlp16 epoch=2 normalized_mse=0.09963674
+architecture=mlp16 epoch=3 normalized_mse=0.09389510
+architecture=mlp16 epoch=4 normalized_mse=0.09164318
+architecture=mlp16 epoch=5 normalized_mse=0.09070260
+architecture=mlp16 epoch=6 normalized_mse=0.08984981
+architecture=mlp16 epoch=7 normalized_mse=0.08923565
+architecture=mlp16 epoch=8 normalized_mse=0.08883477
+architecture=mlp16 epoch=9 normalized_mse=0.08850929
+architecture=mlp16 epoch=10 normalized_mse=0.08821804
+architecture=mlp16 parameters=1704 training_seconds=4.474
+aggregate,mlp16,30207,1.43482265,1.91319036,0.30116076
+lead,mlp16,1,0.72905486,0.98414713
+lead,mlp16,2,0.85713395,1.13275881
+lead,mlp16,3,0.97878283,1.29084914
+lead,mlp16,4,1.09100540,1.44013279
+lead,mlp16,5,1.17911154,1.56095188
+lead,mlp16,6,1.24101169,1.64467106
+lead,mlp16,7,1.28348599,1.69972341
+lead,mlp16,8,1.32543716,1.74836444
+lead,mlp16,9,1.37316302,1.80148422
+lead,mlp16,10,1.41272355,1.85053967
+lead,mlp16,11,1.45148918,1.89624399
+lead,mlp16,12,1.48773098,1.94018714
+lead,mlp16,13,1.51978120,1.98214528
+lead,mlp16,14,1.55478593,2.03020684
+lead,mlp16,15,1.58895714,2.07503378
+lead,mlp16,16,1.62406663,2.11864834
+lead,mlp16,17,1.65144922,2.14808897
+lead,mlp16,18,1.67921802,2.17927895
+lead,mlp16,19,1.70388005,2.20786155
+lead,mlp16,20,1.71215700,2.22073834
+lead,mlp16,21,1.72120429,2.23819979
+lead,mlp16,22,1.73420100,2.25961412
+lead,mlp16,23,1.75521380,2.28731542
+lead,mlp16,24,1.78069924,2.31856780
+architecture=mlp64 epoch=1 normalized_mse=0.11584953
+architecture=mlp64 epoch=2 normalized_mse=0.09647556
+architecture=mlp64 epoch=3 normalized_mse=0.09041014
+architecture=mlp64 epoch=4 normalized_mse=0.08740832
+architecture=mlp64 epoch=5 normalized_mse=0.08593310
+architecture=mlp64 epoch=6 normalized_mse=0.08484706
+architecture=mlp64 epoch=7 normalized_mse=0.08398967
+architecture=mlp64 epoch=8 normalized_mse=0.08326379
+architecture=mlp64 epoch=9 normalized_mse=0.08270415
+architecture=mlp64 epoch=10 normalized_mse=0.08217783
+architecture=mlp64 parameters=6744 training_seconds=15.629
+aggregate,mlp64,30207,1.38652827,1.85783513,0.32468283
+lead,mlp64,1,0.63631561,0.84311203
+lead,mlp64,2,0.82149884,1.07623278
+lead,mlp64,3,0.95850993,1.25734500
+lead,mlp64,4,1.06562627,1.40314718
+lead,mlp64,5,1.13240395,1.50228492
+lead,mlp64,6,1.18226955,1.57329510
+lead,mlp64,7,1.25214337,1.66162500
+lead,mlp64,8,1.29073389,1.70570911
+lead,mlp64,9,1.34246581,1.77070541
+lead,mlp64,10,1.36295520,1.80151470
+lead,mlp64,11,1.39517054,1.83751695
+lead,mlp64,12,1.43039466,1.87890039
+lead,mlp64,13,1.46181853,1.91819926
+lead,mlp64,14,1.49716461,1.96290473
+lead,mlp64,15,1.53621807,2.01123965
+lead,mlp64,16,1.56802512,2.05149483
+lead,mlp64,17,1.59690826,2.08747960
+lead,mlp64,18,1.61935058,2.11265414
+lead,mlp64,19,1.65395071,2.15525726
+lead,mlp64,20,1.66459042,2.16809896
+lead,mlp64,21,1.67581512,2.18586323
+lead,mlp64,22,1.69499936,2.21286223
+lead,mlp64,23,1.70830117,2.23421354
+lead,mlp64,24,1.72904897,2.26028768
+architecture=mlp32x32 epoch=1 normalized_mse=0.11464888
+architecture=mlp32x32 epoch=2 normalized_mse=0.09215555
+architecture=mlp32x32 epoch=3 normalized_mse=0.08858436
+architecture=mlp32x32 epoch=4 normalized_mse=0.08640800
+architecture=mlp32x32 epoch=5 normalized_mse=0.08525036
+architecture=mlp32x32 epoch=6 normalized_mse=0.08425086
+architecture=mlp32x32 epoch=7 normalized_mse=0.08355708
+architecture=mlp32x32 epoch=8 normalized_mse=0.08288866
+architecture=mlp32x32 epoch=9 normalized_mse=0.08242302
+architecture=mlp32x32 epoch=10 normalized_mse=0.08194005
+architecture=mlp32x32 parameters=4440 training_seconds=11.750
+aggregate,mlp32x32,30207,1.39090582,1.86091240,0.32255072
+lead,mlp32x32,1,0.68625426,0.91877036
+lead,mlp32x32,2,0.82889804,1.09641297
+lead,mlp32x32,3,0.95474582,1.25610166
+lead,mlp32x32,4,1.04986612,1.38735952
+lead,mlp32x32,5,1.12914220,1.49810962
+lead,mlp32x32,6,1.18810112,1.57932003
+lead,mlp32x32,7,1.24079537,1.64775775
+lead,mlp32x32,8,1.29467549,1.71472489
+lead,mlp32x32,9,1.33203595,1.75703925
+lead,mlp32x32,10,1.36560924,1.79792537
+lead,mlp32x32,11,1.40516543,1.84265503
+lead,mlp32x32,12,1.43968450,1.88627822
+lead,mlp32x32,13,1.46371844,1.92041746
+lead,mlp32x32,14,1.49816592,1.96074744
+lead,mlp32x32,15,1.52941302,2.00136706
+lead,mlp32x32,16,1.56978304,2.04525053
+lead,mlp32x32,17,1.59241484,2.07732407
+lead,mlp32x32,18,1.62656100,2.11548670
+lead,mlp32x32,19,1.65067063,2.14928742
+lead,mlp32x32,20,1.66741791,2.17188544
+lead,mlp32x32,21,1.69684438,2.20957648
+lead,mlp32x32,22,1.70738887,2.22602615
+lead,mlp32x32,23,1.72473868,2.24917162
+lead,mlp32x32,24,1.73964934,2.26971695
