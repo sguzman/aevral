@@ -68,8 +68,8 @@ Huber .25 is best non-neural model so far, but only marginally improves ridge. P
 
 All 12 configurations measured; none beats Huber or ridge. RRR rank 8 nearly reproduces OLS. Promote pcr-64/pcr-32, pls-32/pls-16, rrr-16/rrr-8. [Full records](L07-L09-2019.txt). 36/54 screens measured.
 
-## L10/L11 polynomial and additive basis regression (partial)
-[CI](https://github.com/sguzman/aevral/actions/runs/45897341015), code 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82. Restricted polynomial and both GAM families passed all 51 tests and frozen archive/cohort checks. Full polynomial job still running, not counted here. All nine completed configurations met stationarity tolerance.
+## L10/L11 polynomial and additive basis regression
+[CI](https://github.com/sguzman/aevral/actions/runs/45897341015), code 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82. Restricted polynomial and both GAM families passed all 51 tests and frozen archive/cohort checks. Full polynomial job subsequently passed (see below). All nine completed configurations met stationarity tolerance.
 
 | Configuration | MAE °C | RMSE °C | Slopes per lead | Solve s |
 |---|---:|---:|---:|---:|
@@ -83,7 +83,7 @@ All 12 configurations measured; none beats Huber or ridge. RRR rank 8 nearly rep
 | gam-7-0.1 | 1.47985154 | 1.93986904 | 640 | 0.045310 |
 | gam-3-0.1 | 1.49430305 | 1.95472767 | 320 | 0.003895 |
 
-Restricted quadratic ridge 1e-3 is best non-neural configuration so far (MAE 1.33658679; RMSE 1.76999918), both slightly worse than 2019 MLP64 (MAE 1.32617622, RMSE 1.76544057). Restricted quadratic training basis/Gram/solve ~7.24 s; separate CI timings not controlled. Full polynomial results pending before promotion. GAM candidates gam-7-1e-3 and gam-3-1e-3 (ranked by MAE) advance after screening. 45/54 screens measured.
+Restricted quadratic ridge 1e-3 is best non-neural configuration so far (MAE 1.33658679; RMSE 1.76999918), both slightly worse than 2019 MLP64 (MAE 1.32617622, RMSE 1.76544057). Restricted quadratic training basis/Gram/solve ~7.24 s; separate CI timings not controlled. Full polynomial results and promotion below. GAM candidates gam-7-1e-3 and gam-3-1e-3 (ranked by MAE) advance after screening. 45/54 screens measured.
 
 ## L12 bounded-grid MARS
 [CI passed](https://github.com/sguzman/aevral/actions/runs/45897731820), code 613d8b1feda79032aa5466304ff9310afe170a3b. All six configurations measured; 53 tests and frozen cohort/hash checks passed. Forward selection uses a restricted sample/candidate grid; full training data used for coefficients and pruning. Full logs include selected hinges, forward and pruning paths.
@@ -97,4 +97,15 @@ Restricted quadratic ridge 1e-3 is best non-neural configuration so far (MAE 1.3
 | mars-grid-1-16 | 1.55781347 | 2.04656335 | 16 | 0.062616 |
 | mars-grid-2-16 | 1.58869578 | 2.08718744 | 16 | 0.100725 |
 
-Promote mars-grid-2-64 and mars-grid-1-64 by MAE. 51/54 screens measured; full polynomial job still pending. No multi-year finalist runs yet.
+Promote mars-grid-2-64 and mars-grid-1-64 by MAE. 51/54 screens measured at MARS completion. No multi-year finalist runs yet.
+
+## Full quadratic polynomial — completed screen
+[CI passed](https://github.com/sguzman/aevral/actions/runs/45897341015), code 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82; 51 tests; 3320 slopes, 79704 coefficients. Preflight estimate 373.353199 s, Gram 351.653261 s, estimated workspace 178376960 bytes. Maximum resident set size (kbytes): 365612
+
+| Configuration | MAE °C | RMSE °C | Solve s |
+|---|---:|---:|---:|
+| poly-full-1e-3 | 1.32019462 | 1.75294745 | 6.131256 |
+| poly-full-1e-2 | 1.32627112 | 1.75648070 | 6.142172 |
+| poly-full-0.1 | 1.38050452 | 1.81236693 | 6.138044 |
+
+All 54 screens measured. Full quadratic ridge 1e-3 beats MLP64 on 2019 only (MAE 1.32019462 vs 1.32617622, RMSE 1.75294745 vs 1.76544057). Fit cost includes basis, Gram and solve; runner timing not controlled. Promote poly-full-1e-3 and poly-full-1e-2. Multi-year assessment pending.

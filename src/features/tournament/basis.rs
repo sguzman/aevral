@@ -99,7 +99,7 @@ impl Predictor for Model<'_>{fn predict(&self,x:&OriginInput)->[f64;Y]{
 }}
 pub fn run(data:&Path,id:&str,output:&Path,selection:&str)->Result<(),String>{
     let(family,only)=selection.split_once(':').unwrap_or((selection,"all"));
-    if only!="all"&&!LAMBDAS.iter().any(|r|r.0==only){return Err("unknown lambda".into())}
+    if only!="all"&&only.split(',').any(|s|!LAMBDAS.iter().any(|r|r.0==s)){return Err("unknown lambda".into())}
     let f=load(data,Fold::development(id)?)?;
     let(n,m,baseline)=match id{"2019"=>(121849,7455,1.88752763),"2020"=>(129327,7543,2.07087759),"2021"=>(136893,7501,2.14898785),"2022"=>(144417,7639,2.10544725),_=>return Err("annual folds only".into())};
     if(f.train.len(),f.eval.len())!=(n,m){return Err("frozen cohort mismatch".into())}
@@ -123,7 +123,7 @@ pub fn run(data:&Path,id:&str,output:&Path,selection:&str)->Result<(),String>{
         else{let start=Instant::now();let q=accumulate(&f.train,&b,Some(1100.));println!("gram-seconds,{id},{family},{:.6}",start.elapsed().as_secs_f64());q}
     };
     for(s,lambda)in LAMBDAS{
-        if only!="all"&&s!=only{continue}
+        if only!="all"&&!only.split(',').any(|v|v==s){continue}
         let label=format!("{family}-{s}");
         let start=Instant::now();match q.as_ref().map_err(|e|e.clone()).and_then(|q|solve(q,lambda)){
             Ok((beta,residual))=>{
