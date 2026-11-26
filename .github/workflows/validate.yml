@@ -1,0 +1,37 @@
+name: AEV-001 validation
+on:
+  push:
+    paths:
+      - '.github/workflows/validate.yml'
+      - 'src/benchmark.rs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2022-v1
+          restore-keys: |
+            ksea-routine-utc-2018-v1
+      - name: Acquire training and validation years only
+        run: bash scripts/fetch-ksea.sh 2000 2022
+      - name: Fingerprint and validate
+        run: |
+          set -o pipefail
+          (cd data/raw/ksea && sha256sum -c SEA-*.csv.sha256 && cat SEA-*.csv.sha256) | tee snapshot.txt
+          git rev-parse HEAD > commit.txt
+          cargo run --locked --release -- validate 2000 2022 data/raw/ksea | tee validation.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aev-001-validation
+          path: |
+            snapshot.txt
+            commit.txt
+            validation.txt

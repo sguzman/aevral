@@ -112,3 +112,5 @@ mod tests {
 }
 
 pub mod weather;
+
+pub mod benchmark;
