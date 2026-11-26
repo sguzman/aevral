@@ -171,3 +171,5 @@ pub mod linear;
 pub mod sparse;
 
 pub mod robust;
+
+pub mod latent;

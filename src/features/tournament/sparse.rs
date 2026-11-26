@@ -9,9 +9,9 @@ const CONFIGS:[(&str,f64,f64);10]=[
     ("enet-1e-3-a25",1e-3,0.25),("enet-1e-3-a75",1e-3,0.75),
     ("enet-1e-2-a25",1e-2,0.25),("enet-1e-2-a75",1e-2,0.75),
     ("enet-0.1-a25",0.1,0.25),("enet-0.1-a75",0.1,0.75)];
-struct Gram{mx:[f64;D],my:[f64;Y],g:Vec<[f64;D]>,xy:Vec<[f64;Y]>,yy:[f64;Y]}
+pub(super) struct Gram{pub(super) mx:[f64;D],pub(super) my:[f64;Y],pub(super) g:Vec<[f64;D]>,pub(super) xy:Vec<[f64;Y]>,yy:[f64;Y]}
 impl Gram{
-    fn fit(rows:&[TrainingRow])->Result<Self,String>{
+    pub(super) fn fit(rows:&[TrainingRow])->Result<Self,String>{
         if rows.is_empty(){return Err("empty training cohort".into())}
         let n=rows.len() as f64;
         let mut q=Self{mx:[0.;D],my:[0.;Y],g:vec![[0.;D];D],xy:vec![[0.;Y];D],yy:[0.;Y]};

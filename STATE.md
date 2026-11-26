@@ -21,3 +21,6 @@ L05/L06 robust ADMM screen implemented, exact Huber and median prox, 1000 iterat
 
 ## C004 phase 6
 All seven L05/L06 jobs passed CI 45896640395; 45 tests, all converged, 331 records archived and registry updated. Best huber-0.25 MAE 1.46480324, best median-1e-4 1.46546481. Promote top two each as documented. 24/54 measured. Next implement L07–L09 PCR, PLS and reduced-rank regression (12 configs), training-only centered covariance/eigendecomposition, explicit numerical tests and no test data. No human action required.
+
+## C004 phase 7
+L07–L09 implemented 12 configs, train-only Gram shared with sparse regression, Jacobi eigensolver residual/orthogonality checks, PCR, covariance PLS2 regression deflation, RRR fitted-response spectral projection; synthetic tests. CLI and CI pending verification. 24/54 measured. Next check latent screen results, archive or repair, then L10–L12 polynomial/GAM/MARS. No new data.
