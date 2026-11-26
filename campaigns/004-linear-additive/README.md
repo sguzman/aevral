@@ -1,6 +1,6 @@
 # C004 — Linear, regularized and additive models
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: active. [Predeclared finite experiment manifest](manifest.md). No results yet.
 
 ## Scope
 OLS (QR/SVD or verified stable solver), ridge, lasso, elastic net, Huber, quantile median regression, partial least squares, reduced-rank regression, principal-component regression, polynomial/interactions, GAM/splines, MARS.

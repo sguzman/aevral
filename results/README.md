@@ -27,4 +27,6 @@
 
 - [AEV-015 independent 2026 evaluation](AEV-015/README.md) — complete.
 
+- [C003 rolling-origin benchmark](C003/README.md) — verified complete.
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.

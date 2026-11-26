@@ -1,0 +1,47 @@
+CI: https://github.com/sguzman/aevral/actions/runs/45895728513
+Code: 4b8e917006d67d8ad2702c5736a52a2b0f80920f
+fold=2019 job=140169009676
+export-verified,2019,persistence,178920,2.93671225,3.93682425
+export-verified,2019,daily,178920,1.88752763,2.50070345
+export-verified,2019,climatology,178920,2.63878567,3.42372082
+export-verified,2019,mlp64,178920,1.32617622,1.76544057
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+fold=2020 job=140169010040
+export-verified,2020,persistence,181032,2.91970235,3.93444350
+export-verified,2020,daily,181032,2.07087759,2.70871411
+export-verified,2020,climatology,181032,2.42233954,3.12844391
+export-verified,2020,mlp64,181032,1.30737647,1.76720439
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+fold=2021 job=140169010059
+export-verified,2021,persistence,180024,3.09100608,4.21596359
+export-verified,2021,daily,180024,2.14898785,2.81802465
+export-verified,2021,climatology,180024,2.64023936,3.65807654
+export-verified,2021,mlp64,180024,1.39099523,1.87579913
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+fold=2022 job=140169009983
+export-verified,2022,persistence,183336,2.99229375,4.05479972
+export-verified,2022,daily,183336,2.10544725,2.81708680
+export-verified,2022,climatology,183336,2.68721494,3.49573512
+export-verified,2022,mlp64,183336,1.36646120,1.82712390
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+fold=legacy job=140169010011
+export-verified,legacy,persistence,724968,2.98085747,4.03335627
+export-verified,legacy,daily,724968,2.05315123,2.71391287
+export-verified,legacy,climatology,724968,2.59697000,3.43723211
+export-verified,legacy,mlp64,724968,1.35014439,1.81056241
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+Total verified prediction rows: 5793120

@@ -20,7 +20,7 @@ Authorized 2026-11-26. Goal: extensive comparative research over major practical
 - Acceptance: common harness verified, every campaign manifest resolved, all evaluated candidates ranked, negative/failure records included, final retrospective tournament completed and report+STATE persisted. No requirement to beat incumbent. Stop at budget/acceptance, no automatic cross-domain work. No human QA required unless a genuine blocker or decision outside approved scope.
 
 ## Campaign sequence
-- [C003 — Common benchmark and reproducibility](003-evaluation-harness/README.md) — planned
+- [C003 — Common benchmark and reproducibility](003-evaluation-harness/README.md) — complete
 - [C004 — Linear, regularized and additive models](004-linear-additive/README.md) — planned
 - [C005 — Classical statistical and state-space forecasting](005-statistical-state-space/README.md) — planned
 - [C006 — Trees and boosted ensembles](006-trees-boosting/README.md) — planned

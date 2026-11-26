@@ -1,4 +1,4 @@
-# C003 benchmark results (export audit pending)
+# C003 benchmark results — complete
 
 [Five successful benchmark jobs](https://github.com/sguzman/aevral/actions/runs/45892792311), code 20d721292f9d6c08148a6dd8fc632e74d44f2909. All 27 hashes verified, 33 tests passed per job. Legacy exact: 121849/30207, daily 2.05315123, MLP64 1.35014439. Annual folds exclude target windows crossing year boundaries; development, not independent.
 
@@ -18,4 +18,4 @@ Pooled 30138 origins, 723312 targets. Weighted from rounded logged fold metrics 
 | persistence | 2.98494503 | 4.03723660 |
 | climatology | 2.59725014 | 3.43176569 |
 
-Raw logged aggregate, lead, month, training, memory and normalization records in individual fold files. [CI predictions artifacts](https://github.com/sguzman/aevral/actions/runs/45892792311) expire after 30 days. Export alignment and independent metric parity verification pending.
+Raw logged aggregate, lead, month, training, memory and normalization records in individual fold files. [CI predictions artifacts](https://github.com/sguzman/aevral/actions/runs/45892792311) expire after 30 days. [Export audit](export-audit.txt): all five jobs passed, 5,793,120 prediction rows verified (annual plus overlapping legacy reproduction), exact target alignment, independent MAE/RMSE recomputation and 35 implementation tests. Artifact retention is finite; aggregate records are durable.

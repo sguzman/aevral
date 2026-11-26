@@ -1,6 +1,6 @@
 # C003 — Common benchmark and reproducibility
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: complete. [Measured benchmark and export audit](../../results/C003/README.md). All acceptance gates passed. Pooled annual MLP64 MAE 1.34781461°C; 30,138 origins. Legacy reproduction exact.
 
 ## Scope
 Export matched origins; verify incumbent and naive baselines; chronological fold builder; leakage and missingness tests; manifest, deterministic scoring, coverage and CI resource accounting; ranking ledger.
