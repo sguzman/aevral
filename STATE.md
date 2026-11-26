@@ -54,3 +54,6 @@ Archived next 6 completed A groups (21 outcomes, 1320 records). Total additional
 
 ## C004 phase 17
 Archived 5 further A groups (18 outcomes, 1175 records). Additional outcomes archived 59/69. 17 models have complete four-year results. Continue any remaining A and B groups, then pooled final ranking. Part B CI 45898314791. No new fits launched.
+
+## C004 phase 18
+Part A all 18 jobs passed; archived final 2022 robust group (4 outcomes, 193 records). 63/69 additional finalist outcomes archived. 21 models complete four-year results, best Part A mars-grid-2-64 pooled MAE 1.48274195. Part B CI 45898314791 still running sequentially; only six polynomial outcomes outstanding. No new fits launched. Final pooled ranking after B completes.
