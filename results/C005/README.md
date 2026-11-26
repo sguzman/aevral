@@ -48,3 +48,12 @@ All nine ARIMA outcomes archived. 19/36 screens measured. Provisional finalists:
 | ets-ann | 2.93355531 | 3.91434094 |
 | harmonic-2-ar6 | 1.88417564 | 2.54701774 |
 | ets-aaa | 2.06852752 | 2.71455735 |
+
+### Remaining smoothing and harmonic measurements
+| Model | MAE | RMSE |
+|---|---:|---:|
+| ets-aadn | 3.44283257 | 4.64128599 |
+| harmonic-1-ar1 | 1.81928833 | 2.39677695 |
+| harmonic-1-ar6 | 1.88142584 | 2.51775159 |
+
+All eight S08–S09 outcomes archived; 27/36 measured. Provisional finalists: S08: ets-aaa, ets-ann; S09: harmonic-2-ar1, harmonic-1-ar1.

@@ -93,3 +93,6 @@ Implemented S08–S09 eight configs, conditional additive ETS incl damped/season
 
 ## C005 phase 9
 All eight S08–S09 jobs succeeded (CI 45901037832); first five archived, 232 records, 24/36 screen outcomes. Next archive remaining three jobs by registry ID, then S10–S11 structural models/Kalman. No new data.
+
+## C005 phase 10
+Remaining three S08–S09 outcomes archived from CI 45901037832, 140 records. 27/36 measured. Provisional finalists S08: ets-aaa, ets-ann; S09: harmonic-2-ar1, harmonic-1-ar1. Next implement S10–S11 structural time series and Kalman dynamic linear models (five configurations), then S12 switching and S13 GARCH. No new data.
