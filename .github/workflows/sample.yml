@@ -1,0 +1,32 @@
+name: KSEA training sample
+on:
+  push:
+    paths:
+      - 'src/weather.rs'
+      - 'scripts/fetch-ksea.sh'
+      - '.github/workflows/sample.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2018-v1
+      - name: Acquire sample
+        run: bash scripts/fetch-ksea.sh 2018 2018
+      - name: Verify and audit
+        run: |
+          (cd data/raw/ksea && sha256sum -c SEA-2018.csv.sha256)
+          cargo run --locked --release -- audit 2018 2018 data/raw/ksea | tee audit.txt
+          cp data/raw/ksea/SEA-2018.csv.sha256 .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ksea-2018-audit
+          path: |
+            audit.txt
+            SEA-2018.csv.sha256

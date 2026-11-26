@@ -19,9 +19,9 @@ for ((year=first; year<=last; year++)); do
   fi
   temp="$(mktemp "./$file.XXXXXX")"
   trap 'rm -f "$temp"' EXIT
-  url="https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?network=WA_ASOS&station=SEA&data=tmpf,dwpf,relh,drct,sknt,alti,mslp&tz=Etc/UTC&format=onlycomma&missing=M&report_type=3&sts=$year-01-01T00:00:00Z&ets=$((year+1))-01-01T00:00:00Z"
+  url="https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?network=WA_ASOS&station=SEA&data=tmpf&data=dwpf&data=relh&data=drct&data=sknt&data=alti&data=mslp&tz=Etc/UTC&format=onlycomma&latlon=no&elev=no&missing=M&trace=T&direct=no&report_type=3&year1=$year&month1=1&day1=1&year2=$((year+1))&month2=1&day2=1"
   curl --fail --location --retry 3 --retry-delay 3 --max-time 300 --output "$temp" "$url"
-  grep -q '^station,valid,.*tmpf' "$temp" && grep -q '^SEA,' "$temp" || {
+  grep -Eq '^station,valid,(.*[,] )?tmpf|^station,valid,.*tmpf|^station,valid,tmpf' "$temp" && grep -q '^SEA,' "$temp" || {
     echo "Unexpected or empty response for $year" >&2; exit 1;
   }
   mv "$temp" "$file"
