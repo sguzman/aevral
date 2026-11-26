@@ -87,3 +87,6 @@ All nine ARIMA CI jobs 45900629055 passed. Archived six outcomes and 282 records
 
 ## C005 phase 7
 Remaining three ARIMA outcomes archived from CI 45900629055, 141 records. 19/36 measured. Provisional finalists S05: arima-101, arima-211; S06: arimax-101, arimax-111; S07: sarima-101-010, sarima-101-100. Next implement S08 additive ETS/Holt-Winters and S09 harmonic regression with AR errors, then S10–S11 genuine Kalman state-space, S12 regime switching, S13 GARCH. No new data.
+
+## C005 phase 8
+Implemented S08–S09 eight configs, conditional additive ETS incl damped/seasonal and two-stage harmonic regression with recursive AR residuals. Predeclared grid/sample in S08-S09.md; shared QR visibility only. Five tests, eight CI jobs pending. 19/36 measured beforehand. Next verify/repair, archive results; S10–S11 structural/Kalman, S12 switching, S13 GARCH pending. No new data.

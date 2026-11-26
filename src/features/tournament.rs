@@ -181,3 +181,5 @@ pub mod mars;
 pub mod autoreg;
 
 pub mod arima;
+
+pub mod smoothing;

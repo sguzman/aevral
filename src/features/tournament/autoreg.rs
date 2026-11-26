@@ -25,10 +25,10 @@ fn design(kind:Kind,history:&[f64],weather:&[f64;4],time:i64)->Vec<f64>{
         Kind::Var(x)=>{z.push(*history.last().unwrap());z.extend(weather);if x{z.extend(Calendar::Both.features(time))}}
     }z
 }
-struct Qr{r:Vec<Vec<f64>>,z:Vec<Vec<f64>>,n:usize,m:usize}
+pub(super) struct Qr{r:Vec<Vec<f64>>,z:Vec<Vec<f64>>,n:usize,m:usize}
 impl Qr{
-    fn new(p:usize,m:usize)->Self{Self{r:vec![vec![0.;p];p],z:vec![vec![0.;m];p],n:0,m}}
-    fn add(&mut self,mut a:Vec<f64>,mut y:Vec<f64>){
+    pub(super) fn new(p:usize,m:usize)->Self{Self{r:vec![vec![0.;p];p],z:vec![vec![0.;m];p],n:0,m}}
+    pub(super) fn add(&mut self,mut a:Vec<f64>,mut y:Vec<f64>){
         self.n+=1;
         for j in 0..a.len(){
             let d=self.r[j][j].hypot(a[j]);if d==0.{continue}
@@ -37,7 +37,7 @@ impl Qr{
             for k in 0..self.m{let old=self.z[j][k];self.z[j][k]=c*old+s*y[k];y[k]= -s*old+c*y[k]}
         }
     }
-    fn solve(&self)->Result<(Vec<Vec<f64>>,f64),String>{
+    pub(super) fn solve(&self)->Result<(Vec<Vec<f64>>,f64),String>{
         let p=self.r.len();let max=(0..p).map(|j|self.r[j][j]).fold(0.,f64::max);
         let min=(0..p).map(|j|self.r[j][j]).fold(f64::INFINITY,f64::min);
         if self.n<p||max==0.||min/max<1e-10{return Err("rank-deficient one-step QR".into())}
