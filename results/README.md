@@ -7,4 +7,6 @@
 
 - [AEV-003/004 calendar features](AEV-003-004/README.md) — matched comparison.
 
+- [Origin-time covariate coverage](covariate-audit.md).
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.
