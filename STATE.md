@@ -5,3 +5,7 @@ C001/C002 completed, immutable reports and exposed historical test periods. Incu
 
 ## C003 phase 1
 New reusable fold loader, normalized training/evaluation rows, predictor trait, shared Celsius scorer and prediction CSV, incumbent and three baseline recipes, strict fold boundary tests, five-job harness CI and manifest implemented. Await CI (verify exact legacy reproduction, all 27 hashes, annual fold coverage, actual metrics, tests). Archive records and fill registry; additional missingness/leakage and export validation required before C003 completion. No search yet. No new data.
+
+
+## C003 phase 2
+All five harness jobs passed 45892792311, 33 tests, exact legacy reproduction. Annual counts 7455/7543/7501/7639, pooled 30138 origins, incumbent MAE 1.34781461. All logs and 20 measured registry entries archived results/C003. Separate artifact audit CI implemented to check original compressed predictions, exact ordered origin/lead/target alignment and recompute MAE/RMSE; synthetic missingness and validation-label isolation tests added. Next verify export audit CI and tests, archive verification evidence, complete C003; then begin C004 linear and additive model manifest. No new model search yet. No paid compute.

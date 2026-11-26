@@ -1,0 +1,32 @@
+name: C003 export audit
+on:
+  push:
+    paths:
+      - '.github/workflows/tournament-export-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        fold: [legacy, '2019', '2020', '2021', '2022']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: c003-${{ matrix.fold }}
+          run-id: 45892792311
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: audit
+      - name: Verify prediction alignment and metric parity
+        run: |
+          set -o pipefail
+          gzip -t audit/predictions.csv.gz
+          gzip -dc audit/predictions.csv.gz | awk -f scripts/verify-tournament-export.awk audit/metrics.txt -
+      - name: Verify missingness and train-only normalization tests
+        run: cargo test --locked --release

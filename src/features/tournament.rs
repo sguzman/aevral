@@ -137,3 +137,31 @@ mod tests{
         assert_eq!(Baseline{daily:true}.predict(&x),[2.;Y]);
     }
 }
+
+#[cfg(test)]
+mod causal_tests{
+    use super::*;
+    fn fixture()->(Fold,i64,Vec<Option<Weather>>){
+        let f=Fold::development("2019").unwrap();let first=f.start-200*60;
+        let bins=(0..400).map(|i|Some(Weather{minute:first+i*60,temperature:Some((i%31)as f64),dew_c:Some((i%17)as f64),pressure_hpa:Some(1000.+(i%13)as f64),wind_ms:Some([(i%11)as f64,(i%7)as f64])})).collect();(f,first,bins)
+    }
+    #[test]fn validation_labels_cannot_change_training_scales(){
+        let(f,first,mut bins)=fixture();let a=collect(&bins,first,f).unwrap();
+        for b in &mut bins[200..]{b.as_mut().unwrap().temperature=Some(99.);}
+        let b=collect(&bins,first,f).unwrap();
+        assert_eq!(a.scales,b.scales);assert_eq!(a.train.len(),b.train.len());
+        assert!(a.train.iter().zip(&b.train).all(|(x,y)|x.input.x==y.input.x&&x.target==y.target));
+        assert_ne!(a.eval[0].target,b.eval[0].target);
+    }
+    #[test]fn missing_temperature_excludes_windows_and_missing_covariate_excludes_origin(){
+        let(f,first,mut bins)=fixture();let a=collect(&bins,first,f).unwrap();
+        bins[260].as_mut().unwrap().dew_c=None;
+        let b=collect(&bins,first,f).unwrap();assert_eq!(a.eval.len(),b.eval.len()+1);
+        assert_eq!(a.temperature_complete,b.temperature_complete);
+        bins[270].as_mut().unwrap().temperature=None;
+        let c=collect(&bins,first,f).unwrap();
+        assert!(c.temperature_complete<b.temperature_complete);
+        let missing=first+270*60;
+        assert!(c.eval.iter().all(|r|missing<r.input.origin-71*60||missing>r.input.origin+24*60));
+    }
+}
