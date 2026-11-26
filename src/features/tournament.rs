@@ -169,3 +169,5 @@ mod causal_tests{
 pub mod linear;
 
 pub mod sparse;
+
+pub mod robust;

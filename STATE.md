@@ -15,3 +15,6 @@ L03/L04 ten-config sparse screen implemented, centered Gram cyclic coordinate de
 
 ## C004 phase 4
 L03/L04 passed CI 45896275859, all ten converged KKT <=1e-7, 41 tests, archived 388 records in results/C004/L03-L04-2019.txt, README and registry. Best lasso-1e-4 MAE 1.46776943, best enet-1e-3-a25 1.46814867. Promote top two per family as documented. 17/54 measured. Next L05/L06 Huber and median regression, seven predeclared configs. Implement faithful robust loss solvers with finite iteration/convergence gates and synthetic tests, no evaluation-driven changes. Same 2019 cohort. No human action required.
+
+## C004 phase 5
+L05/L06 robust ADMM screen implemented, exact Huber and median prox, 1000 iteration cap, 1e-4 primal/stationarity tolerance, unpenalized intercept, four synthetic tests; seven independent CI jobs. Next check CI, archive all successful/blocked outcomes; then latent regressions L07–L09. No scores yet; 17/54 measured. No test data access.
