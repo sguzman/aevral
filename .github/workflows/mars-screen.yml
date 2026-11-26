@@ -1,0 +1,41 @@
+name: C004 L12 bounded-grid MARS screen
+on:
+  push:
+    paths:
+      - '.github/workflows/mars-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        config: [mars-grid-1-16, mars-grid-1-32, mars-grid-1-64, mars-grid-2-16, mars-grid-2-32, mars-grid-2-64]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Numerical tests
+        run: cargo test --locked --release
+      - name: Fit adaptive spline model
+        run: |
+          set -o pipefail
+          cargo build --locked --release
+          /usr/bin/time -v target/release/aevral mars data/raw/ksea 2019 predictions.csv ${{ matrix.config }} | tee metrics.txt
+          gzip predictions.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c004-mars-2019-${{ matrix.config }}
+          path: |
+            metrics.txt
+            predictions.csv.gz
+          retention-days: 30

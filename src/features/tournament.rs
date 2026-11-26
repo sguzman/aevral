@@ -175,3 +175,5 @@ pub mod robust;
 pub mod latent;
 
 pub mod basis;
+
+pub mod mars;

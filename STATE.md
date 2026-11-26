@@ -33,3 +33,6 @@ L10/L11 implemented 12 planned configs, full/restricted degree-two and additive 
 
 ## C004 phase 10
 Three basis jobs passed CI 45897341015: poly-recent, gam-3, gam-7; 51 tests; nine scores archived in results/C004, 372 records. Best restricted polynomial 1.33658679, GAM 1.45231366. Full poly job 140174402045 still running; archive remaining three scores or blocks using ORIGINAL code 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82; don't duplicate the nine already archived. 45/54 measured. Next finalize full polynomial, then L12 MARS. GAM top two actually gam-7-1e-3 and gam-3-1e-3; check exact ranking against gam-7-1e-2 (1.45583124 vs 1.45551824). No new data.
+
+## C004 phase 11
+Full polynomial job 140174402045 still running at check; its original code 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82. L12 bounded-grid MARS implemented six configs, adaptive reflected hinge pairs, train-only sample forward search, full-training refit and backward exact RSS deletion/GCV selection; tests/CI pending. Explicit approximation in L12.md. Five parallel MARS jobs maximum. 45/54 measured, 3 full polynomial + 6 MARS unresolved. Archive both runs without duplicating results; then promote and evaluate finalists. No new data.
