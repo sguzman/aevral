@@ -1,0 +1,87 @@
+test result: ok. 53 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+mars-forward,1,2,16473.6955685621
+mars-forward,1,4,3245.2821696679
+mars-forward,1,6,1558.8203973488
+mars-forward,1,8,317.7094234804
+mars-forward,1,10,191.4191562081
+mars-forward,1,12,128.8211108468
+mars-forward,1,14,114.5278928704
+mars-forward,1,16,75.8464766061
+mars-prune,16,2.7267630061,0.1136916228
+mars-prune,15,2.7272497413,0.1137072495
+mars-prune,14,2.7291036297,0.1137798733
+mars-prune,13,2.7435794942,0.1143786960
+mars-prune,12,2.7816758685,0.1159621583
+mars-prune,11,2.8250717180,0.1177664053
+mars-prune,10,2.8829244535,0.1201731316
+mars-prune,9,2.9806404218,0.1242412690
+mars-prune,8,3.0889869911,0.1287521669
+mars-prune,7,3.2485252793,0.1353963306
+mars-prune,6,3.4748621913,0.1448239558
+mars-prune,5,3.7053346933,0.1544231616
+mars-prune,4,4.4717822603,0.1863579065
+mars-prune,3,5.7127799755,0.2380657120
+mars-prune,2,7.9612929216,0.3317532095
+mars-prune,1,11.9785697759,0.4991357480
+mars-prune,0,23.9555503301,0.9981643140
+mars-config,2019,mars-grid-1-16,1,16,16,16,408,1.136916227601e-1,0.062616
+mars-term,2019,mars-grid-1-16,0,[]
+mars-term,2019,mars-grid-1-16,1,[Hinge { feature: 71, knot: -0.07888173233839553, sign: 1.0 }]
+mars-term,2019,mars-grid-1-16,2,[Hinge { feature: 71, knot: -0.07888173233839553, sign: -1.0 }]
+mars-term,2019,mars-grid-1-16,3,[Hinge { feature: 58, knot: 0.6200397095469308, sign: 1.0 }]
+mars-term,2019,mars-grid-1-16,4,[Hinge { feature: 58, knot: 0.6200397095469308, sign: -1.0 }]
+mars-term,2019,mars-grid-1-16,5,[Hinge { feature: 64, knot: 0.7074048897825965, sign: 1.0 }]
+mars-term,2019,mars-grid-1-16,6,[Hinge { feature: 64, knot: 0.7074048897825965, sign: -1.0 }]
+mars-term,2019,mars-grid-1-16,7,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }]
+mars-term,2019,mars-grid-1-16,8,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }]
+mars-term,2019,mars-grid-1-16,9,[Hinge { feature: 72, knot: 0.7071067811865476, sign: 1.0 }]
+mars-term,2019,mars-grid-1-16,10,[Hinge { feature: 72, knot: 0.7071067811865476, sign: -1.0 }]
+mars-term,2019,mars-grid-1-16,11,[Hinge { feature: 75, knot: -0.044455377242180676, sign: 1.0 }]
+mars-term,2019,mars-grid-1-16,12,[Hinge { feature: 75, knot: -0.044455377242180676, sign: -1.0 }]
+mars-term,2019,mars-grid-1-16,13,[Hinge { feature: 78, knot: -0.1282968402624134, sign: 1.0 }]
+mars-term,2019,mars-grid-1-16,14,[Hinge { feature: 78, knot: -0.1282968402624134, sign: -1.0 }]
+mars-term,2019,mars-grid-1-16,15,[Hinge { feature: 53, knot: 0.6200397095469308, sign: 1.0 }]
+mars-term,2019,mars-grid-1-16,16,[Hinge { feature: 53, knot: 0.6200397095469308, sign: -1.0 }]
+score,2019,mars-grid-1-16,7455,1.55781347,2.04656335,0.039
+lead,2019,mars-grid-1-16,1,0.57740166,0.77028862
+lead,2019,mars-grid-1-16,2,0.83712920,1.09850885
+lead,2019,mars-grid-1-16,3,1.04790369,1.36524170
+lead,2019,mars-grid-1-16,4,1.22265701,1.58859050
+lead,2019,mars-grid-1-16,5,1.37526378,1.77567707
+lead,2019,mars-grid-1-16,6,1.49171993,1.92002685
+lead,2019,mars-grid-1-16,7,1.58046488,2.02722214
+lead,2019,mars-grid-1-16,8,1.62772985,2.08927333
+lead,2019,mars-grid-1-16,9,1.64095908,2.11012141
+lead,2019,mars-grid-1-16,10,1.64107978,2.11404488
+lead,2019,mars-grid-1-16,11,1.65569115,2.12937248
+lead,2019,mars-grid-1-16,12,1.67798831,2.15659359
+lead,2019,mars-grid-1-16,13,1.70166323,2.18453449
+lead,2019,mars-grid-1-16,14,1.72025531,2.20353799
+lead,2019,mars-grid-1-16,15,1.72015198,2.20007117
+lead,2019,mars-grid-1-16,16,1.71396916,2.19743814
+lead,2019,mars-grid-1-16,17,1.72529647,2.21437102
+lead,2019,mars-grid-1-16,18,1.75067449,2.24780365
+lead,2019,mars-grid-1-16,19,1.77663466,2.28139789
+lead,2019,mars-grid-1-16,20,1.78968144,2.29952214
+lead,2019,mars-grid-1-16,21,1.78582020,2.29621221
+lead,2019,mars-grid-1-16,22,1.77544864,2.29154519
+lead,2019,mars-grid-1-16,23,1.76872709,2.29377080
+lead,2019,mars-grid-1-16,24,1.78321230,2.32008386
+month,2019,mars-grid-1-16,1,736,1.61902858,2.11752737
+month,2019,mars-grid-1-16,2,567,1.28979951,1.65446021
+month,2019,mars-grid-1-16,3,634,1.66664054,2.25620687
+month,2019,mars-grid-1-16,4,706,1.41952057,1.82395950
+month,2019,mars-grid-1-16,5,716,1.78629241,2.40309739
+month,2019,mars-grid-1-16,6,505,1.75361129,2.29331902
+month,2019,mars-grid-1-16,7,715,1.64464019,2.19803518
+month,2019,mars-grid-1-16,8,706,1.63475847,2.09346196
+month,2019,mars-grid-1-16,9,508,1.44880597,1.81573552
+month,2019,mars-grid-1-16,10,441,1.59540739,2.09636124
+month,2019,mars-grid-1-16,11,615,1.46742542,1.87090510
+month,2019,mars-grid-1-16,12,606,1.31203865,1.67072384
+Maximum resident set size (kbytes): 314340

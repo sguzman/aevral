@@ -36,3 +36,6 @@ Three basis jobs passed CI 45897341015: poly-recent, gam-3, gam-7; 51 tests; nin
 
 ## C004 phase 11
 Full polynomial job 140174402045 still running at check; its original code 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82. L12 bounded-grid MARS implemented six configs, adaptive reflected hinge pairs, train-only sample forward search, full-training refit and backward exact RSS deletion/GCV selection; tests/CI pending. Explicit approximation in L12.md. Five parallel MARS jobs maximum. 45/54 measured, 3 full polynomial + 6 MARS unresolved. Archive both runs without duplicating results; then promote and evaluate finalists. No new data.
+
+## C004 phase 12
+All six MARS jobs passed 45897731820, 53 tests, 816 records archived; best mars-grid-2-64 MAE 1.43531178, second mars-grid-1-64 1.47772393. 51/54 measured. Full polynomial job 140174402045 still in progress at last check; archive remaining three results using original 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82. No duplicate runs. Then freeze top two per method (OLS one) by 2019 MAE, run 2020–22 finalists with <=6 parallel and 30min/job; record all results. No additional data or models.
