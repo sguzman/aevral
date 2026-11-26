@@ -96,3 +96,6 @@ All eight S08–S09 jobs succeeded (CI 45901037832); first five archived, 232 re
 
 ## C005 phase 10
 Remaining three S08–S09 outcomes archived from CI 45901037832, 140 records. 27/36 measured. Provisional finalists S08: ets-aaa, ets-ann; S09: harmonic-2-ar1, harmonic-1-ar1. Next implement S10–S11 structural time series and Kalman dynamic linear models (five configurations), then S12 switching and S13 GARCH. No new data.
+
+## C005 phase 11
+S10–S11 five Gaussian structural/Kalman configurations implemented, causal fixed-window filtering, train-only NLL grid, PSD check, one-harmonic structural season explicitly documented in S10-S11.md. Five synthetic tests and five CI jobs pending. 27/36 previously measured. Next verify and archive, then S12 Markov switching and S13 GARCH. No new data.

@@ -183,3 +183,5 @@ pub mod autoreg;
 pub mod arima;
 
 pub mod smoothing;
+
+pub mod kalman;

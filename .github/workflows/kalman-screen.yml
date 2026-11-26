@@ -1,0 +1,41 @@
+name: C005 S10-S11 structural and Kalman screen
+on:
+  push:
+    paths:
+      - '.github/workflows/kalman-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        config: [struct-level, struct-trend, struct-season, dlm-harmonic, dlm-trend-harmonic]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Numerical tests
+        run: cargo test --locked --release
+      - name: Fit causal Gaussian state-space model
+        run: |
+          set -o pipefail
+          cargo build --locked --release
+          /usr/bin/time -v target/release/aevral kalman data/raw/ksea 2019 predictions.csv ${{ matrix.config }} | tee metrics.txt
+          gzip predictions.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c005-kalman-2019-${{ matrix.config }}
+          path: |
+            metrics.txt
+            predictions.csv.gz
+          retention-days: 30
