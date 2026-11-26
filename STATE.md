@@ -60,3 +60,6 @@ Part A all 18 jobs passed; archived final 2022 robust group (4 outcomes, 193 rec
 
 ## C004 phase 19
 2020 polynomial job 140177628610 passed 53 tests and both frozen fits. Archived 88 log records and 2 outcomes. 65/69 additional outcomes archived. Poly-full-1e-3 2020 MAE 1.31405305 vs incumbent 1.30737647; 2019 poly leads, 2020 neural leads. Part B 2021 job 140177628161 running, 2022 job 140177628573 queued. Archive remaining four outcomes, then calculate pooled ranking and close C004. No new fits launched.
+
+## C004 phase 20
+2021 polynomial job 140177628161 passed 53 tests and both frozen fits. Archived 88 records and 2 outcomes. 67/69 additional outcomes archived. Poly-full-1e-3 2021 MAE 1.40918983 vs incumbent 1.39099523. Part B 2022 job 140177628573 running; only two outcomes pending. Archive and calculate final pooled ranking, then close C004. No new fits launched.
