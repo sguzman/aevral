@@ -79,3 +79,70 @@ mod tests{
         assert!(cases(&b,crate::weather::minute("2023-01-01 00:00").unwrap()).is_empty());
     }
 }
+
+#[derive(Clone,Copy,Debug)]
+enum Calendar { None, Hour, Year, Both }
+impl Calendar {
+    fn label(self)->&'static str {match self{Self::None=>"temp",Self::Hour=>"hour",Self::Year=>"year",Self::Both=>"both"}}
+    fn dims(self)->usize {match self{Self::None=>0,Self::Both=>4,_=>2}}
+    fn features(self,t:i64)->Vec<f64>{
+        use std::f64::consts::TAU;
+        let mut x=Vec::with_capacity(self.dims());
+        if matches!(self,Self::Hour|Self::Both){
+            let a=TAU*t.rem_euclid(1440)as f64/1440.0;x.extend([a.sin(),a.cos()]);
+        }
+        if matches!(self,Self::Year|Self::Both){
+            let mut y=2000;
+            while y<2025&&t>=crate::weather::minute(&format!("{}-01-01 00:00",y+1)).unwrap(){y+=1}
+            let a=crate::weather::minute(&format!("{y}-01-01 00:00")).unwrap();
+            let b=crate::weather::minute(&format!("{}-01-01 00:00",y+1)).unwrap();
+            let p=TAU*(t-a)as f64/(b-a)as f64;x.extend([p.sin(),p.cos()]);
+        }x
+    }
+}
+/// AEV-003/004: same matched origins as AEV-002, 72-hour input.
+pub fn calendar(bins:&[Option<Report>],first:i64)->Result<(),String>{
+    let rows=cases(bins,first);
+    let train:Vec<_>=rows.iter().filter(|r|r.split==Split::Train).collect();
+    let val:Vec<_>=rows.iter().filter(|r|r.split==Split::Validation).collect();
+    if train.is_empty()||val.is_empty(){return Err("empty split".into())}
+    let(mean,sd)=scale(&train,MAX)?;
+    let mut daily=Metrics::default();
+    for r in &val{daily.add(&r.target,suffix(r,24))}
+    println!("AEV-003/004 matched train={} validation={}",train.len(),val.len());
+    report("daily",&daily,daily.mae())?;
+    for cfg in [Calendar::None,Calendar::Hour,Calendar::Year,Calendar::Both]{
+        let input=|r:&Case|{
+            let mut x:Vec<_>=r.history.iter().map(|v|(v-mean)/sd).collect();
+            x.extend(cfg.features(r.origin));x
+        };
+        // Compute calendar inputs once, outside the training loop.
+        let tr:Vec<_>=train.iter().map(|r|input(r)).collect();
+        let va:Vec<_>=val.iter().map(|r|input(r)).collect();
+        let dim=MAX+cfg.dims();
+        let mut model=Mlp::new(dim,32,HORIZON,42);
+        let mut order:Vec<_>=(0..train.len()).collect();let mut rng=42u64;
+        for epoch in 0..10{
+            for i in (1..order.len()).rev(){rng^=rng<<13;rng^=rng>>7;rng^=rng<<17;order.swap(i,(rng%(i as u64+1))as usize);}
+            let mut loss=0.0;
+            for &i in &order{loss+=model.train_step(&tr[i],&train[i].target.map(|v|(v-mean)/sd),0.005);}
+            println!("calendar={} epoch={} normalized_mse={:.8}",cfg.label(),epoch+1,loss/train.len()as f64);
+        }
+        let mut m=Metrics::default();
+        for(i,r)in val.iter().enumerate(){let p:Vec<_>=model.predict(&va[i]).iter().map(|v|v*sd+mean).collect();m.add(&r.target,&p);}
+        println!("calendar={} inputs={dim} parameters={}",cfg.label(),32*dim+824);
+        report(cfg.label(),&m,daily.mae())?;
+    }Ok(())
+}
+#[cfg(test)]
+mod calendar_tests{
+    use super::*;
+    use crate::weather::minute;
+    #[test]fn known_cyclic_features(){
+        let a=Calendar::Both.features(minute("2020-01-01 00:00").unwrap());
+        assert_eq!(a,vec![0.,1.,0.,1.]);
+        let b=Calendar::Hour.features(minute("2020-02-29 06:00").unwrap());
+        assert!((b[0]-1.).abs()<1e-12&&b[1].abs()<1e-12);
+        assert_eq!(Calendar::None.features(0).len(),0);
+    }
+}

@@ -1,7 +1,7 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
-    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows")){
+    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows"|"calendar")){
         if let Err(e)=audit(&args[2..],&args[1]){eprintln!("{e}");std::process::exit(1)}
         return
     }
@@ -52,6 +52,7 @@ fn audit(args:&[String],mode:&str)->Result<(),String>{
     let start=minute(&format!("{first}-01-01 00:00"))?+60;
     let end=minute(&format!("{}-01-01 00:00",last+1))?-60;
     let bins=a.hourly(start,end);
+    if mode=="calendar"{return aevral::windows::calendar(&bins,start)}
     if mode=="windows"{return aevral::windows::run(&bins,start)}
     let (rows,report)=examples(&bins,start);
     println!("KSEA UTC strict-window audit; years={first}..={last}");
