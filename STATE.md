@@ -9,3 +9,6 @@ L01/L02 implemented streaming Givens QR, unpenalized intercept, explicit diagona
 
 ## C004 phase 2
 L01/L02 CI 45896077849 passed, all seven scores and 168 leads archived in results/C004/L01-L02-2019.txt, registry and README. Best ridge-1e-4 1.46767092 MAE, OLS 1.46768796, incumbent 1.32617622. QR rank full; 38 tests. Promote OLS, ridge-1e-4, ridge-1e-6 after all screening. Next L03/L04 Lasso and Elastic Net (10 configs), implement centered Gram-based cyclic coordinate descent with unpenalized intercept, KKT convergence and predeclared finite cap; validate synthetic orthogonal shrinkage and objective. Same matched data and baseline. No further C004 runs yet. 7/54 measured.
+
+## C004 phase 3
+L03/L04 ten-config sparse screen implemented, centered Gram cyclic coordinate descent, KKT 1e-7/10000 sweeps, unpenalized intercept, tests analytic shrinkage/direct objective/exact zeros, CLI and CI. Await verify actual CI and archive scores/blocked configs, then L05/L06 robust/median objectives. 7/54 measured before this batch, no sparse scores yet.
