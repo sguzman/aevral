@@ -30,3 +30,6 @@ L07–L09 passed CI 45897005852, 48 tests, all 12 measured, 465 result records a
 
 ## C004 phase 9
 L10/L11 implemented 12 planned configs, full/restricted degree-two and additive 3/7 knot splines, train-only expansion, streamed Gram, ridge numerical checks, timed preflight/resource guard, synthetic tests, four CI jobs. 36/54 measured prior to batch. Next verify scores or explicit resource blocks, archive; L12 MARS adaptive hinges/pruning remaining, then multi-year finalists. No new data.
+
+## C004 phase 10
+Three basis jobs passed CI 45897341015: poly-recent, gam-3, gam-7; 51 tests; nine scores archived in results/C004, 372 records. Best restricted polynomial 1.33658679, GAM 1.45231366. Full poly job 140174402045 still running; archive remaining three scores or blocks using ORIGINAL code 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82; don't duplicate the nine already archived. 45/54 measured. Next finalize full polynomial, then L12 MARS. GAM top two actually gam-7-1e-3 and gam-3-1e-3; check exact ranking against gam-7-1e-2 (1.45583124 vs 1.45551824). No new data.

@@ -67,3 +67,20 @@ Huber .25 is best non-neural model so far, but only marginally improves ridge. P
 | rrr-2 | 1.96469435 | 2.55911565 | 2 | 0.000770 |
 
 All 12 configurations measured; none beats Huber or ridge. RRR rank 8 nearly reproduces OLS. Promote pcr-64/pcr-32, pls-32/pls-16, rrr-16/rrr-8. [Full records](L07-L09-2019.txt). 36/54 screens measured.
+
+## L10/L11 polynomial and additive basis regression (partial)
+[CI](https://github.com/sguzman/aevral/actions/runs/45897341015), code 77848bc72e0a025eb2fd94c4a6ca8fe0d776eb82. Restricted polynomial and both GAM families passed all 51 tests and frozen archive/cohort checks. Full polynomial job still running, not counted here. All nine completed configurations met stationarity tolerance.
+
+| Configuration | MAE °C | RMSE °C | Slopes per lead | Solve s |
+|---|---:|---:|---:|---:|
+| poly-recent-1e-3 | 1.33658679 | 1.76999918 | 608 | 0.037254 |
+| poly-recent-1e-2 | 1.34343534 | 1.77492074 | 608 | 0.037093 |
+| poly-recent-0.1 | 1.39834038 | 1.83418853 | 608 | 0.037144 |
+| gam-7-1e-3 | 1.45231366 | 1.90959287 | 640 | 0.044112 |
+| gam-3-1e-3 | 1.45551824 | 1.91301069 | 320 | 0.003375 |
+| gam-7-1e-2 | 1.45583124 | 1.91323998 | 640 | 0.044340 |
+| gam-3-1e-2 | 1.46066367 | 1.91816956 | 320 | 0.003911 |
+| gam-7-0.1 | 1.47985154 | 1.93986904 | 640 | 0.045310 |
+| gam-3-0.1 | 1.49430305 | 1.95472767 | 320 | 0.003895 |
+
+Restricted quadratic ridge 1e-3 is best non-neural configuration so far (MAE 1.33658679; RMSE 1.76999918), both slightly worse than 2019 MLP64 (MAE 1.32617622, RMSE 1.76544057). Restricted quadratic training basis/Gram/solve ~7.24 s; separate CI timings not controlled. Full polynomial results pending before promotion. GAM candidates gam-7-1e-3 and gam-3-1e-3 (ranked by MAE) advance after screening. 45/54 screens measured.
