@@ -1,0 +1,417 @@
+test result: ok. 53 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+mars-forward,2,2,16398.7548899750
+mars-forward,2,4,3141.5469532291
+mars-forward,2,6,1325.5802696482
+mars-forward,2,8,285.0895022674
+mars-forward,2,10,149.9597110263
+mars-forward,2,12,128.0026277933
+mars-forward,2,14,116.8341000959
+mars-forward,2,16,96.5355121679
+mars-forward,2,18,65.1735746253
+mars-forward,2,20,103.2261924520
+mars-forward,2,22,73.8024467554
+mars-forward,2,24,45.5644820398
+mars-forward,2,26,60.3016696587
+mars-forward,2,28,36.1286716589
+mars-forward,2,30,30.4869135700
+mars-forward,2,32,29.5857470145
+mars-forward,2,34,27.7648573482
+mars-forward,2,36,28.6448513538
+mars-forward,2,38,16.5409991854
+mars-forward,2,40,19.6278625651
+mars-forward,2,42,19.5759866057
+mars-forward,2,44,24.6514826074
+mars-forward,2,46,18.5103555480
+mars-forward,2,48,23.9642659781
+mars-forward,2,50,33.0386300978
+mars-forward,2,52,25.5094754176
+mars-forward,2,54,15.8269702034
+mars-forward,2,56,12.8184303711
+mars-forward,2,58,21.0826862467
+mars-forward,2,60,13.6487211927
+mars-forward,2,62,9.9511429863
+mars-forward,2,64,13.2701553577
+mars-prune,64,2.2264368901,0.0929753912
+mars-prune,63,2.2265172715,0.0929755253
+mars-prune,62,2.2268225017,0.0929850483
+mars-prune,61,2.2271613424,0.0929959740
+mars-prune,60,2.2275151565,0.0930075241
+mars-prune,59,2.2280339457,0.0930259614
+mars-prune,58,2.2286577918,0.0930487837
+mars-prune,57,2.2293004133,0.0930723881
+mars-prune,56,2.2300769037,0.0931015797
+mars-prune,55,2.2309908633,0.0931365081
+mars-prune,54,2.2321115228,0.0931800627
+mars-prune,53,2.2332741268,0.0932253652
+mars-prune,52,2.2346029893,0.0932776045
+mars-prune,51,2.2360318298,0.0933340133
+mars-prune,50,2.2378446033,0.0934064433
+mars-prune,49,2.2397787616,0.0934839346
+mars-prune,48,2.2419025448,0.0935693348
+mars-prune,47,2.2438471127,0.0936472494
+mars-prune,46,2.2460635218,0.0937365035
+mars-prune,45,2.2483687464,0.0938294578
+mars-prune,44,2.2509016596,0.0939319072
+mars-prune,43,2.2539782055,0.0940570349
+mars-prune,42,2.2570351684,0.0941813368
+mars-prune,41,2.2601256428,0.0943070283
+mars-prune,40,2.2624773355,0.0944018853
+mars-prune,39,2.2658237033,0.0945382371
+mars-prune,38,2.2706329090,0.0947356121
+mars-prune,37,2.2742606794,0.0948836831
+mars-prune,36,2.2771476328,0.0950008375
+mars-prune,35,2.2834746409,0.0952614951
+mars-prune,34,2.2905864009,0.0955548716
+mars-prune,33,2.2984966975,0.0958815386
+mars-prune,32,2.3072138404,0.0962418392
+mars-prune,31,2.3157288659,0.0965936841
+mars-prune,30,2.3253331372,0.0969909376
+mars-prune,29,2.3351224528,0.0973958815
+mars-prune,28,2.3465100961,0.0978674599
+mars-prune,27,2.3590010017,0.0983850184
+mars-prune,26,2.3723731543,0.0989392932
+mars-prune,25,2.3824289122,0.0993552249
+mars-prune,24,2.3965394848,0.0999402211
+mars-prune,23,2.4104503423,0.1005168486
+mars-prune,22,2.4288551575,0.1012808295
+mars-prune,21,2.4438113805,0.1019009596
+mars-prune,20,2.4613734425,0.1026297001
+mars-prune,19,2.4806252316,0.1034288426
+mars-prune,18,2.4984783027,0.1041696127
+mars-prune,17,2.5234658897,0.1052077820
+mars-prune,16,2.5417530353,0.1059665357
+mars-prune,15,2.5742179365,0.1073162918
+mars-prune,14,2.6171316241,0.1091015375
+mars-prune,13,2.6559706913,0.1107168048
+mars-prune,12,2.7089124847,0.1129198262
+mars-prune,11,2.7804143734,0.1158963375
+mars-prune,10,2.8560901442,0.1190466171
+mars-prune,9,2.9384754137,0.1224763318
+mars-prune,8,3.0432086295,0.1268372443
+mars-prune,7,3.2065627657,0.1336410189
+mars-prune,6,3.4080476716,0.1420334564
+mars-prune,5,3.7191013218,0.1549915307
+mars-prune,4,4.5772635278,0.1907483705
+mars-prune,3,5.4874001525,0.2286685899
+mars-prune,2,6.5322660834,0.2722003709
+mars-prune,1,9.8539989311,0.4106031908
+mars-prune,0,23.9474255264,0.9978232155
+mars-config,2022,mars-grid-2-64,2,64,64,64,1560,9.297539119231e-2,0.696685
+mars-term,2022,mars-grid-2-64,0,[]
+mars-term,2022,mars-grid-2-64,1,[Hinge { feature: 71, knot: -0.08554205526464152, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,2,[Hinge { feature: 71, knot: -0.08554205526464152, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,3,[Hinge { feature: 60, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,4,[Hinge { feature: 60, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,5,[Hinge { feature: 72, knot: 0.0, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,6,[Hinge { feature: 72, knot: 0.0, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,7,[Hinge { feature: 72, knot: 0.0, sign: 1.0 }, Hinge { feature: 75, knot: -0.7081204101178108, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,8,[Hinge { feature: 72, knot: 0.0, sign: 1.0 }, Hinge { feature: 75, knot: -0.7081204101178108, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,9,[Hinge { feature: 72, knot: 0.0, sign: -1.0 }, Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,10,[Hinge { feature: 72, knot: 0.0, sign: -1.0 }, Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,11,[Hinge { feature: 60, knot: 0.6095024348935175, sign: 1.0 }, Hinge { feature: 79, knot: -0.6917874681102053, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,12,[Hinge { feature: 60, knot: 0.6095024348935175, sign: 1.0 }, Hinge { feature: 79, knot: -0.6917874681102053, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,13,[Hinge { feature: 72, knot: 0.0, sign: -1.0 }, Hinge { feature: 75, knot: -0.03872228089217525, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,14,[Hinge { feature: 72, knot: 0.0, sign: -1.0 }, Hinge { feature: 75, knot: -0.03872228089217525, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,15,[Hinge { feature: 77, knot: 0.6040124776563152, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,16,[Hinge { feature: 77, knot: 0.6040124776563152, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,17,[Hinge { feature: 78, knot: 0.7013401016782769, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,18,[Hinge { feature: 78, knot: 0.7013401016782769, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,19,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,20,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,21,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }, Hinge { feature: 32, knot: -0.08554205526464152, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,22,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }, Hinge { feature: 32, knot: -0.08554205526464152, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,23,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 76, knot: 0.8270852723226343, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,24,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 76, knot: 0.8270852723226343, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,25,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,26,[Hinge { feature: 52, knot: 0.6963829961632874, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,27,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 75, knot: -0.03872228089217525, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,28,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 75, knot: -0.03872228089217525, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,29,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 77, knot: -0.5479702747062454, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,30,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 77, knot: -0.5479702747062454, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,31,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 79, knot: 0.15575848454921412, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,32,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 79, knot: 0.15575848454921412, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,33,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }, Hinge { feature: 79, knot: 0.15575848454921412, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,34,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }, Hinge { feature: 79, knot: 0.15575848454921412, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,35,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 57, knot: -0.6937059841530305, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,36,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 57, knot: -0.6937059841530305, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,37,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 77, knot: 0.6040124776563152, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,38,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 77, knot: 0.6040124776563152, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,39,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 63, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,40,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }, Hinge { feature: 63, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,41,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 72, knot: 0.0, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,42,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 72, knot: 0.0, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,43,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }, Hinge { feature: 75, knot: 0.6932812268869775, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,44,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }, Hinge { feature: 75, knot: 0.6932812268869775, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,45,[Hinge { feature: 74, knot: -0.72215726576852, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,46,[Hinge { feature: 74, knot: -0.72215726576852, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,47,[Hinge { feature: 74, knot: -0.72215726576852, sign: 1.0 }, Hinge { feature: 79, knot: -0.6917874681102053, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,48,[Hinge { feature: 74, knot: -0.72215726576852, sign: 1.0 }, Hinge { feature: 79, knot: -0.6917874681102053, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,49,[Hinge { feature: 52, knot: 0.6963829961632874, sign: -1.0 }, Hinge { feature: 79, knot: -0.6917874681102053, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,50,[Hinge { feature: 52, knot: 0.6963829961632874, sign: -1.0 }, Hinge { feature: 79, knot: -0.6917874681102053, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,51,[Hinge { feature: 74, knot: -0.72215726576852, sign: 1.0 }, Hinge { feature: 46, knot: -0.08554205526464152, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,52,[Hinge { feature: 74, knot: -0.72215726576852, sign: 1.0 }, Hinge { feature: 46, knot: -0.08554205526464152, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,53,[Hinge { feature: 74, knot: -0.72215726576852, sign: -1.0 }, Hinge { feature: 45, knot: -0.7805865454228004, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,54,[Hinge { feature: 74, knot: -0.72215726576852, sign: -1.0 }, Hinge { feature: 45, knot: -0.7805865454228004, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,55,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 27, knot: 0.0013385060051283296, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,56,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 27, knot: 0.0013385060051283296, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,57,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 25, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,58,[Hinge { feature: 52, knot: 0.6963829961632874, sign: 1.0 }, Hinge { feature: 25, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,59,[Hinge { feature: 52, knot: 0.6963829961632874, sign: -1.0 }, Hinge { feature: 56, knot: 0.6963829961632874, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,60,[Hinge { feature: 52, knot: 0.6963829961632874, sign: -1.0 }, Hinge { feature: 56, knot: 0.6963829961632874, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,61,[Hinge { feature: 74, knot: -0.72215726576852, sign: -1.0 }, Hinge { feature: 56, knot: 0.6963829961632874, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,62,[Hinge { feature: 74, knot: -0.72215726576852, sign: -1.0 }, Hinge { feature: 56, knot: 0.6963829961632874, sign: -1.0 }]
+mars-term,2022,mars-grid-2-64,63,[Hinge { feature: 52, knot: 0.6963829961632874, sign: -1.0 }, Hinge { feature: 64, knot: -0.17242261653441135, sign: 1.0 }]
+mars-term,2022,mars-grid-2-64,64,[Hinge { feature: 52, knot: 0.6963829961632874, sign: -1.0 }, Hinge { feature: 64, knot: -0.17242261653441135, sign: -1.0 }]
+score,2022,mars-grid-2-64,7639,1.49132800,2.01086909,0.057
+lead,2022,mars-grid-2-64,1,0.54863506,0.74096145
+lead,2022,mars-grid-2-64,2,0.77395207,1.03157966
+lead,2022,mars-grid-2-64,3,0.94539457,1.25521719
+lead,2022,mars-grid-2-64,4,1.08814600,1.44335647
+lead,2022,mars-grid-2-64,5,1.19513008,1.58480173
+lead,2022,mars-grid-2-64,6,1.28202657,1.70084178
+lead,2022,mars-grid-2-64,7,1.34830238,1.78393675
+lead,2022,mars-grid-2-64,8,1.39948789,1.85255100
+lead,2022,mars-grid-2-64,9,1.44481855,1.90816981
+lead,2022,mars-grid-2-64,10,1.48144565,1.95121037
+lead,2022,mars-grid-2-64,11,1.51256278,1.98646630
+lead,2022,mars-grid-2-64,12,1.54161132,2.02294576
+lead,2022,mars-grid-2-64,13,1.57863660,2.06690118
+lead,2022,mars-grid-2-64,14,1.62294150,2.12299242
+lead,2022,mars-grid-2-64,15,1.67289190,2.18549305
+lead,2022,mars-grid-2-64,16,1.71786581,2.24511428
+lead,2022,mars-grid-2-64,17,1.76303125,2.30435366
+lead,2022,mars-grid-2-64,18,1.79898565,2.35776706
+lead,2022,mars-grid-2-64,19,1.82622723,2.39230274
+lead,2022,mars-grid-2-64,20,1.83568206,2.40505523
+lead,2022,mars-grid-2-64,21,1.84099758,2.40801118
+lead,2022,mars-grid-2-64,22,1.84554368,2.40849591
+lead,2022,mars-grid-2-64,23,1.85716825,2.41317751
+lead,2022,mars-grid-2-64,24,1.87038746,2.42349076
+month,2022,mars-grid-2-64,1,735,1.49509890,1.95565039
+month,2022,mars-grid-2-64,2,558,1.41874335,1.84712418
+month,2022,mars-grid-2-64,3,630,1.13347073,1.48008686
+month,2022,mars-grid-2-64,4,699,1.57736897,2.20409848
+month,2022,mars-grid-2-64,5,712,1.28990430,1.74692183
+month,2022,mars-grid-2-64,6,507,1.49769610,2.17010426
+month,2022,mars-grid-2-64,7,431,1.83032524,2.33908757
+month,2022,mars-grid-2-64,8,714,1.67300135,2.15771375
+month,2022,mars-grid-2-64,9,695,1.46551773,1.94256932
+month,2022,mars-grid-2-64,10,632,1.60983078,2.16983449
+month,2022,mars-grid-2-64,11,641,1.48551126,1.99169765
+month,2022,mars-grid-2-64,12,685,1.51201910,2.09778236
+Command being timed: "target/release/aevral mars data/raw/ksea 2022 results-run/mars-grid-2-64/predictions.csv mars-grid-2-64"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.45
+Maximum resident set size (kbytes): 367924
+score,2022,mars-grid-2-64,7639,1.49132800,2.01086909,0.057
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+mars-forward,1,2,16398.7548899750
+mars-forward,1,4,3144.4143847093
+mars-forward,1,6,1325.3327327887
+mars-forward,1,8,239.0987010456
+mars-forward,1,10,185.4003592967
+mars-forward,1,12,172.9485187038
+mars-forward,1,14,130.9394365943
+mars-forward,1,16,89.9975309644
+mars-forward,1,18,73.4191187749
+mars-forward,1,20,102.9232276869
+mars-forward,1,22,39.1807651095
+mars-forward,1,24,22.1104651224
+mars-forward,1,26,14.9347053320
+mars-forward,1,28,12.1987148055
+mars-forward,1,30,18.1499048016
+mars-forward,1,32,16.3757673789
+mars-forward,1,34,13.5150372075
+mars-forward,1,36,12.2065019424
+mars-forward,1,38,9.8229790035
+mars-forward,1,40,13.5522750423
+mars-forward,1,42,8.8831644367
+mars-forward,1,44,12.3310220735
+mars-forward,1,46,14.2796876467
+mars-forward,1,48,11.6469527769
+mars-forward,1,50,9.7670094130
+mars-forward,1,52,6.6263030991
+mars-forward,1,54,11.6480565525
+mars-forward,1,56,10.4584583766
+mars-forward,1,58,8.9990780607
+mars-forward,1,60,7.6067580416
+mars-forward,1,62,7.7239249901
+mars-forward,1,64,5.6056762636
+mars-prune,64,2.3874604985,0.0996996927
+mars-prune,63,2.3875795876,0.0997012101
+mars-prune,62,2.3877809601,0.0997061632
+mars-prune,61,2.3880367032,0.0997133862
+mars-prune,60,2.3883120373,0.0997214266
+mars-prune,59,2.3886052113,0.0997302113
+mars-prune,58,2.3890010152,0.0997432802
+mars-prune,57,2.3894136520,0.0997570509
+mars-prune,56,2.3899002414,0.0997739080
+mars-prune,55,2.3904519149,0.0997934809
+mars-prune,54,2.3910849319,0.0998164481
+mars-prune,53,2.3917863394,0.0998422685
+mars-prune,52,2.3926029606,0.0998728963
+mars-prune,51,2.3933977428,0.0999026104
+mars-prune,50,2.3943657288,0.0999395518
+mars-prune,49,2.3957119852,0.0999922789
+mars-prune,48,2.3970646123,0.1000452681
+mars-prune,47,2.3981721207,0.1000880235
+mars-prune,46,2.3993324928,0.1001329821
+mars-prune,45,2.4008233433,0.1001917292
+mars-prune,44,2.4024214923,0.1002549497
+mars-prune,43,2.4043293445,0.1003310895
+mars-prune,42,2.4065241152,0.1004191965
+mars-prune,41,2.4089390852,0.1005164855
+mars-prune,40,2.4113482094,0.1006135237
+mars-prune,39,2.4136994957,0.1007081420
+mars-prune,38,2.4161247567,0.1008058400
+mars-prune,37,2.4184242869,0.1008982856
+mars-prune,36,2.4206418537,0.1009873053
+mars-prune,35,2.4230874183,0.1010858304
+mars-prune,34,2.4258296057,0.1011967225
+mars-prune,33,2.4284888482,0.1013041469
+mars-prune,32,2.4316214495,0.1014313092
+mars-prune,31,2.4345233081,0.1015488379
+mars-prune,30,2.4377232786,0.1016787928
+mars-prune,29,2.4413588416,0.1018269068
+mars-prune,28,2.4457653126,0.1020071633
+mars-prune,27,2.4505107619,0.1022015447
+mars-prune,26,2.4559393904,0.1024244045
+mars-prune,25,2.4614719966,0.1026515849
+mars-prune,24,2.4660145105,0.1028374609
+mars-prune,23,2.4735156537,0.1031467000
+mars-prune,22,2.4823238482,0.1035104204
+mars-prune,21,2.4921300666,0.1039157307
+mars-prune,20,2.5029498185,0.1043632733
+mars-prune,19,2.5156818908,0.1048905184
+mars-prune,18,2.5341034583,0.1056549402
+mars-prune,17,2.5526782106,0.1064256956
+mars-prune,16,2.5811955118,0.1076109058
+mars-prune,15,2.6130884420,0.1089367601
+mars-prune,14,2.6401017351,0.1100591028
+mars-prune,13,2.6739462068,0.1114661322
+mars-prune,12,2.7225759974,0.1134893837
+mars-prune,11,2.7950284244,0.1165054967
+mars-prune,10,2.8699694608,0.1196251302
+mars-prune,9,2.9599475064,0.1233712936
+mars-prune,8,3.0690120144,0.1279126980
+mars-prune,7,3.1723824999,0.1322164762
+mars-prune,6,3.3885196039,0.1412196066
+mars-prune,5,3.6532518262,0.1522472887
+mars-prune,4,4.2648362667,0.1777285847
+mars-prune,3,5.2437156415,0.2185138733
+mars-prune,2,7.8337494666,0.3264333514
+mars-prune,1,11.9905431005,0.4996301797
+mars-prune,0,23.9474255264,0.9978232155
+mars-config,2022,mars-grid-1-64,1,64,64,64,1560,9.969969271777e-2,0.446342
+mars-term,2022,mars-grid-1-64,0,[]
+mars-term,2022,mars-grid-1-64,1,[Hinge { feature: 71, knot: -0.08554205526464152, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,2,[Hinge { feature: 71, knot: -0.08554205526464152, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,3,[Hinge { feature: 60, knot: -0.08554205526464152, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,4,[Hinge { feature: 60, knot: -0.08554205526464152, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,5,[Hinge { feature: 72, knot: 0.0, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,6,[Hinge { feature: 72, knot: 0.0, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,7,[Hinge { feature: 54, knot: 0.6963829961632874, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,8,[Hinge { feature: 54, knot: 0.6963829961632874, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,9,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,10,[Hinge { feature: 73, knot: -1.8369701987210297e-16, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,11,[Hinge { feature: 75, knot: -0.03872228089217525, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,12,[Hinge { feature: 75, knot: -0.03872228089217525, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,13,[Hinge { feature: 78, knot: -0.5919493173117949, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,14,[Hinge { feature: 78, knot: -0.5919493173117949, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,15,[Hinge { feature: 45, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,16,[Hinge { feature: 45, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,17,[Hinge { feature: 77, knot: 0.6040124776563152, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,18,[Hinge { feature: 77, knot: 0.6040124776563152, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,19,[Hinge { feature: 65, knot: -0.08554205526464152, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,20,[Hinge { feature: 65, knot: -0.08554205526464152, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,21,[Hinge { feature: 74, knot: 0.6958612865762029, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,22,[Hinge { feature: 74, knot: 0.6958612865762029, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,23,[Hinge { feature: 79, knot: -0.6917874681102053, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,24,[Hinge { feature: 79, knot: -0.6917874681102053, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,25,[Hinge { feature: 76, knot: -0.6064497358894565, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,26,[Hinge { feature: 76, knot: -0.6064497358894565, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,27,[Hinge { feature: 15, knot: -0.7805865454228004, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,28,[Hinge { feature: 15, knot: -0.7805865454228004, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,29,[Hinge { feature: 1, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,30,[Hinge { feature: 1, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,31,[Hinge { feature: 51, knot: -0.6937059841530305, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,32,[Hinge { feature: 51, knot: -0.6937059841530305, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,33,[Hinge { feature: 5, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,34,[Hinge { feature: 5, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,35,[Hinge { feature: 36, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,36,[Hinge { feature: 36, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,37,[Hinge { feature: 20, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,38,[Hinge { feature: 20, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,39,[Hinge { feature: 33, knot: -0.08554205526464152, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,40,[Hinge { feature: 33, knot: -0.08554205526464152, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,41,[Hinge { feature: 10, knot: -0.6937059841530305, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,42,[Hinge { feature: 10, knot: -0.6937059841530305, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,43,[Hinge { feature: 24, knot: -0.6937059841530305, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,44,[Hinge { feature: 24, knot: -0.6937059841530305, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,45,[Hinge { feature: 70, knot: 0.6790068839093335, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,46,[Hinge { feature: 70, knot: 0.6790068839093335, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,47,[Hinge { feature: 29, knot: -0.6937059841530305, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,48,[Hinge { feature: 29, knot: -0.6937059841530305, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,49,[Hinge { feature: 23, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,50,[Hinge { feature: 23, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,51,[Hinge { feature: 57, knot: -0.6937059841530305, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,52,[Hinge { feature: 57, knot: -0.6937059841530305, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,53,[Hinge { feature: 49, knot: -0.08554205526464152, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,54,[Hinge { feature: 49, knot: -0.08554205526464152, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,55,[Hinge { feature: 61, knot: 0.6095024348935175, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,56,[Hinge { feature: 61, knot: 0.6095024348935175, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,57,[Hinge { feature: 27, knot: 0.6963829961632874, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,58,[Hinge { feature: 27, knot: 0.6963829961632874, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,59,[Hinge { feature: 62, knot: -0.7805865454228004, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,60,[Hinge { feature: 62, knot: -0.7805865454228004, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,61,[Hinge { feature: 43, knot: -0.7805865454228004, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,62,[Hinge { feature: 43, knot: -0.7805865454228004, sign: -1.0 }]
+mars-term,2022,mars-grid-1-64,63,[Hinge { feature: 35, knot: -0.6937059841530305, sign: 1.0 }]
+mars-term,2022,mars-grid-1-64,64,[Hinge { feature: 35, knot: -0.6937059841530305, sign: -1.0 }]
+score,2022,mars-grid-1-64,7639,1.57126099,2.08601180,0.056
+lead,2022,mars-grid-1-64,1,0.55757374,0.74918678
+lead,2022,mars-grid-1-64,2,0.80407324,1.05815701
+lead,2022,mars-grid-1-64,3,0.99248259,1.29902232
+lead,2022,mars-grid-1-64,4,1.15056594,1.50574224
+lead,2022,mars-grid-1-64,5,1.28916347,1.67836489
+lead,2022,mars-grid-1-64,6,1.39862069,1.81426224
+lead,2022,mars-grid-1-64,7,1.47641055,1.91212745
+lead,2022,mars-grid-1-64,8,1.53994599,1.99394452
+lead,2022,mars-grid-1-64,9,1.58757633,2.05840945
+lead,2022,mars-grid-1-64,10,1.62696646,2.10898547
+lead,2022,mars-grid-1-64,11,1.66632619,2.15859803
+lead,2022,mars-grid-1-64,12,1.70267294,2.20254125
+lead,2022,mars-grid-1-64,13,1.73295021,2.23563515
+lead,2022,mars-grid-1-64,14,1.75592841,2.26191033
+lead,2022,mars-grid-1-64,15,1.77190752,2.28551088
+lead,2022,mars-grid-1-64,16,1.78475745,2.30845776
+lead,2022,mars-grid-1-64,17,1.80813151,2.33701814
+lead,2022,mars-grid-1-64,18,1.82687703,2.36366704
+lead,2022,mars-grid-1-64,19,1.84517625,2.38685606
+lead,2022,mars-grid-1-64,20,1.85761809,2.40082159
+lead,2022,mars-grid-1-64,21,1.86525320,2.41255311
+lead,2022,mars-grid-1-64,22,1.87348700,2.42332134
+lead,2022,mars-grid-1-64,23,1.88760829,2.43825570
+lead,2022,mars-grid-1-64,24,1.90819070,2.45936029
+month,2022,mars-grid-1-64,1,735,1.56756111,1.98616163
+month,2022,mars-grid-1-64,2,558,1.46253469,1.87667112
+month,2022,mars-grid-1-64,3,630,1.21503970,1.59171817
+month,2022,mars-grid-1-64,4,699,1.66678313,2.32685275
+month,2022,mars-grid-1-64,5,712,1.35935908,1.78190077
+month,2022,mars-grid-1-64,6,507,1.65202833,2.35092783
+month,2022,mars-grid-1-64,7,431,1.76330719,2.23705957
+month,2022,mars-grid-1-64,8,714,1.82269884,2.31772588
+month,2022,mars-grid-1-64,9,695,1.55584480,2.02016761
+month,2022,mars-grid-1-64,10,632,1.59628437,2.15162643
+month,2022,mars-grid-1-64,11,641,1.53939215,2.04440986
+month,2022,mars-grid-1-64,12,685,1.69387723,2.26001005
+Command being timed: "target/release/aevral mars data/raw/ksea 2022 results-run/mars-grid-1-64/predictions.csv mars-grid-1-64"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.19
+Maximum resident set size (kbytes): 367904
+score,2022,mars-grid-1-64,7639,1.57126099,2.08601180,0.056

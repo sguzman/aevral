@@ -51,3 +51,6 @@ Finalists B CI 45898314791 queued. Finalists A CI 45898046310: archived first 6 
 
 ## C004 phase 16
 Archived next 6 completed A groups (21 outcomes, 1320 records). Total additional outcomes archived 41/69. Continue remaining A and B groups; check registry job IDs for duplicates. No additional fits launched. Part B CI 45898314791.
+
+## C004 phase 17
+Archived 5 further A groups (18 outcomes, 1175 records). Additional outcomes archived 59/69. 17 models have complete four-year results. Continue any remaining A and B groups, then pooled final ranking. Part B CI 45898314791. No new fits launched.
