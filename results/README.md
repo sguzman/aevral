@@ -21,4 +21,6 @@
 
 - [AEV-013 compact attention](AEV-013/README.md).
 
+- [AEV-014A multi-seed SGD budget](AEV-014A/README.md).
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.

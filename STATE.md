@@ -16,3 +16,6 @@ AEV-012 passed 45877397897: CNN 1.54584788, TCN 1.56940238 MAE, both 3072 parame
 
 ## C002 phase 5
 AEV-013 passed 45877542890, attention MAE 1.55932750, 3168 parameters, all 62 records archived. AEV-014A protocol/runner implemented: MLP32,64,32x32, RNN, CNN, attention × seeds42/123/2026 × 10/30 epochs, same cohort, original SGD/clipping, seed42/10 exact prior-screen check. 18 matrix jobs, 36 checkpoints. CI pending. Next collect actual scores, persist all records, summarize mean/SD across seeds and training budget. AEV-014B optimizer sensitivity still required, then freeze winner and new 2026 holdout evaluation. No holdout access.
+
+## C002 phase 6
+AEV-014A all 18 jobs passed 45877715589; all 1908 records archived in results/AEV-014A, best mean MAE MLP64/30 = 1.35698070. Adam protocol predeclared, implementation pending. Next implement AEV-014B with same six models, three seeds, checkpoints 10/30, .001, beta .9/.999 eps 1e-8, existing clipping. Then collect actual scores and freeze lowest mean MAE recipe, seed42, new 2026 holdout. No holdout access.
