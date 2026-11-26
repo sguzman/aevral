@@ -75,3 +75,6 @@ Implemented S01–S04 ten configurations, recursive AR/ARX/VAR/VARX, streamed QR
 
 ## C005 phase 3
 S01–S04 CI 45900349024, code efa95b5624c26666fb3e9cbf2dbb4b2e16a0e3ff: archived 2 completed jobs, 6 outcomes, 414 records. 57 tests passed per successful job. 6/36 measured. screen (arx-all) 140184313394 pending Registry initialized; do not duplicate archived jobs. Next collect any remaining autoreg outcomes, then implement S05–S07 conditional ARIMA/ARIMAX/SARIMA; no new data.
+
+## C005 phase 4
+All three S01–S04 jobs passed, 57 tests, 10/36 measured; last ARX job 140184313394 archived 346 records. Best ARX72 1.53087031. Frozen provisional finalists AR72/48, ARX72/48, VAR1, VARX1. Next implement S05–S07 nine genuine conditional ARIMA models, no new data.
