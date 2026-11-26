@@ -316,3 +316,60 @@ pub fn architecture_budget(bins:&[Option<Weather>],first:i64,label:&str,seed:u64
         }
     }Ok(())
 }
+
+fn holdout_origin(origin:i64)->bool{
+    let start=crate::weather::minute("2026-01-01 00:00").unwrap();
+    let end=crate::weather::minute("2026-11-01 00:00").unwrap();
+    origin+60>=start&&origin+60*(Y as i64)<end
+}
+fn holdout_cases(bins:&[Option<Weather>],first:i64)->(Vec<Case>,[usize;3]){
+    let(mut rows,mut counts)=(Vec::new(),[0;3]);
+    for i in H-1..bins.len().saturating_sub(Y){
+        let origin=first+i as i64*60;
+        if !holdout_origin(origin){continue}
+        counts[0]+=1;
+        let v:Option<Vec<_>>=bins[i+1-H..=i+Y].iter().map(|r|r.and_then(|v|v.temperature)).collect();
+        let Some(v)=v else{continue};
+        counts[1]+=1;
+        let Some(r)=bins[i]else{continue};
+        let(Some(dew),Some(pressure),Some(wind))=(r.dew_c,r.pressure_hpa,r.wind_ms)else{continue};
+        counts[2]+=1;
+        rows.push(Case{origin,split:Split::Test,x:v[..H].try_into().unwrap(),y:v[H..].try_into().unwrap(),weather:[dew,pressure,wind[0],wind[1]]});
+    }(rows,counts)
+}
+pub fn holdout_audit(bins:&[Option<Weather>],first:i64,temps:&[Option<crate::weather::Report>])->Result<(),String>{
+    if bins.len()!=temps.len(){return Err("archive length mismatch".into())}
+    for (c,t) in bins.iter().zip(temps){
+        match(c,t){(None,None)=>{},(Some(c),Some(t)) if c.minute==t.minute&&c.temperature==t.celsius=>{},_=>return Err("archive alignment mismatch".into())}
+    }
+    let historical=cases(bins,first);
+    let train:Vec<_>=historical.iter().filter(|r|r.split==Split::Train).collect();
+    let val=historical.iter().filter(|r|r.split==Split::Validation).count();
+    if train.len()!=121849||val!=30207{return Err("historical cohort mismatch".into())}
+    let temp=Scale::fit(train.iter().flat_map(|r|r.x))?;
+    let weather:[Scale;4]=(0..4).map(|i|Scale::fit(train.iter().map(move|r|r.weather[i]))).collect::<Result<Vec<_>,_>>()?.try_into().unwrap();
+    let expected=[11.612720385128858,6.359004285883184,6.403598625256534,5.0022216207107,1017.3671062499778,7.110340951197967,0.27492170423930146,2.1428563920747172,0.9016637834425706,3.193150037462841];
+    let actual=[temp.mean,temp.sd,weather[0].mean,weather[0].sd,weather[1].mean,weather[1].sd,weather[2].mean,weather[2].sd,weather[3].mean,weather[3].sd];
+    if actual.iter().zip(expected).any(|(a,b)|(a-b).abs()>1e-8){return Err("training scale differs from frozen validation".into())}
+    let (test,counts)=holdout_cases(bins,first);
+    if counts[0]!=7273||test.is_empty(){return Err(format!("unexpected holdout coverage {counts:?}"))}
+    println!("AEV-015 audit train={} validation={} possible={} temperature_complete={} joint_complete={}",train.len(),val,counts[0],counts[1],counts[2]);
+    println!("AEV-015 training_scales={actual:?}");
+    for m in 1..=10{
+        let lo=crate::weather::minute(&format!("2026-{m:02}-01 00:00"))?;
+        let hi=crate::weather::minute(&format!("2026-{:02}-01 00:00",m+1))?;
+        let n=test.iter().filter(|r|r.origin+60>=lo&&r.origin+60<hi).count();
+        println!("coverage-month,{m},{n}");
+    }Ok(())
+}
+#[cfg(test)]
+mod holdout_tests{
+    use super::*;
+    #[test]fn boundaries(){
+        let a=crate::weather::minute("2026-01-01 00:00").unwrap();
+        let b=crate::weather::minute("2026-11-01 00:00").unwrap();
+        assert!(!holdout_origin(a-120));assert!(holdout_origin(a-60));
+        assert!(holdout_origin(b-25*60));assert!(!holdout_origin(b-24*60));
+        assert_eq!((a-60..b-24*60).step_by(60).count(),7273);
+    }
+}

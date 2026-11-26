@@ -3,3 +3,6 @@ C001 complete; historical report campaigns/001-neural-weather/REPORT.md. C002 pr
 
 ## C002 phase 10
 AEV-015A snapshot acquisition workflow and dedicated partial-year fetcher implemented, CI queued after commit. No scoring code in this workflow. Historical 26 annual hashes must match AEV-009; new 2026 file only Jan–Oct, separate immutable cache key. Next verify successful snapshot, archive all 27 hashes and source/retrieval time; then implement audit and score stages using exact frozen recipe. Calendar code currently caps year search at 2025; extend to 2026 without changing earlier behavior, test new year phase. Preserve original split_for and implement separate 2026 cohort predicate. No human action required.
+
+## C002 phase 11
+Snapshot CI 45880006747 passed, 27 hashes and provenance archived results/AEV-015. Holdout audit runner and CI implemented, no scoring. Strict first target >= Jan1 and last target < Nov1, 7273 possible origins; historical exact counts/scales and alignment required. Calendar year search extended to 2026. Next verify audit, archive coverage and conflicts before implementing frozen scoring. No test scores yet.

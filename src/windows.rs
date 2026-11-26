@@ -93,7 +93,7 @@ impl Calendar {
         }
         if matches!(self,Self::Year|Self::Both){
             let mut y=2000;
-            while y<2025&&t>=crate::weather::minute(&format!("{}-01-01 00:00",y+1)).unwrap(){y+=1}
+            while y<2026&&t>=crate::weather::minute(&format!("{}-01-01 00:00",y+1)).unwrap(){y+=1}
             let a=crate::weather::minute(&format!("{y}-01-01 00:00")).unwrap();
             let b=crate::weather::minute(&format!("{}-01-01 00:00",y+1)).unwrap();
             let p=TAU*(t-a)as f64/(b-a)as f64;x.extend([p.sin(),p.cos()]);

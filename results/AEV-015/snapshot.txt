@@ -1,0 +1,5 @@
+AEV-015A snapshot CI: https://github.com/sguzman/aevral/actions/runs/45880006747
+Code: 5930dd68ac564ae4d8bde90407e0793314fde3b9
+source=https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?network=WA_ASOS&station=SEA&data=tmpf&data=dwpf&data=relh&data=drct&data=sknt&data=alti&data=mslp&tz=Etc/UTC&format=onlycomma&latlon=no&elev=no&missing=M&trace=T&direct=no&report_type=3&year1=2026&month1=1&day1=1&year2=2026&month2=11&day2=1
+retrieved=2026-11-26T18:58:01Z
+Historical 26 hashes matched AEV-009; holdout hash frozen before scoring.
