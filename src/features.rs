@@ -151,3 +151,38 @@ mod locked_tests{
         let r=collect_cases(&b,first,true);assert_eq!(r.len(),3);assert!(r.iter().all(|r|r.split==Split::Test));
     }
 }
+
+pub fn architectures(bins:&[Option<Weather>],first:i64)->Result<(),String>{
+    use crate::dense::Dense;
+    let rows=cases(bins,first);
+    let train:Vec<_>=rows.iter().filter(|r|r.split==Split::Train).collect();
+    let val:Vec<_>=rows.iter().filter(|r|r.split==Split::Validation).collect();
+    if train.len()!=121849||val.len()!=30207{return Err("frozen cohort mismatch".into())}
+    let temp=Scale::fit(train.iter().flat_map(|r|r.x))?;
+    let weather:[Scale;4]=(0..4).map(|i|Scale::fit(train.iter().map(move|r|r.weather[i]))).collect::<Result<Vec<_>,_>>()?.try_into().unwrap();
+    let tr:Vec<_>=train.iter().map(|r|input(r,7,temp,weather)).collect();
+    let va:Vec<_>=val.iter().map(|r|input(r,7,temp,weather)).collect();
+    let targets:Vec<_>=train.iter().map(|r|r.y.map(|v|temp.norm(v))).collect();
+    let mut daily=Metrics::default();
+    for r in &val{daily.add(&r.y,&r.x[H-Y..])}
+    println!("AEV-010 matched train={} validation={}",train.len(),val.len());
+    report("daily",&daily,daily.mae())?;
+    let configs:[(&str,&[usize]);5]=[("mlp32",&[80,32,24]),("linear",&[80,24]),("mlp16",&[80,16,24]),("mlp64",&[80,64,24]),("mlp32x32",&[80,32,32,24])];
+    for (label,dims) in configs{
+        let mut model=Dense::new(dims,42);
+        let mut order:Vec<_>=(0..train.len()).collect();let mut rng=42u64;
+        let start=std::time::Instant::now();
+        for epoch in 0..10{
+            for i in (1..order.len()).rev(){rng^=rng<<13;rng^=rng>>7;rng^=rng<<17;order.swap(i,(rng%(i as u64+1))as usize);}
+            let mut loss=0.;
+            for &i in &order{loss+=model.train_step(&tr[i],&targets[i],0.005)}
+            if !loss.is_finite(){return Err(format!("nonfinite training loss: {label}"))}
+            println!("architecture={label} epoch={} normalized_mse={:.8}",epoch+1,loss/train.len()as f64);
+        }
+        println!("architecture={label} parameters={} training_seconds={:.3}",model.parameters(),start.elapsed().as_secs_f64());
+        let mut m=Metrics::default();
+        for(i,r)in val.iter().enumerate(){let p:Vec<_>=model.predict(&va[i]).into_iter().map(|v|temp.restore(v)).collect();m.add(&r.y,&p)}
+        report(label,&m,daily.mae())?;
+        if label=="mlp32"&&(m.mae()-1.39610378).abs()>1e-6{return Err("C001 reference reproduction failed".into())}
+    }Ok(())
+}

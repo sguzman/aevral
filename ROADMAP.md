@@ -13,6 +13,10 @@ Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neura
 7. Freeze selected model and evaluate the untouched test set once; publish plots, configs and limitations.
 8. Compare recurrent, convolutional and attention models, then probabilistic predictions and GPU acceleration.
 
+## C002: Architecture comparison
+
+[Active campaign protocol](campaigns/002-architecture/README.md): dense, recurrent, convolutional and attention models; optimization and seed sensitivity; new 2026 holdout. C001 remains a completed milestone.
+
 ## Later campaigns
 
 Cross-station transfer; spatial weather inputs; prospective forecast ledger; climate, economics, finance, energy and culture. No commitment to a specific later domain yet.

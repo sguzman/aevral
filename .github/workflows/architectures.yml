@@ -1,0 +1,39 @@
+name: AEV-010 dense architecture screen
+on:
+  push:
+    paths:
+      - 'src/dense.rs'
+      - '.github/workflows/architectures.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2022-v1
+          restore-keys: |
+            ksea-routine-utc-2018-v1
+      - name: Restore or acquire snapshot
+        run: bash scripts/fetch-ksea.sh 2000 2022
+      - name: Verify frozen hashes
+        run: |
+          cd data/raw/ksea
+          sha256sum -c ../../../results/AEV-001/snapshot.sha256
+      - name: Compare dense architectures
+        run: |
+          set -o pipefail
+          git rev-parse HEAD > commit.txt
+          cargo run --locked --release -- architectures 2000 2022 data/raw/ksea | tee architectures.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aev-010-architectures
+          path: |
+            commit.txt
+            architectures.txt

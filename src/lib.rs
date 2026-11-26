@@ -120,3 +120,5 @@ pub mod windows;
 pub mod covariates;
 
 pub mod features;
+
+pub mod dense;
