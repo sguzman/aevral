@@ -48,3 +48,6 @@ Full quadratic CI 45897341015 passed, three results archived with original code 
 
 ## C004 phase 15
 Finalists B CI 45898314791 queued. Finalists A CI 45898046310: archived first 6 completed groups (20 outcomes, 1273 log records) into results/C004/finalists-a-YEAR-GROUP.txt and registry. Deduplicate by job ID registry column 11, exact duplicate score/blocked lines in logs; verify all 24 leads for each measured model. Continue remaining A jobs in batches <=6 and B as complete. No new fits launched this iteration.
+
+## C004 phase 16
+Archived next 6 completed A groups (21 outcomes, 1320 records). Total additional outcomes archived 41/69. Continue remaining A and B groups; check registry job IDs for duplicates. No additional fits launched. Part B CI 45898314791.
