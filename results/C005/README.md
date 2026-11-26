@@ -28,3 +28,12 @@ All S01–S04 jobs passed. Best ARX72 MAE 1.53087031; best AR72 1.54626475. Prom
 | sarima-111-100 | 2.74570304 | 3.67784674 | true |
 | arima-111 | 3.44694169 | 4.66211547 | true |
 | sarima-101-010 | 1.70594491 | 2.27617711 | true |
+
+### Remaining ARIMA measurements
+| Model | MAE | RMSE | Optimizer converged |
+|---|---:|---:|---|
+| arima-211 | 3.42059433 | 4.62695903 | true |
+| arima-201 | 3.82301171 | 5.06843975 | true |
+| sarima-101-100 | 2.13723251 | 2.82288611 | true |
+
+All nine ARIMA outcomes archived. 19/36 screens measured. Provisional finalists: S05: arima-101, arima-211; S06: arimax-101, arimax-111; S07: sarima-101-010, sarima-101-100. Preserve capped-fit flags in comparisons.

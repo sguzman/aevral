@@ -84,3 +84,6 @@ S05–S07 nine conditional ARIMA/ARIMAX/SARIMA configurations implemented; bound
 
 ## C005 phase 6
 All nine ARIMA CI jobs 45900629055 passed. Archived six outcomes and 282 records, 16/36 measured total. Remaining three jobs (arima-211, arima-201, sarima-101-100) need ingestion, check registry for existing IDs. ARIMAX111 hit optimizer cap; recorded as bounded approximate fit, not converged. Next archive remaining three then S08–S11. No new data.
+
+## C005 phase 7
+Remaining three ARIMA outcomes archived from CI 45900629055, 141 records. 19/36 measured. Provisional finalists S05: arima-101, arima-211; S06: arimax-101, arimax-111; S07: sarima-101-010, sarima-101-100. Next implement S08 additive ETS/Holt-Winters and S09 harmonic regression with AR errors, then S10–S11 genuine Kalman state-space, S12 regime switching, S13 GARCH. No new data.
