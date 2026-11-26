@@ -1,8 +1,8 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
-    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate")){
-        if let Err(e)=audit(&args[2..],args[1]=="validate"){eprintln!("{e}");std::process::exit(1)}
+    if matches!(args.get(1).map(String::as_str),Some("audit"|"validate"|"windows")){
+        if let Err(e)=audit(&args[2..],&args[1]){eprintln!("{e}");std::process::exit(1)}
         return
     }
     if std::env::args().nth(1).as_deref() != Some("smoke") {
@@ -34,14 +34,14 @@ fn main() {
     if !after.is_finite() || after >= before { std::process::exit(1); }
 }
 
-fn audit(args:&[String],validate:bool)->Result<(),String>{
+fn audit(args:&[String],mode:&str)->Result<(),String>{
     use aevral::weather::{Archive,minute,examples};
     use std::io::BufReader;
     if args.len()!=3{return Err("Usage: aevral audit FIRST_YEAR LAST_YEAR DATA_DIR".into())}
     let first=args[0].parse::<i64>().map_err(|e|e.to_string())?;
     let last=args[1].parse::<i64>().map_err(|e|e.to_string())?;
     if first<2000||last>2025||first>last{return Err("invalid year range".into())}
-    if validate && last>2022{return Err("validation must not open locked test years".into())}
+    if mode!="audit" && last>2022{return Err("validation must not open locked test years".into())}
     let mut a=Archive::default();
     for y in first..=last{
         let p=std::path::Path::new(&args[2]).join(format!("SEA-{y}.csv"));
@@ -51,10 +51,12 @@ fn audit(args:&[String],validate:bool)->Result<(),String>{
     if a.is_empty(){return Err("empty archive".into())}
     let start=minute(&format!("{first}-01-01 00:00"))?+60;
     let end=minute(&format!("{}-01-01 00:00",last+1))?-60;
-    let (rows,report)=examples(&a.hourly(start,end),start);
+    let bins=a.hourly(start,end);
+    if mode=="windows"{return aevral::windows::run(&bins,start)}
+    let (rows,report)=examples(&bins,start);
     println!("KSEA UTC strict-window audit; years={first}..={last}");
     println!("unique_reports={} duplicate_rows={}",a.len(),a.duplicates);
     println!("{report:#?}");
     if report.eligible==0{return Err("no complete forecasting examples".into())}
-    if validate {aevral::benchmark::run(&rows)?;} Ok(())
+    if mode=="validate" {aevral::benchmark::run(&rows)?;} Ok(())
 }
