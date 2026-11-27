@@ -96,6 +96,35 @@ pub fn run_native_deterministic(c:Candidate,f:&super::PreparedFold,rows:&[&Train
         _=>Err("C012 configuration not in native deterministic backend".into())
     }
 }
+/// Common C012 execution gate. Promotion membership is separately enforced in the CI matrix.
+pub fn run(data:&std::path::Path,fold:&str,output:&std::path::Path,id:&str,rung:Rung,seed:u64)->Result<(),String>{
+ use super::{Fold,collect,load_bins,representation};
+ use crate::benchmark::Metrics;
+ use std::io::{BufWriter,Write};
+ let c=request(id,rung,fold,seed)?;let fold_def=Fold::development(fold)?;
+ let(first,bins)=load_bins(data,fold_def)?;let f=collect(&bins,first,fold_def)?;representation::verify(&f,&bins,first)?;
+ let(n,m,baseline)=match fold{"2019"=>(121849,7455,1.88752763),"2020"=>(129327,7543,2.07087759),"2021"=>(136893,7501,2.14898785),"2022"=>(144417,7639,2.10544725),_=>return Err("annual folds only".into())};
+ if(f.train.len(),f.eval.len())!=(n,m){return Err("frozen cohort mismatch".into())}
+ let mut daily=Metrics::default();for r in &f.eval{daily.add(&r.target,&r.input.recent)}
+ if(daily.mae()-baseline).abs()>1e-6{return Err("daily baseline mismatch".into())}
+ let dir=output.parent().filter(|p|!p.as_os_str().is_empty()).ok_or("output must have a parent directory")?;
+ std::fs::create_dir_all(dir).map_err(|e|e.to_string())?;
+ let rows=subset(&f.train,rung)?;
+ representation::origins(&dir.join("train-origins.txt"),f.train.iter().map(|r|r.input.origin))?;
+ representation::origins(&dir.join("matched-origins.txt"),f.eval.iter().map(|r|r.input.origin))?;
+ representation::origins(&dir.join("fit-origins.txt"),rows.iter().map(|r|r.input.origin))?;
+ println!("cohort,{fold},{n},{m},{},{}",f.possible,f.temperature_complete);
+ println!("scales,{fold},{:?}",f.scales);println!("baseline,{fold},daily,{:.8},{:.8}",daily.mae(),daily.rmse());
+ println!("optimization-request,{fold},{id},{seed},{rung:?},{},{},{}",rows.len(),c.track,c.configuration);
+ if c.stochastic{super::neural::optimization::evaluate(c,&f,&rows,seed,output,first,&bins)?;}
+ else{
+  let mut out=BufWriter::new(std::fs::File::create(output).map_err(|e|e.to_string())?);
+  writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
+  run_native_deterministic(c,&f,&rows,&mut out)?;out.flush().map_err(|e|e.to_string())?;
+  println!("optimization-natural,{fold},{id},{},{m},{m}",f.possible);
+ }
+ println!("optimization-end,{fold},{id},{seed},{rung:?}");Ok(())
+}
 #[cfg(test)]
 mod tests{
  use super::*;

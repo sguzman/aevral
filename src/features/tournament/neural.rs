@@ -123,4 +123,4 @@ mod tests{
 
 pub mod strategy;
 
-mod optimization;
+pub(super) mod optimization;

@@ -1,6 +1,8 @@
 //! C012 neural configuration and training, preserving the existing Dense and N-HiTS backbones.
 use super::{Adam,D,Y,TrainingRow,Rng,guard,Structured};
-use super::super::{optimization::{Candidate,Family,early_split},OriginInput};
+use super::super::{optimization::{Candidate,Family,early_split},OriginInput,PreparedFold,representation};
+use crate::covariates::Weather;
+use std::path::Path;
 use crate::dense::Dense;
 use std::time::Instant;
 
@@ -74,6 +76,39 @@ pub(super) fn train(c:Candidate,rows:&[&TrainingRow],seed:u64,now:Instant,probe:
   }else{a.selected_epoch=e+1;}
  }
  if let Some(b)=best{model=b;}Ok((model,a))
+}
+/// Preflight uses only selected training examples. No scored model is fitted until it passes.
+pub(in crate::features::tournament) fn evaluate(c:Candidate,f:&PreparedFold,rows:&[&TrainingRow],seed:u64,output:&Path,first:i64,bins:&[Option<Weather>])->Result<(),String>{
+ let id=f.fold.id;let label=c.id;let cfg=config(c)?;let n=rows.len();let m=f.eval.len();
+ let now=Instant::now();let p=n.min(128);let small:Vec<_>=(0..p).map(|i|rows[i*n/p]).collect();
+ let params=Backbone::new(c.family,seed)?.parameters();
+ let workspace=8*(20*params+65536+4*n+f.possible*(Y*2+2)+64*cfg.batch);
+ println!("optimization-neural-config,{id},{label},{seed},{n},{},{},{},{},{},{},{},{params},{workspace}",cfg.epochs,cfg.lr,cfg.batch,cfg.sgd,cfg.cosine,cfg.decay,cfg.dropout,cfg.stop);
+ macro_rules! block{($reason:expr)=>{{println!("blocked,{id},{label},{}",$reason);return Ok(())}}}
+ macro_rules! guarded{($e:expr)=>{match $e{Ok(v)=>v,Err(e)if e=="runtime guard"=>{block!(e)},Err(e)=>return Err(e)}}}
+ if workspace>2_000_000_000{block!("preflight workspace guard")}
+ let timer=Instant::now();let(probe,_)=guarded!(train(c,&small,seed,now,true,None));let fp=timer.elapsed().as_secs_f64();
+ let q=n.min(32);let timer=Instant::now();for i in 0..q{std::hint::black_box(guarded!(probe.predict(input(c.family,&rows[i*n/q].input))));}
+ let pp=timer.elapsed().as_secs_f64();drop(probe);
+ let estimate=fp*n as f64*cfg.epochs as f64/p as f64+pp*(if c.family==Family::Suffix24{m+f.possible}else{m})as f64/q as f64;
+ println!("optimization-neural-preflight,{id},{label},{seed},{p},{q},{fp:.6},{pp:.6},{estimate:.6}");
+ if 2.*estimate+180.>1400.{block!("preflight runtime guard")}
+ let timer=Instant::now();let(model,a)=guarded!(train(c,rows,seed,now,false,Some(id)));let fit=timer.elapsed().as_secs_f64();
+ let dir=output.parent().ok_or("output directory")?;
+ representation::origins(&dir.join("actual-fit-origins.txt"),rows[..a.fit].iter().map(|r|r.input.origin))?;
+ representation::origins(&dir.join("internal-validation-origins.txt"),rows[n-a.val..].iter().map(|r|r.input.origin))?;
+ println!("optimization-training,{id},{label},{seed},{},{},{},{},{},{},{},{}",a.epochs,a.selected_epoch,a.updates,a.examples,a.clips,a.fit,a.val,a.purged);
+ let timer=Instant::now();let mut matched=Vec::with_capacity(m);
+ for r in &f.eval{guarded!(guard(now));matched.push((r.input.origin,r.target,f.restore(guarded!(model.predict(input(c.family,&r.input))))));}
+ let natural=if c.family==Family::Suffix24{Some(guarded!(representation::suffix24_natural(f,first,bins,&matched,|x|{guard(now)?;Ok(f.restore(model.predict(x)?))})))}else{None};
+ let pred=timer.elapsed().as_secs_f64();
+ representation::write_rows(output,id,label,&matched,"")?;
+ if let Some((possible,rows))=natural{
+  representation::origins(&dir.join("natural-origins.txt"),rows.iter().map(|r|r.0))?;
+  representation::write_rows(&dir.join("natural-predictions.csv"),id,label,&rows,"natural-")?;
+  println!("optimization-natural,{id},{label},{possible},{},{m}",rows.len());
+ }else{println!("optimization-natural,{id},{label},{},{m},{m}",f.possible);}
+ println!("optimization-cost,{id},{label},{fit:.6},{pred:.6},{params}");Ok(())
 }
 #[cfg(test)]
 mod tests{

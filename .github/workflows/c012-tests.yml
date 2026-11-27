@@ -15,6 +15,8 @@ on:
       - 'src/adam.rs'
       - 'src/features/tournament/neural.rs'
       - 'src/features/tournament/neural/**'
+      - 'src/features/tournament/representation.rs'
+      - 'src/main.rs'
       - 'campaigns/012-optimization/candidate-grid.csv'
   workflow_dispatch:
 permissions:

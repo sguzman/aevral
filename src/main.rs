@@ -1,6 +1,14 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
+    if args.get(1).map(String::as_str)==Some("optimization"){
+        use aevral::features::tournament::optimization::{run,Rung};
+        if args.len()!=8{eprintln!("Usage: aevral optimization DATA_DIR FOLD OUTPUT.csv CONFIG_ID RUNG SEED");std::process::exit(2)}
+        let rung=Rung::parse(&args[6]).unwrap_or_else(|e|{eprintln!("{e}");std::process::exit(2)});
+        let seed=args[7].parse::<u64>().unwrap_or_else(|_|{eprintln!("invalid seed");std::process::exit(2)});
+        if let Err(e)=run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5],rung,seed){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("representation"){
         if args.len()!=7{eprintln!("Usage: aevral representation DATA_DIR FOLD OUTPUT.csv CONFIG SEED");std::process::exit(2)}
         let seed=args[6].parse::<u64>().unwrap_or(0);

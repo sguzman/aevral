@@ -102,7 +102,7 @@ fn encode(recipe:Recipe,mut x:Vec<f64>,raw:&[Option<f64>],scales:&[ExtraScale])-
   if let Recipe::Select(k,_)=recipe{if selected.len()!=k||selected.iter().any(|&i|i>=D)||selected.windows(2).any(|w|w[0]>=w[1])||!raw.is_empty()||!scales.is_empty(){return Err("invalid selected features".into())}let v:Vec<_>=selected.iter().map(|&i|x[i]).collect();if v.iter().any(|v|!v.is_finite()){return Err("nonfinite selected input".into())}Ok(v)}else{encode(recipe,x.to_vec(),raw,scales)}
  }
 
-fn verify(f:&PreparedFold,bins:&[Bin],first:i64)->Result<(),String>{
+pub(super) fn verify(f:&PreparedFold,bins:&[Bin],first:i64)->Result<(),String>{
  let(mut ti,mut ei)=(0,0);let mut possible=0;
  for i in H-1..bins.len().saturating_sub(Y){let origin=first+i as i64*60;let Some(split)=f.fold.partition(origin)else{continue};if split==Split::Validation{possible+=1;}
   let Some(x)=base(&bins[..=i],origin,H,&f.scales)else{continue};let Some(y)=target(&bins[i+1..i+1+Y])else{continue};
@@ -119,7 +119,7 @@ fn fit(x:&[Vec<f64>],y:&[[f64;Y]],seed:u64,epochs:usize,now:Instant,log:Option<(
  for epoch in 1..=epochs{rng.shuffle(&mut order);let mut loss=0.;for &i in &order{guard(now)?;loss+=m.adam_step(&x[i],&y[i],&mut opt).0;if !m.finite(){return Err("nonfinite fit".into())}}if !loss.is_finite(){return Err("nonfinite loss".into())}if let Some((id,label))=log{println!("representation-epoch,{id},{label},{seed},{epoch},{:.10}",loss/x.len()as f64);}}Ok(m)
 }
 fn forecast(m:&Dense,x:&[f64],f:&PreparedFold)->Result<[f64;Y],String>{let p:[f64;Y]=m.predict(x).try_into().map_err(|_|"prediction width")?;let p=f.restore(p);if p.iter().any(|v|!v.is_finite()){return Err("nonfinite prediction".into())}Ok(p)}
-fn write_rows(path:&Path,id:&str,label:&str,rows:&[(i64,[f64;Y],[f64;Y])],tag:&str)->Result<Metrics,String>{
+pub(super) fn write_rows(path:&Path,id:&str,label:&str,rows:&[(i64,[f64;Y],[f64;Y])],tag:&str)->Result<Metrics,String>{
  let mut out=BufWriter::new(std::fs::File::create(path).map_err(|e|e.to_string())?);writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
  let year=id.parse::<i64>().map_err(|e|e.to_string())?;let edges=(1..=12).map(|m|minute(&format!("{year}-{m:02}-01 00:00"))).collect::<Result<Vec<_>,_>>()?;
  let mut metric=Metrics::default();let mut months:[Metrics;12]=std::array::from_fn(|_|Metrics::default());
@@ -130,9 +130,22 @@ fn write_rows(path:&Path,id:&str,label:&str,rows:&[(i64,[f64;Y],[f64;Y])],tag:&s
  for(i,m)in months.iter().enumerate(){if m.count>0{println!("{tag}month,{id},{label},{},{},{:.8},{:.8}",i+1,m.count,m.mae(),m.rmse())}}
  Ok(metric)
 }
-fn origins(path:&Path,ts:impl Iterator<Item=i64>)->Result<(),String>{let mut w=BufWriter::new(std::fs::File::create(path).map_err(|e|e.to_string())?);for t in ts{writeln!(w,"{t}").map_err(|e|e.to_string())?;}w.flush().map_err(|e|e.to_string())}
+pub(super) fn origins(path:&Path,ts:impl Iterator<Item=i64>)->Result<(),String>{let mut w=BufWriter::new(std::fs::File::create(path).map_err(|e|e.to_string())?);for t in ts{writeln!(w,"{t}").map_err(|e|e.to_string())?;}w.flush().map_err(|e|e.to_string())}
 fn coverage(recipe:Recipe,bins:&[Bin],first:i64,ts:impl Iterator<Item=i64>,d:usize)->Result<(usize,usize,Vec<usize>),String>{
  let(mut n,mut all)=(0,0);let mut seen=vec![0;d];for t in ts{let i=index(first,t,bins.len())?;let raw=recipe.extras(&bins[..=i],t)?;if raw.len()!=d{return Err("coverage dimension".into())}n+=1;all+=usize::from(raw.iter().all(Option::is_some));for (k,v) in raw.iter().enumerate(){seen[k]+=usize::from(v.is_some());}}Ok((n,all,seen))
+}
+/// C012 reuses the C011 causal suffix constructor and exact natural-cohort semantics.
+pub(super) fn suffix24_natural(f:&PreparedFold,first:i64,bins:&[Bin],matched:&[(i64,[f64;Y],[f64;Y])],mut predict:impl FnMut(&[f64])->Result<[f64;Y],String>)->Result<(usize,Vec<(i64,[f64;Y],[f64;Y])>),String>{
+ let mut natural=Vec::new();let(mut possible,mut overlap)=(0,0);
+ for i in 23..bins.len().saturating_sub(Y){
+  let origin=first+i as i64*60;if f.fold.partition(origin)!=Some(Split::Validation){continue}possible+=1;
+  let Some(x)=base(&bins[..=i],origin,24,&f.scales)else{continue};
+  let Some(y)=target(&bins[i+1..i+1+Y])else{continue};
+  let p=predict(&x)?;
+  if let Ok(j)=matched.binary_search_by_key(&origin,|v|v.0){if matched[j].1!=y||matched[j].2!=p{return Err("natural overlap parity".into())}overlap+=1;}
+  natural.push((origin,y,p));
+ }
+ if overlap!=matched.len()||matched.len()!=f.eval.len(){return Err("natural missing matched origins".into())}Ok((possible,natural))
 }
 pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),String>{
  if ![42,123,2026].contains(&seed){return Err("seed outside frozen recipe".into())}let recipe=Recipe::parse(label)?;let now=Instant::now();let fold=Fold::development(id)?;let(first,bins)=load_bins(data,fold)?;let f=collect(&bins,first,fold)?;verify(&f,&bins,first)?;
