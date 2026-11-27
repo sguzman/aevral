@@ -1,0 +1,81 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.26s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+representation-start,2020,pressure-tendency-short,2026
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+representation-scale,2020,pressure-tendency-short,0,0.0025491613905188303,0.44521670369634003,8192,false
+representation-scale,2020,pressure-tendency-short,1,0.0005925077826611526,0.40292438454910323,8192,false
+representation-scale,2020,pressure-tendency-short,2,0.0005925801191015524,0.34488184645094977,8191,false
+representation-available,2020,pressure-tendency-short,train,129327,129310
+representation-availability,2020,pressure-tendency-short,train,0,129321,6
+representation-availability,2020,pressure-tendency-short,train,1,129321,6
+representation-availability,2020,pressure-tendency-short,train,2,129322,5
+representation-available,2020,pressure-tendency-short,eval,7543,7543
+representation-availability,2020,pressure-tendency-short,eval,0,7543,0
+representation-availability,2020,pressure-tendency-short,eval,1,7543,0
+representation-availability,2020,pressure-tendency-short,eval,2,7543,0
+representation-config,2020,pressure-tendency-short,2026,8192,12,0.001,86,7128,16731728,98304
+representation-preflight,2020,pressure-tendency-short,2026,1.032064,0.008955,0.000302,7.992000
+representation-epoch,2020,pressure-tendency-short,2026,1,0.1463413002
+representation-epoch,2020,pressure-tendency-short,2026,2,0.1170194450
+representation-epoch,2020,pressure-tendency-short,2026,3,0.1078502450
+representation-epoch,2020,pressure-tendency-short,2026,4,0.1048002521
+representation-epoch,2020,pressure-tendency-short,2026,5,0.1025384838
+representation-epoch,2020,pressure-tendency-short,2026,6,0.1002359629
+representation-epoch,2020,pressure-tendency-short,2026,7,0.0977116990
+representation-epoch,2020,pressure-tendency-short,2026,8,0.0972285697
+representation-epoch,2020,pressure-tendency-short,2026,9,0.0965993703
+representation-epoch,2020,pressure-tendency-short,2026,10,0.0959539847
+representation-epoch,2020,pressure-tendency-short,2026,11,0.0957487261
+representation-epoch,2020,pressure-tendency-short,2026,12,0.0942027604
+score,2020,pressure-tendency-short,7543,1.43114256,1.91795745
+lead,2020,pressure-tendency-short,1,0.79908006,1.05862463
+lead,2020,pressure-tendency-short,2,0.95392266,1.26745865
+lead,2020,pressure-tendency-short,3,1.04964790,1.40134954
+lead,2020,pressure-tendency-short,4,1.13127939,1.51758365
+lead,2020,pressure-tendency-short,5,1.19204847,1.60034771
+lead,2020,pressure-tendency-short,6,1.24050451,1.65535695
+lead,2020,pressure-tendency-short,7,1.26536936,1.69138659
+lead,2020,pressure-tendency-short,8,1.33411265,1.77838207
+lead,2020,pressure-tendency-short,9,1.39513399,1.85382919
+lead,2020,pressure-tendency-short,10,1.41915745,1.87632447
+lead,2020,pressure-tendency-short,11,1.46238007,1.93079292
+lead,2020,pressure-tendency-short,12,1.47491208,1.94854125
+lead,2020,pressure-tendency-short,13,1.50128381,1.98465631
+lead,2020,pressure-tendency-short,14,1.51685382,2.00406902
+lead,2020,pressure-tendency-short,15,1.53694665,2.02701460
+lead,2020,pressure-tendency-short,16,1.57791601,2.07465927
+lead,2020,pressure-tendency-short,17,1.59255578,2.08947954
+lead,2020,pressure-tendency-short,18,1.62833611,2.12817446
+lead,2020,pressure-tendency-short,19,1.64988373,2.15276514
+lead,2020,pressure-tendency-short,20,1.68310453,2.20246671
+lead,2020,pressure-tendency-short,21,1.70049570,2.22945992
+lead,2020,pressure-tendency-short,22,1.73552589,2.27802333
+lead,2020,pressure-tendency-short,23,1.73751817,2.28294868
+lead,2020,pressure-tendency-short,24,1.76945263,2.31613501
+month,2020,pressure-tendency-short,1,640,1.48763212,1.96891762
+month,2020,pressure-tendency-short,2,594,1.21318622,1.58359090
+month,2020,pressure-tendency-short,3,729,1.47619685,1.90454978
+month,2020,pressure-tendency-short,4,507,1.22789606,1.56171817
+month,2020,pressure-tendency-short,5,625,1.70964646,2.37647538
+month,2020,pressure-tendency-short,6,699,1.33879572,1.86949407
+month,2020,pressure-tendency-short,7,622,1.43084579,1.91945039
+month,2020,pressure-tendency-short,8,715,1.52910061,2.02764681
+month,2020,pressure-tendency-short,9,345,1.29062861,1.72739552
+month,2020,pressure-tendency-short,10,733,1.42024520,1.84881524
+month,2020,pressure-tendency-short,11,717,1.46444717,1.97783806
+month,2020,pressure-tendency-short,12,617,1.45825748,1.95248263
+representation-natural,2020,pressure-tendency-short,8761,7543,7543
+representation-fit,2020,pressure-tendency-short,2026,6.382485,0.123283
+	Exit status: 0
+representation-rescore,2020,pressure-tendency-short,matched,7543,1.43114256,1.91795745,pass
+representation-end,2020,pressure-tendency-short,2026
+0fd50cf46ed35a2a39bae594bc78f1d4aaaaa3fe8b40a765036ad166e9c9b6c1  fit-origins.txt
+68b396044cee8a7916c183e98121674b2a5edc66288427fbe795d6650871cc47  matched-origins.txt
+ba41149619be599785de799c6111667f2509d8905b892ef07c64992ac5265469  metrics.txt
+a4ef7c9150d3963099de94cbd555f09ad7945c22e9b363e36034487eee238b0a  predictions.csv.gz
+9c53ed36b718b14e34fa2c55e532c33c5be5bb34de1127c28fd6439f2932f2f3  rescore.txt
+1248074a85194b934028503a58b0ac9333775d746bf5e7eb3120ffedbb70c74b  resources.txt
+ff0b1d161d3acdefdee7bef04b1de25ee700a45cd6930e3afa05d48f44241624  train-origins.txt
