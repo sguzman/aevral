@@ -1,14 +1,14 @@
 //! C009 shared frozen training protocol; full evaluation only after guard checks.
 use super::{load,score,Fold,TrainingRow,D,Y};
 use super::neighbors::{subset,Cached};
-use crate::{adam::Adam,dense::Dense,benchmark::Metrics};
+use crate::{adam::Adam,dense::Dense,benchmark::Metrics,recurrent::{Recurrent,Kind}};
 use std::{io::{BufWriter,Write},path::Path,time::Instant};
 mod residual;
 use residual::Residual;
 const BUDGET:usize=8192;
 const EPOCHS:usize=12;
 const GUARD:f64=1400.;
-enum Model{Dense(Dense),Residual(Residual)}
+enum Model{Dense(Dense),Residual(Residual),Recurrent(Recurrent)}
 impl Model{
     fn new(label:&str,seed:u64)->Result<Self,String>{
         Ok(match label{
@@ -18,18 +18,27 @@ impl Model{
             "resmlp-w64-b2"=>Self::Residual(Residual::new(D,64,2,Y,seed)),
             "resmlp-w128-b2"=>Self::Residual(Residual::new(D,128,2,Y,seed)),
             "resmlp-w64-b4"=>Self::Residual(Residual::new(D,64,4,Y,seed)),
+            "rnn-p6-h16"=>Self::Recurrent(Recurrent::c009(Kind::Rnn,6,seed)),
+            "rnn-p3-h16"=>Self::Recurrent(Recurrent::c009(Kind::Rnn,3,seed)),
+            "rnn-p1-h16"=>Self::Recurrent(Recurrent::c009(Kind::Rnn,1,seed)),
+            "gru-p6-h16"=>Self::Recurrent(Recurrent::c009(Kind::Gru,6,seed)),
+            "gru-p3-h16"=>Self::Recurrent(Recurrent::c009(Kind::Gru,3,seed)),
+            "gru-p1-h16"=>Self::Recurrent(Recurrent::c009(Kind::Gru,1,seed)),
+            "lstm-p6-h16"=>Self::Recurrent(Recurrent::c009(Kind::Lstm,6,seed)),
+            "lstm-p3-h16"=>Self::Recurrent(Recurrent::c009(Kind::Lstm,3,seed)),
+            "lstm-p1-h16"=>Self::Recurrent(Recurrent::c009(Kind::Lstm,1,seed)),
             _=>return Err("unknown C009 recipe".into())
         })
     }
-    fn parameters(&self)->usize{match self{Self::Dense(m)=>m.parameters(),Self::Residual(m)=>m.parameters()}}
-    fn finite(&self)->bool{match self{Self::Dense(m)=>m.finite(),Self::Residual(m)=>m.finite()}}
+    fn parameters(&self)->usize{match self{Self::Dense(m)=>m.parameters(),Self::Residual(m)=>m.parameters(),Self::Recurrent(m)=>m.parameters()}}
+    fn finite(&self)->bool{match self{Self::Dense(m)=>m.finite(),Self::Residual(m)=>m.finite(),Self::Recurrent(m)=>m.finite()}}
     fn predict(&self,x:&[f64;D])->Result<[f64;Y],String>{
-        let v=match self{Self::Dense(m)=>m.predict(x),Self::Residual(m)=>m.predict(x)};
+        let v=match self{Self::Dense(m)=>m.predict(x),Self::Residual(m)=>m.predict(x),Self::Recurrent(m)=>m.predict(x).to_vec()};
         let y:[f64;Y]=v.try_into().map_err(|_|"output shape")?;
         if y.iter().any(|v|!v.is_finite()||v.abs()>1e6){return Err("numerical prediction bound".into())}Ok(y)
     }
     fn step(&mut self,r:&TrainingRow,opt:&mut Adam)->Result<(f64,bool),String>{
-        let(loss,clip)=match self{Self::Dense(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Residual(m)=>m.step(&r.input.x,&r.normalized_target,opt)};
+        let(loss,clip)=match self{Self::Dense(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Residual(m)=>m.step(&r.input.x,&r.normalized_target,opt),Self::Recurrent(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt)};
         if !loss.is_finite()||!self.finite(){return Err("nonfinite training".into())}Ok((loss,clip))
     }
 }
@@ -60,8 +69,8 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),Strin
     macro_rules! block{($reason:expr)=>{{println!("blocked,{id},{label},{}",$reason);out.flush().map_err(|e|e.to_string())?;return Ok(())}}}
     macro_rules! checked{($e:expr)=>{match $e{Ok(v)=>v,Err(e)=>{block!(e)}}}}
     let rows=subset(&f.train,BUDGET);let n=rows.len();let mut probe=Model::new(label,seed)?;let params=probe.parameters();
-    // Upper bound for these dense/residual recipes: weights + two Adam buffers +
-    // gradients, transient activations and scratch, row refs, order and predictions.
+    // Upper bound for dense/residual and compact recurrent recipes: weights + two Adam buffers +
+    // gradients, transient activations (at most 73 frames × 112 doubles) and scratch, row refs, order and predictions.
     let workspace=8*(16*params+65536+4*n+m*(Y+2));
     println!("neural-config,{id},{label},{seed},{n},{EPOCHS},0.001,{params},{workspace}");
     if workspace>2_000_000_000{block!("preflight workspace guard")}
