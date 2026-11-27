@@ -1,6 +1,6 @@
 # C009 screen results
 
-Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Adam .001. C003 full-training MLP64 2019 MAE 1.32617622 (different training budget). 21 of 42 screened (21 measured, 0 blocked). Rust and historical architecture regression CI passed. No annual ranking yet.
+Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Adam .001. C003 full-training MLP64 2019 MAE 1.32617622 (different training budget). 32 of 42 screened (32 measured, 0 blocked). Rust and historical architecture regression CI passed. No annual ranking yet.
 
 | Recipe | MAE °C | RMSE °C | Parameters | Fit seconds | Predict seconds | Clipped updates |
 |---|---:|---:|---:|---:|---:|---:|
@@ -41,3 +41,21 @@ Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Ada
 | seq2seq-h32 | 1.84231475 | 2.38104296 | measured |
 
 [CI](https://github.com/sguzman/aevral/actions/runs/46036072293), 155 tests; legacy regression and Rust CI passed.
+
+## N09–N13 structured neural screens
+
+| Recipe | MAE °C | RMSE °C | Status |
+|---|---:|---:|---|
+| nbeats-w64-b4 | 1.41791905 | 1.87640895 | measured |
+| nhits-w64 | 1.42065820 | 1.88590767 | measured |
+| nbeats-w64-b2 | 1.42066476 | 1.88201892 | measured |
+| nbeats-w128-b2 | 1.44135567 | 1.90876908 | measured |
+| nhits-w128 | 1.44186891 | 1.90523601 | measured |
+| tide-w64 | 1.47447075 | 1.92984148 | measured |
+| tide-w128 | 1.48508979 | 1.93877664 | measured |
+| dlinear-k7 | 1.54565747 | 2.03441421 | measured |
+| nlinear-lead-bias | 1.55929609 | 2.05906489 | measured |
+| nlinear-direct | 1.55965220 | 2.05920005 | measured |
+| dlinear-k25 | 1.57713214 | 2.07967357 | measured |
+
+[CI](https://github.com/sguzman/aevral/actions/runs/46036545583), 157 tests; Rust CI passed.
