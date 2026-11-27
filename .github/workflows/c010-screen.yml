@@ -1,4 +1,4 @@
-name: C010 F01-F04 forecast strategies
+name: C010 F05-F07 target transformations
 on:
   push:
     paths:
@@ -19,9 +19,9 @@ jobs:
       - id: matrix
         shell: bash
         run: |
-          expected=8
+          expected=6
           file="campaigns/010-forecast-strategy/screen-matrix.csv"
-          matrix=$(awk -F, '$1 ~ /^F0[1-4]$/' "$file" | jq -Rc 'split(",") | {method:.[0],config:.[1],seed:.[5],fold:.[6]}' | jq -sc '{include:.}')
+          matrix=$(awk -F, '$1 ~ /^F0[5-7]$/' "$file" | jq -Rc 'split(",") | {method:.[0],config:.[1],seed:.[5],fold:.[6]}' | jq -sc '{include:.}')
           test "$(jq '.include|length' <<< "$matrix")" -eq "$expected"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
   evaluate:
@@ -51,7 +51,7 @@ jobs:
         run: |
           cargo test --locked --release
           cargo build --locked --release
-      - name: Evaluate frozen annual recipe
+      - name: Evaluate frozen screen recipe
         run: bash scripts/c010-screen.sh
       - uses: actions/upload-artifact@v4
         if: always()

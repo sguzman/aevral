@@ -23,6 +23,10 @@ if grep -q "^score,$FOLD,$CONFIG," "$dir/metrics.txt"; then
   test "$(grep -c "^strategy-config,$FOLD,$CONFIG,$SEED,8192,12," "$dir/metrics.txt")" -eq 1
   test "$(grep -c "^strategy-epoch,$FOLD,$CONFIG,$SEED," "$dir/metrics.txt")" -eq 12
   test "$(grep -c "^strategy-fit,$FOLD,$CONFIG,$SEED," "$dir/metrics.txt")" -eq 1
+  if [[ "$CONFIG" == correction-* ]]; then
+    test "$(grep -c "^strategy-base-epoch,$FOLD,$CONFIG,$SEED," "$dir/metrics.txt")" -eq 12
+    awk -F, -v f="$FOLD" -v m="$CONFIG" -v s="$SEED" '$1=="strategy-split" && $2==f && $3==m && $4==s {if($5<=0||$6!=2048||$5+$7!=6144||$8!=12*($5+$6)) exit 1; n++} END{exit n!=1}' "$dir/metrics.txt"
+  fi
   # Validate individual prediction rows: sorted contiguous leads, unique origins,
   # exact model/fold, finite Celsius values, and exact number of origins.
   awk -F, -v f="$FOLD" -v m="$CONFIG" -v n="$origins" '
