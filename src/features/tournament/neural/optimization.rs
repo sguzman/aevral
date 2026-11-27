@@ -83,7 +83,7 @@ pub(in crate::features::tournament) fn evaluate(c:Candidate,f:&PreparedFold,rows
  let now=Instant::now();let p=n.min(128);let small:Vec<_>=(0..p).map(|i|rows[i*n/p]).collect();
  let params=Backbone::new(c.family,seed)?.parameters();
  let workspace=8*(20*params+65536+4*n+f.possible*(Y*2+2)+64*cfg.batch);
- println!("optimization-neural-config,{id},{label},{seed},{n},{},{},{},{},{},{},{},{params},{workspace}",cfg.epochs,cfg.lr,cfg.batch,cfg.sgd,cfg.cosine,cfg.decay,cfg.dropout,cfg.stop);
+ println!("optimization-neural-config,{id},{label},{seed},{n},{},{},{},{},{},{},{},{},{params},{workspace}",cfg.epochs,cfg.lr,cfg.batch,cfg.sgd,cfg.cosine,cfg.decay,cfg.dropout,cfg.stop);
  macro_rules! block{($reason:expr)=>{{println!("blocked,{id},{label},{}",$reason);return Ok(())}}}
  macro_rules! guarded{($e:expr)=>{match $e{Ok(v)=>v,Err(e)if e=="runtime guard"=>{block!(e)},Err(e)=>return Err(e)}}}
  if workspace>2_000_000_000{block!("preflight workspace guard")}

@@ -1,0 +1,20 @@
+name: C012 pinned LightGBM smoke
+on:
+  push:
+    paths:
+      - '.github/workflows/c012-lightgbm-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+      - name: Pinned LightGBM synthetic check
+        run: |
+          nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
+          nix develop .#boosting --no-update-lock-file --command target/release/aevral upstream-smoke lightgbm
+          git diff --exit-code -- flake.lock
