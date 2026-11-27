@@ -117,3 +117,6 @@ Annual finalist workflow and grouped runner committed. 24 frozen configs × 3 fo
 
 ## C005 phase 17 (annual ingestion)
 CI 45914280432: all 15 jobs succeeded. Archived 5 additional jobs, 26 outcomes, 1825 log records. 26/72 additional annual outcomes durable. Registry and variance.csv updated; continue ingestion by unarchived job IDs, then pooled ranking and closure audit. No new data.
+
+## C005 phase 18 (annual ingestion)
+CI 45914280432: all 15 jobs succeeded. Archived 5 additional jobs, 24 outcomes, 1133 log records. 50/72 additional annual outcomes durable. Registry and variance.csv updated; continue ingestion by unarchived job IDs, then pooled ranking and closure audit. No new data.

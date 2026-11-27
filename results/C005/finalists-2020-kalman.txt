@@ -1,0 +1,187 @@
+test result: ok. 76 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+finalist-start,2020,struct-season
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+kalman-config,2020,struct-season,1024,36,3,3,0.01,1,0,0.1,-5.274771774713e-1,0.129741
+score,2020,struct-season,7543,1.75782036,2.33007854,0.086
+lead,2020,struct-season,1,0.65357654,0.86656957
+lead,2020,struct-season,2,0.94685203,1.24240464
+lead,2020,struct-season,3,1.19999099,1.55994037
+lead,2020,struct-season,4,1.40282723,1.81081176
+lead,2020,struct-season,5,1.55579074,2.00308584
+lead,2020,struct-season,6,1.66520912,2.14546958
+lead,2020,struct-season,7,1.73273220,2.23709678
+lead,2020,struct-season,8,1.76576895,2.29769483
+lead,2020,struct-season,9,1.79253380,2.33639429
+lead,2020,struct-season,10,1.81120315,2.36889277
+lead,2020,struct-season,11,1.83273710,2.39773517
+lead,2020,struct-season,12,1.86251584,2.42886355
+lead,2020,struct-season,13,1.89214132,2.46103336
+lead,2020,struct-season,14,1.92172092,2.49598740
+lead,2020,struct-season,15,1.94889306,2.53169874
+lead,2020,struct-season,16,1.97640887,2.56419495
+lead,2020,struct-season,17,1.99901526,2.59261605
+lead,2020,struct-season,18,2.01958156,2.61651528
+lead,2020,struct-season,19,2.03293477,2.63090725
+lead,2020,struct-season,20,2.03692535,2.63940198
+lead,2020,struct-season,21,2.03392528,2.63845187
+lead,2020,struct-season,22,2.02959239,2.63339899
+lead,2020,struct-season,23,2.02711916,2.63689008
+lead,2020,struct-season,24,2.04769295,2.66468639
+month,2020,struct-season,1,640,1.80459315,2.31835901
+month,2020,struct-season,2,594,1.49685535,1.96268032
+month,2020,struct-season,3,729,1.56544973,2.02492446
+month,2020,struct-season,4,507,1.65486381,2.11757547
+month,2020,struct-season,5,625,2.07889905,2.95369875
+month,2020,struct-season,6,699,1.72086686,2.27747832
+month,2020,struct-season,7,622,1.89018079,2.47003426
+month,2020,struct-season,8,715,1.84102161,2.38786446
+month,2020,struct-season,9,345,1.74130035,2.23427106
+month,2020,struct-season,10,733,1.64501019,2.08929913
+month,2020,struct-season,11,717,1.82975440,2.51507922
+month,2020,struct-season,12,617,1.81886989,2.40033026
+Command being timed: "target/release/aevral kalman data/raw/ksea 2020 results-run/struct-season/predictions.csv struct-season"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.84
+Maximum resident set size (kbytes): 332336
+finalist-end,2020,struct-season
+finalist-start,2020,struct-level
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+kalman-config,2020,struct-level,1024,12,2,1,0.01,1,0,0,-1.297508976161e-1,0.023272
+score,2020,struct-level,7543,2.90975255,3.88144865,0.066
+lead,2020,struct-level,1,0.95492733,1.27027258
+lead,2020,struct-level,2,1.45641617,1.91504649
+lead,2020,struct-level,3,1.92492788,2.50672938
+lead,2020,struct-level,4,2.34789168,3.03782455
+lead,2020,struct-level,5,2.73238720,3.51093315
+lead,2020,struct-level,6,3.06357345,3.92502867
+lead,2020,struct-level,7,3.33933979,4.27316272
+lead,2020,struct-level,8,3.55943967,4.55273175
+lead,2020,struct-level,9,3.72394609,4.76748534
+lead,2020,struct-level,10,3.83972333,4.91777649
+lead,2020,struct-level,11,3.90337461,4.99935358
+lead,2020,struct-level,12,3.91638532,5.01325506
+lead,2020,struct-level,13,3.87669779,4.96122059
+lead,2020,struct-level,14,3.79748157,4.85084768
+lead,2020,struct-level,15,3.67228425,4.68430270
+lead,2020,struct-level,16,3.50448647,4.46564147
+lead,2020,struct-level,17,3.29429269,4.19786254
+lead,2020,struct-level,18,3.05985292,3.90223433
+lead,2020,struct-level,19,2.80180776,3.58424035
+lead,2020,struct-level,20,2.54468635,3.26644910
+lead,2020,struct-level,21,2.30218976,2.97623123
+lead,2020,struct-level,22,2.12067526,2.75301619
+lead,2020,struct-level,23,2.03543699,2.64452468
+lead,2020,struct-level,24,2.06183686,2.68277811
+month,2020,struct-level,1,640,1.76725213,2.29593496
+month,2020,struct-level,2,594,2.20736107,2.91363058
+month,2020,struct-level,3,729,2.49456264,3.28287835
+month,2020,struct-level,4,507,3.59473502,4.57105335
+month,2020,struct-level,5,625,3.49297826,4.48736477
+month,2020,struct-level,6,699,3.37014362,4.24389166
+month,2020,struct-level,7,622,4.23417569,5.33197316
+month,2020,struct-level,8,715,4.18941880,5.22325057
+month,2020,struct-level,9,345,3.61986450,4.72421632
+month,2020,struct-level,10,733,2.26416790,2.91200875
+month,2020,struct-level,11,717,2.06397488,2.78040522
+month,2020,struct-level,12,617,2.12105508,2.83254280
+Command being timed: "target/release/aevral kalman data/raw/ksea 2020 results-run/struct-level/predictions.csv struct-level"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.71
+Maximum resident set size (kbytes): 332460
+finalist-end,2020,struct-level
+finalist-start,2020,dlm-harmonic
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+kalman-config,2020,dlm-harmonic,1024,36,3,3,0.01,1,0,0.1,-5.274771774713e-1,0.215534
+score,2020,dlm-harmonic,7543,1.75782036,2.33007854,0.106
+lead,2020,dlm-harmonic,1,0.65357654,0.86656957
+lead,2020,dlm-harmonic,2,0.94685203,1.24240464
+lead,2020,dlm-harmonic,3,1.19999099,1.55994037
+lead,2020,dlm-harmonic,4,1.40282723,1.81081176
+lead,2020,dlm-harmonic,5,1.55579074,2.00308584
+lead,2020,dlm-harmonic,6,1.66520912,2.14546958
+lead,2020,dlm-harmonic,7,1.73273220,2.23709678
+lead,2020,dlm-harmonic,8,1.76576895,2.29769483
+lead,2020,dlm-harmonic,9,1.79253380,2.33639429
+lead,2020,dlm-harmonic,10,1.81120315,2.36889277
+lead,2020,dlm-harmonic,11,1.83273710,2.39773517
+lead,2020,dlm-harmonic,12,1.86251584,2.42886355
+lead,2020,dlm-harmonic,13,1.89214132,2.46103336
+lead,2020,dlm-harmonic,14,1.92172092,2.49598740
+lead,2020,dlm-harmonic,15,1.94889306,2.53169874
+lead,2020,dlm-harmonic,16,1.97640887,2.56419495
+lead,2020,dlm-harmonic,17,1.99901526,2.59261605
+lead,2020,dlm-harmonic,18,2.01958156,2.61651528
+lead,2020,dlm-harmonic,19,2.03293477,2.63090725
+lead,2020,dlm-harmonic,20,2.03692535,2.63940198
+lead,2020,dlm-harmonic,21,2.03392528,2.63845187
+lead,2020,dlm-harmonic,22,2.02959239,2.63339899
+lead,2020,dlm-harmonic,23,2.02711916,2.63689008
+lead,2020,dlm-harmonic,24,2.04769295,2.66468639
+month,2020,dlm-harmonic,1,640,1.80459315,2.31835901
+month,2020,dlm-harmonic,2,594,1.49685535,1.96268032
+month,2020,dlm-harmonic,3,729,1.56544973,2.02492446
+month,2020,dlm-harmonic,4,507,1.65486381,2.11757547
+month,2020,dlm-harmonic,5,625,2.07889905,2.95369875
+month,2020,dlm-harmonic,6,699,1.72086686,2.27747832
+month,2020,dlm-harmonic,7,622,1.89018079,2.47003426
+month,2020,dlm-harmonic,8,715,1.84102161,2.38786446
+month,2020,dlm-harmonic,9,345,1.74130035,2.23427106
+month,2020,dlm-harmonic,10,733,1.64501019,2.08929913
+month,2020,dlm-harmonic,11,717,1.82975440,2.51507922
+month,2020,dlm-harmonic,12,617,1.81886989,2.40033026
+Command being timed: "target/release/aevral kalman data/raw/ksea 2020 results-run/dlm-harmonic/predictions.csv dlm-harmonic"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.95
+Maximum resident set size (kbytes): 332272
+finalist-end,2020,dlm-harmonic
+finalist-start,2020,dlm-trend-harmonic
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+kalman-config,2020,dlm-trend-harmonic,1024,108,4,4,0.01,1,0.001,0.1,-5.095635498955e-1,0.813147
+score,2020,dlm-trend-harmonic,7543,2.03903638,2.72133239,0.125
+lead,2020,dlm-trend-harmonic,1,0.66026184,0.87650906
+lead,2020,dlm-trend-harmonic,2,0.97081602,1.27389224
+lead,2020,dlm-trend-harmonic,3,1.24669146,1.61894911
+lead,2020,dlm-trend-harmonic,4,1.47396366,1.90113283
+lead,2020,dlm-trend-harmonic,5,1.65326260,2.12701527
+lead,2020,dlm-trend-harmonic,6,1.79328319,2.30387645
+lead,2020,dlm-trend-harmonic,7,1.88537566,2.42718321
+lead,2020,dlm-trend-harmonic,8,1.94808414,2.51755188
+lead,2020,dlm-trend-harmonic,9,1.99792711,2.58450909
+lead,2020,dlm-trend-harmonic,10,2.03764706,2.64214039
+lead,2020,dlm-trend-harmonic,11,2.08259576,2.69553636
+lead,2020,dlm-trend-harmonic,12,2.13663185,2.75298915
+lead,2020,dlm-trend-harmonic,13,2.18755832,2.81382224
+lead,2020,dlm-trend-harmonic,14,2.23868886,2.88139116
+lead,2020,dlm-trend-harmonic,15,2.29166106,2.95562043
+lead,2020,dlm-trend-harmonic,16,2.34976329,3.02696526
+lead,2020,dlm-trend-harmonic,17,2.39745057,3.09352103
+lead,2020,dlm-trend-harmonic,18,2.44342873,3.15333630
+lead,2020,dlm-trend-harmonic,19,2.47502859,3.20129913
+lead,2020,dlm-trend-harmonic,20,2.49471924,3.23975095
+lead,2020,dlm-trend-harmonic,21,2.50644400,3.26615322
+lead,2020,dlm-trend-harmonic,22,2.51829177,3.29049406
+lead,2020,dlm-trend-harmonic,23,2.54271992,3.33029076
+lead,2020,dlm-trend-harmonic,24,2.60457852,3.40302393
+month,2020,dlm-trend-harmonic,1,640,2.06007053,2.73585596
+month,2020,dlm-trend-harmonic,2,594,1.76592478,2.30230759
+month,2020,dlm-trend-harmonic,3,729,1.82012080,2.36578393
+month,2020,dlm-trend-harmonic,4,507,1.92607272,2.45988393
+month,2020,dlm-trend-harmonic,5,625,2.48950915,3.48759256
+month,2020,dlm-trend-harmonic,6,699,1.99118893,2.65363921
+month,2020,dlm-trend-harmonic,7,622,2.13331897,2.87684147
+month,2020,dlm-trend-harmonic,8,715,2.11264467,2.78234713
+month,2020,dlm-trend-harmonic,9,345,2.00838292,2.55141384
+month,2020,dlm-trend-harmonic,10,733,1.89369453,2.40910341
+month,2020,dlm-trend-harmonic,11,717,2.14472189,2.97200933
+month,2020,dlm-trend-harmonic,12,617,2.11616635,2.76979392
+Command being timed: "target/release/aevral kalman data/raw/ksea 2020 results-run/dlm-trend-harmonic/predictions.csv dlm-trend-harmonic"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.55
+Maximum resident set size (kbytes): 332392
+finalist-end,2020,dlm-trend-harmonic
