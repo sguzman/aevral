@@ -1,0 +1,63 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.29s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+strategy-start,2022,multitask-mean,123
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+strategy-config,2022,multitask-mean,123,8192,12,0.001,6809,3246896,98304
+strategy-preflight,2022,multitask-mean,123,128,32,0.010297,0.000273,7.973278
+strategy-epoch,2022,multitask-mean,123,1,0.1781985931,0
+strategy-epoch,2022,multitask-mean,123,2,0.1492868018,0
+strategy-epoch,2022,multitask-mean,123,3,0.1387546660,0
+strategy-epoch,2022,multitask-mean,123,4,0.1342642997,0
+strategy-epoch,2022,multitask-mean,123,5,0.1291267055,0
+strategy-epoch,2022,multitask-mean,123,6,0.1239414792,0
+strategy-epoch,2022,multitask-mean,123,7,0.1210405845,0
+strategy-epoch,2022,multitask-mean,123,8,0.1202592811,0
+strategy-epoch,2022,multitask-mean,123,9,0.1175898026,0
+strategy-epoch,2022,multitask-mean,123,10,0.1166202396,0
+strategy-epoch,2022,multitask-mean,123,11,0.1147081544,0
+strategy-epoch,2022,multitask-mean,123,12,0.1138747078,0
+strategy-fit,2022,multitask-mean,123,0,7.836512,0.062421
+score,2022,multitask-mean,7639,1.68009037,2.17534434,0.066
+lead,2022,multitask-mean,1,1.29497822,1.60116217
+lead,2022,multitask-mean,2,1.42634950,1.76832180
+lead,2022,multitask-mean,3,1.36526291,1.73254274
+lead,2022,multitask-mean,4,1.45396275,1.85643191
+lead,2022,multitask-mean,5,1.48674530,1.91428194
+lead,2022,multitask-mean,6,1.48595123,1.93041321
+lead,2022,multitask-mean,7,1.57830464,2.03824200
+lead,2022,multitask-mean,8,1.62382179,2.10384401
+lead,2022,multitask-mean,9,1.67802348,2.17020458
+lead,2022,multitask-mean,10,1.72182904,2.22156164
+lead,2022,multitask-mean,11,1.70112092,2.19298522
+lead,2022,multitask-mean,12,1.70884238,2.20230297
+lead,2022,multitask-mean,13,1.72547359,2.23059817
+lead,2022,multitask-mean,14,1.75778717,2.26560345
+lead,2022,multitask-mean,15,1.73771228,2.24849661
+lead,2022,multitask-mean,16,1.73785537,2.25281118
+lead,2022,multitask-mean,17,1.75360918,2.26924443
+lead,2022,multitask-mean,18,1.77613593,2.30077654
+lead,2022,multitask-mean,19,1.79411262,2.32185394
+lead,2022,multitask-mean,20,1.84363620,2.38091176
+lead,2022,multitask-mean,21,1.87142556,2.41228355
+lead,2022,multitask-mean,22,1.90488519,2.45875624
+lead,2022,multitask-mean,23,1.92208799,2.47487719
+lead,2022,multitask-mean,24,1.97225571,2.53463923
+month,2022,multitask-mean,1,735,1.64314306,2.10350946
+month,2022,multitask-mean,2,558,1.60067402,1.97456284
+month,2022,multitask-mean,3,630,1.34410728,1.68454688
+month,2022,multitask-mean,4,699,1.75984623,2.31031513
+month,2022,multitask-mean,5,712,1.38739608,1.82778584
+month,2022,multitask-mean,6,507,1.75264242,2.46442176
+month,2022,multitask-mean,7,431,2.19834397,2.72167659
+month,2022,multitask-mean,8,714,1.75291544,2.19150215
+month,2022,multitask-mean,9,695,1.70748465,2.15419760
+month,2022,multitask-mean,10,632,1.78466586,2.34155538
+month,2022,multitask-mean,11,641,1.67200813,2.15001701
+month,2022,multitask-mean,12,685,1.74387233,2.25043538
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.88
+	Maximum resident set size (kbytes): 368660
+	Exit status: 0
+strategy-end,2022,multitask-mean,123
