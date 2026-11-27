@@ -65,3 +65,5 @@ Full annual promotion follows completion of all nine families; no retuning.
 | D08 | markov-b8-pooled | 2.97682545 | 3.94215451 | measured |
 
 All 36 screening outcomes archived: 36 measured, 0 blocked. Annual promotion next.
+
+[Annual finalists frozen](../../campaigns/008-decomposition-reservoir/FINALISTS.md).
