@@ -144,3 +144,6 @@ T02–T04 CI 45915256233 all ten successful, 86 tests passed. All ten outcomes a
 
 ## C006 phase 6
 T05/T09 six configs implemented in boosting.rs, histogram squared-loss and median pinball with median residual leaf updates. T05-T09.md frozen specification. Six new tests and CI workflow submitted; verify compile/test and archive outcomes; then genuine external backends T06-T08. 16/28 measured, 22/28 implemented. No new data.
+
+## C006 phase 7
+T05/T09 CI 45916492859 all six successful, 92 tests passed. Archived all six outcomes with 576 diagnostic records, exact cohort/lead/sample/stage checks and objective decrease verified. 22/28 screens measured. Best hist-64-d5 MAE1.40667273 RMSE1.85917069 fit6.765200s; best median-boost-64 MAE1.50829159. Next T06–T08 genuine external XGBoost/LightGBM/CatBoost backends: inspect manifest and pinned Nix availability, no imitations, explicit blocks only if justified. No new data.
