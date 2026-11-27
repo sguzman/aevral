@@ -1,0 +1,129 @@
+name: C008 annual decomposition and alternative learner finalists
+on:
+  push:
+    paths:
+      - '.github/workflows/c008-finalists.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - {method: 'D01', config: 'fourier-k6-l001', fold: '2020', seed: 'deterministic'}
+          - {method: 'D01', config: 'fourier-k6-l001', fold: '2021', seed: 'deterministic'}
+          - {method: 'D01', config: 'fourier-k6-l001', fold: '2022', seed: 'deterministic'}
+          - {method: 'D01', config: 'fourier-k6-l01', fold: '2020', seed: 'deterministic'}
+          - {method: 'D01', config: 'fourier-k6-l01', fold: '2021', seed: 'deterministic'}
+          - {method: 'D01', config: 'fourier-k6-l01', fold: '2022', seed: 'deterministic'}
+          - {method: 'D02', config: 'haar-m32-l001', fold: '2020', seed: 'deterministic'}
+          - {method: 'D02', config: 'haar-m32-l001', fold: '2021', seed: 'deterministic'}
+          - {method: 'D02', config: 'haar-m32-l001', fold: '2022', seed: 'deterministic'}
+          - {method: 'D02', config: 'haar-m32-l01', fold: '2020', seed: 'deterministic'}
+          - {method: 'D02', config: 'haar-m32-l01', fold: '2021', seed: 'deterministic'}
+          - {method: 'D02', config: 'haar-m32-l01', fold: '2022', seed: 'deterministic'}
+          - {method: 'D03', config: 'ssa-l24-r8', fold: '2020', seed: 'deterministic'}
+          - {method: 'D03', config: 'ssa-l24-r8', fold: '2021', seed: 'deterministic'}
+          - {method: 'D03', config: 'ssa-l24-r8', fold: '2022', seed: 'deterministic'}
+          - {method: 'D03', config: 'ssa-l36-r8', fold: '2020', seed: 'deterministic'}
+          - {method: 'D03', config: 'ssa-l36-r8', fold: '2021', seed: 'deterministic'}
+          - {method: 'D03', config: 'ssa-l36-r8', fold: '2022', seed: 'deterministic'}
+          - {method: 'D04', config: 'dmd-l24-r8', fold: '2020', seed: 'deterministic'}
+          - {method: 'D04', config: 'dmd-l24-r8', fold: '2021', seed: 'deterministic'}
+          - {method: 'D04', config: 'dmd-l24-r8', fold: '2022', seed: 'deterministic'}
+          - {method: 'D04', config: 'dmd-l24-r4', fold: '2020', seed: 'deterministic'}
+          - {method: 'D04', config: 'dmd-l24-r4', fold: '2021', seed: 'deterministic'}
+          - {method: 'D04', config: 'dmd-l24-r4', fold: '2022', seed: 'deterministic'}
+          - {method: 'D05', config: 'edmd-l12-l001', fold: '2020', seed: 'deterministic'}
+          - {method: 'D05', config: 'edmd-l12-l001', fold: '2021', seed: 'deterministic'}
+          - {method: 'D05', config: 'edmd-l12-l001', fold: '2022', seed: 'deterministic'}
+          - {method: 'D05', config: 'edmd-l12-l01', fold: '2020', seed: 'deterministic'}
+          - {method: 'D05', config: 'edmd-l12-l01', fold: '2021', seed: 'deterministic'}
+          - {method: 'D05', config: 'edmd-l12-l01', fold: '2022', seed: 'deterministic'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2019', seed: '123'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2019', seed: '2026'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2020', seed: '42'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2020', seed: '123'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2020', seed: '2026'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2021', seed: '42'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2021', seed: '123'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2021', seed: '2026'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2022', seed: '42'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2022', seed: '123'}
+          - {method: 'D06', config: 'esn-m128-leak03', fold: '2022', seed: '2026'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2019', seed: '123'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2019', seed: '2026'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2020', seed: '42'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2020', seed: '123'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2020', seed: '2026'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2021', seed: '42'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2021', seed: '123'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2021', seed: '2026'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2022', seed: '42'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2022', seed: '123'}
+          - {method: 'D06', config: 'esn-m64-leak03', fold: '2022', seed: '2026'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2019', seed: '123'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2019', seed: '2026'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2020', seed: '42'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2020', seed: '123'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2020', seed: '2026'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2021', seed: '42'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2021', seed: '123'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2021', seed: '2026'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2022', seed: '42'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2022', seed: '123'}
+          - {method: 'D07', config: 'elm-m128-l001', fold: '2022', seed: '2026'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2019', seed: '123'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2019', seed: '2026'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2020', seed: '42'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2020', seed: '123'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2020', seed: '2026'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2021', seed: '42'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2021', seed: '123'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2021', seed: '2026'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2022', seed: '42'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2022', seed: '123'}
+          - {method: 'D07', config: 'elm-m128-l01', fold: '2022', seed: '2026'}
+          - {method: 'D08', config: 'markov-b16-hour', fold: '2020', seed: 'deterministic'}
+          - {method: 'D08', config: 'markov-b16-hour', fold: '2021', seed: 'deterministic'}
+          - {method: 'D08', config: 'markov-b16-hour', fold: '2022', seed: 'deterministic'}
+          - {method: 'D08', config: 'markov-b8-hour', fold: '2020', seed: 'deterministic'}
+          - {method: 'D08', config: 'markov-b8-hour', fold: '2021', seed: 'deterministic'}
+          - {method: 'D08', config: 'markov-b8-hour', fold: '2022', seed: 'deterministic'}
+          - {method: 'D09', config: 'symbolic-depth1-t8', fold: '2020', seed: 'deterministic'}
+          - {method: 'D09', config: 'symbolic-depth1-t8', fold: '2021', seed: 'deterministic'}
+          - {method: 'D09', config: 'symbolic-depth1-t8', fold: '2022', seed: 'deterministic'}
+          - {method: 'D09', config: 'symbolic-depth2-t8', fold: '2020', seed: 'deterministic'}
+          - {method: 'D09', config: 'symbolic-depth2-t8', fold: '2021', seed: 'deterministic'}
+          - {method: 'D09', config: 'symbolic-depth2-t8', fold: '2022', seed: 'deterministic'}
+    env:
+      METHOD: ${{ matrix.method }}
+      CONFIG: ${{ matrix.config }}
+      FOLD: ${{ matrix.fold }}
+      SEED: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Native numerical tests and locked build
+        run: |
+          cargo test --locked --release
+          cargo build --locked --release
+      - name: Evaluate frozen finalist
+        run: bash scripts/c008-finalist.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c008-finalist-${{ matrix.method }}-${{ matrix.fold }}-${{ matrix.config }}-${{ matrix.seed }}
+          path: results-run/
+          retention-days: 30
