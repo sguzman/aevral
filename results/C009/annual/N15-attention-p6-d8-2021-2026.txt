@@ -1,0 +1,63 @@
+test result: ok. 162 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+neural-start,2021,attention-p6-d8,2026
+cohort,2021,136893,7501,8737,7714
+scales,2021,[11.643995464674955, 6.369915113055379, 6.378974251584813, 5.044069639482702, 1017.4178067057464, 7.050946823816145, 0.26877858793517906, 2.139800549110102, 0.8914499366987545, 3.2088313577904324]
+baseline,2021,daily,2.14898785,2.81802465
+neural-config,2021,attention-p6-d8,2026,8192,12,0.001,3168,2752144
+neural-preflight,2021,attention-p6-d8,2026,128,32,0.007892,0.000583,6.197914
+neural-epoch,2021,attention-p6-d8,2026,1,0.1406843855,52
+neural-epoch,2021,attention-p6-d8,2026,2,0.1135952661,55
+neural-epoch,2021,attention-p6-d8,2026,3,0.1118870492,51
+neural-epoch,2021,attention-p6-d8,2026,4,0.1101155242,49
+neural-epoch,2021,attention-p6-d8,2026,5,0.1089948741,59
+neural-epoch,2021,attention-p6-d8,2026,6,0.1085567777,52
+neural-epoch,2021,attention-p6-d8,2026,7,0.1084996847,43
+neural-epoch,2021,attention-p6-d8,2026,8,0.1076155427,47
+neural-epoch,2021,attention-p6-d8,2026,9,0.1080085291,50
+neural-epoch,2021,attention-p6-d8,2026,10,0.1073807314,51
+neural-epoch,2021,attention-p6-d8,2026,11,0.1073664638,46
+neural-epoch,2021,attention-p6-d8,2026,12,0.1066321727,47
+neural-fit,2021,attention-p6-d8,2026,602,5.747179,0.123946
+score,2021,attention-p6-d8,7501,1.63659604,2.15879880,0.061
+lead,2021,attention-p6-d8,1,0.69624301,0.93361418
+lead,2021,attention-p6-d8,2,0.90217252,1.20130627
+lead,2021,attention-p6-d8,3,1.07037592,1.40442645
+lead,2021,attention-p6-d8,4,1.23552288,1.60579817
+lead,2021,attention-p6-d8,5,1.35902626,1.75883264
+lead,2021,attention-p6-d8,6,1.45250978,1.87491268
+lead,2021,attention-p6-d8,7,1.54076941,1.98653878
+lead,2021,attention-p6-d8,8,1.61774725,2.08457704
+lead,2021,attention-p6-d8,9,1.69076059,2.17124868
+lead,2021,attention-p6-d8,10,1.74128832,2.22946406
+lead,2021,attention-p6-d8,11,1.76128880,2.25877993
+lead,2021,attention-p6-d8,12,1.81369515,2.32467216
+lead,2021,attention-p6-d8,13,1.83363402,2.35080943
+lead,2021,attention-p6-d8,14,1.85218656,2.37396310
+lead,2021,attention-p6-d8,15,1.85926696,2.38526922
+lead,2021,attention-p6-d8,16,1.86126610,2.39072779
+lead,2021,attention-p6-d8,17,1.84497036,2.37450814
+lead,2021,attention-p6-d8,18,1.83870802,2.37480124
+lead,2021,attention-p6-d8,19,1.84759058,2.39756083
+lead,2021,attention-p6-d8,20,1.85483219,2.40614777
+lead,2021,attention-p6-d8,21,1.87729406,2.43825027
+lead,2021,attention-p6-d8,22,1.89563437,2.46190366
+lead,2021,attention-p6-d8,23,1.90176697,2.47832319
+lead,2021,attention-p6-d8,24,1.92975486,2.52219854
+month,2021,attention-p6-d8,1,644,1.64829662,2.14520125
+month,2021,attention-p6-d8,2,572,1.23019954,1.54253009
+month,2021,attention-p6-d8,3,477,1.57687533,2.00838142
+month,2021,attention-p6-d8,4,692,1.58048404,2.08948017
+month,2021,attention-p6-d8,5,629,1.46617615,1.95892734
+month,2021,attention-p6-d8,6,694,2.12134369,2.86102081
+month,2021,attention-p6-d8,7,707,1.56532028,2.06816218
+month,2021,attention-p6-d8,8,618,1.72604320,2.21038625
+month,2021,attention-p6-d8,9,599,1.61709827,2.10328030
+month,2021,attention-p6-d8,10,509,1.51126332,1.99185151
+month,2021,attention-p6-d8,11,646,1.80609907,2.33227308
+month,2021,attention-p6-d8,12,714,1.67035979,2.17148919
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.78
+	Maximum resident set size (kbytes): 350664
+	Exit status: 0
+neural-end,2021,attention-p6-d8,2026
