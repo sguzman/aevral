@@ -62,7 +62,7 @@ fn aggregate(rows:&[&TrainingRow],neighbors:&[Neighbor],weight:Weight)->Result<[
     if norm<=0.||!norm.is_finite()||pred.iter().any(|v|!v.is_finite()){return Err("invalid analog weights or prediction".into())}
     Ok(pred)
 }
-struct Cached{predictions:Vec<(i64,[f64;Y])>}
+pub(super) struct Cached{pub(super) predictions:Vec<(i64,[f64;Y])>}
 impl Predictor for Cached{
     fn predict(&self,x:&OriginInput)->[f64;Y]{
         self.predictions.binary_search_by_key(&x.origin,|r|r.0).ok().map(|i|self.predictions[i].1).unwrap_or([f64::NAN;Y])

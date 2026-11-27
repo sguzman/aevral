@@ -197,3 +197,6 @@ pub mod boosting;
 pub mod upstream;
 
 pub mod neighbors;
+
+mod kernel_linalg;
+pub mod local;
