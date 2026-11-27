@@ -1,0 +1,5 @@
+CI 45917145167 (6abd24935a50a0afa28a3afbdffb595b6a1c3f40)
+94 tests passed for all three jobs.
+XGBoost: upstream-smoke,xgboost,-1.99757576,1.99757576,pass
+LightGBM: upstream-smoke,lightgbm,-1.99764196,1.99764196,pass
+CatBoost: unexpected CatBoost prediction header; fit and calc completed, parser rejected header. Header contents were not logged. Request SampleId and RawFormulaVal explicitly and validate row identities; retry smoke without recipe change.

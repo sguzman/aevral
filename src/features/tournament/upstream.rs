@@ -66,10 +66,30 @@ fn write_rows(path:&Path,x:&[[f64;D]],y:Option<&[f64]>)->Result<(),String>{
     let mut w=BufWriter::new(std::fs::File::create(path).map_err(|e|e.to_string())?);
     for(i,r)in x.iter().enumerate(){if let Some(y)=y{write!(w,"{}\t",y[i]).map_err(|e|e.to_string())?}for(j,v)in r.iter().enumerate(){if j>0{write!(w,"\t").map_err(|e|e.to_string())?}write!(w,"{v}").map_err(|e|e.to_string())?}writeln!(w).map_err(|e|e.to_string())?}w.flush().map_err(|e|e.to_string())
 }
+fn parse_predictions(s:&str,n:usize,header:bool)->Result<Vec<f64>,String>{
+    let mut lines=s.lines();
+    let mut sample_column=None;let mut pred_column=0;let mut width=1;
+    if header{
+        let first=lines.next().ok_or("missing CatBoost prediction header")?;
+        let fields:Vec<_>=first.trim_end_matches('\r').split('\t').collect();
+        width=fields.len();
+        let pred:Vec<_>=fields.iter().enumerate().filter(|(_,v)|**v=="RawFormulaVal").map(|(i,_)|i).collect();
+        let sample:Vec<_>=fields.iter().enumerate().filter(|(_,v)|**v=="SampleId").map(|(i,_)|i).collect();
+        if width!=2||pred.len()!=1||sample.len()!=1{return Err(format!("unexpected CatBoost prediction header: {first:?}"))}
+        pred_column=pred[0];sample_column=Some(sample[0]);
+    }
+    let mut v=Vec::with_capacity(n);
+    for (i,line) in lines.enumerate(){
+        let fields:Vec<_>=line.split('\t').collect();
+        if fields.len()!=width{return Err(format!("prediction width mismatch at row {i}"))}
+        if let Some(c)=sample_column{if fields[c].trim().parse::<usize>().ok()!=Some(i){return Err(format!("prediction row identity mismatch at row {i}"))}}
+        let p=fields[pred_column].trim().parse::<f64>().map_err(|_|"invalid prediction".to_string())?;
+        if !p.is_finite(){return Err("nonfinite prediction".into())}v.push(p)
+    }
+    if v.len()!=n{return Err("prediction count mismatch".into())}Ok(v)
+}
 fn read_predictions(path:&Path,n:usize,header:bool)->Result<Vec<f64>,String>{
-    let s=std::fs::read_to_string(path).map_err(|e|e.to_string())?;let mut lines=s.lines();if header&&lines.next()!=Some("RawFormulaVal"){return Err("unexpected CatBoost prediction header".into())}
-    let v:Vec<f64>=lines.map(|s|s.trim().parse::<f64>().map_err(|_|"invalid prediction".to_string())).collect::<Result<_,_>>()?;
-    if v.len()!=n||v.iter().any(|v|!v.is_finite()){return Err("prediction count or finite check failed".into())}Ok(v)
+    let s=std::fs::read_to_string(path).map_err(|e|e.to_string())?;parse_predictions(&s,n,header)
 }
 fn cli_fit(backend:&str,d:&Data,eval:&[[f64;D]],y:&[f64],rounds:usize,seed:u64,dir:&Path,now:Instant)->Result<(Vec<f64>,usize,usize),String>{
     write_rows(&dir.join("train.tsv"),&d.x,Some(y))?;
@@ -91,7 +111,7 @@ fn cli_fit(backend:&str,d:&Data,eval:&[[f64;D]],y:&[f64],rounds:usize,seed:u64,d
         let cd=(0..D).map(|i|format!("{i}\tNum\n")).collect::<String>();std::fs::write(dir.join("eval.cd"),cd).map_err(|e|e.to_string())?;
         let args=vec!["fit".into(),"--learn-set".into(),"train.tsv".into(),"--column-description".into(),"train.cd".into(),"--loss-function".into(),"RMSE".into(),"--iterations".into(),rounds.to_string(),"--depth".into(),"4".into(),"--learning-rate".into(),"0.1".into(),"--grow-policy".into(),"SymmetricTree".into(),"--task-type".into(),"CPU".into(),"--thread-count".into(),"2".into(),"--random-seed".into(),seed.to_string(),"--logging-level".into(),"Silent".into(),"--model-file".into(),"model.json".into(),"--model-format".into(),"json".into()];
         command(&bin,&args,dir,now)?;
-        command(&bin,&["calc","--input-path","eval.tsv","--column-description","eval.cd","--model-file","model.json","--model-format","json","--output-path","pred.txt","--output-columns","RawFormulaVal","--prediction-type","RawFormulaVal","--thread-count","2"].map(String::from),dir,now)?;
+        command(&bin,&["calc","--input-path","eval.tsv","--column-description","eval.cd","--model-file","model.json","--model-format","json","--output-path","pred.txt","--output-columns","SampleId,RawFormulaVal","--prediction-type","RawFormulaVal","--thread-count","2"].map(String::from),dir,now)?;
         let s=std::fs::read_to_string(dir.join("model.json")).map_err(|e|e.to_string())?;
         let counts:Vec<usize>=s.split("\"leaf_values\"").skip(1).map(|p|{let a=p.split_once('[').ok_or("invalid CatBoost leaf array")?.1.split_once(']').ok_or("invalid CatBoost leaf array")?.0;Ok::<usize,String>(a.split(',').filter(|v|!v.trim().is_empty()).count())}).collect::<Result<_,_>>()?;
         if counts.is_empty()||counts.contains(&0){return Err("empty CatBoost model".into())}
@@ -144,5 +164,6 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),Strin
 mod tests{
     use super::*;
     #[test]fn configs(){assert_eq!(config("xgboost-64").unwrap(),("xgboost",64));assert!(config("xgboost-32").is_err());assert!(config("fake-64").is_err());}
+    #[test]fn prediction_identity(){assert_eq!(parse_predictions("SampleId\tRawFormulaVal\n0\t-2\n1\t2\n",2,true).unwrap(),vec![-2.,2.]);assert!(parse_predictions("SampleId\tRawFormulaVal\n1\t-2\n0\t2\n",2,true).is_err());assert!(parse_predictions("SampleId\tRawFormulaVal\n0\tNaN\n",1,true).is_err());assert!(parse_predictions("RawFormulaVal\n2\n",1,true).is_err());assert_eq!(parse_predictions("-2\n2\n",2,false).unwrap(),vec![-2.,2.]);}
     #[test]fn label_free_export(){let p=std::env::temp_dir().join(format!("aevral-export-test-{}",std::process::id()));let x=vec![[1.;D];2];write_rows(&p,&x,None).unwrap();let s=std::fs::read_to_string(&p).unwrap();assert!(s.lines().all(|r|r.split('\t').count()==D));write_rows(&p,&x,Some(&[5.,6.])).unwrap();let s=std::fs::read_to_string(&p).unwrap();assert!(s.lines().all(|r|r.split('\t').count()==D+1));std::fs::remove_file(p).unwrap();}
 }

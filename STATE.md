@@ -156,3 +156,6 @@ All three backend probes succeeded (CI 45916805742). Verified official top-level
 
 ## C006 phase 10
 Implemented upstream.rs official XGBoost dynamic C API, LightGBM/CatBoost CLI per-lead adapters, label-free eval export, finite/length checks, model counts, timeout guard. T06-T08.md exact recipes/seed policy. Two unit tests and three locked-shell synthetic smoke jobs submitted. Next verify compilation and actual backend fit/predict; repair defects without changing frozen recipes; then six weather screens. No external weather fits yet. 22/28 measured.
+
+## C006 phase 11
+First upstream smoke CI 45917145167: XGBoost and LightGBM passed synthetic fit/predict; 94 tests passed on all jobs. CatBoost fit/calc succeeded but strict header parser failed (header contents not captured). Archived outcome in results/C006/upstream-smoke-first.txt. Corrected CatBoost output request to SampleId,RawFormulaVal and parser to validate exact named columns and sequential numeric row IDs, added parser test and descriptive error. No fit recipe changes. Re-run all three smoke jobs automatically; verify before full weather screens. 22/28 measured.
