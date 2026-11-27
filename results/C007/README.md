@@ -39,3 +39,14 @@ Frozen manifest: campaigns/007-kernels-neighbors/manifest.md. Full matched 2019 
 | linear-krr-l01 | 1.68779093 | 2.19417262 | 6.394666979181e-17 | 0.044525 | 0.009520 |
 | linear-krr-l1 | 2.24991204 | 2.94975527 | 1.018073504510e-16 | 0.039166 | 0.008301 |
 
+
+## K07 official LIBSVM epsilon-SVR
+[CI](https://github.com/sguzman/aevral/actions/runs/45920736527), code d3ba83de6f6a27925948778e7ff680249284cb32, 112 tests passed. Pinned LIBSVM 3.33, 2048 train rows, 24 independent scalar fits, epsilon .05, RBF kernel, full 7455 matched evaluation origins. 4/4 measured. Sum of support vectors across leads is not a count of unique training origins.
+
+| Model | MAE °C | RMSE °C | Total support vectors across leads | Fit and prediction seconds |
+|---|---:|---:|---:|---:|
+| svr-s1-c1 | 1.40649144 | 1.87076562 | 41329 | 20.537950 |
+| svr-s1-c10 | 1.41467660 | 1.89047014 | 41160 | 18.905404 |
+| svr-s05-c1 | 1.45846807 | 1.95465293 | 41653 | 26.630543 |
+| svr-s05-c10 | 1.62612259 | 2.16276423 | 42122 | 22.855389 |
+
