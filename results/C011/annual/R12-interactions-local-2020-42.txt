@@ -1,0 +1,76 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+representation-start,2020,interactions-local,42
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+representation-scale,2020,interactions-local,0,0.7352043518816975,1.1706060234464792,8192,false
+representation-scale,2020,interactions-local,1,-0.09786709242663012,0.9531398722844119,8192,false
+representation-scale,2020,interactions-local,2,0.29235153177141143,0.9652155681306946,8192,false
+representation-scale,2020,interactions-local,3,-0.20442655136542498,1.048658731121506,8192,false
+representation-scale,2020,interactions-local,4,0.9837231509690533,1.4399820868149376,8192,false
+representation-scale,2020,interactions-local,5,0.9005428729664466,1.3383880746462031,8192,false
+representation-config,2020,interactions-local,42,8192,12,0.001,86,7128,16731728,98304
+representation-preflight,2020,interactions-local,42,0.638286,0.005314,0.000129,4.755118
+representation-epoch,2020,interactions-local,42,1,0.1513320862
+representation-epoch,2020,interactions-local,42,2,0.1256170566
+representation-epoch,2020,interactions-local,42,3,0.1181081287
+representation-epoch,2020,interactions-local,42,4,0.1136870963
+representation-epoch,2020,interactions-local,42,5,0.1080898586
+representation-epoch,2020,interactions-local,42,6,0.1070449809
+representation-epoch,2020,interactions-local,42,7,0.1050563420
+representation-epoch,2020,interactions-local,42,8,0.1033795398
+representation-epoch,2020,interactions-local,42,9,0.1022538050
+representation-epoch,2020,interactions-local,42,10,0.1006627690
+representation-epoch,2020,interactions-local,42,11,0.1005226405
+representation-epoch,2020,interactions-local,42,12,0.1000513354
+score,2020,interactions-local,7543,1.74035442,2.31142856
+lead,2020,interactions-local,1,0.82231974,1.06252640
+lead,2020,interactions-local,2,0.96979392,1.24580002
+lead,2020,interactions-local,3,1.05925593,1.36727821
+lead,2020,interactions-local,4,1.10792932,1.45489075
+lead,2020,interactions-local,5,1.17597167,1.55729201
+lead,2020,interactions-local,6,1.25543084,1.65967969
+lead,2020,interactions-local,7,1.32281432,1.75149277
+lead,2020,interactions-local,8,1.43846385,1.88192803
+lead,2020,interactions-local,9,1.55816812,2.01729971
+lead,2020,interactions-local,10,1.62221488,2.09838887
+lead,2020,interactions-local,11,1.66967682,2.16141336
+lead,2020,interactions-local,12,1.73808375,2.24816457
+lead,2020,interactions-local,13,1.89220157,2.42097303
+lead,2020,interactions-local,14,1.98530448,2.53880294
+lead,2020,interactions-local,15,2.15834822,2.73520854
+lead,2020,interactions-local,16,2.25606150,2.86042497
+lead,2020,interactions-local,17,2.23980277,2.84820138
+lead,2020,interactions-local,18,2.25517228,2.86300756
+lead,2020,interactions-local,19,2.24181555,2.84002809
+lead,2020,interactions-local,20,2.28984200,2.90299526
+lead,2020,interactions-local,21,2.32173751,2.94237489
+lead,2020,interactions-local,22,2.23236577,2.84042788
+lead,2020,interactions-local,23,2.08847788,2.67061877
+lead,2020,interactions-local,24,2.06725336,2.63437149
+month,2020,interactions-local,1,640,2.01824853,2.64351962
+month,2020,interactions-local,2,594,1.63256040,2.09146507
+month,2020,interactions-local,3,729,1.60697022,2.05860029
+month,2020,interactions-local,4,507,1.31609542,1.68614480
+month,2020,interactions-local,5,625,1.88697561,2.61773193
+month,2020,interactions-local,6,699,1.73762260,2.42403715
+month,2020,interactions-local,7,622,1.94384780,2.48439862
+month,2020,interactions-local,8,715,1.86924175,2.47187780
+month,2020,interactions-local,9,345,1.34532278,1.77819233
+month,2020,interactions-local,10,733,1.53569104,2.03730410
+month,2020,interactions-local,11,717,1.82014862,2.38150752
+month,2020,interactions-local,12,617,1.93346546,2.51433989
+representation-natural,2020,interactions-local,8761,7543,7543
+representation-fit,2020,interactions-local,42,4.049137,0.067705
+	Exit status: 0
+representation-rescore,2020,interactions-local,matched,7543,1.74035442,2.31142856,pass
+representation-end,2020,interactions-local,42
+0fd50cf46ed35a2a39bae594bc78f1d4aaaaa3fe8b40a765036ad166e9c9b6c1  fit-origins.txt
+68b396044cee8a7916c183e98121674b2a5edc66288427fbe795d6650871cc47  matched-origins.txt
+ccf19824758feb66cbc29a876e36dbe8fa16f74cbf179814d881a1947ded4bc7  metrics.txt
+1b1b450fb0664b747ced5f825e3e53ab31259370fe5d58fa32fa4e108416a6f6  predictions.csv.gz
+34ffc1725fc5dda2976246343e406d751f221db642e2bcde8f3ea6c040043b11  rescore.txt
+c04e2f034fe8272c46863e3ed42d62fa0f59248196c01aa87c9a6c7981e3eec2  resources.txt
+ff0b1d161d3acdefdee7bef04b1de25ee700a45cd6930e3afa05d48f44241624  train-origins.txt
