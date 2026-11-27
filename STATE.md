@@ -147,3 +147,6 @@ T05/T09 six configs implemented in boosting.rs, histogram squared-loss and media
 
 ## C006 phase 7
 T05/T09 CI 45916492859 all six successful, 92 tests passed. Archived all six outcomes with 576 diagnostic records, exact cohort/lead/sample/stage checks and objective decrease verified. 22/28 screens measured. Best hist-64-d5 MAE1.40667273 RMSE1.85917069 fit6.765200s; best median-boost-64 MAE1.50829159. Next T06–T08 genuine external XGBoost/LightGBM/CatBoost backends: inspect manifest and pinned Nix availability, no imitations, explicit blocks only if justified. No new data.
+
+## C006 phase 8
+Submitted hosted Nix backend availability preflight, per upstream backend (XGBoost, LightGBM, CatBoost), exact flake.lock revision, top-level and python3Packages derivation discovery, bounded realization and CLI/library inspection. No Python runtime introduced, no fitting. Next inspect CI probe logs, select feasible official CLI/library interfaces or separately pinned upstream fallback and freeze versions/configs before fit. 22/28 screens measured. No new data.
