@@ -1,0 +1,63 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.99s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+strategy-start,2022,difference-nhits64,123
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+strategy-config,2022,difference-nhits64,123,8192,12,0.001,37500,7175344,98304
+strategy-preflight,2022,difference-nhits64,123,128,32,0.027671,0.000627,21.401024
+strategy-epoch,2022,difference-nhits64,123,1,0.0207211193,14
+strategy-epoch,2022,difference-nhits64,123,2,0.0145971886,0
+strategy-epoch,2022,difference-nhits64,123,3,0.0142893858,0
+strategy-epoch,2022,difference-nhits64,123,4,0.0141596073,0
+strategy-epoch,2022,difference-nhits64,123,5,0.0140673748,0
+strategy-epoch,2022,difference-nhits64,123,6,0.0140092421,0
+strategy-epoch,2022,difference-nhits64,123,7,0.0139656959,0
+strategy-epoch,2022,difference-nhits64,123,8,0.0139355105,0
+strategy-epoch,2022,difference-nhits64,123,9,0.0139331501,0
+strategy-epoch,2022,difference-nhits64,123,10,0.0138895098,0
+strategy-epoch,2022,difference-nhits64,123,11,0.0138847498,0
+strategy-epoch,2022,difference-nhits64,123,12,0.0138579584,0
+strategy-fit,2022,difference-nhits64,123,14,33.542660,0.148818
+score,2022,difference-nhits64,7639,1.54499875,2.07207486,0.054
+lead,2022,difference-nhits64,1,0.54882372,0.73507883
+lead,2022,difference-nhits64,2,0.76006196,1.00686879
+lead,2022,difference-nhits64,3,0.90612999,1.20784696
+lead,2022,difference-nhits64,4,1.04483183,1.38654006
+lead,2022,difference-nhits64,5,1.16322145,1.53891357
+lead,2022,difference-nhits64,6,1.27085126,1.68014674
+lead,2022,difference-nhits64,7,1.36985616,1.80473927
+lead,2022,difference-nhits64,8,1.44696806,1.90722548
+lead,2022,difference-nhits64,9,1.52399409,2.00915246
+lead,2022,difference-nhits64,10,1.56829292,2.06897778
+lead,2022,difference-nhits64,11,1.60331777,2.10767306
+lead,2022,difference-nhits64,12,1.64758125,2.15992908
+lead,2022,difference-nhits64,13,1.69924719,2.21568529
+lead,2022,difference-nhits64,14,1.74677897,2.26722581
+lead,2022,difference-nhits64,15,1.77925129,2.29752716
+lead,2022,difference-nhits64,16,1.81473491,2.33253366
+lead,2022,difference-nhits64,17,1.83371062,2.35472593
+lead,2022,difference-nhits64,18,1.83863143,2.36986331
+lead,2022,difference-nhits64,19,1.85814558,2.39401042
+lead,2022,difference-nhits64,20,1.87655816,2.41592018
+lead,2022,difference-nhits64,21,1.90015085,2.44702264
+lead,2022,difference-nhits64,22,1.92725653,2.48088662
+lead,2022,difference-nhits64,23,1.95642516,2.51996394
+lead,2022,difference-nhits64,24,1.99514893,2.57038284
+month,2022,difference-nhits64,1,735,1.59837307,2.08542467
+month,2022,difference-nhits64,2,558,1.54876997,2.00999774
+month,2022,difference-nhits64,3,630,1.26481817,1.65327209
+month,2022,difference-nhits64,4,699,1.58113931,2.18163435
+month,2022,difference-nhits64,5,712,1.34601666,1.78867334
+month,2022,difference-nhits64,6,507,1.61101663,2.30852037
+month,2022,difference-nhits64,7,431,1.68418017,2.16101675
+month,2022,difference-nhits64,8,714,1.65713183,2.17805341
+month,2022,difference-nhits64,9,695,1.46944615,1.93467319
+month,2022,difference-nhits64,10,632,1.59610291,2.15072686
+month,2022,difference-nhits64,11,641,1.57524287,2.09439534
+month,2022,difference-nhits64,12,685,1.66017509,2.28672142
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:34.48
+	Maximum resident set size (kbytes): 368868
+	Exit status: 0
+strategy-end,2022,difference-nhits64,123
