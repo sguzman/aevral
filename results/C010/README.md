@@ -29,3 +29,17 @@ Screen only, not annual ranking. Next F05–F07. Recursive teacher-forcing/free-
 | correction-affine | 1.80854257 | 2.36242434 |
 
 [CI](https://github.com/sguzman/aevral/actions/runs/46058395640). Total 14/28 screens measured. Best so far joint-nhits64 MAE 1.42065820. Next F08–F10.
+
+## F08–F10 objective screen checkpoint
+
+6/6 archived, 20/28 total measured, zero blocked among archived jobs. 171 tests passed per archived job. [CI](https://github.com/sguzman/aevral/actions/runs/46059749684); raw predictions not independently rescored.
+
+| Recipe | MAE °C | RMSE °C |
+|---|---:|---:|
+| mae-nhits64 | 1.41301012 | 1.88104693 |
+| huber-nhits64 | 1.41552914 | 1.88252049 |
+| huber-mlp64 | 1.49535192 | 1.95522636 |
+| pinball-multi | 1.50215236 | 1.94332630 |
+| mae-mlp64 | 1.50348015 | 1.96314114 |
+| pinball-median | 1.52824187 | 1.98736169 |
+Multi-quantile crossing leads: 268/178920 (unrearranged).
