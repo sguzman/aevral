@@ -1,6 +1,6 @@
 # C009 screen results
 
-Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Adam .001. C003 full-training MLP64 2019 MAE 1.32617622 (different training budget). 32 of 42 screened (32 measured, 0 blocked). Rust and historical architecture regression CI passed. No annual ranking yet.
+Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Adam .001. C003 full-training MLP64 2019 MAE 1.32617622 (different training budget). 37 of 42 screened (37 measured, 0 blocked). Rust and historical architecture regression CI passed. No annual ranking yet.
 
 | Recipe | MAE °C | RMSE °C | Parameters | Fit seconds | Predict seconds | Clipped updates |
 |---|---:|---:|---:|---:|---:|---:|
@@ -59,3 +59,15 @@ Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Ada
 | dlinear-k25 | 1.57713214 | 2.07967357 | measured |
 
 [CI](https://github.com/sguzman/aevral/actions/runs/46036545583), 157 tests; Rust CI passed.
+
+## N14–N15 attention screens
+
+| Recipe | MAE °C | RMSE °C | Status |
+|---|---:|---:|---|
+| patchtst-p3-d16 | 1.49223889 | 1.96051712 | measured |
+| attention-p3-d8 | 1.49239237 | 1.95911318 | measured |
+| attention-p6-d8 | 1.49426442 | 1.96565466 | measured |
+| attention-p6-d16 | 1.50052953 | 1.97298473 | measured |
+| patchtst-p6-d16 | 1.50811242 | 1.98090232 | measured |
+
+[CI](https://github.com/sguzman/aevral/actions/runs/46037501450), 160 tests; Rust CI passed.
