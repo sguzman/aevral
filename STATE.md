@@ -120,3 +120,6 @@ CI 45914280432: all 15 jobs succeeded. Archived 5 additional jobs, 26 outcomes, 
 
 ## C005 phase 18 (annual ingestion)
 CI 45914280432: all 15 jobs succeeded. Archived 5 additional jobs, 24 outcomes, 1133 log records. 50/72 additional annual outcomes durable. Registry and variance.csv updated; continue ingestion by unarchived job IDs, then pooled ranking and closure audit. No new data.
+
+## C005 phase 19 (annual ingestion complete)
+CI 45914280432: all 15 jobs succeeded. Archived final 5 jobs, 22 outcomes, 1413 log records. All 72 additional annual outcomes durable, 108 unique measured registry entries with exact cohort counts. Next calculate pooled ranking and separate uncertainty report, audit diagnostics and closure; then C006. No new data.

@@ -1,0 +1,187 @@
+test result: ok. 76 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+finalist-start,2022,struct-season
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+kalman-config,2022,struct-season,1024,36,3,3,0.01,1,0,0.1,-5.393392501539e-1,0.155657
+score,2022,struct-season,7639,1.79585992,2.41971278,0.105
+lead,2022,struct-season,1,0.65008551,0.86277650
+lead,2022,struct-season,2,0.95050766,1.24375438
+lead,2022,struct-season,3,1.20418074,1.56500684
+lead,2022,struct-season,4,1.42338084,1.83598814
+lead,2022,struct-season,5,1.59128245,2.04654626
+lead,2022,struct-season,6,1.70649756,2.19925083
+lead,2022,struct-season,7,1.77339339,2.29837479
+lead,2022,struct-season,8,1.81166194,2.36445052
+lead,2022,struct-season,9,1.83306966,2.41128794
+lead,2022,struct-season,10,1.84691547,2.44636178
+lead,2022,struct-season,11,1.86618204,2.47997026
+lead,2022,struct-season,12,1.89468263,2.51721399
+lead,2022,struct-season,13,1.92880012,2.55563780
+lead,2022,struct-season,14,1.96519559,2.59727333
+lead,2022,struct-season,15,1.99787624,2.63823728
+lead,2022,struct-season,16,2.02908672,2.67570902
+lead,2022,struct-season,17,2.05587277,2.70876708
+lead,2022,struct-season,18,2.07470350,2.73642498
+lead,2022,struct-season,19,2.08641961,2.75398097
+lead,2022,struct-season,20,2.08373520,2.75958874
+lead,2022,struct-season,21,2.07890739,2.76235123
+lead,2022,struct-season,22,2.07049901,2.76280494
+lead,2022,struct-season,23,2.07374325,2.77201084
+lead,2022,struct-season,24,2.10395878,2.80272712
+month,2022,struct-season,1,735,1.79012016,2.37685107
+month,2022,struct-season,2,558,1.69346694,2.19576562
+month,2022,struct-season,3,630,1.36299732,1.75865388
+month,2022,struct-season,4,699,1.87102853,2.67319885
+month,2022,struct-season,5,712,1.61800999,2.10280001
+month,2022,struct-season,6,507,1.98126939,2.82932994
+month,2022,struct-season,7,431,1.73901336,2.28686795
+month,2022,struct-season,8,714,2.18531017,2.83574794
+month,2022,struct-season,9,695,1.81547416,2.38660481
+month,2022,struct-season,10,632,1.96764595,2.62554948
+month,2022,struct-season,11,641,1.79287997,2.39316248
+month,2022,struct-season,12,685,1.70868328,2.34012827
+Command being timed: "target/release/aevral kalman data/raw/ksea 2022 results-run/struct-season/predictions.csv struct-season"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.13
+Maximum resident set size (kbytes): 367936
+finalist-end,2022,struct-season
+finalist-start,2022,struct-level
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+kalman-config,2022,struct-level,1024,12,2,1,0.01,1,0,0,-6.527562871601e-2,0.027642
+score,2022,struct-level,7639,2.98202964,4.00096782,0.080
+lead,2022,struct-level,1,0.95627835,1.28196351
+lead,2022,struct-level,2,1.46506381,1.94166766
+lead,2022,struct-level,3,1.93573390,2.54484851
+lead,2022,struct-level,4,2.37054193,3.09689179
+lead,2022,struct-level,5,2.75625236,3.58732758
+lead,2022,struct-level,6,3.09667789,4.01609203
+lead,2022,struct-level,7,3.38369253,4.37537675
+lead,2022,struct-level,8,3.61519135,4.67161133
+lead,2022,struct-level,9,3.79877121,4.90004318
+lead,2022,struct-level,10,3.92648008,5.05655737
+lead,2022,struct-level,11,4.00601875,5.14630184
+lead,2022,struct-level,12,4.03056912,5.16666885
+lead,2022,struct-level,13,4.00129178,5.11957957
+lead,2022,struct-level,14,3.92087212,5.00706817
+lead,2022,struct-level,15,3.79337250,4.83413587
+lead,2022,struct-level,16,3.62156981,4.61049199
+lead,2022,struct-level,17,3.40866892,4.34223152
+lead,2022,struct-level,18,3.16823473,4.04030167
+lead,2022,struct-level,19,2.90577295,3.71570297
+lead,2022,struct-level,20,2.63508882,3.39114783
+lead,2022,struct-level,21,2.38460222,3.09998970
+lead,2022,struct-level,22,2.18613679,2.88123461
+lead,2022,struct-level,23,2.08561864,2.77930611
+lead,2022,struct-level,24,2.11621070,2.82024900
+month,2022,struct-level,1,735,2.02517018,2.72756309
+month,2022,struct-level,2,558,2.25817667,2.95244380
+month,2022,struct-level,3,630,2.20036819,2.79204261
+month,2022,struct-level,4,699,3.01433503,3.86695830
+month,2022,struct-level,5,712,2.90424646,3.67453508
+month,2022,struct-level,6,507,3.34826324,4.40591515
+month,2022,struct-level,7,431,4.79286026,6.01774133
+month,2022,struct-level,8,714,4.57132086,5.68957037
+month,2022,struct-level,9,695,3.81105774,4.86510779
+month,2022,struct-level,10,632,3.18697706,4.28055839
+month,2022,struct-level,11,641,2.45551443,3.18128932
+month,2022,struct-level,12,685,1.76062977,2.38403835
+Command being timed: "target/release/aevral kalman data/raw/ksea 2022 results-run/struct-level/predictions.csv struct-level"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.96
+Maximum resident set size (kbytes): 367940
+finalist-end,2022,struct-level
+finalist-start,2022,dlm-harmonic
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+kalman-config,2022,dlm-harmonic,1024,36,3,3,0.01,1,0,0.1,-5.393392501539e-1,0.243658
+score,2022,dlm-harmonic,7639,1.79585992,2.41971278,0.127
+lead,2022,dlm-harmonic,1,0.65008551,0.86277650
+lead,2022,dlm-harmonic,2,0.95050766,1.24375438
+lead,2022,dlm-harmonic,3,1.20418074,1.56500684
+lead,2022,dlm-harmonic,4,1.42338084,1.83598814
+lead,2022,dlm-harmonic,5,1.59128245,2.04654626
+lead,2022,dlm-harmonic,6,1.70649756,2.19925083
+lead,2022,dlm-harmonic,7,1.77339339,2.29837479
+lead,2022,dlm-harmonic,8,1.81166194,2.36445052
+lead,2022,dlm-harmonic,9,1.83306966,2.41128794
+lead,2022,dlm-harmonic,10,1.84691547,2.44636178
+lead,2022,dlm-harmonic,11,1.86618204,2.47997026
+lead,2022,dlm-harmonic,12,1.89468263,2.51721399
+lead,2022,dlm-harmonic,13,1.92880012,2.55563780
+lead,2022,dlm-harmonic,14,1.96519559,2.59727333
+lead,2022,dlm-harmonic,15,1.99787624,2.63823728
+lead,2022,dlm-harmonic,16,2.02908672,2.67570902
+lead,2022,dlm-harmonic,17,2.05587277,2.70876708
+lead,2022,dlm-harmonic,18,2.07470350,2.73642498
+lead,2022,dlm-harmonic,19,2.08641961,2.75398097
+lead,2022,dlm-harmonic,20,2.08373520,2.75958874
+lead,2022,dlm-harmonic,21,2.07890739,2.76235123
+lead,2022,dlm-harmonic,22,2.07049901,2.76280494
+lead,2022,dlm-harmonic,23,2.07374325,2.77201084
+lead,2022,dlm-harmonic,24,2.10395878,2.80272712
+month,2022,dlm-harmonic,1,735,1.79012016,2.37685107
+month,2022,dlm-harmonic,2,558,1.69346694,2.19576562
+month,2022,dlm-harmonic,3,630,1.36299732,1.75865388
+month,2022,dlm-harmonic,4,699,1.87102853,2.67319885
+month,2022,dlm-harmonic,5,712,1.61800999,2.10280001
+month,2022,dlm-harmonic,6,507,1.98126939,2.82932994
+month,2022,dlm-harmonic,7,431,1.73901336,2.28686795
+month,2022,dlm-harmonic,8,714,2.18531017,2.83574794
+month,2022,dlm-harmonic,9,695,1.81547416,2.38660481
+month,2022,dlm-harmonic,10,632,1.96764595,2.62554948
+month,2022,dlm-harmonic,11,641,1.79287997,2.39316248
+month,2022,dlm-harmonic,12,685,1.70868328,2.34012827
+Command being timed: "target/release/aevral kalman data/raw/ksea 2022 results-run/dlm-harmonic/predictions.csv dlm-harmonic"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.23
+Maximum resident set size (kbytes): 368112
+finalist-end,2022,dlm-harmonic
+finalist-start,2022,dlm-trend-harmonic
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+kalman-config,2022,dlm-trend-harmonic,1024,108,4,4,0.01,1,0.001,0.1,-5.258098736874e-1,0.971513
+score,2022,dlm-trend-harmonic,7639,2.07806179,2.81593813,0.153
+lead,2022,dlm-trend-harmonic,1,0.65678912,0.87322121
+lead,2022,dlm-trend-harmonic,2,0.97269288,1.27540664
+lead,2022,dlm-trend-harmonic,3,1.24742304,1.62336413
+lead,2022,dlm-trend-harmonic,4,1.49085337,1.92557982
+lead,2022,dlm-trend-harmonic,5,1.68829351,2.16985994
+lead,2022,dlm-trend-harmonic,6,1.82930158,2.35572190
+lead,2022,dlm-trend-harmonic,7,1.92570967,2.48683790
+lead,2022,dlm-trend-harmonic,8,1.98878037,2.58287875
+lead,2022,dlm-trend-harmonic,9,2.02969870,2.65774735
+lead,2022,dlm-trend-harmonic,10,2.06400887,2.71796599
+lead,2022,dlm-trend-harmonic,11,2.10381295,2.77756904
+lead,2022,dlm-trend-harmonic,12,2.15298316,2.84241635
+lead,2022,dlm-trend-harmonic,13,2.21162059,2.91298505
+lead,2022,dlm-trend-harmonic,14,2.27426846,2.98916383
+lead,2022,dlm-trend-harmonic,15,2.33653532,3.06715599
+lead,2022,dlm-trend-harmonic,16,2.40083610,3.14569332
+lead,2022,dlm-trend-harmonic,17,2.46083085,3.21923691
+lead,2022,dlm-trend-harmonic,18,2.51013032,3.28376442
+lead,2022,dlm-trend-harmonic,19,2.54410669,3.33334281
+lead,2022,dlm-trend-harmonic,20,2.56083822,3.36691382
+lead,2022,dlm-trend-harmonic,21,2.56876088,3.39618521
+lead,2022,dlm-trend-harmonic,22,2.57939995,3.42522220
+lead,2022,dlm-trend-harmonic,23,2.60582662,3.47063086
+lead,2022,dlm-trend-harmonic,24,2.66998185,3.54803037
+month,2022,dlm-trend-harmonic,1,735,2.03238016,2.75990407
+month,2022,dlm-trend-harmonic,2,558,1.84002428,2.46814796
+month,2022,dlm-trend-harmonic,3,630,1.60439647,2.07045224
+month,2022,dlm-trend-harmonic,4,699,2.21113805,3.18693288
+month,2022,dlm-trend-harmonic,5,712,1.87149661,2.43095152
+month,2022,dlm-trend-harmonic,6,507,2.44565781,3.33952961
+month,2022,dlm-trend-harmonic,7,431,2.06562113,2.72359077
+month,2022,dlm-trend-harmonic,8,714,2.50398180,3.26453190
+month,2022,dlm-trend-harmonic,9,695,2.10757845,2.79070668
+month,2022,dlm-trend-harmonic,10,632,2.24516290,3.02664424
+month,2022,dlm-trend-harmonic,11,641,2.05023847,2.84868591
+month,2022,dlm-trend-harmonic,12,685,1.96924550,2.62039886
+Command being timed: "target/release/aevral kalman data/raw/ksea 2022 results-run/dlm-trend-harmonic/predictions.csv dlm-trend-harmonic"
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.98
+Maximum resident set size (kbytes): 368048
+finalist-end,2022,dlm-trend-harmonic
