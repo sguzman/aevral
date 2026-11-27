@@ -1,0 +1,71 @@
+test result: ok. 95 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+upstream-lead,catboost,1,64,1024,0.605564
+upstream-preflight,catboost,64,0.605564,28.463529
+upstream-lead,catboost,2,64,1024,0.810729
+upstream-lead,catboost,3,64,1024,0.733326
+upstream-lead,catboost,4,64,1024,0.806169
+upstream-lead,catboost,5,64,1024,0.760698
+upstream-lead,catboost,6,64,1024,0.838865
+upstream-lead,catboost,7,64,1024,0.693399
+upstream-lead,catboost,8,64,1024,0.685966
+upstream-lead,catboost,9,64,1024,0.693611
+upstream-lead,catboost,10,64,1024,0.692653
+upstream-lead,catboost,11,64,1024,0.686564
+upstream-lead,catboost,12,64,1024,0.697425
+upstream-lead,catboost,13,64,1024,0.688635
+upstream-lead,catboost,14,64,1024,1.463136
+upstream-lead,catboost,15,64,1024,1.737706
+upstream-lead,catboost,16,64,1024,0.808244
+upstream-lead,catboost,17,64,1024,0.733340
+upstream-lead,catboost,18,64,1024,0.702101
+upstream-lead,catboost,19,64,1024,0.685113
+upstream-lead,catboost,20,64,1024,0.688007
+upstream-lead,catboost,21,64,1024,0.696335
+upstream-lead,catboost,22,64,1024,0.678982
+upstream-lead,catboost,23,64,1024,0.679192
+upstream-lead,catboost,24,64,1024,0.689243
+upstream-config,2019,catboost-64,42,24576,64,24,2,18.968084
+score,2019,catboost-64,7455,1.46925987,1.92948886,0.038
+lead,2019,catboost-64,1,0.59806617,0.79061881
+lead,2019,catboost-64,2,0.83325969,1.08801086
+lead,2019,catboost-64,3,1.01119419,1.32044879
+lead,2019,catboost-64,4,1.16593519,1.51340447
+lead,2019,catboost-64,5,1.28290613,1.66153848
+lead,2019,catboost-64,6,1.37465695,1.77418552
+lead,2019,catboost-64,7,1.46010375,1.88029534
+lead,2019,catboost-64,8,1.49450818,1.92077876
+lead,2019,catboost-64,9,1.51409433,1.94609977
+lead,2019,catboost-64,10,1.54394727,1.99046065
+lead,2019,catboost-64,11,1.55762228,2.00618801
+lead,2019,catboost-64,12,1.57598164,2.02937299
+lead,2019,catboost-64,13,1.60778759,2.05878697
+lead,2019,catboost-64,14,1.62881177,2.09091758
+lead,2019,catboost-64,15,1.63149371,2.09176955
+lead,2019,catboost-64,16,1.64454381,2.11011439
+lead,2019,catboost-64,17,1.66632952,2.13636413
+lead,2019,catboost-64,18,1.66620282,2.14923681
+lead,2019,catboost-64,19,1.66125449,2.14438285
+lead,2019,catboost-64,20,1.65062517,2.13039846
+lead,2019,catboost-64,21,1.65931483,2.14502419
+lead,2019,catboost-64,22,1.66868589,2.15369301
+lead,2019,catboost-64,23,1.67441798,2.16648940
+lead,2019,catboost-64,24,1.69049347,2.18852326
+month,2019,catboost-64,1,736,1.62877960,2.09814857
+month,2019,catboost-64,2,567,1.26481106,1.62561957
+month,2019,catboost-64,3,634,1.57523747,2.14778007
+month,2019,catboost-64,4,706,1.39310313,1.77532485
+month,2019,catboost-64,5,716,1.69682294,2.27058061
+month,2019,catboost-64,6,505,1.54763255,2.01328928
+month,2019,catboost-64,7,715,1.51552209,2.02042686
+month,2019,catboost-64,8,706,1.52239227,1.92578897
+month,2019,catboost-64,9,508,1.32176074,1.70371230
+month,2019,catboost-64,10,441,1.53228330,2.01831423
+month,2019,catboost-64,11,615,1.36007772,1.76558272
+month,2019,catboost-64,12,606,1.18258284,1.52145315
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:19.54
+Maximum resident set size (kbytes): 314880

@@ -162,3 +162,6 @@ First upstream smoke CI 45917145167: XGBoost and LightGBM passed synthetic fit/p
 
 ## C006 phase 12
 All three official integration smoke jobs passed (CI 45917374767), 95 tests, CatBoost prediction sample identity parser verified. Archived evidence. Submitted six 2019 weather screening jobs through optional locked Nix boosting shell, seed42, exact frozen recipes and cache hashes; upstream-screen.yml. Next verify and archive measured or explicitly resource-blocked outcomes with per-lead tree/leaf counts, then freeze annual finalists. 22/28 measured; six in CI. No new data.
+
+## C006 phase 13
+All six official upstream screens passed (CI 45917562327), 95 tests. Archived 426 records, all 28 screening entries unique/measured with matched cohorts. Best xgboost-128 MAE1.36776638, lightgbm-128 1.36797968, MLP64 incumbent1.32617622. Frozen FINALISTS.md: 20 finalists (12 deterministic,8 stochastic), 124 remaining fold/seed evaluations (2019 seed42 reused, other two seeds also required for 2019). Next create bounded grouped annual workflows, run native groups first then Nix upstream groups sequentially to preserve <=6 fitting jobs, archive outcomes and pooled seed statistics. No new data.

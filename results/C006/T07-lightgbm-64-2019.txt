@@ -1,0 +1,71 @@
+test result: ok. 95 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+upstream-lead,lightgbm,1,64,995,0.710573
+upstream-preflight,lightgbm,64,0.710573,33.401102
+upstream-lead,lightgbm,2,64,968,1.363995
+upstream-lead,lightgbm,3,64,985,0.864652
+upstream-lead,lightgbm,4,64,992,0.926064
+upstream-lead,lightgbm,5,64,998,0.799987
+upstream-lead,lightgbm,6,64,1006,0.797695
+upstream-lead,lightgbm,7,64,1002,0.794645
+upstream-lead,lightgbm,8,64,1006,0.795674
+upstream-lead,lightgbm,9,64,1003,0.805726
+upstream-lead,lightgbm,10,64,1009,0.796405
+upstream-lead,lightgbm,11,64,1012,0.799883
+upstream-lead,lightgbm,12,64,993,0.797160
+upstream-lead,lightgbm,13,64,998,0.796564
+upstream-lead,lightgbm,14,64,999,0.807258
+upstream-lead,lightgbm,15,64,1001,0.800491
+upstream-lead,lightgbm,16,64,1001,0.796908
+upstream-lead,lightgbm,17,64,1005,0.796749
+upstream-lead,lightgbm,18,64,989,0.791423
+upstream-lead,lightgbm,19,64,999,0.797166
+upstream-lead,lightgbm,20,64,993,0.797018
+upstream-lead,lightgbm,21,64,986,0.804793
+upstream-lead,lightgbm,22,64,967,0.796094
+upstream-lead,lightgbm,23,64,982,0.794172
+upstream-lead,lightgbm,24,64,983,0.849336
+upstream-config,2019,lightgbm-64,42,24576,64,24,2,19.892824
+score,2019,lightgbm-64,7455,1.39939085,1.85065791,0.050
+lead,2019,lightgbm-64,1,0.55500578,0.73925609
+lead,2019,lightgbm-64,2,0.77161536,1.01276527
+lead,2019,lightgbm-64,3,0.94837100,1.23770929
+lead,2019,lightgbm-64,4,1.07806384,1.40367178
+lead,2019,lightgbm-64,5,1.20225598,1.56672894
+lead,2019,lightgbm-64,6,1.28170828,1.66686864
+lead,2019,lightgbm-64,7,1.35159712,1.75759077
+lead,2019,lightgbm-64,8,1.37557201,1.78755065
+lead,2019,lightgbm-64,9,1.40989376,1.82882299
+lead,2019,lightgbm-64,10,1.44124207,1.87110262
+lead,2019,lightgbm-64,11,1.45925623,1.89190302
+lead,2019,lightgbm-64,12,1.47831011,1.91311641
+lead,2019,lightgbm-64,13,1.50726719,1.95287664
+lead,2019,lightgbm-64,14,1.53928667,1.98932061
+lead,2019,lightgbm-64,15,1.56766945,2.02341978
+lead,2019,lightgbm-64,16,1.58519143,2.04203896
+lead,2019,lightgbm-64,17,1.59123982,2.05587951
+lead,2019,lightgbm-64,18,1.60499271,2.07588759
+lead,2019,lightgbm-64,19,1.60872493,2.08216924
+lead,2019,lightgbm-64,20,1.63864065,2.11298741
+lead,2019,lightgbm-64,21,1.64328950,2.11928385
+lead,2019,lightgbm-64,22,1.65025659,2.13296408
+lead,2019,lightgbm-64,23,1.63987828,2.12138366
+lead,2019,lightgbm-64,24,1.65605158,2.14685834
+month,2019,lightgbm-64,1,736,1.53089318,2.00263047
+month,2019,lightgbm-64,2,567,1.25790057,1.61655569
+month,2019,lightgbm-64,3,634,1.53010106,2.12230161
+month,2019,lightgbm-64,4,706,1.33115655,1.71504920
+month,2019,lightgbm-64,5,716,1.64356275,2.21078281
+month,2019,lightgbm-64,6,505,1.35285770,1.77348196
+month,2019,lightgbm-64,7,715,1.42620762,1.91071278
+month,2019,lightgbm-64,8,706,1.47011926,1.86533650
+month,2019,lightgbm-64,9,508,1.29470736,1.66483800
+month,2019,lightgbm-64,10,441,1.42250827,1.87051989
+month,2019,lightgbm-64,11,615,1.29600850,1.68977892
+month,2019,lightgbm-64,12,606,1.12690056,1.46770615
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:20.62
+Maximum resident set size (kbytes): 315008

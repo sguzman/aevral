@@ -44,3 +44,17 @@ All six deterministic configs measured on 7455 matched origins, 24576 training r
 | median-boost-32 | 1.74343882 | 2.31980780 | 2.392159 | 0.3961299292 | 0.1414954522 |
 
 Best hist-64-d5 MAE1.40667273 RMSE1.85917069; best median-boost-64 MAE1.50829159. 22/28 screens measured. MLP64 remains better; different training sample budget. T06–T08 external backends pending.
+
+## T06–T08 official upstream boosting
+All six measured on 7455 matched origins, 24576 training rows, seed42. XGBoost3.0.5, LightGBM4.6.0, CatBoost1.2.10, locked Nix shell. [CI](https://github.com/sguzman/aevral/actions/runs/45917562327), code 122d868ca7ae37ce51d8ecb19cf1cb7bf6420962. 95 tests passed, 24 per-lead tree counts checked per configuration. No guard blocks. Fit time includes prediction and serialization; not controlled hardware benchmarking.
+
+| Model | MAE | RMSE | Fit + prediction seconds | Trees | Leaves |
+|---|---:|---:|---:|---:|---:|
+| xgboost-128 | 1.36776638 | 1.81757116 | 3.437061 | 3072 | 48246 |
+| lightgbm-128 | 1.36797968 | 1.81792868 | 16.572929 | 3072 | 45094 |
+| lightgbm-64 | 1.39939085 | 1.85065791 | 19.892824 | 1536 | 23872 |
+| xgboost-64 | 1.40058463 | 1.85138393 | 3.772623 | 1536 | 24492 |
+| catboost-128 | 1.40723890 | 1.85744279 | 23.710314 | 3072 | 49152 |
+| catboost-64 | 1.46925987 | 1.92948886 | 18.968084 | 1536 | 24576 |
+
+All 28 screens measured; best XGBoost128 MAE1.36776638, LightGBM128 1.36797968. MLP64 incumbent 1.32617622 remains best; different training budgets. XGBoost/LightGBM seed42 deterministic recipe recorded as deterministic in registry, CatBoost stochastic seed42. Annual finalist selection follows manifest.
