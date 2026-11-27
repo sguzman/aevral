@@ -108,6 +108,23 @@ impl Structured{
         let clipped=matches!(self.form,Form::Blocks(_)|Form::Tide)&&norm>5.;let scale=if clipped{5./norm}else{1.};
         opt.begin();for(l,g)in self.layers.iter_mut().zip(g){for(w,d)in l.w.iter_mut().zip(g){opt.update(w,d*scale);}}opt.finish();(value,clipped)
     }
+    /// C012 MAE: average example gradients then clip the batch gradient as in the original block optimizer.
+    pub(super) fn optimization_mae_batch(&mut self,rows:&[(&[f64],&[f64])],opt:&mut Adam,decay:f64)->(f64,bool){
+        assert!(!rows.is_empty()&&decay>=0.&&decay.is_finite());
+        let mut g:Vec<_>=self.layers.iter().map(|l|vec![0.;l.w.len()]).collect();let mut loss=0.;
+        for (x,y) in rows{
+            let(v,gr)=self.gradients_with(x,y,|p,t|{
+                let e:Vec<_>=p.iter().zip(t).map(|(p,t)|p-t).collect();
+                (e.iter().map(|v|v.abs()).sum::<f64>()/24.,e.iter().map(|v|if *v>0.{1./24.}else if *v<0.{-1./24.}else{0.}).collect())
+            });loss+=v;for(a,b)in g.iter_mut().zip(gr){add(a,&b);}
+        }
+        let n=rows.len()as f64;
+        for(l,g)in self.layers.iter().zip(&mut g){let stride=l.n+usize::from(l.bias);for(i,d)in g.iter_mut().enumerate(){*d/=n;if !l.bias||i%stride!=l.n{*d+=decay*l.w[i];}}}
+        let norm=g.iter().flatten().map(|v|v*v).sum::<f64>().sqrt();
+        if !loss.is_finite()||!norm.is_finite(){return(f64::NAN,false)}
+        let clipped=norm>5.;let scale=if clipped{5./norm}else{1.};
+        opt.begin();for(l,g)in self.layers.iter_mut().zip(g){for(w,d)in l.w.iter_mut().zip(g){opt.update(w,d*scale);}}opt.finish();(loss/n,clipped)
+    }
 }
 #[cfg(test)]
 mod tests{
@@ -137,5 +154,10 @@ mod tests{
         let obj=|p:&[f64],t:&[f64]|{let e:Vec<_>=p.iter().zip(t).map(|(a,b)|a-b).collect();(e.iter().map(|v|v.abs()).sum::<f64>()/24.,e.iter().map(|v|v.signum()/24.).collect())};
         let(_,g)=a.gradients_with(&x,&y,obj);
         for(l,layer)in a.layers.iter().enumerate(){let stride=layer.n+usize::from(layer.bias);for j in [0,layer.m/2,layer.m-1]{for k in [0,layer.n/2,stride-1]{let i=j*stride+k;let(mut p,mut m)=(a.clone(),a.clone());p.layers[l].w[i]+=1e-6;m.layers[l].w[i]-=1e-6;let d=(obj(&p.predict(&x),&y).0-obj(&m.predict(&x),&y).0)/2e-6;assert!((d-g[l][i]).abs()<1e-6,"{l} {i}");}}}
+    }
+    #[test]fn optimization_mae_batch_parity(){
+        let x=[0.1;80];let y=[0.4;24];let mut a=Structured::new("nhits-w64",42).unwrap();let mut b=a.clone();let mut c=a.clone();let mut oa=Adam::new(a.parameters(),0.001);let mut ob=Adam::new(b.parameters(),0.001);let mut oc=Adam::new(c.parameters(),0.001);
+        let objective=|p:&[f64],t:&[f64]|{let e:Vec<_>=p.iter().zip(t).map(|(p,t)|p-t).collect();(e.iter().map(|v|v.abs()).sum::<f64>()/24.,e.iter().map(|v|if *v>0.{1./24.}else if *v<0.{-1./24.}else{0.}).collect())};
+        for _ in 0..4{let v=a.step_with(&x,&y,&mut oa,objective);assert_eq!(v,b.optimization_mae_batch(&[(&x,&y)],&mut ob,0.));assert_eq!(v,c.optimization_mae_batch(&[(&x,&y),(&x,&y)],&mut oc,0.));assert_eq!(a.predict(&x),b.predict(&x));assert_eq!(a.predict(&x),c.predict(&x));}
     }
 }

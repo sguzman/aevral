@@ -11,6 +11,10 @@ on:
       - 'src/features/tournament/mars.rs'
       - 'src/features/tournament/local.rs'
       - 'src/features/tournament/upstream.rs'
+      - 'src/dense.rs'
+      - 'src/adam.rs'
+      - 'src/features/tournament/neural.rs'
+      - 'src/features/tournament/neural/**'
       - 'campaigns/012-optimization/candidate-grid.csv'
   workflow_dispatch:
 permissions:

@@ -58,6 +58,33 @@ impl Dense{
             d=prev;
         }errors.iter().map(|e|e*e).sum::<f64>()/target.len()as f64
     }
+    /// C012: mean batch gradient, optional inverted hidden mask, coupled L2 on weights.
+    pub(crate) fn optimization_batch(&mut self,rows:&[(&[f64],&[f64])],opt:&mut crate::adam::Adam,decay:f64,masks:Option<&[Vec<f64>]>) -> f64 {
+        assert!(!rows.is_empty()&&decay>=0.&&decay.is_finite());
+        assert!(masks.is_none()||self.weights.len()==2&&masks.unwrap().len()==rows.len());
+        let mut gw:Vec<_>=self.weights.iter().map(|w|vec![0.;w.len()]).collect();
+        let mut gb:Vec<_>=self.biases.iter().map(|b|vec![0.;b.len()]).collect();
+        let mut loss=0.;
+        let objective=|p:&[f64],t:&[f64]|{assert_eq!(p.len(),t.len());let n=p.len();let e:Vec<_>=p.iter().zip(t).map(|(p,t)|p-t).collect();(e.iter().map(|e|e*e).sum::<f64>()/n as f64,e.iter().map(|e|2.*e/n as f64).collect())};
+        for (j,(x,y)) in rows.iter().enumerate(){
+            let (v,w,b)=if let Some(masks)=masks{
+                let mask=&masks[j];let mut a=self.activations(x);assert_eq!(mask.len(),a[1].len());
+                let hidden=a[1].clone();for (h,m) in a[1].iter_mut().zip(mask){*h*=m;}
+                let h=&a[1];let n=h.len();let m=self.dims[2];
+                a[2]=(0..m).map(|k|self.biases[1][k]+(0..n).map(|i|self.weights[1][k*n+i]*h[i]).sum::<f64>()).collect();
+                let (v,dy)=objective(&a[2],y);
+                let dh:Vec<_>=(0..n).map(|i|(1.-hidden[i]*hidden[i])*mask[i]*(0..m).map(|k|self.weights[1][k*n+i]*dy[k]).sum::<f64>()).collect();
+                let w0=dh.iter().flat_map(|z|x.iter().map(move |x|z*x)).collect();
+                let w1=dy.iter().flat_map(|z|a[1].iter().map(move |x|z*x)).collect();
+                (v,vec![w0,w1],vec![dh,dy])
+            }else{self.gradients_with(x,y,objective)};
+            loss+=v;for (a,b) in gw.iter_mut().zip(w){for (a,b) in a.iter_mut().zip(b){*a+=b;}}
+            for (a,b) in gb.iter_mut().zip(b){for (a,b) in a.iter_mut().zip(b){*a+=b;}}
+        }
+        let count=rows.len() as f64;
+        if !loss.is_finite()||gw.iter().chain(&gb).flatten().any(|g|!g.is_finite()){return f64::NAN;}
+        opt.begin();for l in (0..self.weights.len()).rev(){let n=self.dims[l];let m=self.dims[l+1];for j in 0..m{for i in 0..n{let k=j*n+i;let grad=gw[l][k]/count+decay*self.weights[l][k];opt.update(&mut self.weights[l][k],grad)}opt.update(&mut self.biases[l][j],gb[l][j]/count)}}opt.finish();loss/count
+    }
 }
 #[cfg(test)]
 mod tests{
@@ -83,5 +110,16 @@ mod tests{
         let objective=|p:&[f64],t:&[f64]|{let e:Vec<_>=p.iter().enumerate().map(|(i,v)|v-t[i%2]).collect();(e.iter().map(|v|v.abs()).sum::<f64>()/4.,e.iter().map(|v|v.signum()/4.).collect())};
         let(_,gw,gb)=a.gradients_with(&x,&y,objective);let eps=1e-6;let loss=|m:&Dense|objective(&m.predict(&x),&y).0;
         for l in 0..a.weights.len(){for i in 0..a.weights[l].len(){let(mut p,mut m)=(a.clone(),a.clone());p.weights[l][i]+=eps;m.weights[l][i]-=eps;assert!(((loss(&p)-loss(&m))/(2.*eps)-gw[l][i]).abs()<1e-7);}for i in 0..a.biases[l].len(){let(mut p,mut m)=(a.clone(),a.clone());p.biases[l][i]+=eps;m.biases[l][i]-=eps;assert!(((loss(&p)-loss(&m))/(2.*eps)-gb[l][i]).abs()<1e-7);}}
+    }
+    #[test]fn optimization_batch_single_and_duplicate_parity(){
+        let x=[0.2,-0.7];let y=[0.3,-0.4];let mut a=Dense::new(&[2,3,2],42);let mut b=a.clone();let mut c=a.clone();
+        let mut oa=crate::adam::Adam::new(a.parameters(),0.001);let mut ob=crate::adam::Adam::new(b.parameters(),0.001);let mut oc=crate::adam::Adam::new(c.parameters(),0.001);
+        for _ in 0..4{let v=a.adam_step(&x,&y,&mut oa).0;assert_eq!(v,b.optimization_batch(&[(&x,&y)],&mut ob,0.,None));assert_eq!(v,c.optimization_batch(&[(&x,&y),(&x,&y)],&mut oc,0.,None));assert_eq!(a.predict(&x),b.predict(&x));assert_eq!(a.predict(&x),c.predict(&x));}
+    }
+    #[test]fn optimization_dropout_and_decay(){
+        let x=[0.2,-0.7];let y=[0.3,-0.4];let mut a=Dense::new(&[2,3,2],42);let mut b=a.clone();let mut oa=crate::adam::Adam::new(a.parameters(),0.001);let mut ob=crate::adam::Adam::new(b.parameters(),0.001);
+        a.optimization_batch(&[(&x,&y)],&mut oa,0.,None);b.optimization_batch(&[(&x,&y)],&mut ob,0.,Some(&[vec![1.;3]]));assert_eq!(a.predict(&x),b.predict(&x));
+        let mut c=Dense::new(&[2,3,2],42);let old=c.clone();let mut oc=crate::adam::Adam::new(c.parameters(),0.001);
+        c.optimization_batch(&[(&x,&y)],&mut oc,0.0001,Some(&[vec![0.;3]]));assert_ne!(old.weights[0],c.weights[0]);assert_eq!(old.biases[0],c.biases[0]);assert!(c.finite());
     }
 }

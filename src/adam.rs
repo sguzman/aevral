@@ -2,6 +2,7 @@
 pub struct Adam{m:Vec<f64>,v:Vec<f64>,b1:f64,b2:f64,cursor:usize,lr:f64}
 impl Adam{
     pub fn new(n:usize,lr:f64)->Self{assert!(n>0&&lr.is_finite()&&lr>0.);Self{m:vec![0.;n],v:vec![0.;n],b1:1.,b2:1.,cursor:n,lr}}
+    pub fn set_lr(&mut self,lr:f64){assert!(lr.is_finite()&&lr>0.);self.lr=lr;}
     pub fn begin(&mut self){assert_eq!(self.cursor,self.m.len());self.cursor=0;self.b1*=0.9;self.b2*=0.999;}
     pub fn update(&mut self,w:&mut f64,g:f64){let i=self.cursor;self.cursor+=1;self.m[i]=0.9*self.m[i]+0.1*g;self.v[i]=0.999*self.v[i]+0.001*g*g;let m=self.m[i]/(1.-self.b1);let v=self.v[i]/(1.-self.b2);*w-=self.lr*m/(v.sqrt()+1e-8)}
     pub fn finish(&self){assert_eq!(self.cursor,self.m.len());}
