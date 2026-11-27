@@ -71,3 +71,7 @@ Multi-quantile crossing leads: 268/178920 (unrearranged).
 - trajectory-curvature: slope MAE/curvature MAE/counts 0.62987783/0.93872359/171465/164010.
 
 Best screen mae-nhits64 MAE 1.41301012. All 28 candidates promote per frozen manifest. Annual validation and independent raw rescoring remain pending.
+
+## Annual validation
+
+All 28 recipes promoted as predeclared. [Promotion](promotion.csv), [annual matrix](../../campaigns/010-forecast-strategy/annual-matrix.csv). 308 additional outcomes in sequential batches 96/96/96/20, at most six parallel. Reuse 28 screens for 336 total. No annual results yet.
