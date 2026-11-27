@@ -189,3 +189,6 @@ Upstream CI 45918425331: archived 5 further completed jobs, 14 additional fold/s
 
 ## C006 phase 21 (upstream ingestion)
 Upstream CI 45918425331: archived 1 further completed jobs, 2 additional fold/seed outcomes, 145 diagnostic records, 120/124 additional outcomes durable. Registry keys fold/model/seed unique; cohorts, sample, seed and per-lead tree records verified. Continue archive by unarchived job ID; compute pooled per-seed rankings and closure when complete. No new data.
+
+## C006 phase 22
+All 14 upstream finalist jobs passed (CI 45918425331); final 4 outcomes and 290 diagnostic records archived. All 124/124 additional evaluations, 152 total registry entries (28 screens+124 additional), zero blocked, unique keys. Next pooled seed-specific metrics, audit complete finalist matrix and close campaign. No new data.
