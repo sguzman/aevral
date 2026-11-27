@@ -1,0 +1,108 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.04s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+representation-start,2020,weather-history-short,2026
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+representation-scale,2020,weather-history-short,0,6.351959906684034,5.058740836340221,8192,false
+representation-scale,2020,weather-history-short,1,1017.3756573054284,7.07385701450077,8192,false
+representation-scale,2020,weather-history-short,2,0.21641146832621777,2.1551478991546538,7961,false
+representation-scale,2020,weather-history-short,3,0.8741868499355991,3.2369491181198953,7961,false
+representation-scale,2020,weather-history-short,4,6.351897068598335,5.069263871119081,8191,false
+representation-scale,2020,weather-history-short,5,1017.3739624575828,7.0699496533971375,8192,false
+representation-scale,2020,weather-history-short,6,0.23245417320061143,2.155313717815492,7937,false
+representation-scale,2020,weather-history-short,7,0.8609292945599708,3.232240189802197,7937,false
+representation-scale,2020,weather-history-short,8,6.373003663003673,5.063130135531107,8190,false
+representation-scale,2020,weather-history-short,9,1017.3780548950602,7.0706225207706614,8192,false
+representation-scale,2020,weather-history-short,10,0.270210963886173,2.144566961493758,7938,false
+representation-scale,2020,weather-history-short,11,0.9019541040380222,3.178819173932296,7938,false
+representation-available,2020,weather-history-short,train,129327,119309
+representation-availability,2020,weather-history-short,train,0,129319,8
+representation-availability,2020,weather-history-short,train,1,129321,6
+representation-availability,2020,weather-history-short,train,2,125844,3483
+representation-availability,2020,weather-history-short,train,3,125844,3483
+representation-availability,2020,weather-history-short,train,4,129311,16
+representation-availability,2020,weather-history-short,train,5,129321,6
+representation-availability,2020,weather-history-short,train,6,125551,3776
+representation-availability,2020,weather-history-short,train,7,125551,3776
+representation-availability,2020,weather-history-short,train,8,129303,24
+representation-availability,2020,weather-history-short,train,9,129321,6
+representation-availability,2020,weather-history-short,train,10,125264,4063
+representation-availability,2020,weather-history-short,train,11,125264,4063
+representation-available,2020,weather-history-short,eval,7543,7084
+representation-availability,2020,weather-history-short,eval,0,7543,0
+representation-availability,2020,weather-history-short,eval,1,7543,0
+representation-availability,2020,weather-history-short,eval,2,7393,150
+representation-availability,2020,weather-history-short,eval,3,7393,150
+representation-availability,2020,weather-history-short,eval,4,7543,0
+representation-availability,2020,weather-history-short,eval,5,7543,0
+representation-availability,2020,weather-history-short,eval,6,7376,167
+representation-availability,2020,weather-history-short,eval,7,7376,167
+representation-availability,2020,weather-history-short,eval,8,7543,0
+representation-availability,2020,weather-history-short,eval,9,7543,0
+representation-availability,2020,weather-history-short,eval,10,7372,171
+representation-availability,2020,weather-history-short,eval,11,7372,171
+representation-config,2020,weather-history-short,2026,8192,12,0.001,104,8280,19145024,98304
+representation-preflight,2020,weather-history-short,2026,0.887263,0.009874,0.000260,8.541802
+representation-epoch,2020,weather-history-short,2026,1,0.1441926955
+representation-epoch,2020,weather-history-short,2026,2,0.1147737665
+representation-epoch,2020,weather-history-short,2026,3,0.1071452369
+representation-epoch,2020,weather-history-short,2026,4,0.1052614504
+representation-epoch,2020,weather-history-short,2026,5,0.1032292952
+representation-epoch,2020,weather-history-short,2026,6,0.1008024236
+representation-epoch,2020,weather-history-short,2026,7,0.0993951803
+representation-epoch,2020,weather-history-short,2026,8,0.0987329281
+representation-epoch,2020,weather-history-short,2026,9,0.0975026983
+representation-epoch,2020,weather-history-short,2026,10,0.0968915768
+representation-epoch,2020,weather-history-short,2026,11,0.0970718442
+representation-epoch,2020,weather-history-short,2026,12,0.0961280061
+score,2020,weather-history-short,7543,1.48491811,1.97270356
+lead,2020,weather-history-short,1,0.83751643,1.11775104
+lead,2020,weather-history-short,2,1.02820368,1.35364426
+lead,2020,weather-history-short,3,1.11150314,1.47367331
+lead,2020,weather-history-short,4,1.21245753,1.60189527
+lead,2020,weather-history-short,5,1.27444052,1.68010603
+lead,2020,weather-history-short,6,1.30432910,1.72128741
+lead,2020,weather-history-short,7,1.33508445,1.76419938
+lead,2020,weather-history-short,8,1.38670978,1.83699629
+lead,2020,weather-history-short,9,1.45043309,1.91317307
+lead,2020,weather-history-short,10,1.47575986,1.94742293
+lead,2020,weather-history-short,11,1.53524175,2.00896598
+lead,2020,weather-history-short,12,1.52679836,2.00293032
+lead,2020,weather-history-short,13,1.56681999,2.05113193
+lead,2020,weather-history-short,14,1.59053222,2.08061548
+lead,2020,weather-history-short,15,1.60596382,2.09888393
+lead,2020,weather-history-short,16,1.63691464,2.13543882
+lead,2020,weather-history-short,17,1.62898705,2.13337704
+lead,2020,weather-history-short,18,1.65845841,2.16469768
+lead,2020,weather-history-short,19,1.65865631,2.16997621
+lead,2020,weather-history-short,20,1.70846819,2.22860217
+lead,2020,weather-history-short,21,1.73413971,2.26010295
+lead,2020,weather-history-short,22,1.78517741,2.31917379
+lead,2020,weather-history-short,23,1.78530128,2.32509669
+lead,2020,weather-history-short,24,1.80013778,2.34480676
+month,2020,weather-history-short,1,640,1.50276013,2.01461905
+month,2020,weather-history-short,2,594,1.27384448,1.64443224
+month,2020,weather-history-short,3,729,1.45399672,1.86717024
+month,2020,weather-history-short,4,507,1.25796889,1.60803808
+month,2020,weather-history-short,5,625,1.78947703,2.44518693
+month,2020,weather-history-short,6,699,1.46251631,1.97482105
+month,2020,weather-history-short,7,622,1.50729807,1.97719189
+month,2020,weather-history-short,8,715,1.67015948,2.17463659
+month,2020,weather-history-short,9,345,1.30758407,1.74088593
+month,2020,weather-history-short,10,733,1.40775421,1.83907268
+month,2020,weather-history-short,11,717,1.49549609,1.98802902
+month,2020,weather-history-short,12,617,1.55082141,2.07768619
+representation-natural,2020,weather-history-short,8761,7543,7543
+representation-fit,2020,weather-history-short,2026,7.327159,0.108092
+	Exit status: 0
+representation-rescore,2020,weather-history-short,matched,7543,1.48491811,1.97270356,pass
+representation-end,2020,weather-history-short,2026
+0fd50cf46ed35a2a39bae594bc78f1d4aaaaa3fe8b40a765036ad166e9c9b6c1  fit-origins.txt
+68b396044cee8a7916c183e98121674b2a5edc66288427fbe795d6650871cc47  matched-origins.txt
+86a397e0d3a39abc6777c7126e311b4d6f0c3822d4b2e0b0b76fcf4031f5324b  metrics.txt
+aa7a465fd9b6afc2f58e8541681c130f0c0d7e4ba80357401efeb2d9e48e0553  predictions.csv.gz
+ea8027147a7f5aa4a3561f445e6bfc49e56b845f89ff8c637050b234cfeec59f  rescore.txt
+7a0551d87d109ecec80c31e6bea7adb94356c6b411e000642e7d7204318e29ff  resources.txt
+ff0b1d161d3acdefdee7bef04b1de25ee700a45cd6930e3afa05d48f44241624  train-origins.txt
