@@ -64,8 +64,8 @@ impl Dense{
         assert!(masks.is_none()||self.weights.len()==2&&masks.unwrap().len()==rows.len());
         let mut gw:Vec<_>=self.weights.iter().map(|w|vec![0.;w.len()]).collect();
         let mut gb:Vec<_>=self.biases.iter().map(|b|vec![0.;b.len()]).collect();
-        let mut loss=0.;
-        let objective=|p:&[f64],t:&[f64]|{assert_eq!(p.len(),t.len());let n=p.len();let e:Vec<_>=p.iter().zip(t).map(|(p,t)|p-t).collect();(e.iter().map(|e|e*e).sum::<f64>()/n as f64,e.iter().map(|e|2.*e/n as f64).collect())};
+        let mut loss=0.0_f64;
+        let objective=|p:&[f64],t:&[f64]| -> (f64,Vec<f64>){assert_eq!(p.len(),t.len());let n=p.len();let e:Vec<_>=p.iter().zip(t).map(|(p,t)|p-t).collect();(e.iter().map(|e|e*e).sum::<f64>()/n as f64,e.iter().map(|e|2.*e/n as f64).collect())};
         for (j,(x,y)) in rows.iter().enumerate(){
             let (v,w,b)=if let Some(masks)=masks{
                 let mask=&masks[j];let mut a=self.activations(x);assert_eq!(mask.len(),a[1].len());
@@ -74,8 +74,8 @@ impl Dense{
                 a[2]=(0..m).map(|k|self.biases[1][k]+(0..n).map(|i|self.weights[1][k*n+i]*h[i]).sum::<f64>()).collect();
                 let (v,dy)=objective(&a[2],y);
                 let dh:Vec<_>=(0..n).map(|i|(1.-hidden[i]*hidden[i])*mask[i]*(0..m).map(|k|self.weights[1][k*n+i]*dy[k]).sum::<f64>()).collect();
-                let w0=dh.iter().flat_map(|z|x.iter().map(move |x|z*x)).collect();
-                let w1=dy.iter().flat_map(|z|a[1].iter().map(move |x|z*x)).collect();
+                let w0:Vec<f64>=dh.iter().flat_map(|z|x.iter().map(move |x|z*x)).collect();
+                let w1:Vec<f64>=dy.iter().flat_map(|z|a[1].iter().map(move |x|z*x)).collect();
                 (v,vec![w0,w1],vec![dh,dy])
             }else{self.gradients_with(x,y,objective)};
             loss+=v;for (a,b) in gw.iter_mut().zip(w){for (a,b) in a.iter_mut().zip(b){*a+=b;}}
