@@ -1,0 +1,39 @@
+name: C005 annual finalists
+on:
+  push:
+    paths:
+      - '.github/workflows/c005-finalists.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        fold: ['2020', '2021', '2022']
+        group: [autoreg, arima, smoothing, kalman, switching]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Numerical tests
+        run: cargo test --locked --release
+      - name: Evaluate frozen finalists
+        run: |
+          cargo build --locked --release
+          bash scripts/c005-finalists.sh ${{ matrix.fold }} ${{ matrix.group }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c005-finalists-${{ matrix.fold }}-${{ matrix.group }}
+          path: results-run/
+          retention-days: 30

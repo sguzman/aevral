@@ -111,3 +111,6 @@ Implemented S12/S13 switching and GARCH four configurations with train-only boun
 
 ## C005 phase 15
 All 36 screens measured; final four archived (238 records) from CI 45914013039, 76 tests. Registry audited unique 36 model rows, all 7455 origins. Separate variance.csv. Frozen finalists 22 point + 2 variance-only in FINALISTS.md, 72 additional annual outcomes planned. Next implement grouped annual workflow and launch CI (<=6 parallel); archive all results, pooled ranking and closure audit. No new data.
+
+## C005 phase 16
+Annual finalist workflow and grouped runner committed. 24 frozen configs × 3 folds = 72 additional outcomes, 15 jobs, max six parallel, 30-minute timeout. Script cross-checked against FINALISTS.md, exact score/blocked and 24 lead records required, GARCH variance records checked and exported. CI status pending; next verify and ingest completed groups into registry and variance.csv without duplication. Archive resources and optimizer flags. Pool 22 point finalists plus C003 incumbent separately from two uncertainty models, audit closure. No new data.
