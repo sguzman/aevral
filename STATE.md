@@ -114,3 +114,6 @@ All 36 screens measured; final four archived (238 records) from CI 45914013039, 
 
 ## C005 phase 16
 Annual finalist workflow and grouped runner committed. 24 frozen configs × 3 folds = 72 additional outcomes, 15 jobs, max six parallel, 30-minute timeout. Script cross-checked against FINALISTS.md, exact score/blocked and 24 lead records required, GARCH variance records checked and exported. CI status pending; next verify and ingest completed groups into registry and variance.csv without duplication. Archive resources and optimizer flags. Pool 22 point finalists plus C003 incumbent separately from two uncertainty models, audit closure. No new data.
+
+## C005 phase 17 (annual ingestion)
+CI 45914280432: all 15 jobs succeeded. Archived 5 additional jobs, 26 outcomes, 1825 log records. 26/72 additional annual outcomes durable. Registry and variance.csv updated; continue ingestion by unarchived job IDs, then pooled ranking and closure audit. No new data.
