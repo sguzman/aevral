@@ -1,0 +1,152 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.34s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+representation-start,2019,select48-leads,42
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+representation-selection,2019,select48-leads,0,0.668660937210,0
+representation-selection,2019,select48-leads,1,0.669386576818,0
+representation-selection,2019,select48-leads,2,0.669951957035,0
+representation-selection,2019,select48-leads,3,0.670622018776,0
+representation-selection,2019,select48-leads,4,0.672853848325,0
+representation-selection,2019,select48-leads,5,0.674235062354,0
+representation-selection,2019,select48-leads,6,0.674520559119,0
+representation-selection,2019,select48-leads,7,0.676632601509,0
+representation-selection,2019,select48-leads,8,0.675918447575,0
+representation-selection,2019,select48-leads,9,0.676309397804,0
+representation-selection,2019,select48-leads,10,0.677647169850,0
+representation-selection,2019,select48-leads,11,0.678628287845,0
+representation-selection,2019,select48-leads,12,0.681356185390,0
+representation-selection,2019,select48-leads,13,0.682961308406,0
+representation-selection,2019,select48-leads,14,0.683536900091,0
+representation-selection,2019,select48-leads,15,0.684933579992,0
+representation-selection,2019,select48-leads,16,0.685776722865,0
+representation-selection,2019,select48-leads,17,0.685542494376,0
+representation-selection,2019,select48-leads,18,0.685838055354,0
+representation-selection,2019,select48-leads,19,0.688185289035,0
+representation-selection,2019,select48-leads,20,0.690331931895,0
+representation-selection,2019,select48-leads,21,0.692498690929,0
+representation-selection,2019,select48-leads,22,0.694928653168,0
+representation-selection,2019,select48-leads,23,0.695351226457,0
+representation-selection,2019,select48-leads,24,0.695560910009,0
+representation-selection,2019,select48-leads,25,0.697275960799,0
+representation-selection,2019,select48-leads,26,0.698223970558,1
+representation-selection,2019,select48-leads,27,0.699146820250,1
+representation-selection,2019,select48-leads,28,0.700575215700,1
+representation-selection,2019,select48-leads,29,0.702072459097,1
+representation-selection,2019,select48-leads,30,0.703201166692,1
+representation-selection,2019,select48-leads,31,0.705639682909,1
+representation-selection,2019,select48-leads,32,0.706697073651,1
+representation-selection,2019,select48-leads,33,0.707565918165,1
+representation-selection,2019,select48-leads,34,0.711102076714,1
+representation-selection,2019,select48-leads,35,0.714059936928,1
+representation-selection,2019,select48-leads,36,0.718246282598,1
+representation-selection,2019,select48-leads,37,0.721427389719,1
+representation-selection,2019,select48-leads,38,0.722648947813,1
+representation-selection,2019,select48-leads,39,0.724775948991,1
+representation-selection,2019,select48-leads,40,0.726431857644,1
+representation-selection,2019,select48-leads,41,0.727991325775,1
+representation-selection,2019,select48-leads,42,0.729371243798,1
+representation-selection,2019,select48-leads,43,0.729490115294,1
+representation-selection,2019,select48-leads,44,0.731388937403,1
+representation-selection,2019,select48-leads,45,0.734403397586,1
+representation-selection,2019,select48-leads,46,0.736536662495,1
+representation-selection,2019,select48-leads,47,0.738061031703,1
+representation-selection,2019,select48-leads,48,0.739264945785,1
+representation-selection,2019,select48-leads,49,0.743065412619,1
+representation-selection,2019,select48-leads,50,0.745182362285,1
+representation-selection,2019,select48-leads,51,0.749629827050,1
+representation-selection,2019,select48-leads,52,0.750799076425,1
+representation-selection,2019,select48-leads,53,0.754919368718,1
+representation-selection,2019,select48-leads,54,0.757659565536,1
+representation-selection,2019,select48-leads,55,0.760550082019,1
+representation-selection,2019,select48-leads,56,0.763670487503,1
+representation-selection,2019,select48-leads,57,0.766058415645,1
+representation-selection,2019,select48-leads,58,0.768743394380,1
+representation-selection,2019,select48-leads,59,0.771667032667,1
+representation-selection,2019,select48-leads,60,0.775245548021,1
+representation-selection,2019,select48-leads,61,0.777843718870,1
+representation-selection,2019,select48-leads,62,0.779391543670,1
+representation-selection,2019,select48-leads,63,0.781312186422,1
+representation-selection,2019,select48-leads,64,0.783908289702,1
+representation-selection,2019,select48-leads,65,0.785250732986,1
+representation-selection,2019,select48-leads,66,0.787946036575,1
+representation-selection,2019,select48-leads,67,0.789728546153,1
+representation-selection,2019,select48-leads,68,0.792969131379,1
+representation-selection,2019,select48-leads,69,0.796476922523,1
+representation-selection,2019,select48-leads,70,0.800046916736,1
+representation-selection,2019,select48-leads,71,0.804245685720,1
+representation-selection,2019,select48-leads,72,0.202210626690,0
+representation-selection,2019,select48-leads,73,0.206028362723,0
+representation-selection,2019,select48-leads,74,0.278114549920,0
+representation-selection,2019,select48-leads,75,0.720948859934,1
+representation-selection,2019,select48-leads,76,0.714020340682,1
+representation-selection,2019,select48-leads,77,0.039046185503,0
+representation-selection,2019,select48-leads,78,0.139785717009,0
+representation-selection,2019,select48-leads,79,0.211278864699,0
+representation-config,2019,select48-leads,42,8192,12,0.001,48,4696,11569408,98304
+representation-preflight,2019,select48-leads,42,1.002606,0.007282,0.000179,6.644041
+representation-epoch,2019,select48-leads,42,1,0.1512123168
+representation-epoch,2019,select48-leads,42,2,0.1373552593
+representation-epoch,2019,select48-leads,42,3,0.1344049149
+representation-epoch,2019,select48-leads,42,4,0.1315181266
+representation-epoch,2019,select48-leads,42,5,0.1285395671
+representation-epoch,2019,select48-leads,42,6,0.1280856206
+representation-epoch,2019,select48-leads,42,7,0.1262637439
+representation-epoch,2019,select48-leads,42,8,0.1251872636
+representation-epoch,2019,select48-leads,42,9,0.1225512218
+representation-epoch,2019,select48-leads,42,10,0.1229785663
+representation-epoch,2019,select48-leads,42,11,0.1219241768
+representation-epoch,2019,select48-leads,42,12,0.1211801540
+score,2019,select48-leads,7455,1.61614581,2.10049705
+lead,2019,select48-leads,1,0.82771180,1.08207746
+lead,2019,select48-leads,2,0.99613873,1.28080508
+lead,2019,select48-leads,3,1.20069992,1.53087211
+lead,2019,select48-leads,4,1.36585803,1.73287330
+lead,2019,select48-leads,5,1.48280878,1.87562391
+lead,2019,select48-leads,6,1.56958255,1.98264211
+lead,2019,select48-leads,7,1.61498402,2.05290106
+lead,2019,select48-leads,8,1.73211907,2.18619783
+lead,2019,select48-leads,9,1.71797832,2.17588572
+lead,2019,select48-leads,10,1.74383017,2.21226587
+lead,2019,select48-leads,11,1.67728621,2.15238465
+lead,2019,select48-leads,12,1.66041567,2.14298068
+lead,2019,select48-leads,13,1.69448886,2.18414998
+lead,2019,select48-leads,14,1.71731264,2.20434652
+lead,2019,select48-leads,15,1.73387501,2.22077313
+lead,2019,select48-leads,16,1.73960569,2.23092619
+lead,2019,select48-leads,17,1.75480709,2.25080281
+lead,2019,select48-leads,18,1.75190996,2.26319056
+lead,2019,select48-leads,19,1.75334484,2.26552290
+lead,2019,select48-leads,20,1.79046720,2.31190171
+lead,2019,select48-leads,21,1.79615904,2.32634824
+lead,2019,select48-leads,22,1.81278947,2.35129264
+lead,2019,select48-leads,23,1.81925471,2.36471384
+lead,2019,select48-leads,24,1.83407162,2.38734570
+month,2019,select48-leads,1,736,1.68486057,2.17627125
+month,2019,select48-leads,2,567,1.79449904,2.29334831
+month,2019,select48-leads,3,634,1.68306827,2.25636897
+month,2019,select48-leads,4,706,1.49035770,1.92093073
+month,2019,select48-leads,5,716,1.82378196,2.42960127
+month,2019,select48-leads,6,505,1.72733661,2.24130368
+month,2019,select48-leads,7,715,1.64116633,2.13186006
+month,2019,select48-leads,8,706,1.63072590,2.05297899
+month,2019,select48-leads,9,508,1.47245513,1.84643029
+month,2019,select48-leads,10,441,1.67419537,2.20758397
+month,2019,select48-leads,11,615,1.42870871,1.82669156
+month,2019,select48-leads,12,606,1.32628441,1.65980798
+representation-natural,2019,select48-leads,8737,7455,7455
+representation-fit,2019,select48-leads,42,5.339912,0.101667
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.46
+	Maximum resident set size (kbytes): 281220
+	Exit status: 0
+representation-rescore,2019,select48-leads,matched,7455,1.61614581,2.10049705,pass
+representation-end,2019,select48-leads,42
+5258c87d9c06267613a3fbd52779c1a92986d348e771f8d03f4e51a7117974f7  fit-origins.txt
+b83cbabddae4c82e59c8eb39c9bdd71ff297afef3f03da1f77a33ee6392d7339  matched-origins.txt
+d644432151876c3f5fc456fbaed060cc52df335434f6459f44c957891348d895  metrics.txt
+3da056199fd122f80073beffd46a1dfba7e48f60cc5bc229b9ec0b7cebdba72f  predictions.csv.gz
+f3ee497bdbec207b313c26569bf75ee17a92586e7e23610fe321251ddc715dad  rescore.txt
+81cff7d2c2a7b3e9e8ddc4d4f4c2007b0d4131b8469d962a5f4d045c26be9ffc  resources.txt
+cbccba439e5b78f9dbaad1722d1d8dae9c76fa613f8aca99ad783c8a65e00204  train-origins.txt

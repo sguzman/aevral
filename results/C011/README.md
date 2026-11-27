@@ -34,3 +34,22 @@ Suffix24 covers 493 additional origins; suffix48 covers 236. Sparse 14d/28d lag 
 | wind-unit | A-derived | 1.54274905 | 2.00430055 | n/a |
 
 Best overall screen remains suffix24 (1.43152429°C). All new recipes have 7455 matched and natural origins by design. Raw payloads not separately downloaded. Next R10–R14.
+
+## R10–R14
+
+10/10 measured, zero blocked. 191 tests per job; all ten artifact names reconciled, independent CI aggregate and per-lead rescoring passed; origin hashes identical to prior screens. Climatology counts and feature selection dimensions verified. [CI](https://github.com/sguzman/aevral/actions/runs/46072704541).
+
+| Recipe | Track | Matched MAE °C | RMSE °C | All optional observed (eval) |
+|---|---|---:|---:|---:|
+| interactions-local | A-derived | 1.51971001 | 1.97447201 | n/a |
+| spectral-5 | A-derived | 1.52211204 | 1.98607699 | n/a |
+| spectral-3 | A-derived | 1.52606380 | 1.97895526 | n/a |
+| anomaly-month | A-derived | 1.54857460 | 2.00287991 | n/a |
+| anomaly-month-hour | A-derived | 1.55396889 | 2.01407648 | n/a |
+| history96 | B-expanded | 1.55773682 | 2.02633246 | 7230 |
+| interactions-calendar | A-derived | 1.56619058 | 2.04646281 | n/a |
+| select48-leads | A-derived | 1.61614581 | 2.10049705 | n/a |
+| history168 | B-expanded | 1.63721042 | 2.10089614 | 6626 |
+| select32-mean | A-derived | 1.64832539 | 2.15528575 | n/a |
+
+All 29 screens measured. Best screen suffix24 (1.43152429°C). All recipes advance under frozen manifest. Raw payloads not separately downloaded. No annual conclusions.

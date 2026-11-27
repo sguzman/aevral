@@ -1,0 +1,152 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.35s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+representation-start,2019,select32-mean,42
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+representation-selection,2019,select32-mean,0,0.737368622546,0
+representation-selection,2019,select32-mean,1,0.738120580624,0
+representation-selection,2019,select32-mean,2,0.738744267717,0
+representation-selection,2019,select32-mean,3,0.739533831705,0
+representation-selection,2019,select32-mean,4,0.742099551702,0
+representation-selection,2019,select32-mean,5,0.743770521506,0
+representation-selection,2019,select32-mean,6,0.744258353346,0
+representation-selection,2019,select32-mean,7,0.746780050598,0
+representation-selection,2019,select32-mean,8,0.746190034198,0
+representation-selection,2019,select32-mean,9,0.746803821384,0
+representation-selection,2019,select32-mean,10,0.748439093692,0
+representation-selection,2019,select32-mean,11,0.749656586540,0
+representation-selection,2019,select32-mean,12,0.752757331189,0
+representation-selection,2019,select32-mean,13,0.754574523463,0
+representation-selection,2019,select32-mean,14,0.755197832671,0
+representation-selection,2019,select32-mean,15,0.756679978771,0
+representation-selection,2019,select32-mean,16,0.757508928531,0
+representation-selection,2019,select32-mean,17,0.757111962705,0
+representation-selection,2019,select32-mean,18,0.757272807020,0
+representation-selection,2019,select32-mean,19,0.759678066044,0
+representation-selection,2019,select32-mean,20,0.761852705623,0
+representation-selection,2019,select32-mean,21,0.764059036281,0
+representation-selection,2019,select32-mean,22,0.766571373573,0
+representation-selection,2019,select32-mean,23,0.766898201378,0
+representation-selection,2019,select32-mean,24,0.767029455478,0
+representation-selection,2019,select32-mean,25,0.768876266969,0
+representation-selection,2019,select32-mean,26,0.769926971884,0
+representation-selection,2019,select32-mean,27,0.770997745382,0
+representation-selection,2019,select32-mean,28,0.772678102676,0
+representation-selection,2019,select32-mean,29,0.774477690016,0
+representation-selection,2019,select32-mean,30,0.775898744493,0
+representation-selection,2019,select32-mean,31,0.778789469578,0
+representation-selection,2019,select32-mean,32,0.780156781825,0
+representation-selection,2019,select32-mean,33,0.781302392183,0
+representation-selection,2019,select32-mean,34,0.785370867423,0
+representation-selection,2019,select32-mean,35,0.788765162114,0
+representation-selection,2019,select32-mean,36,0.793478318267,0
+representation-selection,2019,select32-mean,37,0.797031044797,0
+representation-selection,2019,select32-mean,38,0.798367201086,0
+representation-selection,2019,select32-mean,39,0.800652816428,0
+representation-selection,2019,select32-mean,40,0.802371031477,1
+representation-selection,2019,select32-mean,41,0.803946844006,1
+representation-selection,2019,select32-mean,42,0.805294541842,1
+representation-selection,2019,select32-mean,43,0.805230357848,1
+representation-selection,2019,select32-mean,44,0.807131408493,1
+representation-selection,2019,select32-mean,45,0.810267529071,1
+representation-selection,2019,select32-mean,46,0.812449412749,1
+representation-selection,2019,select32-mean,47,0.813985601239,1
+representation-selection,2019,select32-mean,48,0.815209382043,1
+representation-selection,2019,select32-mean,49,0.819358297494,1
+representation-selection,2019,select32-mean,50,0.821698600214,1
+representation-selection,2019,select32-mean,51,0.826666997073,1
+representation-selection,2019,select32-mean,52,0.828066723723,1
+representation-selection,2019,select32-mean,53,0.832768142815,1
+representation-selection,2019,select32-mean,54,0.835975411826,1
+representation-selection,2019,select32-mean,55,0.839376769485,1
+representation-selection,2019,select32-mean,56,0.843033602035,1
+representation-selection,2019,select32-mean,57,0.845872985946,1
+representation-selection,2019,select32-mean,58,0.849008983877,1
+representation-selection,2019,select32-mean,59,0.852371407128,1
+representation-selection,2019,select32-mean,60,0.856412986877,1
+representation-selection,2019,select32-mean,61,0.859327447143,1
+representation-selection,2019,select32-mean,62,0.861025901181,1
+representation-selection,2019,select32-mean,63,0.863084115964,1
+representation-selection,2019,select32-mean,64,0.865836278235,1
+representation-selection,2019,select32-mean,65,0.867163345770,1
+representation-selection,2019,select32-mean,66,0.869956472123,1
+representation-selection,2019,select32-mean,67,0.871713551297,1
+representation-selection,2019,select32-mean,68,0.875086457124,1
+representation-selection,2019,select32-mean,69,0.878758026943,1
+representation-selection,2019,select32-mean,70,0.882508150693,1
+representation-selection,2019,select32-mean,71,0.886987050249,1
+representation-selection,2019,select32-mean,72,0.011369247472,0
+representation-selection,2019,select32-mean,73,0.012408644050,0
+representation-selection,2019,select32-mean,74,0.306968253264,0
+representation-selection,2019,select32-mean,75,0.795825697103,0
+representation-selection,2019,select32-mean,76,0.788045212525,0
+representation-selection,2019,select32-mean,77,0.042980997556,0
+representation-selection,2019,select32-mean,78,0.153609717683,0
+representation-selection,2019,select32-mean,79,0.233279881977,0
+representation-config,2019,select32-mean,42,8192,12,0.001,32,3672,9435520,98304
+representation-preflight,2019,select32-mean,42,1.009703,0.005600,0.000147,5.350318
+representation-epoch,2019,select32-mean,42,1,0.1496990955
+representation-epoch,2019,select32-mean,42,2,0.1392627139
+representation-epoch,2019,select32-mean,42,3,0.1377581989
+representation-epoch,2019,select32-mean,42,4,0.1361517273
+representation-epoch,2019,select32-mean,42,5,0.1344385287
+representation-epoch,2019,select32-mean,42,6,0.1345321821
+representation-epoch,2019,select32-mean,42,7,0.1335640407
+representation-epoch,2019,select32-mean,42,8,0.1334590129
+representation-epoch,2019,select32-mean,42,9,0.1307660888
+representation-epoch,2019,select32-mean,42,10,0.1315983834
+representation-epoch,2019,select32-mean,42,11,0.1304691073
+representation-epoch,2019,select32-mean,42,12,0.1301048366
+score,2019,select32-mean,7455,1.64832539,2.15528575
+lead,2019,select32-mean,1,0.77813698,1.03399151
+lead,2019,select32-mean,2,0.97952547,1.28015678
+lead,2019,select32-mean,3,1.19707276,1.54202314
+lead,2019,select32-mean,4,1.36359896,1.74372503
+lead,2019,select32-mean,5,1.49725452,1.90495528
+lead,2019,select32-mean,6,1.60892197,2.04359867
+lead,2019,select32-mean,7,1.69016969,2.14296658
+lead,2019,select32-mean,8,1.81830791,2.29749929
+lead,2019,select32-mean,9,1.80066673,2.29195897
+lead,2019,select32-mean,10,1.81187805,2.31097411
+lead,2019,select32-mean,11,1.74092785,2.23998979
+lead,2019,select32-mean,12,1.73583866,2.22979322
+lead,2019,select32-mean,13,1.75954577,2.26064950
+lead,2019,select32-mean,14,1.77475324,2.27663742
+lead,2019,select32-mean,15,1.77267625,2.27431479
+lead,2019,select32-mean,16,1.78189970,2.28852186
+lead,2019,select32-mean,17,1.78482444,2.29931898
+lead,2019,select32-mean,18,1.78521407,2.30981031
+lead,2019,select32-mean,19,1.79015977,2.32904540
+lead,2019,select32-mean,20,1.81039628,2.35873691
+lead,2019,select32-mean,21,1.81811801,2.37967087
+lead,2019,select32-mean,22,1.81426173,2.38239051
+lead,2019,select32-mean,23,1.81098691,2.37585726
+lead,2019,select32-mean,24,1.83467373,2.40908396
+month,2019,select32-mean,1,736,1.74586869,2.23892464
+month,2019,select32-mean,2,567,1.76280171,2.25313955
+month,2019,select32-mean,3,634,1.74201719,2.28333156
+month,2019,select32-mean,4,706,1.52514731,1.98224609
+month,2019,select32-mean,5,716,1.89073361,2.56662103
+month,2019,select32-mean,6,505,1.80456502,2.33649775
+month,2019,select32-mean,7,715,1.70579162,2.22816644
+month,2019,select32-mean,8,706,1.61785025,2.07367196
+month,2019,select32-mean,9,508,1.46899229,1.87636853
+month,2019,select32-mean,10,441,1.67838052,2.24136543
+month,2019,select32-mean,11,615,1.50134697,1.91340226
+month,2019,select32-mean,12,606,1.29694523,1.65914832
+representation-natural,2019,select32-mean,8737,7455,7455
+representation-fit,2019,select32-mean,42,4.242460,0.094408
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:05.36
+	Maximum resident set size (kbytes): 281252
+	Exit status: 0
+representation-rescore,2019,select32-mean,matched,7455,1.64832539,2.15528575,pass
+representation-end,2019,select32-mean,42
+5258c87d9c06267613a3fbd52779c1a92986d348e771f8d03f4e51a7117974f7  fit-origins.txt
+b83cbabddae4c82e59c8eb39c9bdd71ff297afef3f03da1f77a33ee6392d7339  matched-origins.txt
+65aff90dfd9f8c1e12da9c732665933411e8ac6ce9a68aff0e24a5be8c017d2f  metrics.txt
+a062fd1d5c6164b30c06ae8a820678c740d24bccd5310d604a36bfde224d6e58  predictions.csv.gz
+4dde4aa04a04bfeeed8fb91e373b644057780fcad6d8e9a966ac704f6890ce83  rescore.txt
+15bfae3f4d9312248515e6b36478128465115b04ac6fe4af495df9bc8aa96bf4  resources.txt
+cbccba439e5b78f9dbaad1722d1d8dae9c76fa613f8aca99ad783c8a65e00204  train-origins.txt
