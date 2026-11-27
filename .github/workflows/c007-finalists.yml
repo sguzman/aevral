@@ -1,0 +1,138 @@
+name: C007 annual kernel and neighbor finalists
+on:
+  push:
+    paths:
+      - '.github/workflows/c007-finalists.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - {method: 'K01', config: 'knn-k16', fold: '2020', seed: 'deterministic'}
+          - {method: 'K01', config: 'knn-k16', fold: '2021', seed: 'deterministic'}
+          - {method: 'K01', config: 'knn-k16', fold: '2022', seed: 'deterministic'}
+          - {method: 'K01', config: 'knn-k32', fold: '2020', seed: 'deterministic'}
+          - {method: 'K01', config: 'knn-k32', fold: '2021', seed: 'deterministic'}
+          - {method: 'K01', config: 'knn-k32', fold: '2022', seed: 'deterministic'}
+          - {method: 'K02', config: 'analog-k16-inverse', fold: '2020', seed: 'deterministic'}
+          - {method: 'K02', config: 'analog-k16-inverse', fold: '2021', seed: 'deterministic'}
+          - {method: 'K02', config: 'analog-k16-inverse', fold: '2022', seed: 'deterministic'}
+          - {method: 'K02', config: 'analog-k16-gaussian', fold: '2020', seed: 'deterministic'}
+          - {method: 'K02', config: 'analog-k16-gaussian', fold: '2021', seed: 'deterministic'}
+          - {method: 'K02', config: 'analog-k16-gaussian', fold: '2022', seed: 'deterministic'}
+          - {method: 'K03', config: 'season-k16-d30', fold: '2020', seed: 'deterministic'}
+          - {method: 'K03', config: 'season-k16-d30', fold: '2021', seed: 'deterministic'}
+          - {method: 'K03', config: 'season-k16-d30', fold: '2022', seed: 'deterministic'}
+          - {method: 'K03', config: 'season-k8-d30', fold: '2020', seed: 'deterministic'}
+          - {method: 'K03', config: 'season-k8-d30', fold: '2021', seed: 'deterministic'}
+          - {method: 'K03', config: 'season-k8-d30', fold: '2022', seed: 'deterministic'}
+          - {method: 'K04', config: 'local-k128-l01', fold: '2020', seed: 'deterministic'}
+          - {method: 'K04', config: 'local-k128-l01', fold: '2021', seed: 'deterministic'}
+          - {method: 'K04', config: 'local-k128-l01', fold: '2022', seed: 'deterministic'}
+          - {method: 'K04', config: 'local-k64-l01', fold: '2020', seed: 'deterministic'}
+          - {method: 'K04', config: 'local-k64-l01', fold: '2021', seed: 'deterministic'}
+          - {method: 'K04', config: 'local-k64-l01', fold: '2022', seed: 'deterministic'}
+          - {method: 'K05', config: 'linear-krr-l001', fold: '2020', seed: 'deterministic'}
+          - {method: 'K05', config: 'linear-krr-l001', fold: '2021', seed: 'deterministic'}
+          - {method: 'K05', config: 'linear-krr-l001', fold: '2022', seed: 'deterministic'}
+          - {method: 'K05', config: 'linear-krr-l01', fold: '2020', seed: 'deterministic'}
+          - {method: 'K05', config: 'linear-krr-l01', fold: '2021', seed: 'deterministic'}
+          - {method: 'K05', config: 'linear-krr-l01', fold: '2022', seed: 'deterministic'}
+          - {method: 'K06', config: 'rbf-krr-s1-l1', fold: '2020', seed: 'deterministic'}
+          - {method: 'K06', config: 'rbf-krr-s1-l1', fold: '2021', seed: 'deterministic'}
+          - {method: 'K06', config: 'rbf-krr-s1-l1', fold: '2022', seed: 'deterministic'}
+          - {method: 'K06', config: 'rbf-krr-s1-l01', fold: '2020', seed: 'deterministic'}
+          - {method: 'K06', config: 'rbf-krr-s1-l01', fold: '2021', seed: 'deterministic'}
+          - {method: 'K06', config: 'rbf-krr-s1-l01', fold: '2022', seed: 'deterministic'}
+          - {method: 'K07', config: 'svr-s1-c1', fold: '2020', seed: 'deterministic'}
+          - {method: 'K07', config: 'svr-s1-c1', fold: '2021', seed: 'deterministic'}
+          - {method: 'K07', config: 'svr-s1-c1', fold: '2022', seed: 'deterministic'}
+          - {method: 'K07', config: 'svr-s1-c10', fold: '2020', seed: 'deterministic'}
+          - {method: 'K07', config: 'svr-s1-c10', fold: '2021', seed: 'deterministic'}
+          - {method: 'K07', config: 'svr-s1-c10', fold: '2022', seed: 'deterministic'}
+          - {method: 'K08', config: 'gp-s1', fold: '2020', seed: 'deterministic'}
+          - {method: 'K08', config: 'gp-s1', fold: '2021', seed: 'deterministic'}
+          - {method: 'K08', config: 'gp-s1', fold: '2022', seed: 'deterministic'}
+          - {method: 'K08', config: 'gp-s05', fold: '2020', seed: 'deterministic'}
+          - {method: 'K08', config: 'gp-s05', fold: '2021', seed: 'deterministic'}
+          - {method: 'K08', config: 'gp-s05', fold: '2022', seed: 'deterministic'}
+          - {method: 'K09', config: 'fitc-s1-m256', fold: '2020', seed: 'deterministic'}
+          - {method: 'K09', config: 'fitc-s1-m256', fold: '2021', seed: 'deterministic'}
+          - {method: 'K09', config: 'fitc-s1-m256', fold: '2022', seed: 'deterministic'}
+          - {method: 'K09', config: 'fitc-s1-m128', fold: '2020', seed: 'deterministic'}
+          - {method: 'K09', config: 'fitc-s1-m128', fold: '2021', seed: 'deterministic'}
+          - {method: 'K09', config: 'fitc-s1-m128', fold: '2022', seed: 'deterministic'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2019', seed: '123'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2019', seed: '2026'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2020', seed: '42'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2020', seed: '123'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2020', seed: '2026'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2021', seed: '42'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2021', seed: '123'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2021', seed: '2026'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2022', seed: '42'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2022', seed: '123'}
+          - {method: 'K10', config: 'rff-s1-m256', fold: '2022', seed: '2026'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2019', seed: '123'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2019', seed: '2026'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2020', seed: '42'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2020', seed: '123'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2020', seed: '2026'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2021', seed: '42'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2021', seed: '123'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2021', seed: '2026'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2022', seed: '42'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2022', seed: '123'}
+          - {method: 'K10', config: 'rff-s1-m128', fold: '2022', seed: '2026'}
+          - {method: 'K11', config: 'nystrom-s1-m256', fold: '2020', seed: 'deterministic'}
+          - {method: 'K11', config: 'nystrom-s1-m256', fold: '2021', seed: 'deterministic'}
+          - {method: 'K11', config: 'nystrom-s1-m256', fold: '2022', seed: 'deterministic'}
+          - {method: 'K11', config: 'nystrom-s1-m128', fold: '2020', seed: 'deterministic'}
+          - {method: 'K11', config: 'nystrom-s1-m128', fold: '2021', seed: 'deterministic'}
+          - {method: 'K11', config: 'nystrom-s1-m128', fold: '2022', seed: 'deterministic'}
+    env:
+      METHOD: ${{ matrix.method }}
+      CONFIG: ${{ matrix.config }}
+      FOLD: ${{ matrix.fold }}
+      SEED: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Native numerical tests and build
+        if: matrix.method != 'K07'
+        run: |
+          cargo test --locked --release
+          cargo build --locked --release
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+        if: matrix.method == 'K07'
+      - name: LIBSVM numerical tests and locked build
+        if: matrix.method == 'K07'
+        run: |
+          nix develop .#svr --no-update-lock-file --command cargo test --locked --release
+          nix develop .#svr --no-update-lock-file --command cargo build --locked --release
+          git diff --exit-code -- flake.lock
+      - name: Evaluate native finalist
+        if: matrix.method != 'K07'
+        run: bash scripts/c007-finalist.sh
+      - name: Evaluate official LIBSVM finalist
+        if: matrix.method == 'K07'
+        run: nix develop .#svr --no-update-lock-file --command bash scripts/c007-finalist.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c007-finalist-${{ matrix.method }}-${{ matrix.fold }}-${{ matrix.config }}-${{ matrix.seed }}
+          path: results-run/
+          retention-days: 30
