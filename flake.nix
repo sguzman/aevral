@@ -12,6 +12,8 @@
         packages = with pkgs; [ rustc cargo rustfmt clippy coreutils libsvm ];
         AEVRAL_LIBSVM_ROOT = "${pkgs.libsvm}";
         AEVRAL_LIBSVM_VERSION = pkgs.libsvm.version;
+        AEVRAL_SVM_TRAIN = "${pkgs.libsvm.bin}/bin/svm-train";
+        AEVRAL_SVM_PREDICT = "${pkgs.libsvm.bin}/bin/svm-predict";
       };
       boosting = pkgs.mkShell {
         packages = with pkgs; [ rustc cargo rustfmt clippy coreutils xgboost lightgbm catboost ];

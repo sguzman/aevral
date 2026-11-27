@@ -1,0 +1,22 @@
+name: C007 official LIBSVM adapter smoke
+on:
+  push:
+    paths:
+      - '.github/workflows/svr-smoke.yml'
+      - 'src/features/tournament/svr.rs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+      - name: Verify locked shell and synthetic epsilon-SVR
+        run: |
+          nix develop .#svr --no-update-lock-file --command cargo test --locked --release
+          nix develop .#svr --no-update-lock-file --command cargo build --locked --release
+          nix develop .#svr --no-update-lock-file --command target/release/aevral svr-smoke
+          git diff --exit-code -- flake.lock

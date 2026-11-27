@@ -23,6 +23,16 @@ fn main() {
         if let Err(e)=aevral::features::tournament::boosting::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
         return
     }
+    if args.get(1).map(String::as_str)==Some("svr-smoke"){
+        if args.len()!=2{eprintln!("Usage: aevral svr-smoke");std::process::exit(2)}
+        if let Err(e)=aevral::features::tournament::svr::smoke(){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
+    if args.get(1).map(String::as_str)==Some("svr"){
+        if args.len()!=6{eprintln!("Usage: aevral svr DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
+        if let Err(e)=aevral::features::tournament::svr::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("krr"){
         if args.len()!=6{eprintln!("Usage: aevral krr DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
         if let Err(e)=aevral::features::tournament::kernel_ridge::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}

@@ -202,3 +202,5 @@ mod kernel_linalg;
 pub mod local;
 
 pub mod kernel_ridge;
+
+pub mod svr;

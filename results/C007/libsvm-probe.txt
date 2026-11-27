@@ -1,0 +1,15 @@
+CI 45920309889, code f134e55353afa3858e65d5b17ac469a1819a0978
+libsvm-version,333
+libsvm-root,/nix/store/rrx93xkj4s1iwjzh5val1hlg968nzapb-libsvm-333
+libsvm-tool,svm-train,/nix/store/rjqygh5vjwxr7miz2f5hlgk9wr58pfz4-libsvm-333-bin/bin/svm-train
+libsvm-tool,svm-predict,/nix/store/rjqygh5vjwxr7miz2f5hlgk9wr58pfz4-libsvm-333-bin/bin/svm-predict
+libsvm-file,/nix/store/rrx93xkj4s1iwjzh5val1hlg968nzapb-libsvm-333/lib/libsvm.so
+libsvm-file,/nix/store/rrx93xkj4s1iwjzh5val1hlg968nzapb-libsvm-333/lib/libsvm.so.3
+libsvm-model,svm_type epsilon_svr
+libsvm-model,kernel_type rbf
+libsvm-model,gamma 0.25
+libsvm-model,nr_class 2
+libsvm-model,total_sv 4
+libsvm-model,rho 0.00011080206356205751
+libsvm-model,SV
+libsvm-probe,cli,-1.04980414220963,1.0501957901143919,pass

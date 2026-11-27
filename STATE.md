@@ -1,6 +1,6 @@
 # Fixed-data temperature program — C003–C006 complete; C007 active
 
-Current checkpoint: C007 23/41 screens resolved, 23 measured, best local-k128-l01 MAE 1.37195009. K07 pinned Nix LIBSVM backend probe submitted; verify version and CLI/library availability, archive evidence, then epsilon-SVR adapter and synthetic verification before four screens. C007 manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
+Current checkpoint: C007 23/41 screens resolved, 23 measured, best local-k128-l01 MAE 1.37195009. K07 official LIBSVM 3.33 CLI verified and probe evidence archived; Rust adapter implemented and smoke CI submitted. Verify synthetic adapter and numerical tests before four weather screens. C007 manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
 
 
 C001/C002 historical reports immutable; both old holdouts exposed. C003 complete: 27 hashes verified, all five benchmark jobs passed 45892792311, legacy exact, 30138 matched annual origins (2019 7455, 2020 7543, 2021 7501, 2022 7639), pooled MLP64 MAE 1.34781461, daily 2.05372678. Export audit 45895728513 all five passed; 5793120 prediction rows verified, 35 tests, archived results/C003. Program campaigns/TEMPERATURE-PROGRAM.md. C004 manifest campaigns/004-linear-additive/manifest.md predeclares 54 screen configurations across 12 methods. Next implement L01/L02 stable least-squares and ridge first batch in Rust using src/features/tournament.rs API, test numerical correctness, add CLI/CI with frozen data, score 2019. No C004 results or code yet. Subsequent batches per manifest. No new data or local downloads. Keep logs filtered and state durable. No human action required.
@@ -222,3 +222,6 @@ K05–K06 CI 45920051360: 7/7 resolved, 7 measured, 109 tests passed, 329 diagno
 
 ## C007 phase 8
 Added optional svr devShell using existing flake.lock pin and official pkgs.libsvm, package version/root exposed, CI probe inventories CLI/library paths and tests epsilon-regression CLI if available. No lock update, no changes to default shell. Await actual probe results before implementing adapter. 23/41 measured; no new data.
+
+## C007 phase 9
+LIBSVM 333 pinned package probe passed (CI 45920309889, CLI support vector count4 and expected predictions); results/C007/libsvm-probe.txt durable. Implemented 24 separate scalar epsilon-SVR fits, official CLI absolute paths, dummy zero eval labels, model/header/count validation, finite predictions, first full lead preflight (reused), timeout guard, three parser/export tests. Smoke CI before four frozen weather configs svr-s05-c1/c10 and svr-s1-c1/c10. 23/41 measured; no new data.
