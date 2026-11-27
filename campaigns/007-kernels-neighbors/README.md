@@ -1,6 +1,6 @@
 # C007 — Kernel, local and instance-based methods
 
-Status: active; [finite manifest](manifest.md) frozen before fitting. 41/41 screening configurations measured across 11 families; [results](../../results/C007/README.md). [22 finalists](FINALISTS.md) frozen; 82 additional annual outcomes pending.
+Status: complete; [finite manifest](manifest.md) frozen before fitting. 41/41 screening configurations measured across 11 families; [results](../../results/C007/README.md). [22 finalists](FINALISTS.md) frozen; 82/82 additional annual outcomes measured, zero blocked. [Final report](../../results/C007/REPORT.md).
 
 ## Scope
 KNN, weighted analogs, nearest seasonal trajectories, local linear regression, RBF/linear kernel ridge, epsilon-SVR, Gaussian processes, sparse/inducing point approximations, random Fourier/Nystrom features.

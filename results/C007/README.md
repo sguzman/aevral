@@ -77,4 +77,4 @@ Frozen manifest: campaigns/007-kernels-neighbors/manifest.md. Full matched 2019 
 | nystrom-s05-m128 | 2.03367341 | 2.78397943 | 0.218043 | 0.093396 |
 | rff-s05-m128 | 2.21448817 | 2.98282368 | 0.162789 | 0.062178 |
 
-All 41 screens measured; no blocked configurations. Best local-k128-l01 MAE 1.37195009. [Frozen finalists](../../campaigns/007-kernels-neighbors/FINALISTS.md): 22 configurations, 82 additional annual outcomes pending.
+All 41 screens measured; no blocked configurations. Best local-k128-l01 MAE 1.37195009. [Frozen finalists](../../campaigns/007-kernels-neighbors/FINALISTS.md): 22 configurations, 82/82 additional annual outcomes measured. See [final report](REPORT.md) and [closure audit](closure-audit.md).

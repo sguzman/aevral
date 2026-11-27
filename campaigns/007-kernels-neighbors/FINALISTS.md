@@ -29,6 +29,6 @@ Selected from all 41 measured 2019 screens by manifest MAE, RMSE, then compute c
 
 ## Additional annual evaluation matrix
 
-20 deterministic finalists × 2020–22 = 60 fits. Two K10 finalists × (2019 seeds 123/2026 plus 2020–22 seeds 42/123/2026) = 22 fits. Total 82 new outcomes; reuse all existing 2019 screens. Keep max six parallel jobs, 30 minutes/job, and frozen guards. Report seed-specific four-year pooled scores and sample SD across three RFF seeds. No annual finalist runs launched at this checkpoint.
+20 deterministic finalists × 2020–22 = 60 fits. Two K10 finalists × (2019 seeds 123/2026 plus 2020–22 seeds 42/123/2026) = 22 fits. Total 82 new outcomes; reuse all existing 2019 screens. Keep max six parallel jobs, 30 minutes/job, and frozen guards. Report seed-specific four-year pooled scores and sample SD across three RFF seeds. Annual CI 46029710841 completed; all 82 measured and archived. Selection above remains frozen.
 
 Screen registry: [registry.csv](../../results/C007/registry.csv). Final batch [CI](https://github.com/sguzman/aevral/actions/runs/45921413274).
