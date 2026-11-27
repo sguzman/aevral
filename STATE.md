@@ -141,3 +141,6 @@ T02-T04 ten ensemble configurations implemented, shared 24-output trees, fixed s
 
 ## C006 phase 5
 T02–T04 CI 45915256233 all ten successful, 86 tests passed. All ten outcomes archived with 470 diagnostic records, exact cohort/lead/seed/sample checks. 16/28 screens measured. Best bag-32 MAE1.54528611 RMSE2.00965579, rf-32-27 1.55554826, extra-32-27 1.65498500. Next T05/T09 histogram squared-loss and median pinball boosting (six configs); train-only quantile bins, per-lead median residual leaf updates for T09. Then official backends T06–T08. No new data.
+
+## C006 phase 6
+T05/T09 six configs implemented in boosting.rs, histogram squared-loss and median pinball with median residual leaf updates. T05-T09.md frozen specification. Six new tests and CI workflow submitted; verify compile/test and archive outcomes; then genuine external backends T06-T08. 16/28 measured, 22/28 implemented. No new data.

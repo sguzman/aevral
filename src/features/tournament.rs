@@ -191,3 +191,5 @@ pub mod switching;
 pub mod cart;
 
 pub mod forest;
+
+pub mod boosting;
