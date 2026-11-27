@@ -1,0 +1,63 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+strategy-start,2020,pinball-median,123
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+strategy-config,2020,pinball-median,123,8192,12,0.001,6744,3218608,98304
+strategy-preflight,2020,pinball-median,123,128,32,0.009921,0.000257,7.680046
+strategy-epoch,2020,pinball-median,123,1,0.1515761649,0
+strategy-epoch,2020,pinball-median,123,2,0.1400830330,0
+strategy-epoch,2020,pinball-median,123,3,0.1351871930,0
+strategy-epoch,2020,pinball-median,123,4,0.1309944466,0
+strategy-epoch,2020,pinball-median,123,5,0.1281785928,0
+strategy-epoch,2020,pinball-median,123,6,0.1258189645,0
+strategy-epoch,2020,pinball-median,123,7,0.1242496196,0
+strategy-epoch,2020,pinball-median,123,8,0.1234214397,0
+strategy-epoch,2020,pinball-median,123,9,0.1221825348,0
+strategy-epoch,2020,pinball-median,123,10,0.1220499002,0
+strategy-epoch,2020,pinball-median,123,11,0.1211939243,0
+strategy-epoch,2020,pinball-median,123,12,0.1207655419,0
+strategy-fit,2020,pinball-median,123,0,7.540387,0.057213
+score,2020,pinball-median,7543,1.50469113,2.01011184,0.063
+lead,2020,pinball-median,1,0.77568879,1.03133574
+lead,2020,pinball-median,2,0.95542344,1.26754559
+lead,2020,pinball-median,3,1.11364928,1.46068587
+lead,2020,pinball-median,4,1.21946986,1.58725830
+lead,2020,pinball-median,5,1.23047579,1.62362564
+lead,2020,pinball-median,6,1.31763828,1.73140327
+lead,2020,pinball-median,7,1.37287693,1.79709333
+lead,2020,pinball-median,8,1.41780252,1.85672661
+lead,2020,pinball-median,9,1.46504886,1.91363086
+lead,2020,pinball-median,10,1.47489567,1.93697072
+lead,2020,pinball-median,11,1.51496965,1.98982601
+lead,2020,pinball-median,12,1.51527195,1.99757561
+lead,2020,pinball-median,13,1.56151052,2.05772998
+lead,2020,pinball-median,14,1.56586948,2.07212057
+lead,2020,pinball-median,15,1.64857562,2.17738539
+lead,2020,pinball-median,16,1.67707928,2.20129405
+lead,2020,pinball-median,17,1.76709012,2.32283687
+lead,2020,pinball-median,18,1.75496936,2.30388618
+lead,2020,pinball-median,19,1.75309560,2.30110473
+lead,2020,pinball-median,20,1.76472642,2.31424832
+lead,2020,pinball-median,21,1.83714398,2.38703563
+lead,2020,pinball-median,22,1.83576290,2.40440238
+lead,2020,pinball-median,23,1.78867539,2.35847184
+lead,2020,pinball-median,24,1.78487752,2.33773688
+month,2020,pinball-median,1,640,1.49153105,1.98948220
+month,2020,pinball-median,2,594,1.30740465,1.73144385
+month,2020,pinball-median,3,729,1.40710166,1.88641189
+month,2020,pinball-median,4,507,1.37621119,1.77136713
+month,2020,pinball-median,5,625,1.79521942,2.41488059
+month,2020,pinball-median,6,699,1.48313357,2.01308915
+month,2020,pinball-median,7,622,1.62458071,2.13587264
+month,2020,pinball-median,8,715,1.69383889,2.21049291
+month,2020,pinball-median,9,345,1.33803513,1.74406307
+month,2020,pinball-median,10,733,1.38002738,1.79944298
+month,2020,pinball-median,11,717,1.51106889,2.06266882
+month,2020,pinball-median,12,617,1.55310488,2.09066165
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.46
+	Maximum resident set size (kbytes): 332908
+	Exit status: 0
+strategy-end,2020,pinball-median,123
