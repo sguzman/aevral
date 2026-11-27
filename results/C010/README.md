@@ -58,3 +58,16 @@ Multi-quantile crossing leads: 268/178920 (unrearranged).
 | lead-late | 1.55850193 | 2.02829224 |
 - trajectory-slope: slope MAE/curvature MAE/counts 0.60324108/0.86938682/171465/164010.
 - bound-clamp: outside/clipped/total 0/0/178920.
+
+### Final screens reconciled
+
+8/8 final batch archived; 28/28 total measured, zero blocked. All eight artifact names matched. 173 tests passed. [CI](https://github.com/sguzman/aevral/actions/runs/46060046667).
+
+| Recipe | MAE °C | RMSE °C |
+|---|---:|---:|
+| bound-penalty | 1.52449139 | 1.98742079 |
+| trajectory-curvature | 1.52216912 | 1.97658242 |
+- bound-penalty: outside/clipped/total 0/0/178920.
+- trajectory-curvature: slope MAE/curvature MAE/counts 0.62987783/0.93872359/171465/164010.
+
+Best screen mae-nhits64 MAE 1.41301012. All 28 candidates promote per frozen manifest. Annual validation and independent raw rescoring remain pending.
