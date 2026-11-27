@@ -1,0 +1,92 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.29s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+representation-start,2020,sparse-lags-14d,42
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+representation-scale,2020,sparse-lags-14d,0,11.538572884811437,6.330049531854944,8175,false
+representation-scale,2020,sparse-lags-14d,1,11.517528267014578,6.298121691192488,8176,false
+representation-scale,2020,sparse-lags-14d,2,11.558101937049267,6.321517938629473,8151,false
+representation-scale,2020,sparse-lags-14d,3,11.537442009169705,6.323883086944421,8167,false
+representation-scale,2020,sparse-lags-14d,4,11.551032339833982,6.3231250242893235,8153,false
+representation-scale,2020,sparse-lags-14d,5,11.55160484729386,6.3675243403908475,8142,false
+representation-available,2020,sparse-lags-14d,train,129327,126703
+representation-availability,2020,sparse-lags-14d,train,0,129070,257
+representation-availability,2020,sparse-lags-14d,train,1,128917,410
+representation-availability,2020,sparse-lags-14d,train,2,128802,525
+representation-availability,2020,sparse-lags-14d,train,3,128774,553
+representation-availability,2020,sparse-lags-14d,train,4,128734,593
+representation-availability,2020,sparse-lags-14d,train,5,128617,710
+representation-available,2020,sparse-lags-14d,eval,7543,7453
+representation-availability,2020,sparse-lags-14d,eval,0,7534,9
+representation-availability,2020,sparse-lags-14d,eval,1,7531,12
+representation-availability,2020,sparse-lags-14d,eval,2,7532,11
+representation-availability,2020,sparse-lags-14d,eval,3,7528,15
+representation-availability,2020,sparse-lags-14d,eval,4,7525,18
+representation-availability,2020,sparse-lags-14d,eval,5,7515,28
+representation-config,2020,sparse-lags-14d,42,8192,12,0.001,92,7512,17536160,98304
+representation-preflight,2020,sparse-lags-14d,42,1.101609,0.011200,0.000265,9.775615
+representation-epoch,2020,sparse-lags-14d,42,1,0.1463271755
+representation-epoch,2020,sparse-lags-14d,42,2,0.1172201926
+representation-epoch,2020,sparse-lags-14d,42,3,0.1105566918
+representation-epoch,2020,sparse-lags-14d,42,4,0.1070181043
+representation-epoch,2020,sparse-lags-14d,42,5,0.1036916521
+representation-epoch,2020,sparse-lags-14d,42,6,0.1027862148
+representation-epoch,2020,sparse-lags-14d,42,7,0.1011407421
+representation-epoch,2020,sparse-lags-14d,42,8,0.1006399808
+representation-epoch,2020,sparse-lags-14d,42,9,0.0998488064
+representation-epoch,2020,sparse-lags-14d,42,10,0.0988124376
+representation-epoch,2020,sparse-lags-14d,42,11,0.0978164511
+representation-epoch,2020,sparse-lags-14d,42,12,0.0974237669
+score,2020,sparse-lags-14d,7543,1.62261401,2.17893477
+lead,2020,sparse-lags-14d,1,0.82171214,1.07899519
+lead,2020,sparse-lags-14d,2,0.91638345,1.21840109
+lead,2020,sparse-lags-14d,3,1.04978168,1.38065690
+lead,2020,sparse-lags-14d,4,1.11242054,1.48846513
+lead,2020,sparse-lags-14d,5,1.17960181,1.58634602
+lead,2020,sparse-lags-14d,6,1.25304526,1.68217644
+lead,2020,sparse-lags-14d,7,1.30071373,1.74739183
+lead,2020,sparse-lags-14d,8,1.37708156,1.82934527
+lead,2020,sparse-lags-14d,9,1.49733248,1.96034126
+lead,2020,sparse-lags-14d,10,1.49986922,1.97991500
+lead,2020,sparse-lags-14d,11,1.57641887,2.07760162
+lead,2020,sparse-lags-14d,12,1.64466653,2.16759896
+lead,2020,sparse-lags-14d,13,1.79388657,2.34600035
+lead,2020,sparse-lags-14d,14,1.83161661,2.39773713
+lead,2020,sparse-lags-14d,15,1.92725392,2.50709436
+lead,2020,sparse-lags-14d,16,1.99310906,2.58926230
+lead,2020,sparse-lags-14d,17,1.92726209,2.52387240
+lead,2020,sparse-lags-14d,18,1.99844217,2.59040334
+lead,2020,sparse-lags-14d,19,2.02678289,2.61162583
+lead,2020,sparse-lags-14d,20,2.05794752,2.64722831
+lead,2020,sparse-lags-14d,21,2.09462405,2.69066956
+lead,2020,sparse-lags-14d,22,2.07305212,2.66120235
+lead,2020,sparse-lags-14d,23,1.98475034,2.55976336
+lead,2020,sparse-lags-14d,24,2.00498157,2.57417927
+month,2020,sparse-lags-14d,1,640,1.88828142,2.49567081
+month,2020,sparse-lags-14d,2,594,1.41878575,1.86757720
+month,2020,sparse-lags-14d,3,729,1.57619811,2.05912390
+month,2020,sparse-lags-14d,4,507,1.30996358,1.69839451
+month,2020,sparse-lags-14d,5,625,1.74291419,2.47637067
+month,2020,sparse-lags-14d,6,699,1.51016177,2.13553328
+month,2020,sparse-lags-14d,7,622,1.63573486,2.15868383
+month,2020,sparse-lags-14d,8,715,1.69213297,2.27121727
+month,2020,sparse-lags-14d,9,345,1.32408815,1.74291271
+month,2020,sparse-lags-14d,10,733,1.54469745,2.00622843
+month,2020,sparse-lags-14d,11,717,1.76027690,2.34571458
+month,2020,sparse-lags-14d,12,617,1.86628829,2.43228049
+representation-natural,2020,sparse-lags-14d,8761,7543,7543
+representation-fit,2020,sparse-lags-14d,42,8.336815,0.121743
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.58
+	Maximum resident set size (kbytes): 296976
+	Exit status: 0
+representation-rescore,2020,sparse-lags-14d,matched,7543,1.62261401,2.17893477,pass
+representation-end,2020,sparse-lags-14d,42
+0fd50cf46ed35a2a39bae594bc78f1d4aaaaa3fe8b40a765036ad166e9c9b6c1  fit-origins.txt
+68b396044cee8a7916c183e98121674b2a5edc66288427fbe795d6650871cc47  matched-origins.txt
+1a3ccd9692b170d1438c22f4158ce5ffaad24cac520e78a5ca417911d98f36b8  metrics.txt
+0863d30c8a0df4002d735b3eff063979dcc0852f2faa245ec8179e3eed0fc6f7  predictions.csv.gz
+812a70a104eef9b55d7522ee38fd19604ec448911c46e7541879634d4d76775a  rescore.txt
+cc9a2a04c50f6e546587dfdc767c13e852e772ca541768bf4778e79003e04ceb  resources.txt
+ff0b1d161d3acdefdee7bef04b1de25ee700a45cd6930e3afa05d48f44241624  train-origins.txt
