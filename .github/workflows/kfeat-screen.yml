@@ -1,0 +1,41 @@
+name: C007 K10-K11 kernel feature screen
+on:
+  push:
+    paths:
+      - '.github/workflows/kfeat-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        config: [rff-s05-m128, rff-s05-m256, rff-s1-m128, rff-s1-m256, nystrom-s05-m128, nystrom-s05-m256, nystrom-s1-m128, nystrom-s1-m256]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Numerical tests
+        run: cargo test --locked --release
+      - name: Evaluate RFF and Nystrom ridge
+        run: |
+          set -o pipefail
+          cargo build --locked --release
+          /usr/bin/time -v target/release/aevral kfeat data/raw/ksea 2019 predictions.csv ${{ matrix.config }} 42 | tee metrics.txt
+          gzip predictions.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c007-kfeat-2019-${{ matrix.config }}
+          path: |
+            metrics.txt
+            predictions.csv.gz
+          retention-days: 30

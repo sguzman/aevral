@@ -206,3 +206,5 @@ pub mod kernel_ridge;
 pub mod svr;
 
 pub mod gp;
+
+pub mod kernel_features;

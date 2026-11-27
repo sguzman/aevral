@@ -1,6 +1,6 @@
 # Fixed-data temperature program — C003–C006 complete; C007 active
 
-Current checkpoint: C007 33/41 screens resolved, 33 measured, best local-k128-l01 MAE 1.37195009. Next K10 random Fourier features and K11 Nystrom approximation (8 frozen configs), then freeze finalists. C007 manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
+Current checkpoint: C007 33/41 screens resolved, 33 measured, best local-k128-l01 MAE 1.37195009. K10/K11 implemented; eight frozen screens submitted. Verify and archive, then freeze top two per family and annual finalist matrix. C007 manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
 
 
 C001/C002 historical reports immutable; both old holdouts exposed. C003 complete: 27 hashes verified, all five benchmark jobs passed 45892792311, legacy exact, 30138 matched annual origins (2019 7455, 2020 7543, 2021 7501, 2022 7639), pooled MLP64 MAE 1.34781461, daily 2.05372678. Export audit 45895728513 all five passed; 5793120 prediction rows verified, 35 tests, archived results/C003. Program campaigns/TEMPERATURE-PROGRAM.md. C004 manifest campaigns/004-linear-additive/manifest.md predeclares 54 screen configurations across 12 methods. Next implement L01/L02 stable least-squares and ridge first batch in Rust using src/features/tournament.rs API, test numerical correctness, add CLI/CI with frozen data, score 2019. No C004 results or code yet. Subsequent batches per manifest. No new data or local downloads. Keep logs filtered and state durable. No human action required.
@@ -237,3 +237,6 @@ K08 exact 1024-row GP and K09 8192-row FITC GP with 128/256 inducing points, sha
 
 ## C007 phase 13
 K08–K09 CI 45921039141: 6/6 resolved, 6 measured, 116 tests passed, 292 diagnostic records archived. Best fitc-s1-m256 MAE 1.37723166. 33/41 screens resolved, best overall local-k128-l01 1.37195009. Next K10–K11. No new data.
+
+## C007 phase 14
+RFF SplitMix64/Box–Muller independent feature-major draws and Nystrom deterministic landmarks/triangular map implemented, centered feature ridge .01 and 8192 reference rows, train-only 64-pair kernel RMSE diagnostic, four numerical tests. Eight seed42 screens submitted; deterministic Nystrom uses seed42 CLI placeholder. 33/41 measured; verify CI before freeze finalists. No new data.
