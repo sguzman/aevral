@@ -1,6 +1,6 @@
 # C007 — Kernel, local and instance-based methods
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: active; [finite manifest](manifest.md) frozen before fitting. 41 screening configurations across 11 families; no results yet.
 
 ## Scope
 KNN, weighted analogs, nearest seasonal trajectories, local linear regression, RBF/linear kernel ridge, epsilon-SVR, Gaussian processes, sparse/inducing point approximations, random Fourier/Nystrom features.
