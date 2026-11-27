@@ -83,3 +83,7 @@ All 28 recipes promoted as predeclared. [Promotion](promotion.csv), [annual matr
 ### Annual batch 3 complete
 
 [Batch 3 CI](https://github.com/sguzman/aevral/actions/runs/46065368912): 96/96 additional outcomes archived, all job IDs and unexpired artifact names reconciled against the frozen matrix. Registry contains 316 unique measured outcomes, zero blocked. 173 tests passed per job. Batch 4 manifest checked against the final 20 rows of the frozen annual matrix; workflow selector advanced to 4 without changing recipes. Raw predictions not independently rescored.
+
+### Annual batch 4 complete; campaign closed
+
+[CI](https://github.com/sguzman/aevral/actions/runs/46067195888): 20/20 measured; all 20 job IDs and unexpired artifacts reconciled. All 336 unique outcomes archived. [Final report](FINAL.md) · [Pooled ranking](pooled.csv). Raw predictions not independently rescored.
