@@ -1,0 +1,71 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+representation-start,2021,dew-depression-replace,42
+cohort,2021,136893,7501,8737,7714
+scales,2021,[11.643995464674955, 6.369915113055379, 6.378974251584813, 5.044069639482702, 1017.4178067057464, 7.050946823816145, 0.26877858793517906, 2.139800549110102, 0.8914499366987545, 3.2088313577904324]
+baseline,2021,daily,2.14898785,2.81802465
+representation-scale,2021,dew-depression-replace,0,5.186119249131893,4.194620090866322,8192,false
+representation-config,2021,dew-depression-replace,42,8192,12,0.001,80,6744,15884288,98304
+representation-preflight,2021,dew-depression-replace,42,1.101154,0.007820,0.000180,7.156210
+representation-epoch,2021,dew-depression-replace,42,1,0.1540125386
+representation-epoch,2021,dew-depression-replace,42,2,0.1298345332
+representation-epoch,2021,dew-depression-replace,42,3,0.1199202886
+representation-epoch,2021,dew-depression-replace,42,4,0.1140278490
+representation-epoch,2021,dew-depression-replace,42,5,0.1089934593
+representation-epoch,2021,dew-depression-replace,42,6,0.1077520527
+representation-epoch,2021,dew-depression-replace,42,7,0.1045098770
+representation-epoch,2021,dew-depression-replace,42,8,0.1036367338
+representation-epoch,2021,dew-depression-replace,42,9,0.1017350106
+representation-epoch,2021,dew-depression-replace,42,10,0.1010514952
+representation-epoch,2021,dew-depression-replace,42,11,0.1004058269
+representation-epoch,2021,dew-depression-replace,42,12,0.0989295236
+score,2021,dew-depression-replace,7501,1.62696769,2.16170715
+lead,2021,dew-depression-replace,1,0.91121101,1.23394435
+lead,2021,dew-depression-replace,2,0.99536311,1.34726244
+lead,2021,dew-depression-replace,3,1.10316424,1.48213283
+lead,2021,dew-depression-replace,4,1.21097190,1.61955592
+lead,2021,dew-depression-replace,5,1.30793253,1.74051483
+lead,2021,dew-depression-replace,6,1.38304457,1.83042289
+lead,2021,dew-depression-replace,7,1.47827022,1.93855998
+lead,2021,dew-depression-replace,8,1.55039322,2.03427626
+lead,2021,dew-depression-replace,9,1.56855194,2.07038770
+lead,2021,dew-depression-replace,10,1.62529209,2.14962702
+lead,2021,dew-depression-replace,11,1.70221511,2.22699419
+lead,2021,dew-depression-replace,12,1.71968191,2.24746432
+lead,2021,dew-depression-replace,13,1.76156992,2.29336206
+lead,2021,dew-depression-replace,14,1.77777289,2.30385398
+lead,2021,dew-depression-replace,15,1.81051127,2.33841199
+lead,2021,dew-depression-replace,16,1.83397931,2.35919632
+lead,2021,dew-depression-replace,17,1.82457159,2.34987390
+lead,2021,dew-depression-replace,18,1.86553822,2.39703564
+lead,2021,dew-depression-replace,19,1.88997275,2.43406571
+lead,2021,dew-depression-replace,20,1.89193220,2.44117607
+lead,2021,dew-depression-replace,21,1.92424037,2.49675466
+lead,2021,dew-depression-replace,22,1.94816303,2.53561233
+lead,2021,dew-depression-replace,23,1.97321212,2.57282586
+lead,2021,dew-depression-replace,24,1.98966911,2.60085316
+month,2021,dew-depression-replace,1,644,1.46710571,1.94220149
+month,2021,dew-depression-replace,2,572,1.32867403,1.64901484
+month,2021,dew-depression-replace,3,477,1.54059097,1.95192236
+month,2021,dew-depression-replace,4,692,1.56407239,2.04027558
+month,2021,dew-depression-replace,5,629,1.47103353,1.92755471
+month,2021,dew-depression-replace,6,694,2.24458634,3.07770974
+month,2021,dew-depression-replace,7,707,1.74510789,2.26746087
+month,2021,dew-depression-replace,8,618,1.62884545,2.09396576
+month,2021,dew-depression-replace,9,599,1.53181667,1.99078887
+month,2021,dew-depression-replace,10,509,1.53167185,1.93332198
+month,2021,dew-depression-replace,11,646,1.66461046,2.22213493
+month,2021,dew-depression-replace,12,714,1.66093663,2.26020839
+representation-natural,2021,dew-depression-replace,8737,7501,7501
+representation-fit,2021,dew-depression-replace,42,5.900111,0.099406
+	Exit status: 0
+representation-rescore,2021,dew-depression-replace,matched,7501,1.62696769,2.16170715,pass
+representation-end,2021,dew-depression-replace,42
+c0511aa654ec3ba291bcc13016ee790c83329af849b092bbeab8319f0005c5e5  fit-origins.txt
+433ac6f8901354ab64338ceb548a6686704db6925bdaca56ff5badd9e38944a0  matched-origins.txt
+f1a5bc784725e4edf29c3892f4bcb16a3c438f25ee4e1888cfef32d1ab3613da  metrics.txt
+e0d66ed4b943838aa513e02eb157fb9c680bddaab8260aca774a35459e431a24  predictions.csv.gz
+c249f808e2d59fe80204b8142d3149c8fee028e79970029270a5ab4db1becb8d  rescore.txt
+2260a02fb886df9fdbee82e4e9c2d2f5bff89192475b1bdeb90e40dab653b941  resources.txt
+207f9df1da58dd9731f612044597b3286450bd7493e113c1c851d7ddf1d706a3  train-origins.txt
