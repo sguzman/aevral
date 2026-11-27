@@ -120,3 +120,5 @@ mod tests{
         let mut opt=Adam::new(a.parameters(),0.001);let first=a.step(&r,&mut opt).unwrap().0;let mut last=first;for _ in 0..30{last=a.step(&r,&mut opt).unwrap().0;}assert!(last<first,"{l}");assert_ne!(p,a.predict(&r.input.x).unwrap());
     }}
 }
+
+pub mod strategy;

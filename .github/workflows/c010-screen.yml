@@ -1,0 +1,61 @@
+name: C010 F01-F04 forecast strategies
+on:
+  push:
+    paths:
+      - '.github/workflows/c010-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: c010-fit
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: matrix
+        shell: bash
+        run: |
+          expected=8
+          file="campaigns/010-forecast-strategy/screen-matrix.csv"
+          matrix=$(awk -F, '$1 ~ /^F0[1-4]$/' "$file" | jq -Rc 'split(",") | {method:.[0],config:.[1],seed:.[5],fold:.[6]}' | jq -sc '{include:.}')
+          test "$(jq '.include|length' <<< "$matrix")" -eq "$expected"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+  evaluate:
+    name: evaluate (${{ matrix.method }}, ${{ matrix.config }}, ${{ matrix.fold }}, ${{ matrix.seed }})
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    env:
+      METHOD: ${{ matrix.method }}
+      CONFIG: ${{ matrix.config }}
+      FOLD: ${{ matrix.fold }}
+      SEED: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Native numerical tests and locked build
+        run: |
+          cargo test --locked --release
+          cargo build --locked --release
+      - name: Evaluate frozen annual recipe
+        run: bash scripts/c010-screen.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c010-screen-${{ matrix.method }}-${{ matrix.fold }}-${{ matrix.config }}-${{ matrix.seed }}
+          path: results-run/
+          retention-days: 30
