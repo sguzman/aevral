@@ -1,0 +1,64 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+strategy-start,2021,trajectory-curvature,42
+cohort,2021,136893,7501,8737,7714
+scales,2021,[11.643995464674955, 6.369915113055379, 6.378974251584813, 5.044069639482702, 1017.4178067057464, 7.050946823816145, 0.26877858793517906, 2.139800549110102, 0.8914499366987545, 3.2088313577904324]
+baseline,2021,daily,2.14898785,2.81802465
+strategy-config,2021,trajectory-curvature,42,8192,12,0.001,6744,3209872,98304
+strategy-preflight,2021,trajectory-curvature,42,128,32,0.005080,0.000123,3.930370
+strategy-epoch,2021,trajectory-curvature,42,1,0.1735272446,0
+strategy-epoch,2021,trajectory-curvature,42,2,0.1389804280,0
+strategy-epoch,2021,trajectory-curvature,42,3,0.1288620272,0
+strategy-epoch,2021,trajectory-curvature,42,4,0.1222788045,0
+strategy-epoch,2021,trajectory-curvature,42,5,0.1165340433,0
+strategy-epoch,2021,trajectory-curvature,42,6,0.1151393406,0
+strategy-epoch,2021,trajectory-curvature,42,7,0.1122424444,0
+strategy-epoch,2021,trajectory-curvature,42,8,0.1114071214,0
+strategy-epoch,2021,trajectory-curvature,42,9,0.1104054029,0
+strategy-epoch,2021,trajectory-curvature,42,10,0.1091279139,0
+strategy-epoch,2021,trajectory-curvature,42,11,0.1089444658,0
+strategy-epoch,2021,trajectory-curvature,42,12,0.1074523605,0
+strategy-trajectory,2021,trajectory-curvature,42,0.60453698,0.87768276,172523,165022
+strategy-fit,2021,trajectory-curvature,42,0,3.879736,0.028092
+score,2021,trajectory-curvature,7501,1.64213252,2.17290640,0.037
+lead,2021,trajectory-curvature,1,0.92877998,1.25985932
+lead,2021,trajectory-curvature,2,1.05573704,1.41292339
+lead,2021,trajectory-curvature,3,1.15507185,1.53525360
+lead,2021,trajectory-curvature,4,1.29535626,1.70064495
+lead,2021,trajectory-curvature,5,1.37053817,1.79298402
+lead,2021,trajectory-curvature,6,1.41785701,1.85454563
+lead,2021,trajectory-curvature,7,1.45442018,1.91622388
+lead,2021,trajectory-curvature,8,1.53002655,2.01215015
+lead,2021,trajectory-curvature,9,1.54871320,2.05606644
+lead,2021,trajectory-curvature,10,1.58698837,2.11981158
+lead,2021,trajectory-curvature,11,1.68202268,2.22075917
+lead,2021,trajectory-curvature,12,1.70990781,2.23744195
+lead,2021,trajectory-curvature,13,1.75109583,2.28780603
+lead,2021,trajectory-curvature,14,1.83496289,2.36291409
+lead,2021,trajectory-curvature,15,1.82990150,2.35855806
+lead,2021,trajectory-curvature,16,1.83284821,2.36229217
+lead,2021,trajectory-curvature,17,1.83207816,2.36197397
+lead,2021,trajectory-curvature,18,1.90141037,2.43618993
+lead,2021,trajectory-curvature,19,1.92797886,2.47112295
+lead,2021,trajectory-curvature,20,1.94926874,2.49418960
+lead,2021,trajectory-curvature,21,1.96605609,2.52274712
+lead,2021,trajectory-curvature,22,1.97314646,2.54532903
+lead,2021,trajectory-curvature,23,1.92859565,2.51379863
+lead,2021,trajectory-curvature,24,1.94841856,2.54673673
+month,2021,trajectory-curvature,1,644,1.52278078,1.97409571
+month,2021,trajectory-curvature,2,572,1.41765410,1.75968338
+month,2021,trajectory-curvature,3,477,1.49938037,1.91495778
+month,2021,trajectory-curvature,4,692,1.56002727,2.03439667
+month,2021,trajectory-curvature,5,629,1.41690669,1.82875001
+month,2021,trajectory-curvature,6,694,2.31636721,3.14608406
+month,2021,trajectory-curvature,7,707,1.78892014,2.29147053
+month,2021,trajectory-curvature,8,618,1.65840795,2.12339149
+month,2021,trajectory-curvature,9,599,1.51491990,1.98428062
+month,2021,trajectory-curvature,10,509,1.51796524,1.91958475
+month,2021,trajectory-curvature,11,646,1.69201168,2.26456846
+month,2021,trajectory-curvature,12,714,1.63830121,2.21519265
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.44
+	Maximum resident set size (kbytes): 350656
+	Exit status: 0
+strategy-end,2021,trajectory-curvature,42

@@ -1,0 +1,64 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+strategy-start,2021,bound-penalty,42
+cohort,2021,136893,7501,8737,7714
+scales,2021,[11.643995464674955, 6.369915113055379, 6.378974251584813, 5.044069639482702, 1017.4178067057464, 7.050946823816145, 0.26877858793517906, 2.139800549110102, 0.8914499366987545, 3.2088313577904324]
+baseline,2021,daily,2.14898785,2.81802465
+strategy-config,2021,bound-penalty,42,8192,12,0.001,6744,3209872,98304
+strategy-preflight,2021,bound-penalty,42,128,32,0.005240,0.000125,4.053782
+strategy-epoch,2021,bound-penalty,42,1,0.1531956359,0
+strategy-epoch,2021,bound-penalty,42,2,0.1294516547,0
+strategy-epoch,2021,bound-penalty,42,3,0.1201407448,0
+strategy-epoch,2021,bound-penalty,42,4,0.1136490381,0
+strategy-epoch,2021,bound-penalty,42,5,0.1086374598,0
+strategy-epoch,2021,bound-penalty,42,6,0.1074897494,0
+strategy-epoch,2021,bound-penalty,42,7,0.1044933111,0
+strategy-epoch,2021,bound-penalty,42,8,0.1036806143,0
+strategy-epoch,2021,bound-penalty,42,9,0.1025720989,0
+strategy-epoch,2021,bound-penalty,42,10,0.1012313328,0
+strategy-epoch,2021,bound-penalty,42,11,0.1005458062,0
+strategy-epoch,2021,bound-penalty,42,12,0.0990899057,0
+strategy-bounds,2021,bound-penalty,42,0,0,180024
+strategy-fit,2021,bound-penalty,42,0,3.880013,0.028398
+score,2021,bound-penalty,7501,1.63837225,2.17091715,0.036
+lead,2021,bound-penalty,1,0.93949180,1.26104699
+lead,2021,bound-penalty,2,1.04494324,1.39275242
+lead,2021,bound-penalty,3,1.18299391,1.55520869
+lead,2021,bound-penalty,4,1.27643607,1.67660263
+lead,2021,bound-penalty,5,1.34301739,1.75985763
+lead,2021,bound-penalty,6,1.39642198,1.82825545
+lead,2021,bound-penalty,7,1.44602168,1.89884545
+lead,2021,bound-penalty,8,1.51917493,1.98956074
+lead,2021,bound-penalty,9,1.54620536,2.03737311
+lead,2021,bound-penalty,10,1.58753879,2.10109425
+lead,2021,bound-penalty,11,1.67628250,2.19632099
+lead,2021,bound-penalty,12,1.70428354,2.23495555
+lead,2021,bound-penalty,13,1.73912389,2.27842571
+lead,2021,bound-penalty,14,1.77231596,2.30464992
+lead,2021,bound-penalty,15,1.80153084,2.34029072
+lead,2021,bound-penalty,16,1.82990432,2.36553483
+lead,2021,bound-penalty,17,1.83428120,2.37493571
+lead,2021,bound-penalty,18,1.89277218,2.43865102
+lead,2021,bound-penalty,19,1.92198464,2.47615239
+lead,2021,bound-penalty,20,1.93771846,2.49313955
+lead,2021,bound-penalty,21,1.96897594,2.53532474
+lead,2021,bound-penalty,22,1.97265884,2.55418616
+lead,2021,bound-penalty,23,1.98588713,2.58325611
+lead,2021,bound-penalty,24,2.00096951,2.61282314
+month,2021,bound-penalty,1,644,1.45173341,1.91047263
+month,2021,bound-penalty,2,572,1.31054700,1.65719250
+month,2021,bound-penalty,3,477,1.46066167,1.86146423
+month,2021,bound-penalty,4,692,1.55036409,2.03763155
+month,2021,bound-penalty,5,629,1.43627082,1.87343555
+month,2021,bound-penalty,6,694,2.32696500,3.12819937
+month,2021,bound-penalty,7,707,1.85814105,2.35978893
+month,2021,bound-penalty,8,618,1.68646110,2.15163543
+month,2021,bound-penalty,9,599,1.50731646,1.96224794
+month,2021,bound-penalty,10,509,1.52125900,1.92461012
+month,2021,bound-penalty,11,646,1.72207618,2.28347208
+month,2021,bound-penalty,12,714,1.64056326,2.22879370
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.46
+	Maximum resident set size (kbytes): 350612
+	Exit status: 0
+strategy-end,2021,bound-penalty,42
