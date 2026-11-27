@@ -9,7 +9,7 @@ on:
         description: 'Frozen annual batch (run sequentially)'
         type: choice
         required: true
-        default: '1'
+        default: '2'
         options: ['1', '2', '3', '4']
 permissions:
   contents: read
@@ -17,7 +17,7 @@ concurrency:
   group: c011-fit
   cancel-in-progress: false
 env:
-  BATCH: ${{ inputs.batch || '1' }}
+  BATCH: ${{ inputs.batch || '2' }}
 jobs:
   prepare:
     runs-on: ubuntu-latest
