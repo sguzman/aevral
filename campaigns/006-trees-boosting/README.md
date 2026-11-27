@@ -1,6 +1,6 @@
 # C006 — Trees and boosted ensembles
 
-Status: active; [finite manifest](manifest.md) frozen before fitting. No C006 measurements yet.
+Status: complete. [Finite manifest](manifest.md) · [Finalists](FINALISTS.md) · [Final report](../../results/C006/REPORT.md). 152 measured outcomes, zero blocked. Best tree lightgbm-128, pooled MAE 1.40602200°C; incumbent MLP64 1.34781461°C (larger training cohort).
 
 ## Scope
 CART, bagged trees, random forests, Extra Trees, histogram gradient boosting, XGBoost, LightGBM, CatBoost, quantile boosting, multi-output vs horizon-specific trees.

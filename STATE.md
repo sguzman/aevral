@@ -1,4 +1,7 @@
-# Fixed-data temperature program — C003 complete, C004 active
+# Fixed-data temperature program — C003–C006 complete; C007 next
+
+Current checkpoint: C006 closed, 152/152 measured, zero blocks; lightgbm-128 pooled MAE 1.40602200 vs MLP64 1.34781461. Reports results/C006/REPORT.md, pooled.csv, pooled-seeds.csv, closure-audit.md. Next freeze C007 finite kernel/local/instance-based manifest before implementation per campaigns/TEMPERATURE-PROGRAM.md, read C007 README. No new data; no human action. Earlier history below.
+
 
 C001/C002 historical reports immutable; both old holdouts exposed. C003 complete: 27 hashes verified, all five benchmark jobs passed 45892792311, legacy exact, 30138 matched annual origins (2019 7455, 2020 7543, 2021 7501, 2022 7639), pooled MLP64 MAE 1.34781461, daily 2.05372678. Export audit 45895728513 all five passed; 5793120 prediction rows verified, 35 tests, archived results/C003. Program campaigns/TEMPERATURE-PROGRAM.md. C004 manifest campaigns/004-linear-additive/manifest.md predeclares 54 screen configurations across 12 methods. Next implement L01/L02 stable least-squares and ridge first batch in Rust using src/features/tournament.rs API, test numerical correctness, add CLI/CI with frozen data, score 2019. No C004 results or code yet. Subsequent batches per manifest. No new data or local downloads. Keep logs filtered and state durable. No human action required.
 
@@ -192,3 +195,6 @@ Upstream CI 45918425331: archived 1 further completed jobs, 2 additional fold/se
 
 ## C006 phase 22
 All 14 upstream finalist jobs passed (CI 45918425331); final 4 outcomes and 290 diagnostic records archived. All 124/124 additional evaluations, 152 total registry entries (28 screens+124 additional), zero blocked, unique keys. Next pooled seed-specific metrics, audit complete finalist matrix and close campaign. No new data.
+ 
+## C006 closure
+All 152 unique outcomes audited; full 144 finalist matrix plus eight rejected screens. Pooled ranking and per-seed results durable. All annual jobs passed. C007 next: freeze finite manifest. No raw prediction artifact rescore.

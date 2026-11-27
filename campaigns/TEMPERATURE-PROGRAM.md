@@ -23,8 +23,8 @@ Authorized 2026-11-26. Goal: extensive comparative research over major practical
 - [C003 — Common benchmark and reproducibility](003-evaluation-harness/README.md) — complete
 - [C004 — Linear, regularized and additive models](004-linear-additive/README.md) — complete (two documented finalist resource blocks)
 - [C005 — Classical statistical and state-space forecasting](005-statistical-state-space/README.md) — complete
-- [C006 — Trees and boosted ensembles](006-trees-boosting/README.md) — active
-- [C007 — Kernel, local and instance-based methods](007-kernels-neighbors/README.md) — planned
+- [C006 — Trees and boosted ensembles](006-trees-boosting/README.md) — complete
+- [C007 — Kernel, local and instance-based methods](007-kernels-neighbors/README.md) — next
 - [C008 — Decomposition, dynamical systems and alternative learners](008-decomposition-reservoir/README.md) — planned
 - [C009 — Expanded neural architecture tournament](009-neural-revisit/README.md) — planned
 - [C010 — Forecast formulation and objective](010-forecast-strategy/README.md) — planned

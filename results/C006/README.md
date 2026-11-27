@@ -58,3 +58,6 @@ All six measured on 7455 matched origins, 24576 training rows, seed42. XGBoost3.
 | catboost-64 | 1.46925987 | 1.92948886 | 18.968084 | 1536 | 24576 |
 
 All 28 screens measured; best XGBoost128 MAE1.36776638, LightGBM128 1.36797968. MLP64 incumbent 1.32617622 remains best; different training budgets. XGBoost/LightGBM seed42 deterministic recipe recorded as deterministic in registry, CatBoost stochastic seed42. Annual finalist selection follows manifest.
+
+## Complete
+[Final report](REPORT.md) · [Pooled ranking](pooled.csv) · [Seed-level scores](pooled-seeds.csv) · [Closure audit](closure-audit.md). 152/152 measured outcomes; 20 finalists and reused incumbent. Best tree lightgbm-128 MAE 1.40602200 versus MLP64 1.34781461. No resource blocks.
