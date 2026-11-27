@@ -210,3 +210,5 @@ pub mod gp;
 pub mod kernel_features;
 
 pub mod decomposition;
+
+pub mod dynamics;

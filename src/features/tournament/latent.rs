@@ -7,7 +7,7 @@ const CONFIGS:[(&str,&str,usize);12]=[
 ("pls-4","pls",4),("pls-8","pls",8),("pls-16","pls",16),("pls-32","pls",32),
 ("rrr-2","rrr",2),("rrr-4","rrr",4),("rrr-8","rrr",8),("rrr-16","rrr",16)];
 // Symmetric cyclic Jacobi, columns of V accumulated as eigenvectors, sorted descending.
-fn eig<const N:usize>(a:&[[f64;N]])->Result<Vec<(f64,[f64;N])>,String>{
+pub(super) fn eig<const N:usize>(a:&[[f64;N]])->Result<Vec<(f64,[f64;N])>,String>{
     if a.len()!=N||a.iter().flatten().any(|v|!v.is_finite()){return Err("bad eigensystem input".into())}
     let mut m=a.to_vec();let mut v=vec![[0.;N];N];for i in 0..N{v[i][i]=1.}
     let scale=a.iter().flatten().map(|x|x.abs()).fold(0.,f64::max);
