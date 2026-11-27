@@ -1,0 +1,82 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.99s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+representation-start,2020,interactions-calendar,2026
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+representation-scale,2020,interactions-calendar,0,-0.01783205638328375,0.6790809406268357,8192,false
+representation-scale,2020,interactions-calendar,1,0.21802108232389705,0.6948788998639207,8192,false
+representation-scale,2020,interactions-calendar,2,-0.20036824783181562,0.583189809413907,8192,false
+representation-scale,2020,interactions-calendar,3,-0.5026427419957293,0.5991254203811262,8192,false
+representation-scale,2020,interactions-calendar,4,-0.013155668675920652,0.7083964225059403,8192,false
+representation-scale,2020,interactions-calendar,5,0.006341637805301418,0.7049596133776725,8192,false
+representation-scale,2020,interactions-calendar,6,-0.252503228440188,0.6027521195853924,8192,false
+representation-scale,2020,interactions-calendar,7,-0.43884059556486554,0.6159202623295045,8192,false
+representation-scale,2020,interactions-calendar,8,-0.028054232728387245,0.7057485765595302,8192,false
+representation-scale,2020,interactions-calendar,9,-0.027103421150623284,0.7080327770622072,8192,false
+representation-scale,2020,interactions-calendar,10,0.004469656732178535,0.6946726304498302,8192,false
+representation-scale,2020,interactions-calendar,11,0.012464278061646995,0.7198386642625387,8192,false
+representation-config,2020,interactions-calendar,2026,8192,12,0.001,92,7512,17536160,98304
+representation-preflight,2020,interactions-calendar,2026,0.870134,0.008789,0.000230,7.682620
+representation-epoch,2020,interactions-calendar,2026,1,0.1518371074
+representation-epoch,2020,interactions-calendar,2026,2,0.1261517642
+representation-epoch,2020,interactions-calendar,2026,3,0.1175044440
+representation-epoch,2020,interactions-calendar,2026,4,0.1136604189
+representation-epoch,2020,interactions-calendar,2026,5,0.1108448929
+representation-epoch,2020,interactions-calendar,2026,6,0.1077235659
+representation-epoch,2020,interactions-calendar,2026,7,0.1046501213
+representation-epoch,2020,interactions-calendar,2026,8,0.1037724873
+representation-epoch,2020,interactions-calendar,2026,9,0.1027425899
+representation-epoch,2020,interactions-calendar,2026,10,0.1006735982
+representation-epoch,2020,interactions-calendar,2026,11,0.0993400238
+representation-epoch,2020,interactions-calendar,2026,12,0.0983222465
+score,2020,interactions-calendar,7543,1.49112483,1.98377960
+lead,2020,interactions-calendar,1,0.86490574,1.17315382
+lead,2020,interactions-calendar,2,1.02840737,1.37279832
+lead,2020,interactions-calendar,3,1.09582959,1.46204129
+lead,2020,interactions-calendar,4,1.19090981,1.58128081
+lead,2020,interactions-calendar,5,1.26088602,1.67334328
+lead,2020,interactions-calendar,6,1.30856262,1.73402543
+lead,2020,interactions-calendar,7,1.32971507,1.76320397
+lead,2020,interactions-calendar,8,1.37750789,1.81994651
+lead,2020,interactions-calendar,9,1.44058268,1.88785577
+lead,2020,interactions-calendar,10,1.46111275,1.91281755
+lead,2020,interactions-calendar,11,1.52686656,1.98742238
+lead,2020,interactions-calendar,12,1.52961786,2.00548423
+lead,2020,interactions-calendar,13,1.57540120,2.06130436
+lead,2020,interactions-calendar,14,1.58693428,2.08003562
+lead,2020,interactions-calendar,15,1.59296417,2.09724069
+lead,2020,interactions-calendar,16,1.64584012,2.15737721
+lead,2020,interactions-calendar,17,1.64007728,2.15420120
+lead,2020,interactions-calendar,18,1.67441729,2.18877491
+lead,2020,interactions-calendar,19,1.69672641,2.21334613
+lead,2020,interactions-calendar,20,1.76070038,2.29119680
+lead,2020,interactions-calendar,21,1.79487649,2.33401412
+lead,2020,interactions-calendar,22,1.82881409,2.37162789
+lead,2020,interactions-calendar,23,1.79193485,2.33027803
+lead,2020,interactions-calendar,24,1.78340540,2.32747056
+month,2020,interactions-calendar,1,640,1.49824326,2.00342616
+month,2020,interactions-calendar,2,594,1.26141408,1.66135094
+month,2020,interactions-calendar,3,729,1.44007662,1.87515586
+month,2020,interactions-calendar,4,507,1.26448923,1.62165360
+month,2020,interactions-calendar,5,625,1.80339041,2.42387125
+month,2020,interactions-calendar,6,699,1.40106770,1.91271033
+month,2020,interactions-calendar,7,622,1.54855796,2.03674279
+month,2020,interactions-calendar,8,715,1.67803710,2.17122866
+month,2020,interactions-calendar,9,345,1.35238606,1.76599745
+month,2020,interactions-calendar,10,733,1.44846726,1.87219232
+month,2020,interactions-calendar,11,717,1.47976459,1.99419284
+month,2020,interactions-calendar,12,617,1.60410249,2.16909262
+representation-natural,2020,interactions-calendar,8761,7543,7543
+representation-fit,2020,interactions-calendar,2026,6.640938,0.104730
+	Exit status: 0
+representation-rescore,2020,interactions-calendar,matched,7543,1.49112483,1.98377960,pass
+representation-end,2020,interactions-calendar,2026
+0fd50cf46ed35a2a39bae594bc78f1d4aaaaa3fe8b40a765036ad166e9c9b6c1  fit-origins.txt
+68b396044cee8a7916c183e98121674b2a5edc66288427fbe795d6650871cc47  matched-origins.txt
+b32f072e4951e5c9204a5495220c12601fbbc792924cf0c8e5d26661d55aaed4  metrics.txt
+5a9acd385a01bc10f7be8f9473de513d26af6317bad080be413dadf55276c9fe  predictions.csv.gz
+d3d80c8827efb0427286bf06016432a794357621ddf073379899d6c89a45ec65  rescore.txt
+532b0e0a9717af0c291cb7d5c34b1e6836670046d648700feeddef6826de34c6  resources.txt
+ff0b1d161d3acdefdee7bef04b1de25ee700a45cd6930e3afa05d48f44241624  train-origins.txt
