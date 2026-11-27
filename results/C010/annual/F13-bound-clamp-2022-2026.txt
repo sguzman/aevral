@@ -1,0 +1,64 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.24s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+strategy-start,2022,bound-clamp,2026
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+strategy-config,2022,bound-clamp,2026,8192,12,0.001,6744,3238576,98304
+strategy-preflight,2022,bound-clamp,2026,128,32,0.010255,0.000267,7.939270
+strategy-epoch,2022,bound-clamp,2026,1,0.1524484480,0
+strategy-epoch,2022,bound-clamp,2026,2,0.1298376467,0
+strategy-epoch,2022,bound-clamp,2026,3,0.1224227103,0
+strategy-epoch,2022,bound-clamp,2026,4,0.1159168784,0
+strategy-epoch,2022,bound-clamp,2026,5,0.1114593960,0
+strategy-epoch,2022,bound-clamp,2026,6,0.1089862815,0
+strategy-epoch,2022,bound-clamp,2026,7,0.1062575779,0
+strategy-epoch,2022,bound-clamp,2026,8,0.1049392482,0
+strategy-epoch,2022,bound-clamp,2026,9,0.1032175736,0
+strategy-epoch,2022,bound-clamp,2026,10,0.1025551486,0
+strategy-epoch,2022,bound-clamp,2026,11,0.1008111572,0
+strategy-epoch,2022,bound-clamp,2026,12,0.1004271803,0
+strategy-bounds,2022,bound-clamp,2026,0,0,183336
+strategy-fit,2022,bound-clamp,2026,0,7.765387,0.062290
+score,2022,bound-clamp,7639,1.54182833,2.04335674,0.065
+lead,2022,bound-clamp,1,0.83024215,1.08670428
+lead,2022,bound-clamp,2,0.94934757,1.23472629
+lead,2022,bound-clamp,3,1.02675711,1.34628298
+lead,2022,bound-clamp,4,1.11617435,1.46572231
+lead,2022,bound-clamp,5,1.24866983,1.63262356
+lead,2022,bound-clamp,6,1.32544553,1.73141134
+lead,2022,bound-clamp,7,1.41818923,1.84736319
+lead,2022,bound-clamp,8,1.44048650,1.88630060
+lead,2022,bound-clamp,9,1.47487004,1.93451433
+lead,2022,bound-clamp,10,1.49656948,1.96304318
+lead,2022,bound-clamp,11,1.53746898,2.01772418
+lead,2022,bound-clamp,12,1.57172585,2.05242136
+lead,2022,bound-clamp,13,1.59222880,2.08420485
+lead,2022,bound-clamp,14,1.61667043,2.10984768
+lead,2022,bound-clamp,15,1.66610714,2.17160341
+lead,2022,bound-clamp,16,1.69818313,2.20592049
+lead,2022,bound-clamp,17,1.73704609,2.24992124
+lead,2022,bound-clamp,18,1.77326022,2.28954861
+lead,2022,bound-clamp,19,1.80779137,2.32792385
+lead,2022,bound-clamp,20,1.81614289,2.34174061
+lead,2022,bound-clamp,21,1.89484426,2.44357932
+lead,2022,bound-clamp,22,1.99653393,2.55690230
+lead,2022,bound-clamp,23,1.99103529,2.55366130
+lead,2022,bound-clamp,24,1.97808970,2.53237578
+month,2022,bound-clamp,1,735,1.59747142,2.09451036
+month,2022,bound-clamp,2,558,1.39257348,1.79002842
+month,2022,bound-clamp,3,630,1.20117272,1.53853704
+month,2022,bound-clamp,4,699,1.56871511,2.08679888
+month,2022,bound-clamp,5,712,1.28917046,1.68034093
+month,2022,bound-clamp,6,507,1.61356694,2.29290667
+month,2022,bound-clamp,7,431,1.97545467,2.52094332
+month,2022,bound-clamp,8,714,1.64118654,2.10364106
+month,2022,bound-clamp,9,695,1.54403930,1.99334007
+month,2022,bound-clamp,10,632,1.58887505,2.15304091
+month,2022,bound-clamp,11,641,1.60781883,2.11133271
+month,2022,bound-clamp,12,685,1.61529088,2.16957936
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.81
+	Maximum resident set size (kbytes): 368832
+	Exit status: 0
+strategy-end,2022,bound-clamp,2026
