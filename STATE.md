@@ -138,3 +138,6 @@ T01 CI 45914941755 succeeded, 81 numerical tests. Six measured screens archived 
 
 ## C006 phase 4
 T02-T04 ten ensemble configurations implemented, shared 24-output trees, fixed seed42 screening and bounded reproducible SplitMix64, bootstrap/exact split RF/random threshold Extra Trees as manifest. T02-T04.md specifies details. Five new tests. CI pending; verify all jobs, archive outcomes, then T05/T09 histogram boosting. No new data.
+
+## C006 phase 5
+T02–T04 CI 45915256233 all ten successful, 86 tests passed. All ten outcomes archived with 470 diagnostic records, exact cohort/lead/seed/sample checks. 16/28 screens measured. Best bag-32 MAE1.54528611 RMSE2.00965579, rf-32-27 1.55554826, extra-32-27 1.65498500. Next T05/T09 histogram squared-loss and median pinball boosting (six configs); train-only quantile bins, per-lead median residual leaf updates for T09. Then official backends T06–T08. No new data.
