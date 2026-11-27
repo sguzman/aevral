@@ -1,0 +1,63 @@
+test result: ok. 162 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+neural-start,2020,nlinear-lead-bias,2026
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+neural-config,2020,nlinear-lead-bias,2026,8192,12,0.001,1944,2604208
+neural-preflight,2020,nlinear-lead-bias,2026,128,32,0.001783,0.000042,1.379051
+neural-epoch,2020,nlinear-lead-bias,2026,1,0.1416556113,0
+neural-epoch,2020,nlinear-lead-bias,2026,2,0.1246823137,0
+neural-epoch,2020,nlinear-lead-bias,2026,3,0.1224620549,0
+neural-epoch,2020,nlinear-lead-bias,2026,4,0.1221938473,0
+neural-epoch,2020,nlinear-lead-bias,2026,5,0.1214919534,0
+neural-epoch,2020,nlinear-lead-bias,2026,6,0.1208573791,0
+neural-epoch,2020,nlinear-lead-bias,2026,7,0.1215201180,0
+neural-epoch,2020,nlinear-lead-bias,2026,8,0.1206823933,0
+neural-epoch,2020,nlinear-lead-bias,2026,9,0.1204218618,0
+neural-epoch,2020,nlinear-lead-bias,2026,10,0.1202202384,0
+neural-epoch,2020,nlinear-lead-bias,2026,11,0.1205386017,0
+neural-epoch,2020,nlinear-lead-bias,2026,12,0.1199517853,0
+neural-fit,2020,nlinear-lead-bias,2026,0,1.279510,0.010229
+score,2020,nlinear-lead-bias,7543,1.67854496,2.21204891,0.061
+lead,2020,nlinear-lead-bias,1,0.79350940,1.04862709
+lead,2020,nlinear-lead-bias,2,1.20916108,1.54977406
+lead,2020,nlinear-lead-bias,3,1.28904000,1.66290998
+lead,2020,nlinear-lead-bias,4,1.45527532,1.87842477
+lead,2020,nlinear-lead-bias,5,1.48391691,1.92220987
+lead,2020,nlinear-lead-bias,6,1.53830097,1.99717662
+lead,2020,nlinear-lead-bias,7,1.57536783,2.05059651
+lead,2020,nlinear-lead-bias,8,1.62174688,2.11482973
+lead,2020,nlinear-lead-bias,9,1.68425073,2.18946437
+lead,2020,nlinear-lead-bias,10,1.74067200,2.25587664
+lead,2020,nlinear-lead-bias,11,1.75830278,2.26989884
+lead,2020,nlinear-lead-bias,12,1.78142734,2.29916886
+lead,2020,nlinear-lead-bias,13,1.79846248,2.32592516
+lead,2020,nlinear-lead-bias,14,1.80148353,2.33237822
+lead,2020,nlinear-lead-bias,15,1.79508690,2.33605471
+lead,2020,nlinear-lead-bias,16,1.82971657,2.36674346
+lead,2020,nlinear-lead-bias,17,1.83875971,2.41107195
+lead,2020,nlinear-lead-bias,18,1.85150699,2.43039053
+lead,2020,nlinear-lead-bias,19,1.89217773,2.48787850
+lead,2020,nlinear-lead-bias,20,1.86924968,2.44276625
+lead,2020,nlinear-lead-bias,21,1.90175106,2.48883161
+lead,2020,nlinear-lead-bias,22,1.93200906,2.53290023
+lead,2020,nlinear-lead-bias,23,1.93430216,2.53249256
+lead,2020,nlinear-lead-bias,24,1.90960181,2.47984556
+month,2020,nlinear-lead-bias,1,640,1.63810351,2.10710416
+month,2020,nlinear-lead-bias,2,594,1.47805623,1.88935312
+month,2020,nlinear-lead-bias,3,729,1.43473594,1.88008079
+month,2020,nlinear-lead-bias,4,507,1.48910436,1.93276691
+month,2020,nlinear-lead-bias,5,625,2.06694640,2.83369927
+month,2020,nlinear-lead-bias,6,699,1.65700957,2.16954063
+month,2020,nlinear-lead-bias,7,622,1.84457481,2.38547233
+month,2020,nlinear-lead-bias,8,715,1.78527096,2.29841796
+month,2020,nlinear-lead-bias,9,345,1.63097157,2.13471642
+month,2020,nlinear-lead-bias,10,733,1.54103036,1.96518159
+month,2020,nlinear-lead-bias,11,717,1.79479794,2.45376330
+month,2020,nlinear-lead-bias,12,617,1.75202352,2.25269771
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.14
+	Maximum resident set size (kbytes): 332828
+	Exit status: 0
+neural-end,2020,nlinear-lead-bias,2026
