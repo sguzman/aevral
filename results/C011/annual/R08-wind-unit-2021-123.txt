@@ -1,0 +1,74 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+representation-start,2021,wind-unit,123
+cohort,2021,136893,7501,8737,7714
+scales,2021,[11.643995464674955, 6.369915113055379, 6.378974251584813, 5.044069639482702, 1017.4178067057464, 7.050946823816145, 0.26877858793517906, 2.139800549110102, 0.8914499366987545, 3.2088313577904324]
+baseline,2021,daily,2.14898785,2.81802465
+representation-scale,2021,wind-unit,0,3.4198121473494547,2.0383248665354885,8192,false
+representation-scale,2021,wind-unit,1,0.06286432156734781,0.5484950520901466,8192,false
+representation-scale,2021,wind-unit,2,0.19533542946869528,0.7478415638277346,8192,false
+representation-scale,2021,wind-unit,3,0,1,8192,false
+representation-config,2021,wind-unit,123,8192,12,0.001,84,7000,16419232,98304
+representation-preflight,2021,wind-unit,123,0.824256,0.006237,0.000156,5.656789
+representation-epoch,2021,wind-unit,123,1,0.1543161100
+representation-epoch,2021,wind-unit,123,2,0.1265737098
+representation-epoch,2021,wind-unit,123,3,0.1174375731
+representation-epoch,2021,wind-unit,123,4,0.1127391450
+representation-epoch,2021,wind-unit,123,5,0.1098427681
+representation-epoch,2021,wind-unit,123,6,0.1069403136
+representation-epoch,2021,wind-unit,123,7,0.1038895523
+representation-epoch,2021,wind-unit,123,8,0.1037518646
+representation-epoch,2021,wind-unit,123,9,0.1010665371
+representation-epoch,2021,wind-unit,123,10,0.1009349604
+representation-epoch,2021,wind-unit,123,11,0.0989379542
+representation-epoch,2021,wind-unit,123,12,0.0988147564
+score,2021,wind-unit,7501,1.67708805,2.27255364
+lead,2021,wind-unit,1,1.07513830,1.55445430
+lead,2021,wind-unit,2,1.15110970,1.60799106
+lead,2021,wind-unit,3,1.24439566,1.71547441
+lead,2021,wind-unit,4,1.33987296,1.82546280
+lead,2021,wind-unit,5,1.43581962,1.95942392
+lead,2021,wind-unit,6,1.48228411,2.00348526
+lead,2021,wind-unit,7,1.51074643,2.03489491
+lead,2021,wind-unit,8,1.55992677,2.10130934
+lead,2021,wind-unit,9,1.60956415,2.16324420
+lead,2021,wind-unit,10,1.69789696,2.28020123
+lead,2021,wind-unit,11,1.70688871,2.28650908
+lead,2021,wind-unit,12,1.74783617,2.33009884
+lead,2021,wind-unit,13,1.79128871,2.36772463
+lead,2021,wind-unit,14,1.84970412,2.44269755
+lead,2021,wind-unit,15,1.90009671,2.50878487
+lead,2021,wind-unit,16,1.86664194,2.45926280
+lead,2021,wind-unit,17,1.87966202,2.48119125
+lead,2021,wind-unit,18,1.88362050,2.49388721
+lead,2021,wind-unit,19,1.92528945,2.56200260
+lead,2021,wind-unit,20,1.89741537,2.52430223
+lead,2021,wind-unit,21,1.89706105,2.54032483
+lead,2021,wind-unit,22,1.90359569,2.53971710
+lead,2021,wind-unit,23,1.94773628,2.60812858
+lead,2021,wind-unit,24,1.94652182,2.60624130
+month,2021,wind-unit,1,644,1.45829514,1.88924799
+month,2021,wind-unit,2,572,1.34092023,1.66903270
+month,2021,wind-unit,3,477,1.36933787,1.76551421
+month,2021,wind-unit,4,692,1.45772277,1.96140640
+month,2021,wind-unit,5,629,1.39456351,1.78124662
+month,2021,wind-unit,6,694,2.63672806,3.69641435
+month,2021,wind-unit,7,707,1.85042265,2.37435445
+month,2021,wind-unit,8,618,1.94229355,2.50844572
+month,2021,wind-unit,9,599,1.56139511,1.99426582
+month,2021,wind-unit,10,509,1.47118205,1.86982198
+month,2021,wind-unit,11,646,1.71735387,2.27317837
+month,2021,wind-unit,12,714,1.68430928,2.32069791
+representation-natural,2021,wind-unit,8737,7501,7501
+representation-fit,2021,wind-unit,123,4.711581,0.076961
+	Exit status: 0
+representation-rescore,2021,wind-unit,matched,7501,1.67708805,2.27255364,pass
+representation-end,2021,wind-unit,123
+c0511aa654ec3ba291bcc13016ee790c83329af849b092bbeab8319f0005c5e5  fit-origins.txt
+433ac6f8901354ab64338ceb548a6686704db6925bdaca56ff5badd9e38944a0  matched-origins.txt
+5033b0d4e99621d2acd7c6e7cdb59c033cc4359de39202bd9992e0680e2dec4c  metrics.txt
+0e1a5d43869e68af67272fea7fd6f68a93f55769d3b80b9a47fa8ea97212b516  predictions.csv.gz
+d7179adcc57fc409a1cbeacee042403dfd2c42f66e58ddc6444f65604cbe0669  rescore.txt
+1df5b998fbac4a31a54488b8ae9eaca9a871c079319fed8a30fe65a3cef271ff  resources.txt
+207f9df1da58dd9731f612044597b3286450bd7493e113c1c851d7ddf1d706a3  train-origins.txt
