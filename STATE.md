@@ -129,3 +129,6 @@ All 108 outcomes audited, 44 job logs present. Final report, pooled.csv and vari
 
 ## C006 phase 1
 C006 active; predeclared 28 screening configurations across nine tree/boosting families in campaigns/006-trees-boosting/manifest.md. Fixed 24,576 train-origin budget, full eval cohorts, seed policy, official branded backends require version-pinned Nix/CI verification. No C006 fits yet. Next implement T01 exact CART shared-output and per-lead variants with deterministic splits, minimum leaf and resource guard, numerical tests, then launch 2019 CI. No new data.
+
+## C006 phase 2
+T01 six exact CART configurations implemented (shared and independent scalar per lead), train sample fixed, numeric SSE splits, 1200s preflight/fit guard, five tests. T01.md batch spec. CI pending; verify compilation and archive six outcomes including any explicit blocks, then T02–T04 ensembles. No new data.
