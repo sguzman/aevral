@@ -165,3 +165,6 @@ All three official integration smoke jobs passed (CI 45917374767), 95 tests, Cat
 
 ## C006 phase 13
 All six official upstream screens passed (CI 45917562327), 95 tests. Archived 426 records, all 28 screening entries unique/measured with matched cohorts. Best xgboost-128 MAE1.36776638, lightgbm-128 1.36797968, MLP64 incumbent1.32617622. Frozen FINALISTS.md: 20 finalists (12 deterministic,8 stochastic), 124 remaining fold/seed evaluations (2019 seed42 reused, other two seeds also required for 2019). Next create bounded grouped annual workflows, run native groups first then Nix upstream groups sequentially to preserve <=6 fitting jobs, archive outcomes and pooled seed statistics. No new data.
+
+## C006 phase 14
+Committed native and upstream annual workflows and common runner, exact 20-model frozen list checked, matrices 17 native jobs/90 outcomes and 14 upstream jobs/34 outcomes. Native triggers on push; upstream dispatch-only after native finishes to keep <=6 fitting jobs. Next check native CI, archive by job IDs with fold/model/seed keys; dispatch upstream only after native fitting jobs finish. No new data.

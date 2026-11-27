@@ -13,3 +13,6 @@
 | T06 | xgboost-128, xgboost-64 | deterministic (seed42 where applicable) |
 | T08 | catboost-128, catboost-64 | 42, 123, 2026 |
 20 point finalists, 12 deterministic and 8 stochastic. Remaining 124 evaluations: 36 deterministic (3 additional folds ×12) + 88 stochastic (12 fold-seed pairs per config minus reused 2019 seed42). Use all four folds for each seed; report pooled MAE/RMSE separately by seed, mean and SD across seeds, no pooling seeds as extra independent observations. C003 seed42 incumbent reused. Group by fold and module/seed, max six parallel, <=30min/job; avoid launching multiple workflows concurrently beyond six fit jobs. Preserve all records, per-lead and month metrics, seed-specific artifacts, timings and resource counts. Explicitly report different training budgets. No new data.
+
+## Execution batches
+Native: 17 jobs, 90 outcomes (24 deterministic +66 forest fold/seed). Official upstream: 14 jobs, 34 outcomes (12 deterministic +22 CatBoost fold/seed). Upstream workflow dispatch-only, launch after native fitting jobs finish; both max-parallel six, 30-minute job timeout. Matrices and scripts checked against frozen 20-model list and 124 additional outcomes. Artifact retention 30 days; archive metrics durably.

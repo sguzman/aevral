@@ -1,0 +1,52 @@
+name: C006 upstream annual finalists
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - {fold: '2019', group: catboost, seed: '123'}
+          - {fold: '2019', group: catboost, seed: '2026'}
+          - {fold: '2020', group: upstream, seed: 'deterministic'}
+          - {fold: '2020', group: catboost, seed: '42'}
+          - {fold: '2020', group: catboost, seed: '123'}
+          - {fold: '2020', group: catboost, seed: '2026'}
+          - {fold: '2021', group: upstream, seed: 'deterministic'}
+          - {fold: '2021', group: catboost, seed: '42'}
+          - {fold: '2021', group: catboost, seed: '123'}
+          - {fold: '2021', group: catboost, seed: '2026'}
+          - {fold: '2022', group: upstream, seed: 'deterministic'}
+          - {fold: '2022', group: catboost, seed: '42'}
+          - {fold: '2022', group: catboost, seed: '123'}
+          - {fold: '2022', group: catboost, seed: '2026'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086 # v31
+      - name: Numerical tests
+        run: |
+          nix develop .#boosting --no-update-lock-file --command cargo test --locked --release
+          nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
+          git diff --exit-code -- flake.lock
+      - name: Evaluate frozen finalists
+        run: |
+          nix develop .#boosting --no-update-lock-file --command bash scripts/c006-finalists.sh ${{ matrix.fold }} ${{ matrix.group }} ${{ matrix.seed }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c006-finalists-upstream-${{ matrix.fold }}-${{ matrix.group }}-${{ matrix.seed }}
+          path: results-run/
+          retention-days: 30
