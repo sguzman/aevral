@@ -4,6 +4,7 @@ on:
     paths:
       - '.github/workflows/c011-report.yml'
       - 'scripts/c011-report.rs'
+      - 'scripts/c011-recover-timing.sh'
   workflow_dispatch:
 permissions:
   contents: read
