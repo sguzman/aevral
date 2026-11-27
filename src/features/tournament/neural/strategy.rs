@@ -1,25 +1,29 @@
-//! C010 F01-F07: forecast formulations and chronological corrections.
+//! C010 F01-F10: formulations, corrections and training objectives.
 use super::{Adam,D,Y,TrainingRow,Rng,guard,Structured};
 use super::super::{OriginInput,load,score,Fold};
 use super::super::neighbors::{subset,Cached};
 use crate::{dense::Dense,benchmark::Metrics};
 use std::{io::{BufWriter,Write},path::Path,time::Instant};
+mod objectives;
+use objectives::Objective;
 enum Mode{Joint(Dense,Adam),Hits(Structured,Adam),Heads(Vec<(Dense,Adam)>,bool),Recursive(Dense,Adam),Correction(Dense,Adam,Dense,Adam)}
 #[derive(Clone,Copy)]
 enum Transform{Level,Daily,Difference}
-struct Forecast{mode:Mode,mean:f64,sd:f64,transform:Transform}
+struct Forecast{mode:Mode,mean:f64,sd:f64,transform:Transform,objective:Objective}
 fn scalar(dims:&[usize],seed:u64)->(Dense,Adam){let m=Dense::new(dims,seed);let o=Adam::new(m.parameters(),0.001);(m,o)}
 impl Forecast{
     fn new(label:&str,seed:u64,mean:f64,sd:f64)->Result<Self,String>{
         let transform=if label.starts_with("daily-residual"){Transform::Daily}else if label.starts_with("difference"){Transform::Difference}else{Transform::Level};
+        let objective=if label.starts_with("mae-"){Objective::Mae}else if label.starts_with("huber-"){Objective::Huber(1./sd)}else if label=="pinball-median"{Objective::Median}else if label=="pinball-multi"{Objective::Quantiles}else{Objective::Mse};
         let mode=match label{
-            "joint-mlp64"|"daily-residual-mlp64"|"difference-mlp64"=>{let(m,o)=scalar(&[D,64,Y],seed);Mode::Joint(m,o)},
-            "joint-nhits64"|"daily-residual-nhits64"|"difference-nhits64"=>{let m=Structured::new("nhits-w64",seed).ok_or("missing N-HiTS")?;let o=Adam::new(m.parameters(),0.001);Mode::Hits(m,o)},
+            "joint-mlp64"|"daily-residual-mlp64"|"difference-mlp64"|"mae-mlp64"|"huber-mlp64"|"pinball-median"=>{let(m,o)=scalar(&[D,64,Y],seed);Mode::Joint(m,o)},
+            "joint-nhits64"|"daily-residual-nhits64"|"difference-nhits64"|"mae-nhits64"|"huber-nhits64"=>{let m=Structured::new("nhits-w64",seed).ok_or("missing N-HiTS")?;let o=Adam::new(m.parameters(),0.001);Mode::Hits(m,o)},
+            "pinball-multi"=>{let(m,o)=scalar(&[D,64,3*Y],seed);Mode::Joint(m,o)},
             "perlead-h8"|"perlead-h16"|"dirrec-h8"|"dirrec-h16"=>{let dir=label.starts_with("dirrec");let h=if label.ends_with("16"){16}else{8};Mode::Heads((1..=Y).map(|j|scalar(&[D+usize::from(dir),h,1],seed+j as u64)).collect(),dir)},
             "recursive-h16"|"recursive-h32"=>{let h=if label.ends_with("32"){32}else{16};let(m,o)=scalar(&[D+2,h,1],seed);Mode::Recursive(m,o)},
             "correction-affine"|"correction-h16"=>{let(b,bo)=scalar(&[D,64,Y],seed);let dims=if label=="correction-affine"{vec![D+Y,Y]}else{vec![D+Y,16,Y]};let(c,co)=scalar(&dims,seed+1000);Mode::Correction(b,bo,c,co)},
             _=>return Err("unknown C010 recipe".into())
-        };Ok(Self{mode,mean,sd,transform})
+        };Ok(Self{mode,mean,sd,transform,objective})
     }
     fn parameters(&self)->usize{match &self.mode{Mode::Joint(m,_)|Mode::Recursive(m,_)=>m.parameters(),Mode::Hits(m,_)=>m.parameters(),Mode::Heads(ms,_)=>ms.iter().map(|(m,_)|m.parameters()).sum(),Mode::Correction(b,_,c,_)=>b.parameters()+c.parameters()}}
     fn updates(&self)->usize{match &self.mode{Mode::Joint(..)|Mode::Hits(..)|Mode::Correction(..)=>1,_=>Y}}
@@ -29,7 +33,7 @@ impl Forecast{
     fn predict(&self,r:&OriginInput)->Result<[f64;Y],String>{
         let mut out=[0.;Y];let mut prev=self.z0(r);
         match &self.mode{
-            Mode::Joint(m,_)=>out.copy_from_slice(&m.predict(&r.x)),
+            Mode::Joint(m,_)=>{let p=m.predict(&r.x);if matches!(self.objective,Objective::Quantiles){out.copy_from_slice(&p[Y..2*Y]);}else{out.copy_from_slice(&p);}},
             Mode::Hits(m,_)=>out.copy_from_slice(&m.predict(&r.x)),
             Mode::Heads(ms,dir)=>for(j,(m,_))in ms.iter().enumerate(){let mut x=r.x.to_vec();if *dir{x.push(prev)}out[j]=m.predict(&x)[0];prev=out[j];},
             Mode::Recursive(m,_)=>for j in 0..Y{let mut x=r.x.to_vec();x.extend([prev,(j+1)as f64/Y as f64]);out[j]=m.predict(&x)[0];prev=out[j];},
@@ -38,11 +42,17 @@ impl Forecast{
         let out=self.decode(r,out);
         if out.iter().any(|v|!v.is_finite()||v.abs()>1e6){return Err("numerical prediction bound".into())}Ok(out)
     }
+    fn crossings(&self,r:&OriginInput)->Result<usize,String>{
+        if !matches!(self.objective,Objective::Quantiles){return Ok(0)}
+        let Mode::Joint(m,_)=&self.mode else{return Err("quantile backbone".into())};let p=m.predict(&r.x);
+        if p.iter().any(|v|!v.is_finite()||v.abs()>1e6){return Err("quantile numerical bound".into())}
+        Ok((0..Y).filter(|&j|p[j]>p[Y+j]||p[Y+j]>p[2*Y+j]).count())
+    }
     fn step(&mut self,r:&TrainingRow,now:Instant)->Result<(f64,usize),String>{
-        let target=self.encode(&r.input,r.normalized_target);let mut prev=self.z0(&r.input);let mut loss=0.;let mut clips=0;
+        let objective=self.objective;let target=self.encode(&r.input,r.normalized_target);let mut prev=self.z0(&r.input);let mut loss=0.;let mut clips=0;
         match &mut self.mode{
-            Mode::Joint(m,o)=>{guard(now)?;loss=m.adam_step(&r.input.x,&target,o).0;if !m.finite(){return Err("nonfinite dense".into())}},
-            Mode::Hits(m,o)=>{guard(now)?;let(l,c)=m.step(&r.input.x,&target,o);loss=l;clips=usize::from(c);if !m.finite(){return Err("nonfinite hits".into())}},
+            Mode::Joint(m,o)=>{guard(now)?;loss=if matches!(objective,Objective::Mse){m.adam_step(&r.input.x,&target,o).0}else{m.adam_step_with(&r.input.x,&target,o,|p,t|objective.value_grad(p,t)).0};if !m.finite(){return Err("nonfinite dense".into())}},
+            Mode::Hits(m,o)=>{guard(now)?;let(l,c)=if matches!(objective,Objective::Mse){m.step(&r.input.x,&target,o)}else{m.step_with(&r.input.x,&target,o,|p,t|objective.value_grad(p,t))};loss=l;clips=usize::from(c);if !m.finite(){return Err("nonfinite hits".into())}},
             Mode::Heads(ms,dir)=>{for(j,(m,o))in ms.iter_mut().enumerate(){guard(now)?;let mut x=r.input.x.to_vec();if *dir{x.push(prev)}let y=r.normalized_target[j];loss+=m.adam_step(&x,&[y],o).0;prev=y;if !m.finite(){return Err("nonfinite head".into())}}loss/=Y as f64;},
             Mode::Recursive(m,o)=>{for j in 0..Y{guard(now)?;let mut x=r.input.x.to_vec();x.extend([prev,(j+1)as f64/Y as f64]);let y=r.normalized_target[j];loss+=m.adam_step(&x,&[y],o).0;prev=y;if !m.finite(){return Err("nonfinite recursive".into())}}loss/=Y as f64;},
             Mode::Correction(..)=>return Err("correction requires staged training".into())
@@ -96,7 +106,8 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),Strin
     if 2.*estimate+180.>1400.{block!("preflight runtime guard")}
     let mut model=Forecast::new(label,seed,f.target_mean,f.target_sd)?;let t=Instant::now();let clips=checked!(train(&mut model,&rows,12,seed,now,Some((id,label))));let fit=t.elapsed().as_secs_f64();
     let t=Instant::now();let mut predictions=Vec::with_capacity(m);
-    for row in &f.eval{checked!(guard(now));predictions.push((row.input.origin,f.restore(checked!(model.predict(&row.input)))));}
+    let mut crossings=0;for row in &f.eval{checked!(guard(now));predictions.push((row.input.origin,f.restore(checked!(model.predict(&row.input)))));crossings+=checked!(model.crossings(&row.input));}
+    if matches!(model.objective,Objective::Quantiles){println!("strategy-quantile,{id},{label},{seed},{crossings},{}",m*Y);}
     println!("strategy-fit,{id},{label},{seed},{clips},{fit:.6},{:.6}",t.elapsed().as_secs_f64());
     score(&Cached{predictions},label,&f,&mut out)?;out.flush().map_err(|e|e.to_string())?;Ok(())
 }
@@ -109,4 +120,5 @@ mod tests{
     #[test]fn joint_controls_match_original_backbones(){let r=row();let mut m=Forecast::new("joint-mlp64",42,10.,5.).unwrap();let mut d=Dense::new(&[D,64,Y],42);let mut a=Adam::new(d.parameters(),0.001);assert_eq!(m.predict(&r.input).unwrap().to_vec(),d.predict(&r.input.x));m.step(&r,Instant::now()).unwrap();d.adam_step(&r.input.x,&r.normalized_target,&mut a);assert_eq!(m.predict(&r.input).unwrap().to_vec(),d.predict(&r.input.x));}
     #[test]fn transformed_targets_roundtrip(){let mut r=row();for j in 0..Y{r.input.recent[j]=j as f64;r.normalized_target[j]=j as f64/10.;}for label in ["daily-residual-mlp64","daily-residual-nhits64","difference-mlp64","difference-nhits64"]{let mut m=Forecast::new(label,42,10.,5.).unwrap();let encoded=m.encode(&r.input,r.normalized_target);let restored=m.decode(&r.input,encoded);for j in 0..Y{assert!((restored[j]-r.normalized_target[j]).abs()<1e-12)}let first=m.step(&r,Instant::now()).unwrap().0;let mut last=first;for _ in 0..80{last=m.step(&r,Instant::now()).unwrap().0}assert!(last<first,"{label}");assert!(m.predict(&r.input).is_ok());}}
     #[test]fn correction_purge_and_frozen_base(){let mut rs:Vec<_>=(0..128).map(|i|{let mut r=row();r.input.origin=i*60;r}).collect();let refs:Vec<_>=rs.iter().collect();let(a,b,d)=correction_split(&refs).unwrap();assert_eq!((a.len(),b.len(),d),(72,32,24));assert!(a.last().unwrap().input.origin+24*60<b[0].input.origin);for label in ["correction-affine","correction-h16"]{let mut m=Forecast::new(label,42,10.,5.).unwrap();let mut n=Forecast::new(label,42,10.,5.).unwrap();train(&mut m,&refs,2,42,Instant::now(),None).unwrap();train(&mut n,&refs,2,42,Instant::now(),None).unwrap();assert_eq!(m.predict(&refs[0].input).unwrap(),n.predict(&refs[0].input).unwrap());let Mode::Correction(base,_,_,_)=&m.mode else{unreachable!()};let mut expected=Dense::new(&[D,64,Y],42);let mut opt=Adam::new(expected.parameters(),0.001);let mut rng=Rng(42^0xD1B54A32D192ED03);let mut order:Vec<_>=(0..a.len()).collect();for _ in 0..2{rng.shuffle(&mut order);for &i in &order{expected.adam_step(&a[i].input.x,&a[i].normalized_target,&mut opt);}}assert_eq!(base.predict(&refs[0].input.x),expected.predict(&refs[0].input.x));}drop(refs);rs.reverse();assert!(correction_split(&rs.iter().collect::<Vec<_>>()).is_err());}
+    #[test]fn objectives_train_and_median_readout(){let r=row();for label in ["mae-mlp64","mae-nhits64","huber-mlp64","huber-nhits64","pinball-median","pinball-multi"]{let mut m=Forecast::new(label,42,10.,5.).unwrap();let first=m.step(&r,Instant::now()).unwrap().0;let mut last=first;for _ in 0..80{last=m.step(&r,Instant::now()).unwrap().0;}assert!(last<first,"{label}");assert!(m.predict(&r.input).is_ok());if label=="pinball-multi"{let Mode::Joint(d,_)=&m.mode else{unreachable!()};let p=d.predict(&r.input.x);assert_eq!(m.predict(&r.input).unwrap().to_vec(),p[Y..2*Y]);let expected=(0..Y).filter(|&j|p[j]>p[Y+j]||p[Y+j]>p[2*Y+j]).count();assert_eq!(m.crossings(&r.input).unwrap(),expected);}}}
 }

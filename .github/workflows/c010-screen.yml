@@ -1,4 +1,4 @@
-name: C010 F05-F07 target transformations
+name: C010 F08-F10 training objectives
 on:
   push:
     paths:
@@ -21,7 +21,7 @@ jobs:
         run: |
           expected=6
           file="campaigns/010-forecast-strategy/screen-matrix.csv"
-          matrix=$(awk -F, '$1 ~ /^F0[5-7]$/' "$file" | jq -Rc 'split(",") | {method:.[0],config:.[1],seed:.[5],fold:.[6]}' | jq -sc '{include:.}')
+          matrix=$(awk -F, '$1 ~ /^F(08|09|10)$/' "$file" | jq -Rc 'split(",") | {method:.[0],config:.[1],seed:.[5],fold:.[6]}' | jq -sc '{include:.}')
           test "$(jq '.include|length' <<< "$matrix")" -eq "$expected"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
   evaluate:

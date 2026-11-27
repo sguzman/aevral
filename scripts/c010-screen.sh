@@ -27,6 +27,9 @@ if grep -q "^score,$FOLD,$CONFIG," "$dir/metrics.txt"; then
     test "$(grep -c "^strategy-base-epoch,$FOLD,$CONFIG,$SEED," "$dir/metrics.txt")" -eq 12
     awk -F, -v f="$FOLD" -v m="$CONFIG" -v s="$SEED" '$1=="strategy-split" && $2==f && $3==m && $4==s {if($5<=0||$6!=2048||$5+$7!=6144||$8!=12*($5+$6)) exit 1; n++} END{exit n!=1}' "$dir/metrics.txt"
   fi
+  if [[ "$CONFIG" == pinball-multi ]]; then
+    awk -F, -v f="$FOLD" -v m="$CONFIG" -v s="$SEED" -v n="$origins" '$1=="strategy-quantile" && $2==f && $3==m && $4==s {if($5<0||$5>$6||$6!=24*n) exit 1; k++} END{exit k!=1}' "$dir/metrics.txt"
+  fi
   # Validate individual prediction rows: sorted contiguous leads, unique origins,
   # exact model/fold, finite Celsius values, and exact number of origins.
   awk -F, -v f="$FOLD" -v m="$CONFIG" -v n="$origins" '

@@ -77,10 +77,11 @@ impl Structured{
         Form::Blocks(s)=>self.blocks(x,s).0,Form::Tide=>self.tide(x).0,
         _=>{let a=self.linear_inputs(x);let mut y=vec![if matches!(self.form,Form::NLinear){x[71]}else{0.};24];for(l,v)in self.layers.iter().zip(a){add(&mut y,&l.forward(&v));}y}
     }}
-    fn gradients(&self,x:&[f64],target:&[f64])->(f64,Vec<Vec<f64>>){
+    fn gradients(&self,x:&[f64],target:&[f64])->(f64,Vec<Vec<f64>>){self.gradients_with(x,target,loss)}
+    fn gradients_with(&self,x:&[f64],target:&[f64],objective:impl Fn(&[f64],&[f64])->(f64,Vec<f64>))->(f64,Vec<Vec<f64>>){
         let mut g:Vec<_>=self.layers.iter().map(|l|vec![0.;l.w.len()]).collect();let l=&self.layers;
         match &self.form{
-            Form::Blocks(specs)=>{let(y,c)=self.blocks(x,specs);let(value,dy)=loss(&y,target);let mut dr=vec![0.;72];
+            Form::Blocks(specs)=>{let(y,c)=self.blocks(x,specs);let(value,dy)=objective(&y,target);let mut dr=vec![0.;72];
                 for i in (0..specs.len()).rev(){let(p,k)=specs[i];let a=&c[i];let j=4*i;
                     let db:Vec<_>=dr.iter().map(|v|-v).collect();let(mut dh,g2)=l[j+2].backward(&a.h2,&db);g[j+2]=g2;
                     let(d,g3)=l[j+3].backward(&a.h2,&interp_grad(k,&dy));g[j+3]=g3;add(&mut dh,&d);relu_grad(&mut dh,&a.h2);
@@ -89,17 +90,20 @@ impl Structured{
                     for t in 0..72{dr[t]+=d[t/p]/p as f64;}
                 }(value,g)
             }
-            Form::Tide=>{let(y,h)=self.tide(x);let(value,dy)=loss(&y,target);
+            Form::Tide=>{let(y,h)=self.tide(x);let(value,dy)=objective(&y,target);
                 g[8]=l[8].backward(&x[..72],&dy).1;let(mut d,g7)=l[7].backward(&h[6],&dy);g[7]=g7;
                 let(mut z,g6)=l[6].backward(&h[5],&d);g[6]=g6;relu_grad(&mut z,&h[5]);let(z,g5)=l[5].backward(&h[4],&z);g[5]=g5;add(&mut d,&z);tanh_grad(&mut d,&h[4]);
                 let(d,g4)=l[4].backward(&h[3],&d);g[4]=g4;let(mut d,g3)=l[3].backward(&h[2],&d);g[3]=g3;
                 let(mut z,g2)=l[2].backward(&h[1],&d);g[2]=g2;relu_grad(&mut z,&h[1]);let(z,g1)=l[1].backward(&h[0],&z);g[1]=g1;add(&mut d,&z);tanh_grad(&mut d,&h[0]);g[0]=l[0].backward(x,&d).1;(value,g)
             }
-            _=>{let(value,dy)=loss(&self.predict(x),target);for(i,a)in self.linear_inputs(x).iter().enumerate(){g[i]=l[i].backward(a,&dy).1;}(value,g)}
+            _=>{let(value,dy)=objective(&self.predict(x),target);for(i,a)in self.linear_inputs(x).iter().enumerate(){g[i]=l[i].backward(a,&dy).1;}(value,g)}
         }
     }
     pub(super) fn step(&mut self,x:&[f64],y:&[f64],opt:&mut Adam)->(f64,bool){
-        let(value,g)=self.gradients(x,y);let norm=g.iter().flatten().map(|v|v*v).sum::<f64>().sqrt();
+        self.step_with(x,y,opt,loss)
+    }
+    pub(super) fn step_with(&mut self,x:&[f64],y:&[f64],opt:&mut Adam,objective:impl Fn(&[f64],&[f64])->(f64,Vec<f64>))->(f64,bool){
+        let(value,g)=self.gradients_with(x,y,objective);let norm=g.iter().flatten().map(|v|v*v).sum::<f64>().sqrt();
         if !value.is_finite()||!norm.is_finite(){return(f64::NAN,false)}
         let clipped=matches!(self.form,Form::Blocks(_)|Form::Tide)&&norm>5.;let scale=if clipped{5./norm}else{1.};
         opt.begin();for(l,g)in self.layers.iter_mut().zip(g){for(w,d)in l.w.iter_mut().zip(g){opt.update(w,d*scale);}}opt.finish();(value,clipped)
@@ -127,5 +131,11 @@ mod tests{
             }
             let mut a=a;let mut opt=Adam::new(a.parameters(),0.001);for _ in 0..100{assert!(a.step(&x,&y,&mut opt).0.is_finite());}assert!(a.finite()&&loss(&a.predict(&x),&y).0<v*0.1,"{label}");
         }
+    }
+    #[test]fn custom_nhits_gradient_groups(){
+        let x:Vec<_>=(0..80).map(|i|(i as f64*0.13).sin()*0.2).collect();let y:Vec<_>=(0..24).map(|i|0.4+(i as f64*0.25).cos()*0.05).collect();let a=Structured::new("nhits-w64",42).unwrap();
+        let obj=|p:&[f64],t:&[f64]|{let e:Vec<_>=p.iter().zip(t).map(|(a,b)|a-b).collect();(e.iter().map(|v|v.abs()).sum::<f64>()/24.,e.iter().map(|v|v.signum()/24.).collect())};
+        let(_,g)=a.gradients_with(&x,&y,obj);
+        for(l,layer)in a.layers.iter().enumerate(){let stride=layer.n+usize::from(layer.bias);for j in [0,layer.m/2,layer.m-1]{for k in [0,layer.n/2,stride-1]{let i=j*stride+k;let(mut p,mut m)=(a.clone(),a.clone());p.layers[l].w[i]+=1e-6;m.layers[l].w[i]-=1e-6;let d=(obj(&p.predict(&x),&y).0-obj(&m.predict(&x),&y).0)/2e-6;assert!((d-g[l][i]).abs()<1e-6,"{l} {i}");}}}
     }
 }
