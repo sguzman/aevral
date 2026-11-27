@@ -1,0 +1,71 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.03s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+representation-start,2020,wind-speed,123
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+representation-scale,2020,wind-speed,0,3.3859010145369703,2.0605027276279486,8192,false
+representation-config,2020,wind-speed,123,8192,12,0.001,81,6808,16061368,98304
+representation-preflight,2020,wind-speed,123,0.867830,0.008055,0.000217,7.113389
+representation-epoch,2020,wind-speed,123,1,0.1506157119
+representation-epoch,2020,wind-speed,123,2,0.1268065916
+representation-epoch,2020,wind-speed,123,3,0.1186303908
+representation-epoch,2020,wind-speed,123,4,0.1143401447
+representation-epoch,2020,wind-speed,123,5,0.1104104945
+representation-epoch,2020,wind-speed,123,6,0.1075563235
+representation-epoch,2020,wind-speed,123,7,0.1048001212
+representation-epoch,2020,wind-speed,123,8,0.1037683820
+representation-epoch,2020,wind-speed,123,9,0.1018029883
+representation-epoch,2020,wind-speed,123,10,0.1010084312
+representation-epoch,2020,wind-speed,123,11,0.0998768775
+representation-epoch,2020,wind-speed,123,12,0.1001039997
+score,2020,wind-speed,7543,1.46481750,1.96088307
+lead,2020,wind-speed,1,0.83064303,1.07263540
+lead,2020,wind-speed,2,0.97379885,1.26448826
+lead,2020,wind-speed,3,1.02688032,1.36147206
+lead,2020,wind-speed,4,1.13799268,1.50010440
+lead,2020,wind-speed,5,1.19727810,1.58686486
+lead,2020,wind-speed,6,1.28326299,1.69273246
+lead,2020,wind-speed,7,1.31991670,1.74659607
+lead,2020,wind-speed,8,1.35842894,1.79318273
+lead,2020,wind-speed,9,1.41245169,1.85302442
+lead,2020,wind-speed,10,1.46424524,1.91910748
+lead,2020,wind-speed,11,1.50159206,1.96600497
+lead,2020,wind-speed,12,1.51558727,1.99333484
+lead,2020,wind-speed,13,1.52779272,2.01055699
+lead,2020,wind-speed,14,1.56832942,2.06061078
+lead,2020,wind-speed,15,1.60998737,2.12084113
+lead,2020,wind-speed,16,1.63578834,2.15943511
+lead,2020,wind-speed,17,1.65602089,2.18876308
+lead,2020,wind-speed,18,1.69218422,2.24456961
+lead,2020,wind-speed,19,1.68935266,2.23198725
+lead,2020,wind-speed,20,1.71582885,2.26987336
+lead,2020,wind-speed,21,1.73518152,2.28906578
+lead,2020,wind-speed,22,1.75329281,2.30586866
+lead,2020,wind-speed,23,1.76055515,2.31521430
+lead,2020,wind-speed,24,1.78922825,2.34387746
+month,2020,wind-speed,1,640,1.42817590,1.88282321
+month,2020,wind-speed,2,594,1.27795683,1.68118575
+month,2020,wind-speed,3,729,1.43779329,1.93438577
+month,2020,wind-speed,4,507,1.34463492,1.73359413
+month,2020,wind-speed,5,625,1.76759222,2.38630568
+month,2020,wind-speed,6,699,1.49154869,2.04223756
+month,2020,wind-speed,7,622,1.59050977,2.05761190
+month,2020,wind-speed,8,715,1.57434377,2.09654610
+month,2020,wind-speed,9,345,1.27864086,1.65231478
+month,2020,wind-speed,10,733,1.39051424,1.84507229
+month,2020,wind-speed,11,717,1.44445340,1.96462929
+month,2020,wind-speed,12,617,1.43882756,1.95111751
+representation-natural,2020,wind-speed,8761,7543,7543
+representation-fit,2020,wind-speed,123,6.038423,0.099834
+	Exit status: 0
+representation-rescore,2020,wind-speed,matched,7543,1.46481750,1.96088307,pass
+representation-end,2020,wind-speed,123
+0fd50cf46ed35a2a39bae594bc78f1d4aaaaa3fe8b40a765036ad166e9c9b6c1  fit-origins.txt
+68b396044cee8a7916c183e98121674b2a5edc66288427fbe795d6650871cc47  matched-origins.txt
+799ea10a52682b1501f5ad2df779df8a652480d667950e3b36acd91fcc61081e  metrics.txt
+2511a3fcff65b03e42bbd46cf7bb395536311cd4b0cb56c0da30a799f3e96807  predictions.csv.gz
+fe1fc67335fb45e0e5cb31118b32a923537827f6a5edb738f14ac56ad092f438  rescore.txt
+6e54de97a872a9faf363b4ee05a923047ef2e700692b92e8134685e4b7f0b32c  resources.txt
+ff0b1d161d3acdefdee7bef04b1de25ee700a45cd6930e3afa05d48f44241624  train-origins.txt
