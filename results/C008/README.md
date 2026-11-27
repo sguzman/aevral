@@ -48,3 +48,20 @@ Full annual promotion follows completion of all nine families; no retuning.
 | D07 | elm-m64-l01 | 1.60754493 | 2.09246551 | measured |
 | D06 | esn-m128-leak1 | 1.64314148 | 2.16326497 | measured |
 | D06 | esn-m64-leak1 | 1.64990894 | 2.17280684 | measured |
+
+## D08–D09 alternative learners
+
+[CI](https://github.com/sguzman/aevral/actions/runs/46032924637), 145 numerical tests, full training cohort for Markov, 4096 training rows for symbolic regression; 7455 matched evaluation origins per measured configuration. Symbolic grammar and fitted expressions/coefficients archived; depth-two cap applied in enumeration order.
+
+| Family | Model | MAE °C | RMSE °C | Status |
+|---|---|---:|---:|---|
+| D09 | symbolic-depth2-t8 | 1.59234152 | 2.06505401 | measured |
+| D09 | symbolic-depth1-t8 | 1.59234152 | 2.06505401 | measured |
+| D09 | symbolic-depth1-t4 | 1.68172871 | 2.19161193 | measured |
+| D09 | symbolic-depth2-t4 | 1.68172871 | 2.19161193 | measured |
+| D08 | markov-b16-hour | 1.95897401 | 2.57619151 | measured |
+| D08 | markov-b8-hour | 2.26351402 | 2.97072960 | measured |
+| D08 | markov-b16-pooled | 2.85702010 | 3.79356413 | measured |
+| D08 | markov-b8-pooled | 2.97682545 | 3.94215451 | measured |
+
+All 36 screening outcomes archived: 36 measured, 0 blocked. Annual promotion next.
