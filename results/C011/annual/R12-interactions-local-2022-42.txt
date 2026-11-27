@@ -1,0 +1,76 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.04s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+representation-start,2022,interactions-local,42
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+representation-scale,2022,interactions-local,0,0.7359458159648782,1.1678987328243198,8192,false
+representation-scale,2022,interactions-local,1,-0.09391982673920002,0.943191328848862,8192,false
+representation-scale,2022,interactions-local,2,0.2944372971854161,0.9850229817248226,8192,false
+representation-scale,2022,interactions-local,3,-0.2042459237989549,1.0493000090825715,8192,false
+representation-scale,2022,interactions-local,4,0.9830839812466302,1.4478736978850493,8192,false
+representation-scale,2022,interactions-local,5,0.9054013219074656,1.3499729340832978,8192,false
+representation-config,2022,interactions-local,42,8192,12,0.001,86,7128,16834640,98304
+representation-preflight,2022,interactions-local,42,0.986129,0.008373,0.000216,7.475658
+representation-epoch,2022,interactions-local,42,1,0.1508591355
+representation-epoch,2022,interactions-local,42,2,0.1264663207
+representation-epoch,2022,interactions-local,42,3,0.1187937530
+representation-epoch,2022,interactions-local,42,4,0.1124720760
+representation-epoch,2022,interactions-local,42,5,0.1090589911
+representation-epoch,2022,interactions-local,42,6,0.1068985246
+representation-epoch,2022,interactions-local,42,7,0.1043567615
+representation-epoch,2022,interactions-local,42,8,0.1028227083
+representation-epoch,2022,interactions-local,42,9,0.1021611702
+representation-epoch,2022,interactions-local,42,10,0.1009621790
+representation-epoch,2022,interactions-local,42,11,0.1001063303
+representation-epoch,2022,interactions-local,42,12,0.0992331131
+score,2022,interactions-local,7639,1.62239785,2.15933416
+lead,2022,interactions-local,1,0.85749032,1.13219332
+lead,2022,interactions-local,2,0.98386154,1.30615908
+lead,2022,interactions-local,3,1.08770784,1.43672131
+lead,2022,interactions-local,4,1.16424510,1.54127262
+lead,2022,interactions-local,5,1.29001330,1.69922448
+lead,2022,interactions-local,6,1.34667491,1.77213954
+lead,2022,interactions-local,7,1.41539049,1.86212140
+lead,2022,interactions-local,8,1.41939609,1.86320770
+lead,2022,interactions-local,9,1.46201550,1.91016907
+lead,2022,interactions-local,10,1.55225355,2.01884660
+lead,2022,interactions-local,11,1.59443344,2.07353319
+lead,2022,interactions-local,12,1.63026238,2.12099598
+lead,2022,interactions-local,13,1.64341453,2.14058915
+lead,2022,interactions-local,14,1.73962483,2.28112206
+lead,2022,interactions-local,15,1.77225032,2.32710317
+lead,2022,interactions-local,16,1.84043085,2.40441283
+lead,2022,interactions-local,17,1.84835759,2.39730904
+lead,2022,interactions-local,18,1.91370358,2.48505197
+lead,2022,interactions-local,19,1.94269727,2.51008691
+lead,2022,interactions-local,20,2.01612682,2.59835515
+lead,2022,interactions-local,21,2.10751063,2.70820419
+lead,2022,interactions-local,22,2.10582835,2.68944109
+lead,2022,interactions-local,23,2.10428467,2.69609118
+lead,2022,interactions-local,24,2.09957437,2.68236095
+month,2022,interactions-local,1,735,1.56897254,1.98473486
+month,2022,interactions-local,2,558,1.44675899,1.88495855
+month,2022,interactions-local,3,630,1.21437363,1.58326442
+month,2022,interactions-local,4,699,1.63123935,2.14888395
+month,2022,interactions-local,5,712,1.27565250,1.64841259
+month,2022,interactions-local,6,507,1.61634592,2.09783858
+month,2022,interactions-local,7,431,2.20618796,2.94734800
+month,2022,interactions-local,8,714,2.01921969,2.57124139
+month,2022,interactions-local,9,695,1.58942516,2.10912721
+month,2022,interactions-local,10,632,1.60943674,2.18619050
+month,2022,interactions-local,11,641,1.58187604,2.07664920
+month,2022,interactions-local,12,685,1.85632150,2.54209389
+representation-natural,2022,interactions-local,8737,7639,7639
+representation-fit,2022,interactions-local,42,6.324320,0.105874
+	Exit status: 0
+representation-rescore,2022,interactions-local,matched,7639,1.62239785,2.15933416,pass
+representation-end,2022,interactions-local,42
+67f7a6298a650594513bb7f9902aea5cc2c00e576eee75b4fe2f78c542aa077a  fit-origins.txt
+67250dc4838e3280ddd8ae8d7a43a4ec70b1900d91327010e08d9ebda761d3a3  matched-origins.txt
+b9c30cbb0c411dd4e28184bd08743ebbe763885500e664d56ca494c16bcc5b7a  metrics.txt
+d6e9cdc4d0ec84dd0cea98c945bb3f65461f2bf56d8c53c9d80eb8a2c5325823  predictions.csv.gz
+73ea3fe2f32e6294f14221564e7f44086e31bf6a4c958a4a3a17fdcb8118a221  rescore.txt
+a341b7b41cdf5a7e6aea7981dadb37cba2e533b10f0ce1396624761217cfc8a5  resources.txt
+e2c17d23dc9cbbf3610780818580ec8b14ea1201a23e61420b4ea30a35b71581  train-origins.txt
