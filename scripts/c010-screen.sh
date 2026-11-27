@@ -30,6 +30,12 @@ if grep -q "^score,$FOLD,$CONFIG," "$dir/metrics.txt"; then
   if [[ "$CONFIG" == pinball-multi ]]; then
     awk -F, -v f="$FOLD" -v m="$CONFIG" -v s="$SEED" -v n="$origins" '$1=="strategy-quantile" && $2==f && $3==m && $4==s {if($5<0||$5>$6||$6!=24*n) exit 1; k++} END{exit k!=1}' "$dir/metrics.txt"
   fi
+  if [[ "$CONFIG" == bound-* ]]; then
+    awk -F, -v f="$FOLD" -v m="$CONFIG" -v s="$SEED" -v n="$origins" '$1=="strategy-bounds" && $2==f && $3==m && $4==s {if($5<0||$5>$7||$6<0||$6>$5||$7!=24*n||(m=="bound-clamp"&&$6!=$5)||(m=="bound-penalty"&&$6!=0)) exit 1; k++} END{exit k!=1}' "$dir/metrics.txt"
+  fi
+  if [[ "$CONFIG" == trajectory-* ]]; then
+    awk -F, -v f="$FOLD" -v m="$CONFIG" -v s="$SEED" -v n="$origins" '$1=="strategy-trajectory" && $2==f && $3==m && $4==s {if($5<0||$6<0||$7!=23*n||$8!=22*n) exit 1; k++} END{exit k!=1}' "$dir/metrics.txt"
+  fi
   # Validate individual prediction rows: sorted contiguous leads, unique origins,
   # exact model/fold, finite Celsius values, and exact number of origins.
   awk -F, -v f="$FOLD" -v m="$CONFIG" -v n="$origins" '
