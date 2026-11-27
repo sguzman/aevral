@@ -1,0 +1,41 @@
+name: C006 T02-T04 randomized forest screen
+on:
+  push:
+    paths:
+      - '.github/workflows/forest-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        config: [bag-16, bag-32, rf-16-9, rf-16-27, rf-32-9, rf-32-27, extra-16-9, extra-16-27, extra-32-9, extra-32-27]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Numerical tests
+        run: cargo test --locked --release
+      - name: Fit shared-output forest
+        run: |
+          set -o pipefail
+          cargo build --locked --release
+          /usr/bin/time -v target/release/aevral forest data/raw/ksea 2019 predictions.csv ${{ matrix.config }} 42 | tee metrics.txt
+          gzip predictions.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c006-forest-2019-${{ matrix.config }}
+          path: |
+            metrics.txt
+            predictions.csv.gz
+          retention-days: 30

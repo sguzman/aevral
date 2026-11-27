@@ -135,3 +135,6 @@ T01 six exact CART configurations implemented (shared and independent scalar per
 
 ## C006 phase 3
 T01 CI 45914941755 succeeded, 81 numerical tests. Six measured screens archived in results/C006 (registry.csv + six logs, 282 records), exact matched cohort counts and lead count verified. Best cart-lead-d8-l32 MAE1.61833904 RMSE2.14853219 fit18.287183s, best shared cart-shared-d8-l32 MAE1.74356087. All within guard. Next implement T02–T04 bagging/RF/Extra Trees using shared CART and deterministic seed, bootstrap and random feature selection per node, independent random thresholds for Extra Trees. 6/28 screens measured. No new data.
+
+## C006 phase 4
+T02-T04 ten ensemble configurations implemented, shared 24-output trees, fixed seed42 screening and bounded reproducible SplitMix64, bootstrap/exact split RF/random threshold Extra Trees as manifest. T02-T04.md specifies details. Five new tests. CI pending; verify all jobs, archive outcomes, then T05/T09 histogram boosting. No new data.

@@ -26,17 +26,20 @@ impl Node{
     pub(super) fn counts(&self)->(usize,usize){match self{Self::Leaf(_)=>(1,1),Self::Split{left,right,..}=>{let(a,b)=left.counts();let(c,d)=right.counts();(a+c+1,b+d)}}}
 }
 #[derive(Clone,Copy,Debug)]
-struct Split{feature:usize,threshold:f64,gain:f64}
-fn sums(data:&Data,ids:&[usize],out:Outputs)->(Vec<f64>,f64){
+pub(super) struct Split{pub feature:usize,pub threshold:f64,pub gain:f64}
+pub(super) fn sums(data:&Data,ids:&[usize],out:Outputs)->(Vec<f64>,f64){
     let mut sum=vec![0.;out.n()];let mut sq=0.;
     for &i in ids{for j in 0..out.n(){let y=data.y[i][out.at(j)];sum[j]+=y;sq+=y*y}}
     (sum,sq)
 }
-fn norm(v:&[f64])->f64{v.iter().map(|x|x*x).sum()}
+pub(super) fn norm(v:&[f64])->f64{v.iter().map(|x|x*x).sum()}
 fn split(data:&Data,ids:&[usize],out:Outputs,leaf:usize,total:&[f64],now:Instant)->Result<Option<Split>,String>{
+    split_features(data,ids,out,leaf,total,now,&(0..D).collect::<Vec<_>>())
+}
+pub(super) fn split_features(data:&Data,ids:&[usize],out:Outputs,leaf:usize,total:&[f64],now:Instant,features:&[usize])->Result<Option<Split>,String>{
     let n=ids.len();let parent=norm(total)/n as f64;
     let mut best:Option<Split>=None;let mut order=ids.to_vec();let mut left=vec![0.;out.n()];
-    for f in 0..D{
+    for &f in features{
         if now.elapsed().as_secs_f64()>GUARD{return Err("fit elapsed guard".into())}
         order.sort_unstable_by(|&i,&j|data.x[i][f].total_cmp(&data.x[j][f]).then(i.cmp(&j)));
         left.fill(0.);

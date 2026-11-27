@@ -189,3 +189,5 @@ pub mod kalman;
 pub mod switching;
 
 pub mod cart;
+
+pub mod forest;
