@@ -1,6 +1,6 @@
 # C009 screen results
 
-Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Adam .001. C003 full-training MLP64 2019 MAE 1.32617622 (different training budget). 42 of 42 screened (42 measured, 0 blocked). Rust and historical architecture regression CI passed. No annual ranking yet.
+Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Adam .001. C003 full-training MLP64 2019 MAE 1.32617622 (different training budget). 42 of 42 screened (42 measured, 0 blocked). Rust and historical architecture regression CI passed. See final ranking below.
 
 | Recipe | MAE °C | RMSE °C | Parameters | Fit seconds | Predict seconds | Clipped updates |
 |---|---:|---:|---:|---:|---:|---:|
@@ -82,11 +82,11 @@ Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Ada
 | ssm-h32 | 1.60270694 | 2.11159484 | measured |
 | ssm-h16 | 1.60298236 | 2.11197678 | measured |
 
-[CI](https://github.com/sguzman/aevral/actions/runs/46037920375), 162 tests; Rust CI passed. All 42 frozen screening recipes reconciled against matrix. Annual evaluation pending.
+[CI](https://github.com/sguzman/aevral/actions/runs/46037920375), 162 tests; Rust CI passed. All 42 frozen screening recipes reconciled against matrix. Annual evaluation complete.
 
 ## Frozen promotion and annual evaluation
 
-34 finalists, two per family, chosen by 2019 MAE/RMSE (no exact ties; timing tie-break not needed). Eight screened configurations excluded. See [promotion.csv](promotion.csv). Reuse the 34 seed42 2019 scores. Frozen 374 further evaluations in four sequential batches (96,96,96,86), each at most six concurrent fitting jobs. Ordering is fold, seed, family, within-family rank; no new model recipes. First batch triggered by workflow commit; subsequent batches dispatch only after previous batch is archived. All 42 screening records remain in registry. Full annual completion requires 408 finalist outcomes including reused screens, or explicit blocks. No annual results yet.
+34 finalists, two per family, chosen by 2019 MAE/RMSE (no exact ties; timing tie-break not needed). Eight screened configurations excluded. See [promotion.csv](promotion.csv). Reuse the 34 seed42 2019 scores. Frozen 374 further evaluations in four sequential batches (96,96,96,86), each at most six concurrent fitting jobs. Ordering is fold, seed, family, within-family rank; no new model recipes. First batch triggered by workflow commit; subsequent batches dispatch only after previous batch is archived. All 42 screening records remain in registry. Full annual completion requires 408 finalist outcomes including reused screens, or explicit blocks. Annual evaluation complete.
 
 ### Annual batch 1 complete
 
@@ -99,3 +99,7 @@ Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Ada
 ### Annual batch 3 complete
 
 [CI 46049602720](https://github.com/sguzman/aevral/actions/runs/46049602720): all 96 measured, zero blocked; all 96 expected unexpired artifacts reconciled against frozen matrix. Registry: 330 unique measured outcomes, finalist coverage 322/408. Raw predictions not independently rescored. Final batch of 86 frozen evaluations selected next.
+
+### Annual batch 4 complete; campaign closed
+
+[CI](https://github.com/sguzman/aevral/actions/runs/46051292157): 86/86 measured, all 86 expected artifacts reconciled. All 416 unique outcomes archived. [Final report](FINAL.md) · [Pooled ranking](pooled.csv). Raw predictions not independently rescored.
