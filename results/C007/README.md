@@ -63,3 +63,18 @@ Frozen manifest: campaigns/007-kernels-neighbors/manifest.md. Full matched 2019 
 | gp-s05 | 1.58191727 | 2.10234541 | 8.053827432377e-2 | 0.151878 | 0.273447 |
 | fitc-s05-m128 | 1.63503792 | 2.20456565 | 1.872717991558e-1 | 0.126594 | 0.038258 |
 
+## K10–K11 kernel feature approximation
+[CI](https://github.com/sguzman/aevral/actions/runs/45921413274), code f5b6ad4b79c7473eaec3a5de49a4e49d78b521e8, 120 tests passed. 8192 training rows, 128/256 features or landmarks, ridge .01; RFF seed42, deterministic Nystrom. All 8 jobs passed and 7455 matched origins per model; 24 leads and 12 months validated. Kernel error diagnostics are deterministic training-pair checks, not generalization guarantees.
+
+| Model | MAE °C | RMSE °C | Fit seconds | Prediction seconds |
+|---|---:|---:|---:|---:|
+| nystrom-s1-m256 | 1.84759723 | 2.41470335 | 0.756765 | 0.316629 |
+| nystrom-s1-m128 | 1.85517621 | 2.42631308 | 0.267587 | 0.130463 |
+| rff-s1-m256 | 1.88266398 | 2.45313193 | 0.613885 | 0.172226 |
+| rff-s1-m128 | 1.92873945 | 2.51186785 | 0.139266 | 0.046426 |
+| nystrom-s05-m256 | 1.99424913 | 2.72614282 | 0.748301 | 0.322254 |
+| rff-s05-m256 | 2.00721237 | 2.69311848 | 0.424511 | 0.118175 |
+| nystrom-s05-m128 | 2.03367341 | 2.78397943 | 0.218043 | 0.093396 |
+| rff-s05-m128 | 2.21448817 | 2.98282368 | 0.162789 | 0.062178 |
+
+All 41 screens measured; no blocked configurations. Best local-k128-l01 MAE 1.37195009. [Frozen finalists](../../campaigns/007-kernels-neighbors/FINALISTS.md): 22 configurations, 82 additional annual outcomes pending.
