@@ -1,6 +1,6 @@
 # Fixed-data temperature program — C003–C006 complete; C007 active
 
-Current checkpoint: C007 manifest frozen, 41 screens in 11 families; K01–K03 12/12 archived (12 measured), best analog-k16-inverse MAE 1.58604072. K04 implemented; four local ridge screens submitted. Verify CI and archive before K05–K06. C006 final report results/C006/REPORT.md, best tree lightgbm-128 pooled MAE1.40602200 vs MLP64 1.34781461. C007 manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
+Current checkpoint: C007 16/41 screens resolved, 16 measured, best local-k128-l01 MAE 1.37195009. Next K05–K06 linear and RBF kernel ridge: centered primal exact and dense subset Cholesky, residual/guard tests. C006 report results/C006/REPORT.md; C007 frozen manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
 
 
 C001/C002 historical reports immutable; both old holdouts exposed. C003 complete: 27 hashes verified, all five benchmark jobs passed 45892792311, legacy exact, 30138 matched annual origins (2019 7455, 2020 7543, 2021 7501, 2022 7639), pooled MLP64 MAE 1.34781461, daily 2.05372678. Export audit 45895728513 all five passed; 5793120 prediction rows verified, 35 tests, archived results/C003. Program campaigns/TEMPERATURE-PROGRAM.md. C004 manifest campaigns/004-linear-additive/manifest.md predeclares 54 screen configurations across 12 methods. Next implement L01/L02 stable least-squares and ridge first batch in Rust using src/features/tournament.rs API, test numerical correctness, add CLI/CI with frozen data, score 2019. No C004 results or code yet. Subsequent batches per manifest. No new data or local downloads. Keep logs filtered and state durable. No human action required.
@@ -210,3 +210,6 @@ CI 45919448602: 12/12 neighbor screens archived, 12 measured, 564 diagnostic rec
 
 ## C007 phase 4
 K04 local linear ridge implemented with shared checked dense Cholesky (reusable for kernel methods), 12 frozen coordinates, exact 64/128 neighbors, mean-loss lambda .01/.1, unpenalized intercept and 24 RHS, residual checks, 5 additional tests, four screens submitted. No K04 measurements yet. Verify CI before proceeding to K05–K06. No new data.
+
+## C007 phase 5
+K04 CI 45919760217: 4/4 resolved, 4 measured, 105 tests passed, 188 diagnostic records archived. Best local-k128-l01 MAE 1.37195009. 16/41 screens resolved, best overall local-k128-l01 1.37195009. Next K05–K06. No new data.

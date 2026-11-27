@@ -15,3 +15,13 @@ Frozen manifest: campaigns/007-kernels-neighbors/manifest.md. Full matched 2019 
 | season-k8-d30 | 1.65894053 | 2.17703494 | 0.489748 | 233 | 281.15613682 | 0 |
 | season-k8-d15 | 1.72534653 | 2.27915218 | 0.344558 | 107 | 141.02602280 | 0 |
 | season-k16-d15 | 1.75370376 | 2.32756712 | 0.419426 | 107 | 141.02602280 | 0 |
+
+## K04 local linear ridge
+[CI](https://github.com/sguzman/aevral/actions/runs/45919760217), code 017082c9c28f6650f9c1e1bfa38badd580509707, 105 tests passed. 8192 reference origins, full 7455 matched evaluation origins. Exact nearest neighbors, 12 slope coordinates, 24 outputs and unpenalized intercept. 4/4 measured.
+
+| Model | MAE °C | RMSE °C | Max relative solve residual | Prediction seconds |
+|---|---:|---:|---:|---:|
+| local-k128-l01 | 1.37195009 | 1.82169663 | 1.698765516565e-16 | 6.399997 |
+| local-k64-l01 | 1.41022498 | 1.88008412 | 1.755252078771e-16 | 5.668736 |
+| local-k128-l1 | 1.44298756 | 1.88404816 | 1.616555399026e-16 | 5.725801 |
+| local-k64-l1 | 1.44765587 | 1.89240256 | 1.678731308432e-16 | 5.980704 |
