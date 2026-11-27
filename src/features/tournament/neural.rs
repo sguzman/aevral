@@ -4,6 +4,8 @@ use super::neighbors::{subset,Cached};
 use crate::{adam::Adam,dense::Dense,benchmark::Metrics,recurrent::{Recurrent,Kind},convolution::{Temporal,Kind as CKind}};
 use std::{io::{BufWriter,Write},path::Path,time::Instant};
 mod residual;
+mod encoder;
+use encoder::Encoder;
 mod structured;
 use structured::Structured;
 mod seq2seq;
@@ -12,7 +14,7 @@ use residual::Residual;
 const BUDGET:usize=8192;
 const EPOCHS:usize=12;
 const GUARD:f64=1400.;
-enum Model{Dense(Dense),Residual(Residual),Recurrent(Recurrent),Temporal(Temporal),Seq2Seq(Seq2Seq),Structured(Structured)}
+enum Model{Dense(Dense),Residual(Residual),Recurrent(Recurrent),Temporal(Temporal),Seq2Seq(Seq2Seq),Structured(Structured),Encoder(Encoder)}
 impl Model{
     fn new(label:&str,seed:u64)->Result<Self,String>{
         Ok(match label{
@@ -37,18 +39,23 @@ impl Model{
             "tcn-p3-c8"=>Self::Temporal(Temporal::c009(CKind::Tcn,3,seed)),
             "seq2seq-h16"=>Self::Seq2Seq(Seq2Seq::new(16,seed)),
             "seq2seq-h32"=>Self::Seq2Seq(Seq2Seq::new(32,seed)),
+            "patchtst-p6-d16"=>Self::Encoder(Encoder::new(6,16,true,seed)),
+            "patchtst-p3-d16"=>Self::Encoder(Encoder::new(3,16,true,seed)),
+            "attention-p6-d8"=>Self::Encoder(Encoder::new(6,8,false,seed)),
+            "attention-p3-d8"=>Self::Encoder(Encoder::new(3,8,false,seed)),
+            "attention-p6-d16"=>Self::Encoder(Encoder::new(6,16,false,seed)),
             _=>Self::Structured(Structured::new(label,seed).ok_or("unknown C009 recipe")?)
         })
     }
-    fn parameters(&self)->usize{match self{Self::Dense(m)=>m.parameters(),Self::Residual(m)=>m.parameters(),Self::Recurrent(m)=>m.parameters(),Self::Temporal(m)=>m.parameters(),Self::Seq2Seq(m)=>m.parameters(),Self::Structured(m)=>m.parameters()}}
-    fn finite(&self)->bool{match self{Self::Dense(m)=>m.finite(),Self::Residual(m)=>m.finite(),Self::Recurrent(m)=>m.finite(),Self::Temporal(m)=>m.finite(),Self::Seq2Seq(m)=>m.finite(),Self::Structured(m)=>m.finite()}}
+    fn parameters(&self)->usize{match self{Self::Dense(m)=>m.parameters(),Self::Residual(m)=>m.parameters(),Self::Recurrent(m)=>m.parameters(),Self::Temporal(m)=>m.parameters(),Self::Seq2Seq(m)=>m.parameters(),Self::Structured(m)=>m.parameters(),Self::Encoder(m)=>m.parameters()}}
+    fn finite(&self)->bool{match self{Self::Dense(m)=>m.finite(),Self::Residual(m)=>m.finite(),Self::Recurrent(m)=>m.finite(),Self::Temporal(m)=>m.finite(),Self::Seq2Seq(m)=>m.finite(),Self::Structured(m)=>m.finite(),Self::Encoder(m)=>m.finite()}}
     fn predict(&self,x:&[f64;D])->Result<[f64;Y],String>{
-        let v=match self{Self::Dense(m)=>m.predict(x),Self::Residual(m)=>m.predict(x),Self::Recurrent(m)=>m.predict(x).to_vec(),Self::Temporal(m)=>m.predict(x).to_vec(),Self::Seq2Seq(m)=>m.predict(x),Self::Structured(m)=>m.predict(x)};
+        let v=match self{Self::Dense(m)=>m.predict(x),Self::Residual(m)=>m.predict(x),Self::Recurrent(m)=>m.predict(x).to_vec(),Self::Temporal(m)=>m.predict(x).to_vec(),Self::Seq2Seq(m)=>m.predict(x),Self::Structured(m)=>m.predict(x),Self::Encoder(m)=>m.predict(x)};
         let y:[f64;Y]=v.try_into().map_err(|_|"output shape")?;
         if y.iter().any(|v|!v.is_finite()||v.abs()>1e6){return Err("numerical prediction bound".into())}Ok(y)
     }
     fn step(&mut self,r:&TrainingRow,opt:&mut Adam)->Result<(f64,bool),String>{
-        let(loss,clip)=match self{Self::Dense(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Residual(m)=>m.step(&r.input.x,&r.normalized_target,opt),Self::Recurrent(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Temporal(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Seq2Seq(m)=>m.step(&r.input.x,&r.normalized_target,opt),Self::Structured(m)=>m.step(&r.input.x,&r.normalized_target,opt)};
+        let(loss,clip)=match self{Self::Dense(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Residual(m)=>m.step(&r.input.x,&r.normalized_target,opt),Self::Recurrent(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Temporal(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Seq2Seq(m)=>m.step(&r.input.x,&r.normalized_target,opt),Self::Structured(m)=>m.step(&r.input.x,&r.normalized_target,opt),Self::Encoder(m)=>m.step(&r.input.x,&r.normalized_target,opt)};
         if !loss.is_finite()||!self.finite(){return Err("nonfinite training".into())}Ok((loss,clip))
     }
 }
