@@ -1,0 +1,80 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.99s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+representation-start,2019,harmonics-2-3,123
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+representation-scale,2019,harmonics-2-3,0,0.011872899709019575,0.7058839282700821,8192,false
+representation-scale,2019,harmonics-2-3,1,0.002007429654378837,0.7082251649642679,8192,false
+representation-scale,2019,harmonics-2-3,2,-0.010705639659048803,0.7049935949644728,8192,false
+representation-scale,2019,harmonics-2-3,3,-0.01812323351778487,0.708901240473888,8192,false
+representation-scale,2019,harmonics-2-3,4,-0.010250312835507374,0.7079814295052543,8192,false
+representation-scale,2019,harmonics-2-3,5,0.013409767302537332,0.7060293228353763,8192,false
+representation-scale,2019,harmonics-2-3,6,-0.0046059768984542315,0.7104217848628809,8192,false
+representation-scale,2019,harmonics-2-3,7,0.022298299101188895,0.7034077469194123,8192,false
+representation-config,2019,harmonics-2-3,123,8192,12,0.001,88,7256,16904128,98304
+representation-preflight,2019,harmonics-2-3,123,0.839733,0.008568,0.000228,7.482274
+representation-epoch,2019,harmonics-2-3,123,1,0.1542096455
+representation-epoch,2019,harmonics-2-3,123,2,0.1286022934
+representation-epoch,2019,harmonics-2-3,123,3,0.1212465740
+representation-epoch,2019,harmonics-2-3,123,4,0.1160262545
+representation-epoch,2019,harmonics-2-3,123,5,0.1129180115
+representation-epoch,2019,harmonics-2-3,123,6,0.1091590903
+representation-epoch,2019,harmonics-2-3,123,7,0.1084152973
+representation-epoch,2019,harmonics-2-3,123,8,0.1052148404
+representation-epoch,2019,harmonics-2-3,123,9,0.1045628325
+representation-epoch,2019,harmonics-2-3,123,10,0.1028923884
+representation-epoch,2019,harmonics-2-3,123,11,0.1028161750
+representation-epoch,2019,harmonics-2-3,123,12,0.1012704208
+score,2019,harmonics-2-3,7455,1.51902006,1.98331956
+lead,2019,harmonics-2-3,1,0.98911331,1.26631533
+lead,2019,harmonics-2-3,2,1.10742127,1.41276368
+lead,2019,harmonics-2-3,3,1.14919060,1.48222037
+lead,2019,harmonics-2-3,4,1.26104494,1.62385968
+lead,2019,harmonics-2-3,5,1.34814692,1.73408105
+lead,2019,harmonics-2-3,6,1.41068555,1.82441141
+lead,2019,harmonics-2-3,7,1.44275300,1.87196675
+lead,2019,harmonics-2-3,8,1.47428644,1.92362079
+lead,2019,harmonics-2-3,9,1.50553851,1.96919962
+lead,2019,harmonics-2-3,10,1.53562151,1.99808566
+lead,2019,harmonics-2-3,11,1.58727056,2.05289473
+lead,2019,harmonics-2-3,12,1.60105454,2.07141098
+lead,2019,harmonics-2-3,13,1.60483120,2.07326859
+lead,2019,harmonics-2-3,14,1.64422770,2.12033808
+lead,2019,harmonics-2-3,15,1.64014946,2.11486727
+lead,2019,harmonics-2-3,16,1.64451469,2.12161986
+lead,2019,harmonics-2-3,17,1.63827242,2.10980735
+lead,2019,harmonics-2-3,18,1.65922035,2.13386798
+lead,2019,harmonics-2-3,19,1.67778912,2.16249189
+lead,2019,harmonics-2-3,20,1.68884765,2.18114456
+lead,2019,harmonics-2-3,21,1.69888999,2.19819879
+lead,2019,harmonics-2-3,22,1.71680010,2.22909190
+lead,2019,harmonics-2-3,23,1.70966505,2.22833809
+lead,2019,harmonics-2-3,24,1.72114661,2.25468971
+month,2019,harmonics-2-3,1,736,1.65421386,2.15051803
+month,2019,harmonics-2-3,2,567,1.39173458,1.78612680
+month,2019,harmonics-2-3,3,634,1.60304918,2.18499363
+month,2019,harmonics-2-3,4,706,1.42550142,1.82599366
+month,2019,harmonics-2-3,5,716,1.94418034,2.47137463
+month,2019,harmonics-2-3,6,505,1.50319486,1.95458226
+month,2019,harmonics-2-3,7,715,1.50452182,1.99488537
+month,2019,harmonics-2-3,8,706,1.54515458,2.00200551
+month,2019,harmonics-2-3,9,508,1.39546861,1.73429514
+month,2019,harmonics-2-3,10,441,1.47054356,1.92050964
+month,2019,harmonics-2-3,11,615,1.41376450,1.83369166
+month,2019,harmonics-2-3,12,606,1.23813661,1.58962037
+representation-natural,2019,harmonics-2-3,8737,7455,7455
+representation-fit,2019,harmonics-2-3,123,6.414417,0.102400
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:07.38
+	Maximum resident set size (kbytes): 281208
+	Exit status: 0
+representation-rescore,2019,harmonics-2-3,matched,7455,1.51902006,1.98331956,pass
+representation-end,2019,harmonics-2-3,123
+5258c87d9c06267613a3fbd52779c1a92986d348e771f8d03f4e51a7117974f7  fit-origins.txt
+b83cbabddae4c82e59c8eb39c9bdd71ff297afef3f03da1f77a33ee6392d7339  matched-origins.txt
+c20ae65745ec7d7a9d4c818b4ba7dc4ea84afe9336a56634743f49b5efe53d85  metrics.txt
+14a369d740b6791d58408dc53f9fe2bbff837c17c00cf66aab82fbc53a3b2bfc  predictions.csv.gz
+dac7ea7324e9b7a28addb0ef3a3fb941be2fa4341f5836be42095b66361266db  rescore.txt
+ff5bc0d320d1472851423e7f7db942947d621e46f959d1a48f78eeb457225114  resources.txt
+cbccba439e5b78f9dbaad1722d1d8dae9c76fa613f8aca99ad783c8a65e00204  train-origins.txt

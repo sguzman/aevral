@@ -1,0 +1,78 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+representation-start,2022,gradient-long,123
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+representation-scale,2022,gradient-long,0,-0.02248535156249997,0.6362627686722442,8192,false
+representation-scale,2022,gradient-long,1,-0.004471352659625769,0.15638209165712375,8192,false
+representation-scale,2022,gradient-long,2,-0.009071293583622683,0.43172555639756843,8192,false
+representation-scale,2022,gradient-long,3,-0.0013722831820264265,0.06942209822260177,8192,false
+representation-scale,2022,gradient-long,4,-0.0008375944914641243,0.1129427220365048,8192,false
+representation-scale,2022,gradient-long,5,-0.0000772405553747109,0.00709959972607143,8192,false
+representation-config,2022,gradient-long,123,8192,12,0.001,86,7128,16834640,98304
+representation-preflight,2022,gradient-long,123,1.247292,0.012920,0.000252,11.238235
+representation-epoch,2022,gradient-long,123,1,0.1552912511
+representation-epoch,2022,gradient-long,123,2,0.1309414405
+representation-epoch,2022,gradient-long,123,3,0.1218380051
+representation-epoch,2022,gradient-long,123,4,0.1162607267
+representation-epoch,2022,gradient-long,123,5,0.1118835994
+representation-epoch,2022,gradient-long,123,6,0.1076618849
+representation-epoch,2022,gradient-long,123,7,0.1054231107
+representation-epoch,2022,gradient-long,123,8,0.1045007124
+representation-epoch,2022,gradient-long,123,9,0.1034538598
+representation-epoch,2022,gradient-long,123,10,0.1018746518
+representation-epoch,2022,gradient-long,123,11,0.1011934645
+representation-epoch,2022,gradient-long,123,12,0.1005023958
+score,2022,gradient-long,7639,1.66225172,2.16007591
+lead,2022,gradient-long,1,1.16016687,1.44362877
+lead,2022,gradient-long,2,1.41191453,1.74474765
+lead,2022,gradient-long,3,1.36096912,1.72709137
+lead,2022,gradient-long,4,1.46193047,1.87686534
+lead,2022,gradient-long,5,1.50881006,1.94684469
+lead,2022,gradient-long,6,1.47134257,1.91418279
+lead,2022,gradient-long,7,1.53888996,1.99816330
+lead,2022,gradient-long,8,1.55764424,2.03071395
+lead,2022,gradient-long,9,1.59364905,2.08337525
+lead,2022,gradient-long,10,1.62834908,2.13405001
+lead,2022,gradient-long,11,1.66085826,2.17210690
+lead,2022,gradient-long,12,1.68759812,2.19827409
+lead,2022,gradient-long,13,1.70438356,2.21592985
+lead,2022,gradient-long,14,1.76021651,2.27413137
+lead,2022,gradient-long,15,1.75870024,2.27845273
+lead,2022,gradient-long,16,1.76194880,2.29162848
+lead,2022,gradient-long,17,1.78726855,2.31684504
+lead,2022,gradient-long,18,1.80675223,2.33191823
+lead,2022,gradient-long,19,1.80530481,2.32583450
+lead,2022,gradient-long,20,1.82614154,2.35045348
+lead,2022,gradient-long,21,1.85087059,2.37942082
+lead,2022,gradient-long,22,1.88899441,2.42696507
+lead,2022,gradient-long,23,1.92257283,2.46548088
+lead,2022,gradient-long,24,1.97876496,2.53725877
+month,2022,gradient-long,1,735,1.62220734,2.09681057
+month,2022,gradient-long,2,558,1.52798499,1.91727990
+month,2022,gradient-long,3,630,1.34908966,1.70587808
+month,2022,gradient-long,4,699,1.74603742,2.29552995
+month,2022,gradient-long,5,712,1.36920743,1.79347480
+month,2022,gradient-long,6,507,1.67287208,2.29323339
+month,2022,gradient-long,7,431,2.14745399,2.68662059
+month,2022,gradient-long,8,714,1.70176772,2.15956191
+month,2022,gradient-long,9,695,1.65451260,2.10796973
+month,2022,gradient-long,10,632,1.74194154,2.30333423
+month,2022,gradient-long,11,641,1.69606536,2.17294250
+month,2022,gradient-long,12,685,1.87005604,2.41000184
+representation-natural,2022,gradient-long,8737,7639,7639
+representation-fit,2022,gradient-long,123,7.957600,0.123116
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.36
+	Maximum resident set size (kbytes): 328604
+	Exit status: 0
+representation-rescore,2022,gradient-long,matched,7639,1.66225172,2.16007591,pass
+representation-end,2022,gradient-long,123
+67f7a6298a650594513bb7f9902aea5cc2c00e576eee75b4fe2f78c542aa077a  fit-origins.txt
+67250dc4838e3280ddd8ae8d7a43a4ec70b1900d91327010e08d9ebda761d3a3  matched-origins.txt
+4d25caa3aafd1d801d638acb802f5cf62104407d893e8bb44a13eaad17ac627f  metrics.txt
+4da7e28d8d19cc6e6ee58d3609264037072ac6d6ee20d20de97a7100427653c0  predictions.csv.gz
+b249761aee122c189e723e074d1693ac21a312a1ed917f39ae631edeaf5d3863  rescore.txt
+6bd19de4962c3f1df2dd579e18c4117ce070932c0dd0d55ddf3be8f187d786d4  resources.txt
+e2c17d23dc9cbbf3610780818580ec8b14ea1201a23e61420b4ea30a35b71581  train-origins.txt
