@@ -1,6 +1,6 @@
 # C005 — Classical statistical and state-space forecasting
 
-Status: active; [finite manifest](manifest.md) frozen before fitting. No C005 results yet.
+Status: complete; 36 screens and 72 additional annual outcomes measured. [Manifest](manifest.md) · [Final report](../../results/C005/REPORT.md) · [Pooled ranking](../../results/C005/pooled.csv). MLP64 remains incumbent.
 
 ## Scope
 AR/ARX, VAR/VARX where causal histories available, ARIMA/ARIMAX, seasonal ARIMA, ETS/Holt-Winters, harmonic regression with AR errors, structural/unobserved components, Kalman dynamic linear model, switching/regime models, GARCH-style conditional variance (uncertainty only).

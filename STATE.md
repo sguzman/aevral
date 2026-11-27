@@ -123,3 +123,6 @@ CI 45914280432: all 15 jobs succeeded. Archived 5 additional jobs, 24 outcomes, 
 
 ## C005 phase 19 (annual ingestion complete)
 CI 45914280432: all 15 jobs succeeded. Archived final 5 jobs, 22 outcomes, 1413 log records. All 72 additional annual outcomes durable, 108 unique measured registry entries with exact cohort counts. Next calculate pooled ranking and separate uncertainty report, audit diagnostics and closure; then C006. No new data.
+
+## C005 closed; next C006
+All 108 outcomes audited, 44 job logs present. Final report, pooled.csv and variance-pooled.csv persisted. Best statistical arx-72 MAE 1.59560910 vs MLP64 1.34781461; GARCH evaluated separately. No new data or further C005 fits. Next read C006 scope, freeze finite manifest of faithful tree/ensemble/boosting representatives and then implement first batch. C003–C005 complete; C006–C015 pending. Keep pinned Rust/Nix and hosted CI budget. 
