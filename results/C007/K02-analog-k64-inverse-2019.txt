@@ -1,0 +1,47 @@
+test result: ok. 100 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+neighbor-preflight,2019,analog-k64-inverse,8192,32,1557560,0.024372,5.677946
+neighbor-config,2019,analog-k64-inverse,8192,64,Inverse,0,8192,8192.00000000,0,5.353263
+score,2019,analog-k64-inverse,7455,1.64344166,2.11974886,0.041
+lead,2019,analog-k64-inverse,1,1.23419863,1.60024115
+lead,2019,analog-k64-inverse,2,1.31512540,1.70306378
+lead,2019,analog-k64-inverse,3,1.39025966,1.79758525
+lead,2019,analog-k64-inverse,4,1.45278377,1.87279687
+lead,2019,analog-k64-inverse,5,1.49996933,1.93019300
+lead,2019,analog-k64-inverse,6,1.53380139,1.96898561
+lead,2019,analog-k64-inverse,7,1.56834515,2.01084861
+lead,2019,analog-k64-inverse,8,1.58952405,2.04273652
+lead,2019,analog-k64-inverse,9,1.61366354,2.07312547
+lead,2019,analog-k64-inverse,10,1.62983276,2.09266180
+lead,2019,analog-k64-inverse,11,1.64912729,2.11500446
+lead,2019,analog-k64-inverse,12,1.66601656,2.13588837
+lead,2019,analog-k64-inverse,13,1.68836096,2.15665281
+lead,2019,analog-k64-inverse,14,1.70598682,2.18144485
+lead,2019,analog-k64-inverse,15,1.71505677,2.19624726
+lead,2019,analog-k64-inverse,16,1.72550076,2.21512737
+lead,2019,analog-k64-inverse,17,1.74829608,2.23776621
+lead,2019,analog-k64-inverse,18,1.76369411,2.25558357
+lead,2019,analog-k64-inverse,19,1.77686199,2.27627641
+lead,2019,analog-k64-inverse,20,1.79689389,2.29932774
+lead,2019,analog-k64-inverse,21,1.81482772,2.32213565
+lead,2019,analog-k64-inverse,22,1.83344990,2.35043797
+lead,2019,analog-k64-inverse,23,1.85406621,2.38055080
+lead,2019,analog-k64-inverse,24,1.87695717,2.41274751
+month,2019,analog-k64-inverse,1,736,1.85321113,2.30989908
+month,2019,analog-k64-inverse,2,567,1.51822802,1.98421613
+month,2019,analog-k64-inverse,3,634,1.78123307,2.42378840
+month,2019,analog-k64-inverse,4,706,1.44220111,1.82107171
+month,2019,analog-k64-inverse,5,716,1.90467270,2.47701438
+month,2019,analog-k64-inverse,6,505,1.93646885,2.38813253
+month,2019,analog-k64-inverse,7,715,1.63770944,2.13409758
+month,2019,analog-k64-inverse,8,706,1.59343478,1.96613328
+month,2019,analog-k64-inverse,9,508,1.49127553,1.91010694
+month,2019,analog-k64-inverse,10,441,1.71136713,2.28595482
+month,2019,analog-k64-inverse,11,615,1.50418766,1.87924373
+month,2019,analog-k64-inverse,12,606,1.32775125,1.66698069
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:05.92
+Maximum resident set size (kbytes): 314944

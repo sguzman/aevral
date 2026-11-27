@@ -1,0 +1,47 @@
+test result: ok. 100 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+neighbor-preflight,2019,analog-k64-gaussian,8192,32,1557560,0.024865,5.792695
+neighbor-config,2019,analog-k64-gaussian,8192,64,Gaussian,0,8192,8192.00000000,0,5.527084
+score,2019,analog-k64-gaussian,7455,1.64695321,2.12412833,0.056
+lead,2019,analog-k64-gaussian,1,1.23922144,1.60646090
+lead,2019,analog-k64-gaussian,2,1.31987949,1.70911929
+lead,2019,analog-k64-gaussian,3,1.39477744,1.80341960
+lead,2019,analog-k64-gaussian,4,1.45709375,1.87852524
+lead,2019,analog-k64-gaussian,5,1.50402353,1.93576216
+lead,2019,analog-k64-gaussian,6,1.53791738,1.97451612
+lead,2019,analog-k64-gaussian,7,1.57232844,2.01611748
+lead,2019,analog-k64-gaussian,8,1.59354459,2.04803954
+lead,2019,analog-k64-gaussian,9,1.61743780,2.07809234
+lead,2019,analog-k64-gaussian,10,1.63348139,2.09729355
+lead,2019,analog-k64-gaussian,11,1.65255695,2.11936828
+lead,2019,analog-k64-gaussian,12,1.66937000,2.14001548
+lead,2019,analog-k64-gaussian,13,1.69157184,2.16061559
+lead,2019,analog-k64-gaussian,14,1.70916342,2.18520578
+lead,2019,analog-k64-gaussian,15,1.71829589,2.20000760
+lead,2019,analog-k64-gaussian,16,1.72863289,2.21879004
+lead,2019,analog-k64-gaussian,17,1.75141481,2.24148665
+lead,2019,analog-k64-gaussian,18,1.76661083,2.25929050
+lead,2019,analog-k64-gaussian,19,1.77965176,2.27988836
+lead,2019,analog-k64-gaussian,20,1.79961251,2.30289301
+lead,2019,analog-k64-gaussian,21,1.81755368,2.32573570
+lead,2019,analog-k64-gaussian,22,1.83622845,2.35400747
+lead,2019,analog-k64-gaussian,23,1.85683447,2.38415616
+lead,2019,analog-k64-gaussian,24,1.87967434,2.41632656
+month,2019,analog-k64-gaussian,1,736,1.85569147,2.31240615
+month,2019,analog-k64-gaussian,2,567,1.52334661,1.99093357
+month,2019,analog-k64-gaussian,3,634,1.78605500,2.42964216
+month,2019,analog-k64-gaussian,4,706,1.44453902,1.82376861
+month,2019,analog-k64-gaussian,5,716,1.90944775,2.48294064
+month,2019,analog-k64-gaussian,6,505,1.94380146,2.39758627
+month,2019,analog-k64-gaussian,7,715,1.64134423,2.13926998
+month,2019,analog-k64-gaussian,8,706,1.59755935,1.97136806
+month,2019,analog-k64-gaussian,9,508,1.49351523,1.91259395
+month,2019,analog-k64-gaussian,10,441,1.71300609,2.28789790
+month,2019,analog-k64-gaussian,11,615,1.50590866,1.88097186
+month,2019,analog-k64-gaussian,12,606,1.32971737,1.66843583
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.28
+Maximum resident set size (kbytes): 314720
