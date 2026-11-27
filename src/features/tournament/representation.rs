@@ -4,7 +4,7 @@ use crate::{adam::Adam,dense::Dense,benchmark::Metrics,covariates::Weather,weath
 use std::{io::{BufWriter,Write},path::Path,time::Instant};
 type Bin=Option<Weather>;
 #[derive(Clone,Copy,Debug)]
-enum Recipe{Base,Suffix(usize),Lag(&'static [usize]),Rolling(&'static [usize]),Gradient(&'static [usize]),Harmonics(usize),Depression(bool),Pressure(&'static [usize]),Wind(bool),WeatherHistory(&'static [usize])}
+enum Recipe{Base,Suffix(usize),Lag(&'static [usize]),Rolling(&'static [usize]),Gradient(&'static [usize]),Harmonics(usize),Depression(bool),Pressure(&'static [usize]),Wind(bool),WeatherHistory(&'static [usize]),Anomaly(bool),Spectral(&'static [usize]),Interactions(bool),Select(usize,bool),Extended(usize)}
 impl Recipe{
  fn parse(label:&str)->Result<Self,String>{Ok(match label{
  "base80"=>Self::Base,"suffix24"=>Self::Suffix(24),"suffix48"=>Self::Suffix(48),
@@ -15,10 +15,15 @@ impl Recipe{
  "dew-depression-add"=>Self::Depression(false),"dew-depression-replace"=>Self::Depression(true),
  "pressure-tendency-short"=>Self::Pressure(&[3,6,12]),"pressure-tendency-long"=>Self::Pressure(&[6,24,48]),
  "wind-speed"=>Self::Wind(false),"wind-unit"=>Self::Wind(true),
- "weather-history-short"=>Self::WeatherHistory(&[1,3,6]),"weather-history-long"=>Self::WeatherHistory(&[6,12,24]),_=>return Err("unknown representation".into())})}
- fn optional(self)->bool{matches!(self,Self::Lag(_)|Self::Pressure(_)|Self::WeatherHistory(_))}
+ "weather-history-short"=>Self::WeatherHistory(&[1,3,6]),"weather-history-long"=>Self::WeatherHistory(&[6,12,24]),
+ "anomaly-month-hour"=>Self::Anomaly(true),"anomaly-month"=>Self::Anomaly(false),
+ "spectral-3"=>Self::Spectral(&[24,12,8]),"spectral-5"=>Self::Spectral(&[24,12,8,6,4]),
+ "interactions-local"=>Self::Interactions(false),"interactions-calendar"=>Self::Interactions(true),
+ "select32-mean"=>Self::Select(32,false),"select48-leads"=>Self::Select(48,true),
+ "history96"=>Self::Extended(96),"history168"=>Self::Extended(168),_=>return Err("unknown representation".into())})}
+ fn optional(self)->bool{matches!(self,Self::Lag(_)|Self::Pressure(_)|Self::WeatherHistory(_)|Self::Extended(_))}
  fn binary(self,j:usize)->bool{matches!(self,Self::Wind(true))&&j==3}
- fn width(self)->usize{match self{Self::Base=>D,Self::Suffix(n)=>n+8,Self::Lag(l)=>D+2*l.len(),Self::Rolling(l)=>D+3*l.len(),Self::Gradient(l)=>D+2*l.len(),Self::Harmonics(k)=>D+4*(k-1),Self::Depression(replace)=>D+usize::from(!replace),Self::Pressure(l)=>D+2*l.len(),Self::Wind(unit)=>D+if unit{4}else{1},Self::WeatherHistory(l)=>D+8*l.len()}}
+ fn width(self)->usize{match self{Self::Base=>D,Self::Suffix(n)=>n+8,Self::Lag(l)=>D+2*l.len(),Self::Rolling(l)=>D+3*l.len(),Self::Gradient(l)=>D+2*l.len(),Self::Harmonics(k)=>D+4*(k-1),Self::Depression(replace)=>D+usize::from(!replace),Self::Pressure(l)=>D+2*l.len(),Self::Wind(unit)=>D+if unit{4}else{1},Self::WeatherHistory(l)=>D+8*l.len(),Self::Anomaly(_)=>D+24,Self::Spectral(l)=>D+2*l.len(),Self::Interactions(calendar)=>D+if calendar{12}else{6},Self::Select(k,_)=>k,Self::Extended(n)=>D+2*(n-H)}}
  fn extras(self,prefix:&[Bin],origin:i64)->Result<Vec<Option<f64>>,String>{
   let report=|lag:usize|prefix.len().checked_sub(lag+1).and_then(|i|prefix[i]);
   let at=|lag:usize|report(lag).and_then(|b|b.temperature);
@@ -32,6 +37,9 @@ impl Recipe{
    Self::Pressure(l)=>{let p=report(0).and_then(|b|b.pressure_hpa).ok_or("missing origin pressure")?;for &h in l{out.push(report(h).and_then(|b|b.pressure_hpa).map(|v|(p-v)/h as f64));}},
    Self::Wind(unit)=>{let [u,v]=report(0).and_then(|b|b.wind_ms).ok_or("missing origin wind")?;let speed=u.hypot(v);out.push(Some(speed));if unit{let calm=speed==0.;out.extend([Some(if calm{0.}else{u/speed}),Some(if calm{0.}else{v/speed}),Some(if calm{1.}else{0.})]);}},
    Self::WeatherHistory(l)=>for &h in l{let r=report(h);let wind=r.and_then(|b|b.wind_ms);out.extend([r.and_then(|b|b.dew_c),r.and_then(|b|b.pressure_hpa),wind.map(|w|w[0]),wind.map(|w|w[1])]);},
+   Self::Extended(n)=>out.extend((H..n).map(at)),
+   Self::Spectral(periods)=>{let x=(0..H).rev().map(required).collect::<Result<Vec<_>,_>>()?;let mean=x.iter().sum::<f64>()/H as f64;for &p in periods{let(mut c,mut s)=(0.,0.);for(t,&v)in x.iter().enumerate(){let a=std::f64::consts::TAU*t as f64/p as f64;c+=(v-mean)*a.cos();s+=(v-mean)*a.sin();}out.extend([Some(c/H as f64),Some(s/H as f64)]);}},
+   Self::Anomaly(_)|Self::Interactions(_)=>return Err("fitted context required".into()),
    _=>{}
   }Ok(out)
  }
@@ -57,6 +65,43 @@ fn encode(recipe:Recipe,mut x:Vec<f64>,raw:&[Option<f64>],scales:&[ExtraScale])-
   if matches!(recipe,Recipe::Depression(true)){x[76]=value}else{x.push(value)}if recipe.optional(){x.push(if v.is_some(){1.}else{0.});}}
  if x.len()!=recipe.width()||x.iter().any(|v|!v.is_finite()){return Err("encoded dimension or finiteness".into())}Ok(x)
 }
+
+ // UTC month lookup is precomputed; climatology uses origin observations, never targets.
+ struct Climate{edges:Vec<i64>,sum:[f64;288],count:[usize;288],month_sum:[f64;12],month_count:[usize;12],global:f64}
+ impl Climate{
+  fn slot(edges:&[i64],t:i64)->Result<usize,String>{let m=edges.partition_point(|&x|x<=t).checked_sub(1).ok_or("before calendar")?;if m+1>=edges.len(){return Err("after calendar".into())}Ok((m%12)*24+(t.div_euclid(60).rem_euclid(24)as usize))}
+  fn fit(rows:impl Iterator<Item=(i64,f64)>)->Result<Self,String>{
+   let mut edges=Vec::new();for y in 2000..=2023{for m in 1..=12{edges.push(minute(&format!("{y}-{m:02}-01 00:00"))?);}}
+   let mut c=Self{edges,sum:[0.;288],count:[0;288],month_sum:[0.;12],month_count:[0;12],global:0.};let(mut total,mut n)=(0.,0);
+   for(t,v)in rows{let j=Self::slot(&c.edges,t)?;if !v.is_finite(){return Err("nonfinite climatology observation".into())}c.sum[j]+=v;c.count[j]+=1;c.month_sum[j/24]+=v;c.month_count[j/24]+=1;total+=v;n+=1;}
+   if n==0{return Err("empty climatology".into())}c.global=total/n as f64;Ok(c)
+  }
+  fn mean(&self,t:i64,hourly:bool)->Result<f64,String>{let j=Self::slot(&self.edges,t)?;let m=j/24;Ok(if hourly&&self.count[j]>0{self.sum[j]/self.count[j]as f64}else if self.month_count[m]>0{self.month_sum[m]/self.month_count[m]as f64}else{self.global})}
+ }
+ fn raw_features(recipe:Recipe,prefix:&[Bin],origin:i64,x:&[f64;D],climate:Option<&Climate>)->Result<Vec<Option<f64>>,String>{
+  match recipe{
+   Recipe::Anomaly(hourly)=>{let c=climate.ok_or("missing train climatology")?;let start=prefix.len().checked_sub(24).ok_or("short history")?;prefix[start..].iter().enumerate().map(|(j,b)|{let v=b.and_then(|w|w.temperature).ok_or("missing anomaly temperature")?;Ok(Some(v-c.mean(origin-(23-j)as i64*60,hourly)?))}).collect()},
+   Recipe::Interactions(calendar)=>{let mut out=Vec::new();if calendar{for i in [71,76,77]{for j in 72..76{out.push(Some(x[i]*x[j]));}}}else{for j in [76,77,78,79,70,47]{out.push(Some(x[71]*x[j]));}}Ok(out)},
+   _=>recipe.extras(prefix,origin)
+  }
+ }
+ // Pearson scores use only selected training rows and their normalized targets.
+ fn select_features(rows:&[&super::TrainingRow],k:usize,leads:bool)->Result<(Vec<usize>,[f64;D]),String>{
+  if rows.is_empty()||k==0||k>D{return Err("invalid selection".into())}
+  let n=rows.len()as f64;let mut xm=[0.;D];let mut ym=[0.;Y];let q=if leads{Y}else{1};
+  let values=|r:&super::TrainingRow,j:usize|if leads{r.normalized_target[j]}else{r.normalized_target.iter().sum::<f64>()/Y as f64};
+  for r in rows{for i in 0..D{xm[i]+=r.input.x[i];}for j in 0..q{ym[j]+=values(r,j);}}
+  for v in &mut xm{*v/=n;}for v in &mut ym{*v/=n;}
+  let(mut xv,mut yv,mut cov)=([0.;D],[0.;Y],[[0.;Y];D]);
+  for r in rows{let z:[f64;Y]=std::array::from_fn(|j|if j<q{values(r,j)-ym[j]}else{0.});for j in 0..q{yv[j]+=z[j]*z[j];}for i in 0..D{let a=r.input.x[i]-xm[i];xv[i]+=a*a;for j in 0..q{cov[i][j]+=a*z[j];}}}
+  let scores:[f64;D]=std::array::from_fn(|i|(0..q).map(|j|if xv[i]>0.&&yv[j]>0.{(cov[i][j]/(xv[i]*yv[j]).sqrt()).abs().min(1.)}else{0.}).sum::<f64>()/q as f64);
+  if scores.iter().any(|v|!v.is_finite()){return Err("nonfinite selection".into())}
+  let mut order:Vec<_>=(0..D).collect();order.sort_by(|&a,&b|scores[b].total_cmp(&scores[a]).then(a.cmp(&b)));order.truncate(k);order.sort_unstable();Ok((order,scores))
+ }
+ fn encode_fitted(recipe:Recipe,x:&[f64;D],raw:&[Option<f64>],scales:&[ExtraScale],selected:&[usize])->Result<Vec<f64>,String>{
+  if let Recipe::Select(k,_)=recipe{if selected.len()!=k||selected.iter().any(|&i|i>=D)||selected.windows(2).any(|w|w[0]>=w[1])||!raw.is_empty()||!scales.is_empty(){return Err("invalid selected features".into())}let v:Vec<_>=selected.iter().map(|&i|x[i]).collect();if v.iter().any(|v|!v.is_finite()){return Err("nonfinite selected input".into())}Ok(v)}else{encode(recipe,x.to_vec(),raw,scales)}
+ }
+
 fn verify(f:&PreparedFold,bins:&[Bin],first:i64)->Result<(),String>{
  let(mut ti,mut ei)=(0,0);let mut possible=0;
  for i in H-1..bins.len().saturating_sub(Y){let origin=first+i as i64*60;let Some(split)=f.fold.partition(origin)else{continue};if split==Split::Validation{possible+=1;}
@@ -95,10 +140,12 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),Strin
  let dir=output.parent().ok_or("output directory")?;origins(&dir.join("train-origins.txt"),f.train.iter().map(|r|r.input.origin))?;origins(&dir.join("matched-origins.txt"),f.eval.iter().map(|r|r.input.origin))?;
  let mut daily=Metrics::default();for r in &f.eval{daily.add(&r.target,&r.input.recent)}println!("cohort,{id},{n},{m},{},{}",f.possible,f.temperature_complete);println!("scales,{id},{:?}",f.scales);println!("baseline,{id},daily,{:.8},{:.8}",daily.mae(),daily.rmse());
  let subset:Vec<_>=(0..8192).map(|i|&f.train[i*n/8192]).collect();origins(&dir.join("fit-origins.txt"),subset.iter().map(|r|r.input.origin))?;
- let raw=subset.iter().map(|r|{let i=index(first,r.input.origin,bins.len())?;recipe.extras(&bins[..=i],r.input.origin)}).collect::<Result<Vec<_>,_>>()?;let mut es=fit_scales(&raw)?;for(j,s)in es.iter_mut().enumerate(){if recipe.binary(j){s.mean=0.;s.sd=1.;}}
+ let climate=if matches!(recipe,Recipe::Anomaly(_)){let c=Climate::fit(f.train.iter().map(|r|(r.input.origin,r.input.recent[Y-1])))?;println!("representation-climate-global,{id},{label},{}",c.global);for j in 0..12{println!("representation-climate-month,{id},{label},{j},{},{}",c.month_count[j],c.month_sum[j]);}for j in 0..288{println!("representation-climate-slot,{id},{label},{j},{},{}",c.count[j],c.sum[j]);}Some(c)}else{None};
+ let selected=if let Recipe::Select(k,leads)=recipe{let(indices,scores)=select_features(&subset,k,leads)?;for (i,score) in scores.iter().enumerate(){println!("representation-selection,{id},{label},{i},{score:.12},{}",usize::from(indices.binary_search(&i).is_ok()));}indices}else{Vec::new()};
+ let raw=subset.iter().map(|r|{let i=index(first,r.input.origin,bins.len())?;raw_features(recipe,&bins[..=i],r.input.origin,&r.input.x,climate.as_ref())}).collect::<Result<Vec<_>,_>>()?;let mut es=fit_scales(&raw)?;for(j,s)in es.iter_mut().enumerate(){if recipe.binary(j){s.mean=0.;s.sd=1.;}}
  for (j,s) in es.iter().enumerate(){println!("representation-scale,{id},{label},{j},{},{},{},{}",s.mean,s.sd,s.observed,s.constant)}
- let tr=subset.iter().zip(&raw).map(|(r,a)|encode(recipe,r.input.x.to_vec(),a,&es)).collect::<Result<Vec<_>,_>>()?;let ty:Vec<_>=subset.iter().map(|r|r.normalized_target).collect();
- let ev=f.eval.iter().map(|r|{let i=index(first,r.input.origin,bins.len())?;encode(recipe,r.input.x.to_vec(),&recipe.extras(&bins[..=i],r.input.origin)?,&es)}).collect::<Result<Vec<_>,_>>()?;
+ let tr=subset.iter().zip(&raw).map(|(r,a)|encode_fitted(recipe,&r.input.x,a,&es,&selected)).collect::<Result<Vec<_>,_>>()?;let ty:Vec<_>=subset.iter().map(|r|r.normalized_target).collect();
+ let ev=f.eval.iter().map(|r|{let i=index(first,r.input.origin,bins.len())?;encode_fitted(recipe,&r.input.x,&raw_features(recipe,&bins[..=i],r.input.origin,&r.input.x,climate.as_ref())?,&es,&selected)}).collect::<Result<Vec<_>,_>>()?;
  if recipe.optional(){for(split,ts)in [("train",f.train.iter().map(|r|r.input.origin).collect::<Vec<_>>()),("eval",f.eval.iter().map(|r|r.input.origin).collect::<Vec<_>>())]{let(n,all,seen)=coverage(recipe,&bins,first,ts.into_iter(),es.len())?;println!("representation-available,{id},{label},{split},{n},{all}");for(j,count)in seen.into_iter().enumerate(){println!("representation-availability,{id},{label},{split},{j},{count},{}",n-count);}}}
  let dim=recipe.width();let params=Dense::new(&[dim,64,Y],seed).parameters();let workspace=8*(16*params+(8192+m)*dim+8192*Y+2*m*Y+65536);
  println!("representation-config,{id},{label},{seed},8192,12,0.001,{dim},{params},{workspace},98304");
@@ -128,4 +175,11 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),Strin
  #[test]fn wind_calm_and_binary(){let mut b=fixture(1);b[0].as_mut().unwrap().wind_ms=Some([3.,4.]);let r=Recipe::Wind(true);let a=r.extras(&b,0).unwrap();assert_eq!(a,vec![Some(5.),Some(0.6),Some(0.8),Some(0.)]);b[0].as_mut().unwrap().wind_ms=Some([0.,0.]);let c=r.extras(&b,0).unwrap();assert_eq!(c,vec![Some(0.),Some(0.),Some(0.),Some(1.)]);let s=fit_scales(&[a.clone(),c.clone()]).unwrap();assert_eq!(encode(r,vec![0.;80],&a,&s).unwrap()[83],0.);assert_eq!(encode(r,vec![0.;80],&c,&s).unwrap()[83],1.);}
  #[test]fn weather_history_individual_masks_and_future_invariance(){let mut b=fixture(80);b[71].as_mut().unwrap().dew_c=None;b[69].as_mut().unwrap().wind_ms=None;b[66]=None;let r=Recipe::WeatherHistory(&[1,3,6]);let a=r.extras(&b[..73],72*60).unwrap();assert_eq!(a,vec![None,Some(1000.),Some(1.),Some(2.),Some(34.5),Some(1000.),None,None,None,None,None,None]);b[73]=None;assert_eq!(r.extras(&b[..73],72*60).unwrap(),a);let s=fit_scales(&[a.clone()]).unwrap();let x=encode(r,vec![0.;80],&a,&s).unwrap();assert_eq!(x[81],0.);assert_eq!(x[83],1.);assert_eq!(x[93],0.);assert_eq!(x.len(),104);}
  #[test]fn second_batch_dimensions(){let b=fixture(100);for label in ["harmonics-2-3","harmonics-2-4","dew-depression-add","dew-depression-replace","pressure-tendency-short","pressure-tendency-long","wind-speed","wind-unit","weather-history-short","weather-history-long"]{let r=Recipe::parse(label).unwrap();let raw=r.extras(&b,99*60).unwrap();let s=fit_scales(&[raw.clone()]).unwrap();assert_eq!(encode(r,vec![0.;D],&raw,&s).unwrap().len(),r.width());}}
+
+ #[test]fn climate_fallback_and_anomaly(){let jan=minute("2018-01-01 00:00").unwrap();let feb=minute("2018-02-01 00:00").unwrap();let c=Climate::fit([(jan,4.),(jan+60,8.),(feb,12.)].into_iter()).unwrap();assert_eq!(c.mean(jan,true).unwrap(),4.);assert_eq!(c.mean(jan+120,true).unwrap(),6.);assert_eq!(c.mean(jan,false).unwrap(),6.);assert_eq!(c.mean(minute("2019-03-01 00:00").unwrap(),true).unwrap(),8.);let b=fixture(24);let t=minute("2019-01-02 00:00").unwrap();let a=raw_features(Recipe::Anomaly(false),&b,t,&[0.;D],Some(&c)).unwrap();assert_eq!(a[0],Some(-6.));assert_eq!(a[23],Some(17.));}
+ #[test]fn spectral_known_phase(){let mut b=fixture(72);for(i,v)in b.iter_mut().enumerate(){let a=std::f64::consts::TAU*i as f64/24.;v.as_mut().unwrap().temperature=Some(10.+4.*a.cos()+2.*a.sin());}let a=Recipe::Spectral(&[24,12,8]).extras(&b,71*60).unwrap();assert!((a[0].unwrap()-2.).abs()<1e-12);assert!((a[1].unwrap()-1.).abs()<1e-12);assert!(a[2..].iter().all(|v|v.unwrap().abs()<1e-12));}
+ #[test]fn interactions_exact(){let x=std::array::from_fn(|i|i as f64);let a=raw_features(Recipe::Interactions(false),&[],0,&x,None).unwrap();assert_eq!(a,[76,77,78,79,70,47].map(|j|Some(71.*j as f64)));let b=raw_features(Recipe::Interactions(true),&[],0,&x,None).unwrap();assert_eq!(b.len(),12);assert_eq!(b[0],Some(71.*72.));assert_eq!(b[11],Some(77.*75.));}
+ #[test]fn pearson_training_and_tie_order(){let rows:Vec<_>=(0..8).map(|i|{let v=i as f64;let mut x=[0.;D];x[7]=v;x[9]=-v;super::super::TrainingRow{input:super::super::OriginInput{origin:i*60,x,recent:[0.;Y]},target:[v;Y],normalized_target:[v;Y]}}).collect();let refs:Vec<_>=rows.iter().collect();for leads in [false,true]{let(idx,s)=select_features(&refs,3,leads).unwrap();assert_eq!(idx,vec![0,7,9]);assert_eq!(s[7],1.);assert_eq!(s[9],1.);assert_eq!(s[0],0.);assert_eq!(encode_fitted(Recipe::Select(3,leads),&rows[1].input.x,&[],&[],&idx).unwrap(),vec![0.,1.,-1.]);}}
+ #[test]fn extended_exact_order_and_masks(){let mut b=fixture(170);b[96]=None;let r=Recipe::Extended(96);let raw=r.extras(&b,169*60).unwrap();assert_eq!(raw.len(),24);assert_eq!(raw[0],Some(97.));assert_eq!(raw[1],None);assert_eq!(raw[23],Some(74.));let s=fit_scales(&[raw.clone()]).unwrap();let x=encode(r,vec![0.;80],&raw,&s).unwrap();assert_eq!(x.len(),128);assert_eq!(x[81],1.);assert_eq!(x[83],0.);assert_eq!(Recipe::Extended(168).extras(&b,169*60).unwrap().len(),96);}
+ #[test]fn last_batch_dimensions(){let b=fixture(200);let x=[1.;D];let t=minute("2019-01-02 00:00").unwrap();let c=Climate::fit([(t,2.)].into_iter()).unwrap();for label in ["anomaly-month-hour","anomaly-month","spectral-3","spectral-5","interactions-local","interactions-calendar","select32-mean","select48-leads","history96","history168"]{let r=Recipe::parse(label).unwrap();let raw=raw_features(r,&b,t,&x,Some(&c)).unwrap();let s=fit_scales(&[raw.clone()]).unwrap();let selected=if let Recipe::Select(k,_)=r{(0..k).collect()}else{Vec::new()};assert_eq!(encode_fitted(r,&x,&raw,&s,&selected).unwrap().len(),r.width());}}
 }

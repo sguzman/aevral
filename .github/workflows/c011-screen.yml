@@ -1,4 +1,4 @@
-name: C011 R05-R09 causal representation screens
+name: C011 R10-R14 causal representation screens
 on:
   push:
     paths:
@@ -21,7 +21,7 @@ jobs:
         run: |
           expected=10
           file="campaigns/011-feature-engineering/screen-matrix.csv"
-          matrix=$(awk -F, '$1 ~ /^R0[5-9]$/' "$file" | jq -Rc 'split(",") | {method:.[0],config:.[1],seed:.[2],fold:.[3],track:.[4],dimension:.[5]}' | jq -sc '{include:.}')
+          matrix=$(awk -F, '$1 ~ /^R1[0-4]$/' "$file" | jq -Rc 'split(",") | {method:.[0],config:.[1],seed:.[2],fold:.[3],track:.[4],dimension:.[5]}' | jq -sc '{include:.}')
           test "$(jq '.include|length' <<< "$matrix")" -eq "$expected"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
   evaluate:
