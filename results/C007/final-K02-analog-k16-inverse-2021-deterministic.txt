@@ -1,0 +1,49 @@
+test result: ok. 120 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+finalist-start,2021,analog-k16-inverse,deterministic
+cohort,2021,136893,7501,8737,7714
+scales,2021,[11.643995464674955, 6.369915113055379, 6.378974251584813, 5.044069639482702, 1017.4178067057464, 7.050946823816145, 0.26877858793517906, 2.139800549110102, 0.8914499366987545, 3.2088313577904324]
+baseline,2021,daily,2.14898785,2.81802465
+neighbor-preflight,2021,analog-k16-inverse,8192,32,1565992,0.024262,5.687159
+neighbor-config,2021,analog-k16-inverse,8192,16,Inverse,0,8192,8192.00000000,0,5.447463
+score,2021,analog-k16-inverse,7501,1.77183693,2.34951497,0.063
+lead,2021,analog-k16-inverse,1,1.27673683,1.70712481
+lead,2021,analog-k16-inverse,2,1.37670175,1.83294933
+lead,2021,analog-k16-inverse,3,1.45652522,1.93230089
+lead,2021,analog-k16-inverse,4,1.52738538,2.02152139
+lead,2021,analog-k16-inverse,5,1.58915947,2.10444271
+lead,2021,analog-k16-inverse,6,1.63498374,2.15677192
+lead,2021,analog-k16-inverse,7,1.67855005,2.20749458
+lead,2021,analog-k16-inverse,8,1.70900318,2.24595559
+lead,2021,analog-k16-inverse,9,1.74331259,2.28836322
+lead,2021,analog-k16-inverse,10,1.76773003,2.32770858
+lead,2021,analog-k16-inverse,11,1.79591197,2.36297475
+lead,2021,analog-k16-inverse,12,1.81704092,2.39002324
+lead,2021,analog-k16-inverse,13,1.82907686,2.40557051
+lead,2021,analog-k16-inverse,14,1.84964946,2.42816236
+lead,2021,analog-k16-inverse,15,1.86051442,2.44196382
+lead,2021,analog-k16-inverse,16,1.88441723,2.46316027
+lead,2021,analog-k16-inverse,17,1.89579665,2.48420466
+lead,2021,analog-k16-inverse,18,1.91340683,2.51071334
+lead,2021,analog-k16-inverse,19,1.93051762,2.53983772
+lead,2021,analog-k16-inverse,20,1.95132370,2.57009430
+lead,2021,analog-k16-inverse,21,1.97169450,2.59547785
+lead,2021,analog-k16-inverse,22,1.99680300,2.63859871
+lead,2021,analog-k16-inverse,23,2.01983847,2.67181787
+lead,2021,analog-k16-inverse,24,2.04800634,2.71312949
+month,2021,analog-k16-inverse,1,644,1.49745574,1.95135951
+month,2021,analog-k16-inverse,2,572,1.41590443,1.77403814
+month,2021,analog-k16-inverse,3,477,1.55903977,1.98252889
+month,2021,analog-k16-inverse,4,692,1.77633859,2.27664592
+month,2021,analog-k16-inverse,5,629,1.72007380,2.19034060
+month,2021,analog-k16-inverse,6,694,2.60402092,3.60610018
+month,2021,analog-k16-inverse,7,707,1.60650411,2.09884743
+month,2021,analog-k16-inverse,8,618,1.78595658,2.26841774
+month,2021,analog-k16-inverse,9,599,1.56668582,2.04246405
+month,2021,analog-k16-inverse,10,509,1.76192991,2.15486079
+month,2021,analog-k16-inverse,11,646,1.97220986,2.53784615
+month,2021,analog-k16-inverse,12,714,1.82836198,2.46353961
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.36
+	Maximum resident set size (kbytes): 350432
+	Exit status: 0
+finalist-end,2021,analog-k16-inverse,deterministic

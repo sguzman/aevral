@@ -1,0 +1,50 @@
+test result: ok. 120 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+finalist-start,2021,analog-k16-gaussian,deterministic
+cohort,2021,136893,7501,8737,7714
+scales,2021,[11.643995464674955, 6.369915113055379, 6.378974251584813, 5.044069639482702, 1017.4178067057464, 7.050946823816145, 0.26877858793517906, 2.139800549110102, 0.8914499366987545, 3.2088313577904324]
+baseline,2021,daily,2.14898785,2.81802465
+neighbor-preflight,2021,analog-k16-gaussian,8192,32,1565992,0.011280,2.644059
+neighbor-config,2021,analog-k16-gaussian,8192,16,Gaussian,0,8192,8192.00000000,0,2.098114
+score,2021,analog-k16-gaussian,7501,1.77408644,2.35362040,0.041
+lead,2021,analog-k16-gaussian,1,1.27983370,1.71312667
+lead,2021,analog-k16-gaussian,2,1.37971811,1.83893759
+lead,2021,analog-k16-gaussian,3,1.45957545,1.93839649
+lead,2021,analog-k16-gaussian,4,1.53076041,2.02799301
+lead,2021,analog-k16-gaussian,5,1.59239474,2.11115049
+lead,2021,analog-k16-gaussian,6,1.63797820,2.16289919
+lead,2021,analog-k16-gaussian,7,1.68134578,2.21312686
+lead,2021,analog-k16-gaussian,8,1.71180540,2.25131700
+lead,2021,analog-k16-gaussian,9,1.74620177,2.29342577
+lead,2021,analog-k16-gaussian,10,1.77034003,2.33201634
+lead,2021,analog-k16-gaussian,11,1.79874171,2.36713900
+lead,2021,analog-k16-gaussian,12,1.81962355,2.39424535
+lead,2021,analog-k16-gaussian,13,1.83161376,2.40977969
+lead,2021,analog-k16-gaussian,14,1.85175117,2.43143134
+lead,2021,analog-k16-gaussian,15,1.86219603,2.44491214
+lead,2021,analog-k16-gaussian,16,1.88580750,2.46563039
+lead,2021,analog-k16-gaussian,17,1.89707301,2.48656101
+lead,2021,analog-k16-gaussian,18,1.91459299,2.51312345
+lead,2021,analog-k16-gaussian,19,1.93185377,2.54214444
+lead,2021,analog-k16-gaussian,20,1.95259123,2.57270419
+lead,2021,analog-k16-gaussian,21,1.97285347,2.59846373
+lead,2021,analog-k16-gaussian,22,1.99799085,2.64194296
+lead,2021,analog-k16-gaussian,23,2.02152965,2.67540664
+lead,2021,analog-k16-gaussian,24,2.04990218,2.71683163
+month,2021,analog-k16-gaussian,1,644,1.49779199,1.95192401
+month,2021,analog-k16-gaussian,2,572,1.41581094,1.77372959
+month,2021,analog-k16-gaussian,3,477,1.56048671,1.98373492
+month,2021,analog-k16-gaussian,4,692,1.77884314,2.27803095
+month,2021,analog-k16-gaussian,5,629,1.72311963,2.19401454
+month,2021,analog-k16-gaussian,6,694,2.61122334,3.62403881
+month,2021,analog-k16-gaussian,7,707,1.60794897,2.09998617
+month,2021,analog-k16-gaussian,8,618,1.79065644,2.27385012
+month,2021,analog-k16-gaussian,9,599,1.56771402,2.04357654
+month,2021,analog-k16-gaussian,10,509,1.76332633,2.15634528
+month,2021,analog-k16-gaussian,11,646,1.97202037,2.53811481
+month,2021,analog-k16-gaussian,12,714,1.83150285,2.46687974
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.73
+	Maximum resident set size (kbytes): 350392
+	Exit status: 0
+finalist-end,2021,analog-k16-gaussian,deterministic
