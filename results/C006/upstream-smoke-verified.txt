@@ -1,0 +1,19 @@
+CI 45917374767, code 03a4a66fed1e8d6f562580e833c1ae9eb5dd5328
+test result: ok. 95 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+upstream-lead,catboost,1,64,1024,0.096109
+upstream-preflight,catboost,64,0.096109,0.096177
+upstream-smoke,catboost,-2.00009928,2.00635820,pass
+test result: ok. 95 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+upstream-lead,lightgbm,1,64,157,0.047577
+upstream-preflight,lightgbm,64,0.047577,0.047651
+upstream-smoke,lightgbm,-1.99764196,1.99764196,pass
+test result: ok. 95 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+upstream-lead,xgboost,1,64,128,0.004146
+upstream-preflight,xgboost,64,0.004146,0.007415
+upstream-smoke,xgboost,-1.99757576,1.99757576,pass

@@ -159,3 +159,6 @@ Implemented upstream.rs official XGBoost dynamic C API, LightGBM/CatBoost CLI pe
 
 ## C006 phase 11
 First upstream smoke CI 45917145167: XGBoost and LightGBM passed synthetic fit/predict; 94 tests passed on all jobs. CatBoost fit/calc succeeded but strict header parser failed (header contents not captured). Archived outcome in results/C006/upstream-smoke-first.txt. Corrected CatBoost output request to SampleId,RawFormulaVal and parser to validate exact named columns and sequential numeric row IDs, added parser test and descriptive error. No fit recipe changes. Re-run all three smoke jobs automatically; verify before full weather screens. 22/28 measured.
+
+## C006 phase 12
+All three official integration smoke jobs passed (CI 45917374767), 95 tests, CatBoost prediction sample identity parser verified. Archived evidence. Submitted six 2019 weather screening jobs through optional locked Nix boosting shell, seed42, exact frozen recipes and cache hashes; upstream-screen.yml. Next verify and archive measured or explicitly resource-blocked outcomes with per-lead tree/leaf counts, then freeze annual finalists. 22/28 measured; six in CI. No new data.

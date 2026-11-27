@@ -1,0 +1,45 @@
+name: C006 T06-T08 official upstream screen
+on:
+  push:
+    paths:
+      - '.github/workflows/upstream-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        config: [xgboost-64, xgboost-128, lightgbm-64, lightgbm-128, catboost-64, catboost-128]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086 # v31
+      - name: Verify locked shell and tests
+        run: |
+          nix develop .#boosting --no-update-lock-file --command cargo test --locked --release
+          nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
+          git diff --exit-code -- flake.lock
+      - name: Fit official upstream model
+        run: |
+          set -o pipefail
+          /usr/bin/time -v nix develop .#boosting --no-update-lock-file --command target/release/aevral upstream data/raw/ksea 2019 predictions.csv ${{ matrix.config }} 42 | tee metrics.txt
+          gzip predictions.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c006-upstream-2019-${{ matrix.config }}
+          path: |
+            metrics.txt
+            predictions.csv.gz
+          retention-days: 30
