@@ -25,3 +25,17 @@ Frozen manifest: campaigns/007-kernels-neighbors/manifest.md. Full matched 2019 
 | local-k64-l01 | 1.41022498 | 1.88008412 | 1.755252078771e-16 | 5.668736 |
 | local-k128-l1 | 1.44298756 | 1.88404816 | 1.616555399026e-16 | 5.725801 |
 | local-k64-l1 | 1.44765587 | 1.89240256 | 1.678731308432e-16 | 5.980704 |
+
+## K05–K06 exact kernel ridge
+[CI](https://github.com/sguzman/aevral/actions/runs/45920051360), code 266013f3b5ffa2c7495f383f262c16f9c1044b68, 109 tests passed. Linear: 8192 rows, centered primal, mean-loss lambda; RBF: 2048 rows, exact dense subset, diagonal lambda. Full 7455 matched evaluation origins. 7/7 measured.
+
+| Model | MAE °C | RMSE °C | Max relative solve residual | Fit seconds | Prediction seconds |
+|---|---:|---:|---:|---:|---:|
+| rbf-krr-s1-l1 | 1.39084668 | 1.84799529 | 6.248636469077e-13 | 1.138147 | 0.561371 |
+| rbf-krr-s1-l01 | 1.46211482 | 1.95336877 | 5.649738436462e-12 | 1.822472 | 1.066933 |
+| rbf-krr-s05-l1 | 1.48888541 | 1.99187113 | 1.552389932743e-13 | 2.109219 | 1.270754 |
+| linear-krr-l001 | 1.51224494 | 1.97731958 | 8.926162933919e-17 | 0.045736 | 0.009457 |
+| rbf-krr-s05-l01 | 1.67139318 | 2.22782417 | 6.117090814164e-13 | 1.192567 | 0.563556 |
+| linear-krr-l01 | 1.68779093 | 2.19417262 | 6.394666979181e-17 | 0.044525 | 0.009520 |
+| linear-krr-l1 | 2.24991204 | 2.94975527 | 1.018073504510e-16 | 0.039166 | 0.008301 |
+
