@@ -1,0 +1,12 @@
+backend-pin,0dc498bfe49baeb18b0f9891e800b53bb2603193
+backend-start,catboost
+backend-attr,catboost,catboost,1.2.10
+backend-output,catboost,catboost,/nix/store/x2kbfq2h2chq9b0rip03dnhfc2sdqfg3-catboost-1.2.10
+backend-bin,catboost,catboost,bin
+backend-bin,catboost,catboost,catboost
+backend-cli,catboost,catboost,1.2.10
+backend-lib,catboost,catboost,/nix/store/x2kbfq2h2chq9b0rip03dnhfc2sdqfg3-catboost-1.2.10/lib/libcatboostmodel.so
+backend-lib,catboost,catboost,/nix/store/x2kbfq2h2chq9b0rip03dnhfc2sdqfg3-catboost-1.2.10/lib/libcatboost.so
+backend-attr,catboost,python3Packages.catboost,1.2.10
+backend-output,catboost,python3Packages.catboost,/nix/store/zmdkvyn0vlsjjbh9nj1fzpvwzfmfkhk1-python3.13-catboost-1.2.10
+backend-end,catboost

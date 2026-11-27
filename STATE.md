@@ -150,3 +150,6 @@ T05/T09 CI 45916492859 all six successful, 92 tests passed. Archived all six out
 
 ## C006 phase 8
 Submitted hosted Nix backend availability preflight, per upstream backend (XGBoost, LightGBM, CatBoost), exact flake.lock revision, top-level and python3Packages derivation discovery, bounded realization and CLI/library inspection. No Python runtime introduced, no fitting. Next inspect CI probe logs, select feasible official CLI/library interfaces or separately pinned upstream fallback and freeze versions/configs before fit. 22/28 screens measured. No new data.
+
+## C006 phase 9
+All three backend probes succeeded (CI 45916805742). Verified official top-level Nix versions XGBoost3.0.5 shared library, LightGBM4.6.0 CLI/library, CatBoost1.2.10 CLI/library. Archived probe records and added optional boosting devShell using existing lock. Next implement Rust native XGBoost C API and LightGBM/CatBoost CLI adapters, synthetic fit/predict tests, frozen exact parameters and resource guards; then six screens. Shell integration and fit interfaces not yet tested. 22/28 measured. No new data.

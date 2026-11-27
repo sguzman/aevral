@@ -1,0 +1,8 @@
+backend-pin,0dc498bfe49baeb18b0f9891e800b53bb2603193
+backend-start,xgboost
+backend-attr,xgboost,xgboost,3.0.5
+backend-output,xgboost,xgboost,/nix/store/kac5fxpd2h1xp3bd4fhskryaraj8pgl2-xgboost-3.0.5
+backend-lib,xgboost,xgboost,/nix/store/kac5fxpd2h1xp3bd4fhskryaraj8pgl2-xgboost-3.0.5/lib/libxgboost.so
+backend-attr,xgboost,python3Packages.xgboost,3.0.5
+backend-output,xgboost,python3Packages.xgboost,/nix/store/68663cv09x500vxxf80lbjwwc3rdmvy7-python3.13-xgboost-3.0.5
+backend-end,xgboost

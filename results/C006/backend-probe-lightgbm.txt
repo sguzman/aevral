@@ -1,0 +1,11 @@
+backend-pin,0dc498bfe49baeb18b0f9891e800b53bb2603193
+backend-start,lightgbm
+backend-attr,lightgbm,lightgbm,4.6.0
+backend-output,lightgbm,lightgbm,/nix/store/cdg78h7wvycf9w91xzkk4mmvadjwdzlg-lightgbm-4.6.0
+backend-bin,lightgbm,lightgbm,bin
+backend-bin,lightgbm,lightgbm,lightgbm
+backend-cli,lightgbm,lightgbm,4.6.0
+backend-lib,lightgbm,lightgbm,/nix/store/cdg78h7wvycf9w91xzkk4mmvadjwdzlg-lightgbm-4.6.0/lib/lib_lightgbm.so
+backend-attr,lightgbm,python3Packages.lightgbm,4.6.0
+backend-output,lightgbm,python3Packages.lightgbm,/nix/store/75gj5if5zk3p09xj84vvqmvis33gvnfy-python3.13-lightgbm-4.6.0
+backend-end,lightgbm
