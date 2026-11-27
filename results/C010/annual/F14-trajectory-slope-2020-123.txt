@@ -1,0 +1,64 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.99s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+strategy-start,2020,trajectory-slope,123
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+strategy-config,2020,trajectory-slope,123,8192,12,0.001,6744,3218608,98304
+strategy-preflight,2020,trajectory-slope,123,128,32,0.008020,0.000209,6.208999
+strategy-epoch,2020,trajectory-slope,123,1,0.1587662578,0
+strategy-epoch,2020,trajectory-slope,123,2,0.1338956638,0
+strategy-epoch,2020,trajectory-slope,123,3,0.1248084485,0
+strategy-epoch,2020,trajectory-slope,123,4,0.1194078959,0
+strategy-epoch,2020,trajectory-slope,123,5,0.1152213300,0
+strategy-epoch,2020,trajectory-slope,123,6,0.1117873362,0
+strategy-epoch,2020,trajectory-slope,123,7,0.1093379389,0
+strategy-epoch,2020,trajectory-slope,123,8,0.1075989667,0
+strategy-epoch,2020,trajectory-slope,123,9,0.1058845039,0
+strategy-epoch,2020,trajectory-slope,123,10,0.1054737004,0
+strategy-epoch,2020,trajectory-slope,123,11,0.1042320737,0
+strategy-epoch,2020,trajectory-slope,123,12,0.1042091863,0
+strategy-trajectory,2020,trajectory-slope,123,0.60878124,0.87933036,173489,165946
+strategy-fit,2020,trajectory-slope,123,0,6.121484,0.049089
+score,2020,trajectory-slope,7543,1.48493945,1.98522672,0.053
+lead,2020,trajectory-slope,1,0.80713106,1.05867327
+lead,2020,trajectory-slope,2,0.96578597,1.26751544
+lead,2020,trajectory-slope,3,1.09718773,1.45489611
+lead,2020,trajectory-slope,4,1.16033962,1.53189179
+lead,2020,trajectory-slope,5,1.23443745,1.63142105
+lead,2020,trajectory-slope,6,1.32192041,1.73926869
+lead,2020,trajectory-slope,7,1.36603183,1.81381060
+lead,2020,trajectory-slope,8,1.39401858,1.85021606
+lead,2020,trajectory-slope,9,1.43671919,1.88632098
+lead,2020,trajectory-slope,10,1.48684669,1.94297446
+lead,2020,trajectory-slope,11,1.50025520,1.96571439
+lead,2020,trajectory-slope,12,1.51734691,2.00633863
+lead,2020,trajectory-slope,13,1.54210001,2.03717495
+lead,2020,trajectory-slope,14,1.58833597,2.10657436
+lead,2020,trajectory-slope,15,1.64745474,2.19179659
+lead,2020,trajectory-slope,16,1.67014732,2.21006886
+lead,2020,trajectory-slope,17,1.70347479,2.24548367
+lead,2020,trajectory-slope,18,1.74971999,2.30260430
+lead,2020,trajectory-slope,19,1.73083899,2.26407876
+lead,2020,trajectory-slope,20,1.75706183,2.29476396
+lead,2020,trajectory-slope,21,1.73716278,2.27633657
+lead,2020,trajectory-slope,22,1.73850188,2.27569057
+lead,2020,trajectory-slope,23,1.72861919,2.26681530
+lead,2020,trajectory-slope,24,1.75710874,2.29399255
+month,2020,trajectory-slope,1,640,1.41640435,1.87869078
+month,2020,trajectory-slope,2,594,1.30384768,1.69975711
+month,2020,trajectory-slope,3,729,1.41126962,1.90178647
+month,2020,trajectory-slope,4,507,1.36354879,1.76016225
+month,2020,trajectory-slope,5,625,1.79262966,2.38864619
+month,2020,trajectory-slope,6,699,1.46983806,2.03343108
+month,2020,trajectory-slope,7,622,1.61729935,2.13334243
+month,2020,trajectory-slope,8,715,1.63673049,2.15396495
+month,2020,trajectory-slope,9,345,1.38684663,1.79570055
+month,2020,trajectory-slope,10,733,1.42470547,1.88450490
+month,2020,trajectory-slope,11,717,1.47346593,2.00054607
+month,2020,trajectory-slope,12,617,1.45299853,1.95405087
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.86
+	Maximum resident set size (kbytes): 332868
+	Exit status: 0
+strategy-end,2020,trajectory-slope,123
