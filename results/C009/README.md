@@ -95,3 +95,7 @@ Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Ada
 ### Annual batch 2 complete
 
 [CI 46040581126](https://github.com/sguzman/aevral/actions/runs/46040581126): 96/96 measured, zero blocked; all 96 unexpired artifact names reconciled against frozen matrix. Registry contains 234 unique measured outcomes (42 screens + 192 additional); finalist coverage 226/408. Final archived job 140647062578, nhits-w128 2021 seed42: MAE 1.51547781°C, RMSE 2.01883986°C, 7,501 origins. 162 tests passed; predictions not independently rescored. Next frozen batch 3.
+
+### Annual batch 3 complete
+
+[CI 46049602720](https://github.com/sguzman/aevral/actions/runs/46049602720): all 96 measured, zero blocked; all 96 expected unexpired artifacts reconciled against frozen matrix. Registry: 330 unique measured outcomes, finalist coverage 322/408. Raw predictions not independently rescored. Final batch of 86 frozen evaluations selected next.
