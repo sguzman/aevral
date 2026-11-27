@@ -193,3 +193,5 @@ pub mod cart;
 pub mod forest;
 
 pub mod boosting;
+
+pub mod upstream;

@@ -7,6 +7,17 @@ fn main() {
         if let Err(e)=aevral::features::tournament::forest::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5],seed){eprintln!("{e}");std::process::exit(1)}
         return
     }
+    if args.get(1).map(String::as_str)==Some("upstream-smoke"){
+        if args.len()!=3{eprintln!("Usage: aevral upstream-smoke BACKEND");std::process::exit(2)}
+        if let Err(e)=aevral::features::tournament::upstream::smoke(&args[2]){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
+    if args.get(1).map(String::as_str)==Some("upstream"){
+        if args.len()!=7{eprintln!("Usage: aevral upstream DATA_DIR FOLD OUTPUT.csv CONFIG SEED");std::process::exit(2)}
+        let seed=args[6].parse::<u64>().unwrap_or_else(|_|{eprintln!("invalid seed");std::process::exit(2)});
+        if let Err(e)=aevral::features::tournament::upstream::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5],seed){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("boosting"){
         if args.len()!=6{eprintln!("Usage: aevral boosting DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
         if let Err(e)=aevral::features::tournament::boosting::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}

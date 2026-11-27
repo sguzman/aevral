@@ -153,3 +153,6 @@ Submitted hosted Nix backend availability preflight, per upstream backend (XGBoo
 
 ## C006 phase 9
 All three backend probes succeeded (CI 45916805742). Verified official top-level Nix versions XGBoost3.0.5 shared library, LightGBM4.6.0 CLI/library, CatBoost1.2.10 CLI/library. Archived probe records and added optional boosting devShell using existing lock. Next implement Rust native XGBoost C API and LightGBM/CatBoost CLI adapters, synthetic fit/predict tests, frozen exact parameters and resource guards; then six screens. Shell integration and fit interfaces not yet tested. 22/28 measured. No new data.
+
+## C006 phase 10
+Implemented upstream.rs official XGBoost dynamic C API, LightGBM/CatBoost CLI per-lead adapters, label-free eval export, finite/length checks, model counts, timeout guard. T06-T08.md exact recipes/seed policy. Two unit tests and three locked-shell synthetic smoke jobs submitted. Next verify compilation and actual backend fit/predict; repair defects without changing frozen recipes; then six weather screens. No external weather fits yet. 22/28 measured.

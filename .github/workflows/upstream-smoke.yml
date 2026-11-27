@@ -1,0 +1,27 @@
+name: C006 upstream adapter smoke
+on:
+  push:
+    paths:
+      - '.github/workflows/upstream-smoke.yml'
+      - 'src/features/tournament/upstream.rs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        backend: [xgboost, lightgbm, catboost]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086 # v31
+      - name: Verify locked shell and synthetic regression
+        run: |
+          nix develop .#boosting --no-update-lock-file --command cargo test --locked --release
+          nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
+          nix develop .#boosting --no-update-lock-file --command target/release/aevral upstream-smoke ${{ matrix.backend }}
+          git diff --exit-code -- flake.lock
