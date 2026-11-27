@@ -1,6 +1,6 @@
 # C008 — Decomposition, dynamical systems and alternative learners
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: active; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). [Finite manifest](manifest.md) frozen: 36 screens, nine families, up to 18 finalists and 86 additional annual outcomes. No implementations or results yet.
 
 ## Scope
 Fourier/harmonic decomposition, wavelet features with strictly causal transforms, SSA, DMD, Koopman/EDMD, echo-state/reservoir computing, extreme learning machines, regime/Markov models, symbolic regression with fixed search limits.
