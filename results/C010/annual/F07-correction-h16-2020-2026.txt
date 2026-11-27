@@ -1,0 +1,76 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+strategy-start,2020,correction-h16,2026
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+strategy-config,2020,correction-h16,2026,8192,12,0.001,8832,3485872,98292
+strategy-preflight,2020,correction-h16,2026,128,32,0.005262,0.000197,4.087949
+strategy-split,2020,correction-h16,2026,6143,2048,1,98292
+strategy-base-epoch,2020,correction-h16,2026,1,0.1539538091,0
+strategy-base-epoch,2020,correction-h16,2026,2,0.1321041048,0
+strategy-base-epoch,2020,correction-h16,2026,3,0.1236574564,0
+strategy-base-epoch,2020,correction-h16,2026,4,0.1187880124,0
+strategy-base-epoch,2020,correction-h16,2026,5,0.1139954541,0
+strategy-base-epoch,2020,correction-h16,2026,6,0.1125343188,0
+strategy-base-epoch,2020,correction-h16,2026,7,0.1086123931,0
+strategy-base-epoch,2020,correction-h16,2026,8,0.1063709584,0
+strategy-base-epoch,2020,correction-h16,2026,9,0.1045421650,0
+strategy-base-epoch,2020,correction-h16,2026,10,0.1027788857,0
+strategy-base-epoch,2020,correction-h16,2026,11,0.1021879138,0
+strategy-base-epoch,2020,correction-h16,2026,12,0.1007984225,0
+strategy-epoch,2020,correction-h16,2026,1,0.1194317678,0
+strategy-epoch,2020,correction-h16,2026,2,0.0967046847,0
+strategy-epoch,2020,correction-h16,2026,3,0.0943883468,0
+strategy-epoch,2020,correction-h16,2026,4,0.0929037324,0
+strategy-epoch,2020,correction-h16,2026,5,0.0926207318,0
+strategy-epoch,2020,correction-h16,2026,6,0.0920411554,0
+strategy-epoch,2020,correction-h16,2026,7,0.0910730732,0
+strategy-epoch,2020,correction-h16,2026,8,0.0910898062,0
+strategy-epoch,2020,correction-h16,2026,9,0.0905459617,0
+strategy-epoch,2020,correction-h16,2026,10,0.0901729482,0
+strategy-epoch,2020,correction-h16,2026,11,0.0898193780,0
+strategy-epoch,2020,correction-h16,2026,12,0.0896288648,0
+strategy-fit,2020,correction-h16,2026,0,3.864267,0.044708
+score,2020,correction-h16,7543,1.43345977,1.91215566,0.042
+lead,2020,correction-h16,1,0.73968017,0.97602819
+lead,2020,correction-h16,2,0.90381081,1.18117886
+lead,2020,correction-h16,3,1.00286719,1.31700097
+lead,2020,correction-h16,4,1.08115669,1.43768427
+lead,2020,correction-h16,5,1.16660887,1.54790746
+lead,2020,correction-h16,6,1.21814380,1.62343847
+lead,2020,correction-h16,7,1.29367320,1.70977408
+lead,2020,correction-h16,8,1.32604300,1.75271978
+lead,2020,correction-h16,9,1.40172196,1.83632833
+lead,2020,correction-h16,10,1.42476167,1.87143517
+lead,2020,correction-h16,11,1.47217445,1.93147299
+lead,2020,correction-h16,12,1.48413418,1.95163392
+lead,2020,correction-h16,13,1.48900186,1.96394978
+lead,2020,correction-h16,14,1.52066130,2.00146786
+lead,2020,correction-h16,15,1.57356753,2.06035734
+lead,2020,correction-h16,16,1.59438323,2.08608609
+lead,2020,correction-h16,17,1.64079858,2.13389266
+lead,2020,correction-h16,18,1.67178106,2.16608198
+lead,2020,correction-h16,19,1.67672677,2.18287366
+lead,2020,correction-h16,20,1.72458764,2.22981758
+lead,2020,correction-h16,21,1.71580646,2.23487248
+lead,2020,correction-h16,22,1.72972800,2.25781842
+lead,2020,correction-h16,23,1.75750216,2.29109886
+lead,2020,correction-h16,24,1.79371378,2.31913266
+month,2020,correction-h16,1,640,1.36166720,1.78883878
+month,2020,correction-h16,2,594,1.25784629,1.61600441
+month,2020,correction-h16,3,729,1.32687455,1.76963706
+month,2020,correction-h16,4,507,1.27696036,1.63499240
+month,2020,correction-h16,5,625,1.73026566,2.31086713
+month,2020,correction-h16,6,699,1.40070534,1.90228981
+month,2020,correction-h16,7,622,1.47348696,1.98842716
+month,2020,correction-h16,8,715,1.54318976,2.05298291
+month,2020,correction-h16,9,345,1.34775535,1.73622828
+month,2020,correction-h16,10,733,1.41748817,1.83400994
+month,2020,correction-h16,11,717,1.51270904,2.05992640
+month,2020,correction-h16,12,617,1.47527296,1.99452363
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.50
+	Maximum resident set size (kbytes): 333236
+	Exit status: 0
+strategy-end,2020,correction-h16,2026

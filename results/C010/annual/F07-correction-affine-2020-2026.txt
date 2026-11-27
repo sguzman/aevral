@@ -1,0 +1,76 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.34s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+strategy-start,2020,correction-affine,2026
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+strategy-config,2020,correction-affine,2026,8192,12,0.001,9264,3541168,98292
+strategy-preflight,2020,correction-affine,2026,128,32,0.008564,0.000303,6.648528
+strategy-split,2020,correction-affine,2026,6143,2048,1,98292
+strategy-base-epoch,2020,correction-affine,2026,1,0.1539538091,0
+strategy-base-epoch,2020,correction-affine,2026,2,0.1321041048,0
+strategy-base-epoch,2020,correction-affine,2026,3,0.1236574564,0
+strategy-base-epoch,2020,correction-affine,2026,4,0.1187880124,0
+strategy-base-epoch,2020,correction-affine,2026,5,0.1139954541,0
+strategy-base-epoch,2020,correction-affine,2026,6,0.1125343188,0
+strategy-base-epoch,2020,correction-affine,2026,7,0.1086123931,0
+strategy-base-epoch,2020,correction-affine,2026,8,0.1063709584,0
+strategy-base-epoch,2020,correction-affine,2026,9,0.1045421650,0
+strategy-base-epoch,2020,correction-affine,2026,10,0.1027788857,0
+strategy-base-epoch,2020,correction-affine,2026,11,0.1021879138,0
+strategy-base-epoch,2020,correction-affine,2026,12,0.1007984225,0
+strategy-epoch,2020,correction-affine,2026,1,0.1700812790,0
+strategy-epoch,2020,correction-affine,2026,2,0.1147505832,0
+strategy-epoch,2020,correction-affine,2026,3,0.1125645853,0
+strategy-epoch,2020,correction-affine,2026,4,0.1084497496,0
+strategy-epoch,2020,correction-affine,2026,5,0.1070641500,0
+strategy-epoch,2020,correction-affine,2026,6,0.1055860061,0
+strategy-epoch,2020,correction-affine,2026,7,0.1052240600,0
+strategy-epoch,2020,correction-affine,2026,8,0.1055867789,0
+strategy-epoch,2020,correction-affine,2026,9,0.1047213516,0
+strategy-epoch,2020,correction-affine,2026,10,0.1036179351,0
+strategy-epoch,2020,correction-affine,2026,11,0.1023224523,0
+strategy-epoch,2020,correction-affine,2026,12,0.1013276120,0
+strategy-fit,2020,correction-affine,2026,0,6.522550,0.071300
+score,2020,correction-affine,7543,1.54570797,2.04271382,0.063
+lead,2020,correction-affine,1,0.91807226,1.15765527
+lead,2020,correction-affine,2,0.84363103,1.11272608
+lead,2020,correction-affine,3,1.04586376,1.37473839
+lead,2020,correction-affine,4,1.15653922,1.52459241
+lead,2020,correction-affine,5,1.23274532,1.61586291
+lead,2020,correction-affine,6,1.32138261,1.72113648
+lead,2020,correction-affine,7,1.39132397,1.81434467
+lead,2020,correction-affine,8,1.40354442,1.82943940
+lead,2020,correction-affine,9,1.60381915,2.08520584
+lead,2020,correction-affine,10,1.78744689,2.30549883
+lead,2020,correction-affine,11,1.92533500,2.44636240
+lead,2020,correction-affine,12,1.66658472,2.15619660
+lead,2020,correction-affine,13,1.64044471,2.13146254
+lead,2020,correction-affine,14,1.66768637,2.16533584
+lead,2020,correction-affine,15,1.76916521,2.28252268
+lead,2020,correction-affine,16,1.69529239,2.20454750
+lead,2020,correction-affine,17,1.74519644,2.25255880
+lead,2020,correction-affine,18,1.67932990,2.19430041
+lead,2020,correction-affine,19,1.69299651,2.20953721
+lead,2020,correction-affine,20,1.74546334,2.26142868
+lead,2020,correction-affine,21,1.76439975,2.28412208
+lead,2020,correction-affine,22,1.76335031,2.29280981
+lead,2020,correction-affine,23,1.81796561,2.35932322
+lead,2020,correction-affine,24,1.81941234,2.36959146
+month,2020,correction-affine,1,640,1.42370755,1.86651317
+month,2020,correction-affine,2,594,1.37320005,1.74176688
+month,2020,correction-affine,3,729,1.43810345,1.90852458
+month,2020,correction-affine,4,507,1.30128829,1.65075354
+month,2020,correction-affine,5,625,1.81947630,2.44973255
+month,2020,correction-affine,6,699,1.51042376,2.00985763
+month,2020,correction-affine,7,622,1.68257809,2.23425410
+month,2020,correction-affine,8,715,1.74937999,2.29268712
+month,2020,correction-affine,9,345,1.49705637,1.93838697
+month,2020,correction-affine,10,733,1.47912238,1.90580971
+month,2020,correction-affine,11,717,1.59700944,2.12200219
+month,2020,correction-affine,12,617,1.60166108,2.12304232
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:07.44
+	Maximum resident set size (kbytes): 332948
+	Exit status: 0
+strategy-end,2020,correction-affine,2026
