@@ -1,0 +1,41 @@
+name: C008 D01-D02 Fourier and Haar screen
+on:
+  push:
+    paths:
+      - '.github/workflows/decomp-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        config: [fourier-k3-l001, fourier-k3-l01, fourier-k6-l001, fourier-k6-l01, haar-m16-l001, haar-m16-l01, haar-m32-l001, haar-m32-l01]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Numerical tests
+        run: cargo test --locked --release
+      - name: Evaluate causal Fourier and Haar ridge
+        run: |
+          set -o pipefail
+          cargo build --locked --release
+          /usr/bin/time -v target/release/aevral decomp data/raw/ksea 2019 predictions.csv ${{ matrix.config }} | tee metrics.txt
+          gzip predictions.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c008-decomp-2019-${{ matrix.config }}
+          path: |
+            metrics.txt
+            predictions.csv.gz
+          retention-days: 30

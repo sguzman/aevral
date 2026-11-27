@@ -208,3 +208,5 @@ pub mod svr;
 pub mod gp;
 
 pub mod kernel_features;
+
+pub mod decomposition;

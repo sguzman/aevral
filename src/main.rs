@@ -1,6 +1,11 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
+    if args.get(1).map(String::as_str)==Some("decomp"){
+        if args.len()!=6{eprintln!("Usage: aevral decomp DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
+        if let Err(e)=aevral::features::tournament::decomposition::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("forest"){
         if args.len()!=7{eprintln!("Usage: aevral forest DATA_DIR FOLD OUTPUT.csv CONFIG SEED");std::process::exit(2)}
         let seed=args[6].parse::<u64>().unwrap_or_else(|_|{eprintln!("invalid seed");std::process::exit(2)});
