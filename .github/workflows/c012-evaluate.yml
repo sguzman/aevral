@@ -11,10 +11,21 @@ concurrency:
 jobs:
   prepare:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
     outputs:
       matrix: ${{ steps.matrix.outputs.matrix }}
       rung: ${{ steps.matrix.outputs.rung }}
     steps:
+      - name: Publish scoring run link
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c012-prepare -f state=pending \
+            -f description="Checking frozen scoring matrix" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
       - uses: actions/checkout@v4
       - id: matrix
         shell: bash
@@ -45,6 +56,18 @@ jobs:
           test "$(jq '[.include[]|[.config,.fold,.seed]]|unique|length' <<< "$matrix")" -eq "$count"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
           echo "rung=$rung" >> "$GITHUB_OUTPUT"
+      - name: Publish matrix gate outcome
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c012-prepare -f state="$state" \
+            -f description="Scoring matrix gate: $state (not final scoring status)" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
   evaluate:
     name: evaluate (${{ matrix.config }}, ${{ matrix.fold }}, ${{ matrix.seed }})
     needs: prepare
