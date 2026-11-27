@@ -1,0 +1,64 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+strategy-start,2022,pinball-multi,42
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+strategy-config,2022,pinball-multi,42,8192,12,0.001,9864,3637936,98304
+strategy-preflight,2022,pinball-multi,42,128,32,0.014572,0.000317,11.266688
+strategy-epoch,2022,pinball-multi,42,1,0.0976844878,0
+strategy-epoch,2022,pinball-multi,42,2,0.0872870001,0
+strategy-epoch,2022,pinball-multi,42,3,0.0838386996,0
+strategy-epoch,2022,pinball-multi,42,4,0.0814183051,0
+strategy-epoch,2022,pinball-multi,42,5,0.0802267306,0
+strategy-epoch,2022,pinball-multi,42,6,0.0788965439,0
+strategy-epoch,2022,pinball-multi,42,7,0.0779812152,0
+strategy-epoch,2022,pinball-multi,42,8,0.0771064403,0
+strategy-epoch,2022,pinball-multi,42,9,0.0769649142,0
+strategy-epoch,2022,pinball-multi,42,10,0.0764133931,0
+strategy-epoch,2022,pinball-multi,42,11,0.0760274246,0
+strategy-epoch,2022,pinball-multi,42,12,0.0756846557,0
+strategy-quantile,2022,pinball-multi,42,92,183336
+strategy-fit,2022,pinball-multi,42,0,11.170649,0.138148
+score,2022,pinball-multi,7639,1.61628156,2.15046912,0.064
+lead,2022,pinball-multi,1,0.77811423,1.01563444
+lead,2022,pinball-multi,2,0.89462971,1.17467324
+lead,2022,pinball-multi,3,1.12891888,1.49147740
+lead,2022,pinball-multi,4,1.18714427,1.57813497
+lead,2022,pinball-multi,5,1.30780593,1.73832082
+lead,2022,pinball-multi,6,1.43736749,1.90966748
+lead,2022,pinball-multi,7,1.57820800,2.10012830
+lead,2022,pinball-multi,8,1.55461660,2.06154211
+lead,2022,pinball-multi,9,1.61132279,2.13540183
+lead,2022,pinball-multi,10,1.64046773,2.15748836
+lead,2022,pinball-multi,11,1.70326930,2.23175616
+lead,2022,pinball-multi,12,1.86343930,2.43083473
+lead,2022,pinball-multi,13,1.66357230,2.17461266
+lead,2022,pinball-multi,14,1.70284679,2.22091921
+lead,2022,pinball-multi,15,1.74999583,2.28103021
+lead,2022,pinball-multi,16,1.80009980,2.32753230
+lead,2022,pinball-multi,17,1.81458486,2.36344751
+lead,2022,pinball-multi,18,1.80606551,2.34786969
+lead,2022,pinball-multi,19,1.86165727,2.41530006
+lead,2022,pinball-multi,20,1.91307849,2.46246972
+lead,2022,pinball-multi,21,2.02869533,2.60345121
+lead,2022,pinball-multi,22,1.93114977,2.49306318
+lead,2022,pinball-multi,23,1.89548180,2.44176113
+lead,2022,pinball-multi,24,1.93822549,2.48903685
+month,2022,pinball-multi,1,735,1.61031146,2.03008427
+month,2022,pinball-multi,2,558,1.53785329,1.99156386
+month,2022,pinball-multi,3,630,1.20338503,1.55101714
+month,2022,pinball-multi,4,699,1.57385336,2.10786832
+month,2022,pinball-multi,5,712,1.22878302,1.61794130
+month,2022,pinball-multi,6,507,1.62218532,2.14964803
+month,2022,pinball-multi,7,431,2.28376594,3.01026641
+month,2022,pinball-multi,8,714,1.97682933,2.50543450
+month,2022,pinball-multi,9,695,1.54700780,2.03932488
+month,2022,pinball-multi,10,632,1.59055622,2.13546800
+month,2022,pinball-multi,11,641,1.59674264,2.08407081
+month,2022,pinball-multi,12,685,1.82452994,2.50906083
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:12.29
+	Maximum resident set size (kbytes): 368808
+	Exit status: 0
+strategy-end,2022,pinball-multi,42
