@@ -212,3 +212,5 @@ pub mod kernel_features;
 pub mod decomposition;
 
 pub mod dynamics;
+
+pub mod random_learners;
