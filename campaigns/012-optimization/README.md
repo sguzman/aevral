@@ -1,6 +1,6 @@
 # C012 — Budgeted cross-family hyperparameter search
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: active; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). Frozen [manifest](manifest.md) and [candidate grid](candidate-grid.csv): eight families, maximum 128 fit/evaluation outcomes inclusive of annual finalists. No C012 results yet.
 
 ## Scope
 Learning rates, schedules, optimizers, batch sizes, weight decay, dropout, early stopping, tree depths and leaves, regularization, lag/order, kernel scales, neighbor distances; deterministic random search or successive halving, then multi-seed finalists.

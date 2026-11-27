@@ -1,0 +1,49 @@
+family,model,track,seed_policy,config_id,configuration,reference
+O01,mlp80,A-fixed,stochastic,O01-01,sgd-lr005-e30-b1,C003 mlp64 1.34781461; C010 joint-mlp64 1.59212193
+O01,mlp80,A-fixed,stochastic,O01-02,adam-lr001-e12-b1,C003 mlp64 1.34781461; C010 joint-mlp64 1.59212193
+O01,mlp80,A-fixed,stochastic,O01-03,adam-lr0003-e30-b1,C003 mlp64 1.34781461; C010 joint-mlp64 1.59212193
+O01,mlp80,A-fixed,stochastic,O01-04,adam-cosine-lr001-e30-b1,C003 mlp64 1.34781461; C010 joint-mlp64 1.59212193
+O01,mlp80,A-fixed,stochastic,O01-05,adam-lr001-e30-b1-wd0001,C003 mlp64 1.34781461; C010 joint-mlp64 1.59212193
+O01,mlp80,A-fixed,stochastic,O01-06,adam-lr001-e30-b32,C003 mlp64 1.34781461; C010 joint-mlp64 1.59212193
+O02,suffix24-mlp,A-derived,stochastic,O02-01,adam-lr001-e12-b1,C011 suffix24 1.50364851
+O02,suffix24-mlp,A-derived,stochastic,O02-02,sgd-lr005-e30-b1,C011 suffix24 1.50364851
+O02,suffix24-mlp,A-derived,stochastic,O02-03,adam-lr001-e30-b1,C011 suffix24 1.50364851
+O02,suffix24-mlp,A-derived,stochastic,O02-04,adam-lr001-e30-b32-drop01,C011 suffix24 1.50364851
+O02,suffix24-mlp,A-derived,stochastic,O02-05,adam-lr0003-e30-b1,C011 suffix24 1.50364851
+O02,suffix24-mlp,A-derived,stochastic,O02-06,adam-lr001-e30-b1-stop,C011 suffix24 1.50364851
+O03,mae-nhits64,A-fixed,stochastic,O03-01,adam-lr001-e12-b1,C010 mae-nhits64 1.45243011
+O03,mae-nhits64,A-fixed,stochastic,O03-02,adam-lr0003-e12-b1,C010 mae-nhits64 1.45243011
+O03,mae-nhits64,A-fixed,stochastic,O03-03,adam-lr001-e30-b1,C010 mae-nhits64 1.45243011
+O03,mae-nhits64,A-fixed,stochastic,O03-04,adam-cosine-lr001-e30-b1,C010 mae-nhits64 1.45243011
+O03,mae-nhits64,A-fixed,stochastic,O03-05,adam-lr001-e30-b32,C010 mae-nhits64 1.45243011
+O03,mae-nhits64,A-fixed,stochastic,O03-06,adam-lr001-e30-b1-wd0001,C010 mae-nhits64 1.45243011
+O04,lightgbm,A-fixed,deterministic,O04-01,r128-d4-l16-eta01-min32,C006 lightgbm-128 1.40602200
+O04,lightgbm,A-fixed,deterministic,O04-02,r256-d4-l16-eta005-min32,C006 lightgbm-128 1.40602200
+O04,lightgbm,A-fixed,deterministic,O04-03,r128-d6-l32-eta01-min32,C006 lightgbm-128 1.40602200
+O04,lightgbm,A-fixed,deterministic,O04-04,r256-d6-l32-eta005-min32,C006 lightgbm-128 1.40602200
+O04,lightgbm,A-fixed,deterministic,O04-05,r128-d4-l16-eta01-min64,C006 lightgbm-128 1.40602200
+O04,lightgbm,A-fixed,deterministic,O04-06,r128-d3-l8-eta01-min16,C006 lightgbm-128 1.40602200
+O05,local-ridge,A-fixed,deterministic,O05-01,k64-l01-euclid,C007 local-k128-l01 1.40971059
+O05,local-ridge,A-fixed,deterministic,O05-02,k128-l01-euclid,C007 local-k128-l01 1.40971059
+O05,local-ridge,A-fixed,deterministic,O05-03,k256-l01-euclid,C007 local-k128-l01 1.40971059
+O05,local-ridge,A-fixed,deterministic,O05-04,k128-l1-euclid,C007 local-k128-l01 1.40971059
+O05,local-ridge,A-fixed,deterministic,O05-05,k128-l001-euclid,C007 local-k128-l01 1.40971059
+O05,local-ridge,A-fixed,deterministic,O05-06,k128-l01-manhattan,C007 local-k128-l01 1.40971059
+O06,mars,A-fixed,deterministic,O06-01,d1-t16,C004 mars-grid-2-64 1.48274195
+O06,mars,A-fixed,deterministic,O06-02,d1-t32,C004 mars-grid-2-64 1.48274195
+O06,mars,A-fixed,deterministic,O06-03,d1-t64,C004 mars-grid-2-64 1.48274195
+O06,mars,A-fixed,deterministic,O06-04,d2-t16,C004 mars-grid-2-64 1.48274195
+O06,mars,A-fixed,deterministic,O06-05,d2-t32,C004 mars-grid-2-64 1.48274195
+O06,mars,A-fixed,deterministic,O06-06,d2-t64,C004 mars-grid-2-64 1.48274195
+O07,arx,A-fixed,deterministic,O07-01,p6,C005 arx-72 1.59560910
+O07,arx,A-fixed,deterministic,O07-02,p12,C005 arx-72 1.59560910
+O07,arx,A-fixed,deterministic,O07-03,p24,C005 arx-72 1.59560910
+O07,arx,A-fixed,deterministic,O07-04,p36,C005 arx-72 1.59560910
+O07,arx,A-fixed,deterministic,O07-05,p48,C005 arx-72 1.59560910
+O07,arx,A-fixed,deterministic,O07-06,p72,C005 arx-72 1.59560910
+O08,haar-ridge,A-fixed,deterministic,O08-01,m16-l001,C008 haar-m32-l001 1.55757204
+O08,haar-ridge,A-fixed,deterministic,O08-02,m16-l01,C008 haar-m32-l001 1.55757204
+O08,haar-ridge,A-fixed,deterministic,O08-03,m32-l001,C008 haar-m32-l001 1.55757204
+O08,haar-ridge,A-fixed,deterministic,O08-04,m32-l01,C008 haar-m32-l001 1.55757204
+O08,haar-ridge,A-fixed,deterministic,O08-05,m64-l001,C008 haar-m32-l001 1.55757204
+O08,haar-ridge,A-fixed,deterministic,O08-06,m64-l01,C008 haar-m32-l001 1.55757204
