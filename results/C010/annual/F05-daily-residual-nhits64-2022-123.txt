@@ -1,0 +1,63 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.98s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+strategy-start,2022,daily-residual-nhits64,123
+cohort,2022,144417,7639,8737,7870
+scales,2022,[11.658107623810295, 6.394474752879633, 6.38865792192798, 5.038050819023805, 1017.4121031652238, 7.055082016931235, 0.2777037839484007, 2.145013586630477, 0.9058365593421797, 3.2214382611942223]
+baseline,2022,daily,2.10544725,2.81708680
+strategy-config,2022,daily-residual-nhits64,123,8192,12,0.001,37500,7175344,98304
+strategy-preflight,2022,daily-residual-nhits64,123,128,32,0.027895,0.000640,21.575934
+strategy-epoch,2022,daily-residual-nhits64,123,1,0.1301077056,96
+strategy-epoch,2022,daily-residual-nhits64,123,2,0.1062602102,13
+strategy-epoch,2022,daily-residual-nhits64,123,3,0.1012245520,6
+strategy-epoch,2022,daily-residual-nhits64,123,4,0.0983037561,8
+strategy-epoch,2022,daily-residual-nhits64,123,5,0.0962472297,6
+strategy-epoch,2022,daily-residual-nhits64,123,6,0.0950424331,5
+strategy-epoch,2022,daily-residual-nhits64,123,7,0.0939951211,5
+strategy-epoch,2022,daily-residual-nhits64,123,8,0.0937474191,6
+strategy-epoch,2022,daily-residual-nhits64,123,9,0.0920667627,7
+strategy-epoch,2022,daily-residual-nhits64,123,10,0.0912691424,8
+strategy-epoch,2022,daily-residual-nhits64,123,11,0.0907763692,10
+strategy-epoch,2022,daily-residual-nhits64,123,12,0.0905825485,10
+strategy-fit,2022,daily-residual-nhits64,123,180,31.690882,0.150003
+score,2022,daily-residual-nhits64,7639,1.52571651,2.02119069,0.054
+lead,2022,daily-residual-nhits64,1,0.83150141,1.07327874
+lead,2022,daily-residual-nhits64,2,0.92507910,1.21021427
+lead,2022,daily-residual-nhits64,3,1.04631384,1.37706477
+lead,2022,daily-residual-nhits64,4,1.16182062,1.53456481
+lead,2022,daily-residual-nhits64,5,1.26050479,1.66785147
+lead,2022,daily-residual-nhits64,6,1.35146252,1.78543472
+lead,2022,daily-residual-nhits64,7,1.43739389,1.89102696
+lead,2022,daily-residual-nhits64,8,1.46901035,1.93149244
+lead,2022,daily-residual-nhits64,9,1.49764531,1.96790170
+lead,2022,daily-residual-nhits64,10,1.52194847,1.99558891
+lead,2022,daily-residual-nhits64,11,1.54425152,2.01849102
+lead,2022,daily-residual-nhits64,12,1.57426491,2.05326887
+lead,2022,daily-residual-nhits64,13,1.59978696,2.08944344
+lead,2022,daily-residual-nhits64,14,1.63002125,2.12438811
+lead,2022,daily-residual-nhits64,15,1.66281618,2.16574617
+lead,2022,daily-residual-nhits64,16,1.69477588,2.20173369
+lead,2022,daily-residual-nhits64,17,1.72197836,2.23194819
+lead,2022,daily-residual-nhits64,18,1.74908432,2.26278360
+lead,2022,daily-residual-nhits64,19,1.77663104,2.29264609
+lead,2022,daily-residual-nhits64,20,1.79891340,2.31991609
+lead,2022,daily-residual-nhits64,21,1.82189609,2.34726001
+lead,2022,daily-residual-nhits64,22,1.83290867,2.36752832
+lead,2022,daily-residual-nhits64,23,1.84033320,2.37911247
+lead,2022,daily-residual-nhits64,24,1.86685411,2.41330822
+month,2022,daily-residual-nhits64,1,735,1.55149358,2.02062666
+month,2022,daily-residual-nhits64,2,558,1.42895140,1.81729002
+month,2022,daily-residual-nhits64,3,630,1.28574208,1.66995004
+month,2022,daily-residual-nhits64,4,699,1.62441451,2.18982092
+month,2022,daily-residual-nhits64,5,712,1.34100626,1.75541829
+month,2022,daily-residual-nhits64,6,507,1.60947446,2.24375758
+month,2022,daily-residual-nhits64,7,431,1.70340262,2.17292400
+month,2022,daily-residual-nhits64,8,714,1.71547599,2.18639750
+month,2022,daily-residual-nhits64,9,695,1.49345182,1.94799541
+month,2022,daily-residual-nhits64,10,632,1.61743615,2.17079858
+month,2022,daily-residual-nhits64,11,641,1.47358688,1.94627112
+month,2022,daily-residual-nhits64,12,685,1.51417263,2.09833558
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:32.63
+	Maximum resident set size (kbytes): 368708
+	Exit status: 0
+strategy-end,2022,daily-residual-nhits64,123
