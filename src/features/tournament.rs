@@ -45,7 +45,7 @@ fn collect(bins:&[Option<Weather>],first:i64,fold:Fold)->Result<PreparedFold,Str
     Ok(PreparedFold{fold,train:tr.iter().map(|r|TrainingRow{input:make(r),target:r.y,normalized_target:r.y.map(|v|temp.norm(v))}).collect(),eval:ev.iter().map(|r|EvaluationRow{input:make(r),target:r.y}).collect(),possible,temperature_complete,target_mean:temp.mean,target_sd:temp.sd,scales})
 }
 /// Only reads through the selected development fold. Historical holdout bytes not parsed.
-pub fn load(data:&Path,fold:Fold)->Result<PreparedFold,String>{
+fn load_bins(data:&Path,fold:Fold)->Result<(i64,Vec<Option<Weather>>),String>{
     let mut a=Archive::default();let mut cov=crate::covariates::Archive::default();
     for y in 2000..=2022{
         if minute(&format!("{y}-01-01 00:00"))?>=fold.end{break}
@@ -57,8 +57,9 @@ pub fn load(data:&Path,fold:Fold)->Result<PreparedFold,String>{
     let bins=a.hourly(first,fold.end-60);let c=cov.hourly(first,fold.end-60);
     // Match the C002 alignment check (no quarantining in development).
     crate::covariates::audit(&c,first,&bins)?;
-    collect(&c,first,fold)
+    Ok((first,c))
 }
+pub fn load(data:&Path,fold:Fold)->Result<PreparedFold,String>{let(first,c)=load_bins(data,fold)?;collect(&c,first,fold)}
 pub trait Predictor{fn predict(&self,x:&OriginInput)->[f64;Y];}
 pub struct Incumbent{model:Model,mean:f64,sd:f64}
 impl Incumbent{
@@ -219,3 +220,5 @@ mod markov;
 mod symbolic;
 pub mod alternative;
 pub mod neural;
+
+pub mod representation;
