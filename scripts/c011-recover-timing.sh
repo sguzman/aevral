@@ -17,7 +17,7 @@ done > "$work/jobs"
 echo "Missing archive timing records: $(wc -l < "$work/jobs")"
 recover() {
   local job="$1" log="$work/$1.log"
-  gh api "repos/$GITHUB_REPOSITORY/actions/jobs/$job/logs" > "$log"
+  gh api --allow-escape-sequences "repos/$GITHUB_REPOSITORY/actions/jobs/$job/logs" > "$log"
   awk -v job="$job" '
     /Elapsed \(wall clock\) time \(h:mm:ss or m:ss\): / {sub(/^.*\): /,"");sub(/\r$/,"");n=split($0,a,":");wall=0;for(i=1;i<=n;i++)wall=60*wall+a[i];wc++}
     /Maximum resident set size \(kbytes\): / {sub(/^.*\): /,"");sub(/\r$/,"");rss=$0;rc++}
