@@ -1,0 +1,63 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+strategy-start,2020,multitask-mean,2026
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+strategy-config,2020,multitask-mean,2026,8192,12,0.001,6809,3226928,98304
+strategy-preflight,2020,multitask-mean,2026,128,32,0.005452,0.000132,4.218249
+strategy-epoch,2020,multitask-mean,2026,1,0.1720971886,0
+strategy-epoch,2020,multitask-mean,2026,2,0.1494304004,0
+strategy-epoch,2020,multitask-mean,2026,3,0.1379703292,0
+strategy-epoch,2020,multitask-mean,2026,4,0.1325096197,0
+strategy-epoch,2020,multitask-mean,2026,5,0.1278579191,0
+strategy-epoch,2020,multitask-mean,2026,6,0.1237914421,0
+strategy-epoch,2020,multitask-mean,2026,7,0.1206766431,0
+strategy-epoch,2020,multitask-mean,2026,8,0.1181837295,0
+strategy-epoch,2020,multitask-mean,2026,9,0.1173174019,0
+strategy-epoch,2020,multitask-mean,2026,10,0.1155299689,0
+strategy-epoch,2020,multitask-mean,2026,11,0.1145845056,0
+strategy-epoch,2020,multitask-mean,2026,12,0.1131715304,0
+strategy-fit,2020,multitask-mean,2026,0,4.090431,0.030417
+score,2020,multitask-mean,7543,1.44391294,1.93143990,0.039
+lead,2020,multitask-mean,1,0.87241861,1.14682144
+lead,2020,multitask-mean,2,0.94087678,1.24230851
+lead,2020,multitask-mean,3,1.04715932,1.38455408
+lead,2020,multitask-mean,4,1.13181620,1.50538983
+lead,2020,multitask-mean,5,1.17709942,1.58046915
+lead,2020,multitask-mean,6,1.25251297,1.66896193
+lead,2020,multitask-mean,7,1.28780293,1.71499607
+lead,2020,multitask-mean,8,1.34663568,1.78901652
+lead,2020,multitask-mean,9,1.40830680,1.85809614
+lead,2020,multitask-mean,10,1.45212596,1.91104567
+lead,2020,multitask-mean,11,1.49085037,1.95567784
+lead,2020,multitask-mean,12,1.49715723,1.97021575
+lead,2020,multitask-mean,13,1.51677968,2.00278282
+lead,2020,multitask-mean,14,1.53323966,2.02766867
+lead,2020,multitask-mean,15,1.56209281,2.06091015
+lead,2020,multitask-mean,16,1.60431153,2.10633374
+lead,2020,multitask-mean,17,1.61122542,2.12257018
+lead,2020,multitask-mean,18,1.62743760,2.14063898
+lead,2020,multitask-mean,19,1.65804716,2.17525905
+lead,2020,multitask-mean,20,1.68342077,2.21350735
+lead,2020,multitask-mean,21,1.70940439,2.24981982
+lead,2020,multitask-mean,22,1.73672989,2.28021820
+lead,2020,multitask-mean,23,1.73898716,2.27770893
+lead,2020,multitask-mean,24,1.76747227,2.29750999
+month,2020,multitask-mean,1,640,1.39935345,1.84673601
+month,2020,multitask-mean,2,594,1.24505410,1.61791004
+month,2020,multitask-mean,3,729,1.37395720,1.81188902
+month,2020,multitask-mean,4,507,1.25399070,1.62216489
+month,2020,multitask-mean,5,625,1.82794249,2.47370157
+month,2020,multitask-mean,6,699,1.39584759,1.91401790
+month,2020,multitask-mean,7,622,1.48870290,1.97831159
+month,2020,multitask-mean,8,715,1.52357451,2.05232221
+month,2020,multitask-mean,9,345,1.33239442,1.73527773
+month,2020,multitask-mean,10,733,1.37788574,1.78453976
+month,2020,multitask-mean,11,717,1.50243804,2.01936081
+month,2020,multitask-mean,12,617,1.52105997,2.03126623
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.66
+	Maximum resident set size (kbytes): 333224
+	Exit status: 0
+strategy-end,2020,multitask-mean,2026
