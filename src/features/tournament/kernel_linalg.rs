@@ -2,9 +2,14 @@
 pub(super) struct Cholesky{n:usize,l:Vec<f64>}
 impl Cholesky{
     pub(super) fn factor(a:&[f64],n:usize)->Result<Self,String>{
+        Self::factor_guarded(a,n,None)
+    }
+    pub(super) fn factor_guarded(a:&[f64],n:usize,start:Option<std::time::Instant>)->Result<Self,String>{
         if n==0||n.checked_mul(n)!=Some(a.len())||a.iter().any(|v|!v.is_finite()){return Err("invalid Cholesky matrix".into())}
         let mut l=vec![0.;a.len()];
-        for i in 0..n{for j in 0..=i{
+        for i in 0..n{
+            if start.is_some_and(|t|t.elapsed().as_secs_f64()>1400.){return Err("runtime guard".into())}
+            for j in 0..=i{
             if (a[i*n+j]-a[j*n+i]).abs()>1e-10*(1.+a[i*n+j].abs().max(a[j*n+i].abs())){return Err("asymmetric Cholesky matrix".into())}
             let mut v=a[i*n+j];for k in 0..j{v-=l[i*n+k]*l[j*n+k];}
             if i==j{if !v.is_finite()||v<=0.{return Err(format!("nonpositive Cholesky pivot {i}: {v}"))}l[i*n+i]=v.sqrt();}

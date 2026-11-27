@@ -1,6 +1,6 @@
 # Fixed-data temperature program — C003–C006 complete; C007 active
 
-Current checkpoint: C007 16/41 screens resolved, 16 measured, best local-k128-l01 MAE 1.37195009. Next K05–K06 linear and RBF kernel ridge: centered primal exact and dense subset Cholesky, residual/guard tests. C006 report results/C006/REPORT.md; C007 frozen manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
+Current checkpoint: C007 16/41 screens resolved, 16 measured, best local-k128-l01 MAE 1.37195009. K05–K06 implemented; seven kernel ridge screens submitted. Verify CI, archive before K07 LIBSVM probe. C006 report results/C006/REPORT.md; C007 frozen manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
 
 
 C001/C002 historical reports immutable; both old holdouts exposed. C003 complete: 27 hashes verified, all five benchmark jobs passed 45892792311, legacy exact, 30138 matched annual origins (2019 7455, 2020 7543, 2021 7501, 2022 7639), pooled MLP64 MAE 1.34781461, daily 2.05372678. Export audit 45895728513 all five passed; 5793120 prediction rows verified, 35 tests, archived results/C003. Program campaigns/TEMPERATURE-PROGRAM.md. C004 manifest campaigns/004-linear-additive/manifest.md predeclares 54 screen configurations across 12 methods. Next implement L01/L02 stable least-squares and ridge first batch in Rust using src/features/tournament.rs API, test numerical correctness, add CLI/CI with frozen data, score 2019. No C004 results or code yet. Subsequent batches per manifest. No new data or local downloads. Keep logs filtered and state durable. No human action required.
@@ -213,3 +213,6 @@ K04 local linear ridge implemented with shared checked dense Cholesky (reusable 
 
 ## C007 phase 5
 K04 CI 45919760217: 4/4 resolved, 4 measured, 105 tests passed, 188 diagnostic records archived. Best local-k128-l01 MAE 1.37195009. 16/41 screens resolved, best overall local-k128-l01 1.37195009. Next K05–K06. No new data.
+
+## C007 phase 6
+K05 exact centered primal linear KRR (8192 rows, mean-loss lambda) and K06 exact dense RBF KRR (2048 rows, diagonal lambda) implemented; shared 24 RHS Cholesky, residual check, cubic preflight scaling, runtime guard in Cholesky, four new parity/analytic tests. Seven frozen screening configs submitted. No K05/K06 measurements yet. Verify CI before K07 official LIBSVM probe. No new data.

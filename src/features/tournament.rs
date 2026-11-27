@@ -200,3 +200,5 @@ pub mod neighbors;
 
 mod kernel_linalg;
 pub mod local;
+
+pub mod kernel_ridge;
