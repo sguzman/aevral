@@ -1,0 +1,63 @@
+name: C011 R00-R04 causal representation screens
+on:
+  push:
+    paths:
+      - '.github/workflows/c011-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: c011-fit
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: matrix
+        shell: bash
+        run: |
+          expected=9
+          file="campaigns/011-feature-engineering/screen-matrix.csv"
+          matrix=$(awk -F, '$1 ~ /^R0[0-4]$/' "$file" | jq -Rc 'split(",") | {method:.[0],config:.[1],seed:.[2],fold:.[3],track:.[4],dimension:.[5]}' | jq -sc '{include:.}')
+          test "$(jq '.include|length' <<< "$matrix")" -eq "$expected"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+  evaluate:
+    name: evaluate (${{ matrix.method }}, ${{ matrix.config }}, ${{ matrix.fold }}, ${{ matrix.seed }})
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    env:
+      METHOD: ${{ matrix.method }}
+      CONFIG: ${{ matrix.config }}
+      FOLD: ${{ matrix.fold }}
+      SEED: ${{ matrix.seed }}
+      TRACK: ${{ matrix.track }}
+      DIMENSION: ${{ matrix.dimension }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Native numerical tests and locked build
+        run: |
+          cargo test --locked --release
+          cargo build --locked --release
+      - name: Evaluate frozen screen recipe
+        run: bash scripts/c011-screen.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c011-screen-${{ matrix.method }}-${{ matrix.fold }}-${{ matrix.config }}-${{ matrix.seed }}
+          path: results-run/
+          retention-days: 30
