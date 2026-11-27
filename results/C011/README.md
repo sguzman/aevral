@@ -53,3 +53,7 @@ Best overall screen remains suffix24 (1.43152429°C). All new recipes have 7455 
 | select32-mean | A-derived | 1.64832539 | 2.15528575 | n/a |
 
 All 29 screens measured. Best screen suffix24 (1.43152429°C). All recipes advance under frozen manifest. Raw payloads not separately downloaded. No annual conclusions.
+
+## Annual promotion
+
+All 29 recipes promoted without elimination. [Promotion registry](promotion.csv). The [frozen annual matrix](../../campaigns/011-feature-engineering/annual-matrix.csv) contains 319 additional unique jobs, excluding 2019 seed42 screens; split 96/96/96/31 in deterministic recipe/fold/seed order. Same matched training subset, no model or data changes. Annual script retains independent matched/natural export checks for every fold. No annual results at launch.
