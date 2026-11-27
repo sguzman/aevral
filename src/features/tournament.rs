@@ -214,3 +214,7 @@ pub mod decomposition;
 pub mod dynamics;
 
 pub mod random_learners;
+
+mod markov;
+mod symbolic;
+pub mod alternative;

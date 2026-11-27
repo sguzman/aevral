@@ -12,6 +12,11 @@ fn main() {
         if let Err(e)=aevral::features::tournament::random_learners::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5],seed){eprintln!("{e}");std::process::exit(1)}
         return
     }
+    if args.get(1).map(String::as_str)==Some("alternative"){
+        if args.len()!=6{eprintln!("Usage: aevral alternative DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
+        if let Err(e)=aevral::features::tournament::alternative::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("decomp"){
         if args.len()!=6{eprintln!("Usage: aevral decomp DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
         if let Err(e)=aevral::features::tournament::decomposition::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
