@@ -1,0 +1,63 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.03s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+strategy-start,2020,daily-residual-mlp64,42
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+strategy-config,2020,daily-residual-mlp64,42,8192,12,0.001,6744,3218608,98304
+strategy-preflight,2020,daily-residual-mlp64,42,128,32,0.009866,0.000248,7.635296
+strategy-epoch,2020,daily-residual-mlp64,42,1,0.1426191294,0
+strategy-epoch,2020,daily-residual-mlp64,42,2,0.1205776790,0
+strategy-epoch,2020,daily-residual-mlp64,42,3,0.1133647033,0
+strategy-epoch,2020,daily-residual-mlp64,42,4,0.1076038240,0
+strategy-epoch,2020,daily-residual-mlp64,42,5,0.1038560204,0
+strategy-epoch,2020,daily-residual-mlp64,42,6,0.1026052413,0
+strategy-epoch,2020,daily-residual-mlp64,42,7,0.1008200689,0
+strategy-epoch,2020,daily-residual-mlp64,42,8,0.1002149861,0
+strategy-epoch,2020,daily-residual-mlp64,42,9,0.0994779921,0
+strategy-epoch,2020,daily-residual-mlp64,42,10,0.0986572890,0
+strategy-epoch,2020,daily-residual-mlp64,42,11,0.0985077008,0
+strategy-epoch,2020,daily-residual-mlp64,42,12,0.0977365941,0
+strategy-fit,2020,daily-residual-mlp64,42,0,6.009050,0.049079
+score,2020,daily-residual-mlp64,7543,1.59665762,2.14259527,0.053
+lead,2020,daily-residual-mlp64,1,0.74889748,0.97151539
+lead,2020,daily-residual-mlp64,2,0.87463082,1.13954752
+lead,2020,daily-residual-mlp64,3,1.04269423,1.36461528
+lead,2020,daily-residual-mlp64,4,1.15000684,1.51153019
+lead,2020,daily-residual-mlp64,5,1.18831920,1.56917306
+lead,2020,daily-residual-mlp64,6,1.34159936,1.73494534
+lead,2020,daily-residual-mlp64,7,1.35727110,1.77945336
+lead,2020,daily-residual-mlp64,8,1.41306841,1.85938056
+lead,2020,daily-residual-mlp64,9,1.45247910,1.91910955
+lead,2020,daily-residual-mlp64,10,1.51516019,2.00874207
+lead,2020,daily-residual-mlp64,11,1.58096302,2.10504484
+lead,2020,daily-residual-mlp64,12,1.63818167,2.17092501
+lead,2020,daily-residual-mlp64,13,1.70287676,2.25435836
+lead,2020,daily-residual-mlp64,14,1.86132009,2.44706168
+lead,2020,daily-residual-mlp64,15,2.06662053,2.67774678
+lead,2020,daily-residual-mlp64,16,2.11502616,2.73190898
+lead,2020,daily-residual-mlp64,17,1.81558780,2.38124544
+lead,2020,daily-residual-mlp64,18,1.76353308,2.30797673
+lead,2020,daily-residual-mlp64,19,1.84879659,2.40767160
+lead,2020,daily-residual-mlp64,20,2.10968515,2.71629336
+lead,2020,daily-residual-mlp64,21,2.06710253,2.66251611
+lead,2020,daily-residual-mlp64,22,1.96285628,2.53731819
+lead,2020,daily-residual-mlp64,23,1.82866426,2.36839635
+lead,2020,daily-residual-mlp64,24,1.87444212,2.41188742
+month,2020,daily-residual-mlp64,1,640,1.74783117,2.31597809
+month,2020,daily-residual-mlp64,2,594,1.44026442,1.92888420
+month,2020,daily-residual-mlp64,3,729,1.56693255,2.04236108
+month,2020,daily-residual-mlp64,4,507,1.26998052,1.66269796
+month,2020,daily-residual-mlp64,5,625,1.88400197,2.62066065
+month,2020,daily-residual-mlp64,6,699,1.50156691,2.11560522
+month,2020,daily-residual-mlp64,7,622,1.68990312,2.24240775
+month,2020,daily-residual-mlp64,8,715,1.73414095,2.27351920
+month,2020,daily-residual-mlp64,9,345,1.34605934,1.75795045
+month,2020,daily-residual-mlp64,10,733,1.47269149,1.92752291
+month,2020,daily-residual-mlp64,11,717,1.59744703,2.12676164
+month,2020,daily-residual-mlp64,12,617,1.74378535,2.30053426
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.75
+	Maximum resident set size (kbytes): 333072
+	Exit status: 0
+strategy-end,2020,daily-residual-mlp64,42
