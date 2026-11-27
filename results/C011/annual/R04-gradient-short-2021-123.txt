@@ -1,0 +1,78 @@
+test result: ok. 191 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+representation-start,2021,gradient-short,123
+cohort,2021,136893,7501,8737,7714
+scales,2021,[11.643995464674955, 6.369915113055379, 6.378974251584813, 5.044069639482702, 1017.4178067057464, 7.050946823816145, 0.26877858793517906, 2.139800549110102, 0.8914499366987545, 3.2088313577904324]
+baseline,2021,daily,2.14898785,2.81802465
+representation-scale,2021,gradient-short,0,-0.028932020399305276,0.9856714652017902,8192,false
+representation-scale,2021,gradient-short,1,-0.010012478298611082,1.0791002052315266,8192,false
+representation-scale,2021,gradient-short,2,-0.021075665509259406,0.7577884995793865,8192,false
+representation-scale,2021,gradient-short,3,0.0021743586033950647,0.2757621341045421,8192,false
+representation-scale,2021,gradient-short,4,-0.02433720341435181,0.6313420227947694,8192,false
+representation-scale,2021,gradient-short,5,-0.004585624035493824,0.15649912770758254,8192,false
+representation-config,2021,gradient-short,123,8192,12,0.001,86,7128,16686704,98304
+representation-preflight,2021,gradient-short,123,0.811985,0.006354,0.000158,5.734864
+representation-epoch,2021,gradient-short,123,1,0.1545656299
+representation-epoch,2021,gradient-short,123,2,0.1299877816
+representation-epoch,2021,gradient-short,123,3,0.1201761114
+representation-epoch,2021,gradient-short,123,4,0.1135789744
+representation-epoch,2021,gradient-short,123,5,0.1097318515
+representation-epoch,2021,gradient-short,123,6,0.1064456527
+representation-epoch,2021,gradient-short,123,7,0.1035259720
+representation-epoch,2021,gradient-short,123,8,0.1026009372
+representation-epoch,2021,gradient-short,123,9,0.1005833571
+representation-epoch,2021,gradient-short,123,10,0.1004253947
+representation-epoch,2021,gradient-short,123,11,0.0985807072
+representation-epoch,2021,gradient-short,123,12,0.0986331967
+score,2021,gradient-short,7501,1.62880817,2.22871382
+lead,2021,gradient-short,1,0.98275948,1.47489866
+lead,2021,gradient-short,2,1.08246894,1.58729380
+lead,2021,gradient-short,3,1.18102555,1.68040259
+lead,2021,gradient-short,4,1.26202272,1.73941958
+lead,2021,gradient-short,5,1.36975148,1.87892260
+lead,2021,gradient-short,6,1.43189900,1.94315718
+lead,2021,gradient-short,7,1.47930598,1.99030332
+lead,2021,gradient-short,8,1.55199652,2.08518438
+lead,2021,gradient-short,9,1.58407180,2.12485125
+lead,2021,gradient-short,10,1.66359525,2.24519317
+lead,2021,gradient-short,11,1.70320738,2.29514252
+lead,2021,gradient-short,12,1.75247661,2.35701901
+lead,2021,gradient-short,13,1.75554297,2.36205678
+lead,2021,gradient-short,14,1.78521126,2.39374497
+lead,2021,gradient-short,15,1.80982377,2.42287997
+lead,2021,gradient-short,16,1.78838910,2.38896532
+lead,2021,gradient-short,17,1.79444400,2.40143733
+lead,2021,gradient-short,18,1.81308401,2.42932806
+lead,2021,gradient-short,19,1.85489297,2.48913874
+lead,2021,gradient-short,20,1.85989526,2.48030230
+lead,2021,gradient-short,21,1.86848220,2.50809917
+lead,2021,gradient-short,22,1.87686848,2.50733545
+lead,2021,gradient-short,23,1.91909826,2.56995793
+lead,2021,gradient-short,24,1.92108303,2.56673702
+month,2021,gradient-short,1,644,1.43877316,1.86733782
+month,2021,gradient-short,2,572,1.29750161,1.63310290
+month,2021,gradient-short,3,477,1.35590410,1.76434684
+month,2021,gradient-short,4,692,1.41715069,1.90506933
+month,2021,gradient-short,5,629,1.37884216,1.77982324
+month,2021,gradient-short,6,694,2.61735817,3.70705532
+month,2021,gradient-short,7,707,1.73250100,2.26708703
+month,2021,gradient-short,8,618,1.87215875,2.44728894
+month,2021,gradient-short,9,599,1.50055904,1.93734086
+month,2021,gradient-short,10,509,1.45360216,1.84515333
+month,2021,gradient-short,11,646,1.63934047,2.17668272
+month,2021,gradient-short,12,714,1.62208934,2.24064143
+representation-natural,2021,gradient-short,8737,7501,7501
+representation-fit,2021,gradient-short,123,4.749847,0.077209
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:05.65
+	Maximum resident set size (kbytes): 312664
+	Exit status: 0
+representation-rescore,2021,gradient-short,matched,7501,1.62880817,2.22871382,pass
+representation-end,2021,gradient-short,123
+c0511aa654ec3ba291bcc13016ee790c83329af849b092bbeab8319f0005c5e5  fit-origins.txt
+433ac6f8901354ab64338ceb548a6686704db6925bdaca56ff5badd9e38944a0  matched-origins.txt
+78803ce2f399d4d4ff6c220662ca5c33a9d70f3f4cc3f0aaee883a9958b96575  metrics.txt
+645cac17bd012e97647c58f518b002b6b4f7cbb651a69a1a2f7839f0718a0f98  predictions.csv.gz
+dbdfc6db67b259de7c6c71ecda9dcff4f0e692f95f7ccff819ed381862e89dc2  rescore.txt
+15c2a4d388687c7fae5333e4f176eecbb7b2f961b957faf1ba155d815fc47365  resources.txt
+207f9df1da58dd9731f612044597b3286450bd7493e113c1c851d7ddf1d706a3  train-origins.txt
