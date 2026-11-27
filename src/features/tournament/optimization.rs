@@ -68,6 +68,7 @@ pub fn early_split(origins:&[i64])->Result<(usize,usize),String>{
 /// Only the frozen configuration strings from the candidate grid are accepted.
 pub fn run_native_deterministic(c:Candidate,f:&super::PreparedFold,rows:&[&TrainingRow],out:&mut impl std::io::Write)->Result<(),String>{
     match (c.family,c.configuration){
+        (Family::Lightgbm,_)=>super::upstream::optimize(f,rows,c.id,c.configuration,out),
         (Family::Arx,"p6")=>super::autoreg::optimize(f,rows,c.id,6,out),
         (Family::Arx,"p12")=>super::autoreg::optimize(f,rows,c.id,12,out),
         (Family::Arx,"p24")=>super::autoreg::optimize(f,rows,c.id,24,out),

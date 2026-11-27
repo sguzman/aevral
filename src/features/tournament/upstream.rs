@@ -91,13 +91,30 @@ fn parse_predictions(s:&str,n:usize,header:bool)->Result<Vec<f64>,String>{
 fn read_predictions(path:&Path,n:usize,header:bool)->Result<Vec<f64>,String>{
     let s=std::fs::read_to_string(path).map_err(|e|e.to_string())?;parse_predictions(&s,n,header)
 }
-fn cli_fit(backend:&str,d:&Data,eval:&[[f64;D]],y:&[f64],rounds:usize,seed:u64,dir:&Path,now:Instant)->Result<(Vec<f64>,usize,usize),String>{
+#[derive(Clone,Copy,Debug,PartialEq)]
+struct LightConfig{rounds:usize,depth:usize,leaves:usize,eta:f64,min_leaf:usize}
+impl LightConfig{
+    fn old(rounds:usize)->Self{Self{rounds,depth:4,leaves:16,eta:0.1,min_leaf:32}}
+    fn args(self,seed:u64)->Vec<String>{vec!["task=train".into(),"data=train.tsv".into(),"output_model=model.txt".into(),"objective=regression".into(),"boosting=gbdt".into(),format!("num_iterations={}",self.rounds),format!("num_leaves={}",self.leaves),format!("max_depth={}",self.depth),format!("learning_rate={}",self.eta),"max_bin=64".into(),format!("min_data_in_leaf={}",self.min_leaf),"num_threads=2".into(),format!("seed={seed}"),"deterministic=true".into(),"force_col_wise=true".into(),"verbosity=-1".into()]}
+}
+fn optimization_light_config(label:&str)->Result<LightConfig,String>{
+    let (rounds,depth,leaves,eta,min_leaf)=match label{
+        "r128-d4-l16-eta01-min32"=>(128,4,16,0.1,32),
+        "r256-d4-l16-eta005-min32"=>(256,4,16,0.05,32),
+        "r128-d6-l32-eta01-min32"=>(128,6,32,0.1,32),
+        "r256-d6-l32-eta005-min32"=>(256,6,32,0.05,32),
+        "r128-d4-l16-eta01-min64"=>(128,4,16,0.1,64),
+        "r128-d3-l8-eta01-min16"=>(128,3,8,0.1,16),
+        _=>return Err("unknown frozen C012 LightGBM configuration".into())
+    };Ok(LightConfig{rounds,depth,leaves,eta,min_leaf})
+}
+fn cli_fit(backend:&str,d:&Data,eval:&[[f64;D]],y:&[f64],rounds:usize,seed:u64,dir:&Path,now:Instant,light:Option<LightConfig>)->Result<(Vec<f64>,usize,usize),String>{
     write_rows(&dir.join("train.tsv"),&d.x,Some(y))?;
     write_rows(&dir.join("eval.tsv"),eval,None)?;
     let _=std::fs::remove_file(dir.join("pred.txt"));let _=std::fs::remove_file(dir.join("model.txt"));let _=std::fs::remove_file(dir.join("model.json"));
     if backend=="lightgbm"{
         let bin=std::env::var("AEVRAL_LIGHTGBM").map_err(|_|"use locked boosting shell")?;
-        let args=vec!["task=train".into(),"data=train.tsv".into(),"output_model=model.txt".into(),"objective=regression".into(),"boosting=gbdt".into(),format!("num_iterations={rounds}"),"num_leaves=16".into(),"max_depth=4".into(),"learning_rate=0.1".into(),"max_bin=64".into(),"min_data_in_leaf=32".into(),"num_threads=2".into(),format!("seed={seed}"),"deterministic=true".into(),"force_col_wise=true".into(),"verbosity=-1".into()];
+        let args=light.unwrap_or_else(||LightConfig::old(rounds)).args(seed);
         command(&bin,&args,dir,now)?;
         command(&bin,&["task=predict","data=eval.tsv","input_model=model.txt","output_result=pred.txt","num_threads=2","verbosity=-1"].map(String::from),dir,now)?;
         let s=std::fs::read_to_string(dir.join("model.txt")).map_err(|e|e.to_string())?;
@@ -126,7 +143,7 @@ fn all_leads(backend:&str,d:&Data,eval:&[[f64;D]],rounds:usize,seed:u64,leads:us
     for h in 0..leads{
         let timer=Instant::now();let y:Vec<_>=d.y.iter().map(|r|r[h]).collect();
         let(v,trees,leaves)=if let(Some(x),Some((tr,ev)))=(&xgb,&matrices){x.fit(tr,ev,&y,eval.len(),rounds,seed,now)?}
-        else{cli_fit(backend,d,eval,&y,rounds,seed,&scratch.as_ref().unwrap().0,now)?};
+        else{cli_fit(backend,d,eval,&y,rounds,seed,&scratch.as_ref().unwrap().0,now,None)?};
         if v.len()!=eval.len()||v.iter().any(|p|!p.is_finite())||trees==0||trees>rounds||leaves<trees{return Err("invalid prediction or model counts".into())}
         for(i,p)in v.into_iter().enumerate(){result[i][h]=p}
         let elapsed=timer.elapsed().as_secs_f64();println!("upstream-lead,{backend},{},{trees},{leaves},{elapsed:.6}",h+1);
@@ -160,10 +177,54 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),Strin
         Err(e)=>return Err(e)
     }out.flush().map_err(|e|e.to_string())?;Ok(())
 }
+/// C012: fixed-budget official LightGBM, one scalar regressor per lead.
+pub(super) fn optimize(f:&super::PreparedFold,rows:&[&super::TrainingRow],label:&str,configuration:&str,out:&mut impl Write)->Result<(),String>{
+    let cfg=optimization_light_config(configuration)?;let id=f.fold.id;let now=Instant::now();
+    let n=rows.len();let m=f.eval.len();
+    let workspace=8*(n+m)*(D+Y)*4+8*n*cfg.leaves*4;
+    if workspace>2_000_000_000{println!("blocked,{id},{label},preflight workspace guard");return Ok(())}
+    let d=Data{x:rows.iter().map(|r|r.input.x).collect(),y:rows.iter().map(|r|r.normalized_target).collect()};
+    let scratch=Scratch::new()?;
+    // Disposable probe uses only training rows and one lead, not evaluation labels.
+    let probe_n=n.min(512);let probe=Data{x:(0..probe_n).map(|i|d.x[i*n/probe_n]).collect(),y:(0..probe_n).map(|i|d.y[i*n/probe_n]).collect()};
+    let probe_eval:Vec<_>=probe.x.iter().take(32).copied().collect();let y:Vec<_>=probe.y.iter().map(|r|r[0]).collect();
+    let timer=Instant::now();
+    match cli_fit("lightgbm",&probe,&probe_eval,&y,cfg.rounds,42,&scratch.0,now,Some(cfg)){
+        Ok(_)=>{},Err(e)if e.contains("guard")=>{println!("blocked,{id},{label},{e}");return Ok(())},Err(e)=>return Err(e)
+    }
+    let probe_s=timer.elapsed().as_secs_f64();let estimate=probe_s*n as f64/probe_n as f64*Y as f64;
+    println!("optimization-light-preflight,{id},{label},{n},{probe_n},{workspace},{probe_s:.6},{estimate:.6}");
+    if 2.*estimate+180.>GUARD{println!("blocked,{id},{label},preflight runtime guard");return Ok(())}
+    let ev:Vec<_>=f.eval.iter().map(|r|r.input.x).collect();let mut pred=vec![[0.;Y];m];let mut leaves_total=0usize;
+    let timer=Instant::now();
+    for h in 0..Y{
+        let y:Vec<_>=d.y.iter().map(|r|r[h]).collect();let lead_timer=Instant::now();
+        let(v,trees,leaves)=match cli_fit("lightgbm",&d,&ev,&y,cfg.rounds,42,&scratch.0,now,Some(cfg)){
+            Ok(v)=>v,Err(e)if e.contains("guard")=>{println!("blocked,{id},{label},{e}");return Ok(())},Err(e)=>return Err(e)
+        };
+        if v.len()!=m||v.iter().any(|v|!v.is_finite())||trees==0||trees>cfg.rounds||leaves<trees||leaves>trees*cfg.leaves{return Err("invalid C012 LightGBM counts".into())}
+        for(i,p)in v.into_iter().enumerate(){pred[i][h]=p;}leaves_total+=leaves;
+        println!("upstream-lead,lightgbm,{},{trees},{leaves},{:.6}",h+1,lead_timer.elapsed().as_secs_f64());
+    }
+    // CLI adapters combine fit and prediction; keep joint cost, do not invent separation.
+    let joint=timer.elapsed().as_secs_f64();
+    let mut map=BTreeMap::new();for(r,p)in f.eval.iter().zip(pred){if map.insert(r.input.origin,f.restore(p)).is_some(){return Err("duplicate origin".into())}}
+    println!("optimization-light-config,{id},{label},{n},{},{},{},{},{},24,{leaves_total},{joint:.6}",cfg.rounds,cfg.depth,cfg.leaves,cfg.eta,cfg.min_leaf);
+    let timer=Instant::now();score(&Model{pred:map},label,f,out)?;
+    println!("optimization-cost,{id},{label},{joint:.6},{:.6},{leaves_total}",timer.elapsed().as_secs_f64());
+    println!("optimization-cost-note,{id},{label},joint-cli-fit-predict-plus-export");Ok(())
+}
 #[cfg(test)]
 mod tests{
     use super::*;
     #[test]fn configs(){assert_eq!(config("xgboost-64").unwrap(),("xgboost",64));assert!(config("xgboost-32").is_err());assert!(config("fake-64").is_err());}
     #[test]fn prediction_identity(){assert_eq!(parse_predictions("SampleId\tRawFormulaVal\n0\t-2\n1\t2\n",2,true).unwrap(),vec![-2.,2.]);assert!(parse_predictions("SampleId\tRawFormulaVal\n1\t-2\n0\t2\n",2,true).is_err());assert!(parse_predictions("SampleId\tRawFormulaVal\n0\tNaN\n",1,true).is_err());assert!(parse_predictions("RawFormulaVal\n2\n",1,true).is_err());assert_eq!(parse_predictions("-2\n2\n",2,false).unwrap(),vec![-2.,2.]);}
     #[test]fn label_free_export(){let p=std::env::temp_dir().join(format!("aevral-export-test-{}",std::process::id()));let x=vec![[1.;D];2];write_rows(&p,&x,None).unwrap();let s=std::fs::read_to_string(&p).unwrap();assert!(s.lines().all(|r|r.split('\t').count()==D));write_rows(&p,&x,Some(&[5.,6.])).unwrap();let s=std::fs::read_to_string(&p).unwrap();assert!(s.lines().all(|r|r.split('\t').count()==D+1));std::fs::remove_file(p).unwrap();}
+    #[test]fn optimization_light_grid_and_legacy_args(){
+        let c=optimization_light_config("r128-d4-l16-eta01-min32").unwrap();
+        assert_eq!(c,LightConfig::old(128));assert_eq!(c.args(42),LightConfig::old(128).args(42));
+        let args=optimization_light_config("r256-d6-l32-eta005-min32").unwrap().args(42);
+        for v in ["num_iterations=256","max_depth=6","num_leaves=32","learning_rate=0.05","min_data_in_leaf=32","deterministic=true"]{assert!(args.iter().any(|a|a==v));}
+        assert!(optimization_light_config("r999").is_err());
+    }
 }

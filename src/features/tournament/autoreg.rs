@@ -152,4 +152,10 @@ mod tests{
     #[test]fn recursion(){let mut x=[0.;80];x[71]=2.;let input=OriginInput{origin:0,x,recent:[0.;24]};let mut b=vec![vec![0.];7];b[1][0]=0.5;let m=Model{kind:Kind::Ar(6,false),b,mean:0.,sd:1.};for(h,p)in m.predict(&input).iter().enumerate(){assert!((p-2.*0.5_f64.powi(h as i32+1)).abs()<1e-10)}}
     #[test]fn joint_recursion(){let mut x=[0.;80];x[71]=2.;x[76]=3.;let input=OriginInput{origin:0,x,recent:[0.;24]};let mut b=vec![vec![0.;5];6];b[2][0]=1.;b[2][1]=0.5;let m=Model{kind:Kind::Var(false),b,mean:0.,sd:1.};let y=m.predict(&input);assert_eq!(y[0],3.);assert_eq!(y[1],1.5);}
     #[test]fn calendar_advances(){let h=[0.;72];let w=[1.,2.,3.,4.];let a=design(Kind::Ar(6,true),&h,&w,0);let b=design(Kind::Ar(6,true),&h,&w,60);assert_ne!(a[7..11],b[7..11]);assert_eq!(a[11..15],b[11..15]);}
+    #[test]fn optimization_arx_ref_parity_and_new_orders(){
+        let rows:Vec<_>=(0..900).map(|i|{let t=i as i64*720;let x:[f64;80]=std::array::from_fn(|j|((i*81+j+1) as f64*0.731).sin()+((i*83+j*j+7)as f64*0.193).cos()+((i*j+17)as f64*0.127).sin());let y=[0.25*x[71]+0.1*x[76];24];TrainingRow{input:OriginInput{origin:t,x,recent:[0.;24]},target:y,normalized_target:y}}).collect();
+        let refs:Vec<_>=rows.iter().collect();
+        let k=Kind::Ar(6,true);let(m,n,_,_,_)=fit(&rows,k,0.,1.).unwrap();let(r,n2,_,_,_)=fit_refs(&refs,k,0.,1.).unwrap();assert_eq!(n,n2);assert_eq!(m.b,r.b);
+        for p in [12,36]{let k=Kind::Ar(p,true);assert_eq!(design(k,&rows[0].input.x[..72],&[0.;4],0).len(),p+9);}
+    }
 }

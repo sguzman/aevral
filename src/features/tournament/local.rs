@@ -94,4 +94,10 @@ mod tests{
     #[test]fn local_affine_recovery(){let d=[row(-1.,1.),row(0.,3.),row(1.,5.)];let rows:Vec<_>=d.iter().collect();let mut q=[0.;D];q[23]=0.5;let(p,e)=predict(&rows,&q,3,1e-9).unwrap();assert!((p[0]-4.).abs()<1e-8);assert!(e<1e-12);}
     #[test]fn analytic_ridge_shrinkage(){let d=[row(-1.,1.),row(1.,5.)];let rows:Vec<_>=d.iter().collect();let mut q=[0.;D];q[23]=2.;let(p,_)=predict(&rows,&q,2,1.).unwrap();assert!((p[0]-5.).abs()<1e-12);}
     #[test]fn constant_rank_deficient(){let d=[row(1.,2.),row(1.,6.)];let rows:Vec<_>=d.iter().collect();let(p,_)=predict(&rows,&[0.;D],2,0.01).unwrap();assert_eq!(p,[4.;Y]);}
+    #[test]fn optimization_distance_and_ties(){
+        let mut d=[row(1.,2.),row(-1.,6.),row(2.,10.)];d[2].input.x[23]=0.;d[2].input.x[24]=0.9;d[2].input.x[25]=0.9;
+        let rows:Vec<_>=d.iter().collect();let q=[0.;D];
+        let l1=nearest_l1(&rows,&q,2);assert_eq!(l1.iter().map(|n|n.i).collect::<Vec<_>>(),vec![0,1]);
+        let a=predict(&rows,&q,3,0.01).unwrap();let b=predict_opt(&rows,&q,3,0.01,false).unwrap();assert_eq!(a,b);
+    }
 }

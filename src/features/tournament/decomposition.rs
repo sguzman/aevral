@@ -175,4 +175,10 @@ mod tests{
         let refs:Vec<_>=rows.iter().collect();let z=vec![vec![-1.],vec![0.],vec![1.]];
         let(m,e)=Readout::fit(&refs,&z,1./3.,Instant::now()).unwrap();assert!(e<1e-12);assert!((m.predict(&[0.]).unwrap()[0]-3.).abs()<1e-12);assert!((m.predict(&[1.]).unwrap()[0]-(3.+4./3.)).abs()<1e-12);
     }
+    #[test]fn optimization_haar_full_width(){
+        let x:[f64;D]=std::array::from_fn(|i|(i as f64*0.23).sin());
+        let full=Map::new(Kind::Haar(64)).transform(&x).unwrap();let partial=Map::new(Kind::Haar(32)).transform(&x).unwrap();
+        assert_eq!(full.len(),73);assert_eq!(&full[..32],&partial[..32]);assert_eq!(&full[64..],&partial[32..]);
+        assert!((dot(&full[..64],&full[..64])-dot(&x[8..72],&x[8..72])).abs()<1e-10);
+    }
 }

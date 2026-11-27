@@ -193,4 +193,9 @@ mod tests{
         let s=stats(&rows,&t);let(b,r,inv)=fit_subset(&s,&[0,1,2]).unwrap();
         let(_,r2,_)=fit_subset(&s,&[0,2]).unwrap();assert!((r2-r-gain(&b[1])/inv[1]).abs()<1e-8);
     }
+    #[test]fn optimization_mars_reference_parity(){
+        let rows:Vec<_>=(0..101).map(|i|{let mut x=[0.;D];x[5]=(i as f64-50.)/10.;let y=[2.+x[5].abs();Y];TrainingRow{input:OriginInput{origin:0,x,recent:[0.;Y]},target:y,normalized_target:y}}).collect();
+        let refs:Vec<_>=rows.iter().collect();let a=forward(&rows,16,1).unwrap();let b=forward_refs(&refs,16,1).unwrap();assert_eq!(a,b);
+        let sa=stats(&rows,&a);let sb=stats_refs(&refs,&b);assert_eq!(sa.g,sb.g);assert_eq!(sa.xy,sb.xy);assert_eq!(sa.yy,sb.yy);
+    }
 }
