@@ -8,6 +8,11 @@
       default = pkgs.mkShell {
         packages = with pkgs; [ rustc cargo rustfmt clippy curl coreutils ];
       };
+      svr = pkgs.mkShell {
+        packages = with pkgs; [ rustc cargo rustfmt clippy coreutils libsvm ];
+        AEVRAL_LIBSVM_ROOT = "${pkgs.libsvm}";
+        AEVRAL_LIBSVM_VERSION = pkgs.libsvm.version;
+      };
       boosting = pkgs.mkShell {
         packages = with pkgs; [ rustc cargo rustfmt clippy coreutils xgboost lightgbm catboost ];
         AEVRAL_XGBOOST_LIB = "${pkgs.xgboost}/lib/libxgboost.so";
