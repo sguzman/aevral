@@ -1,0 +1,73 @@
+test result: ok. 185 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+representation-start,2019,dew-depression-replace,42
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+representation-scale,2019,dew-depression-replace,0,5.145096842447881,4.251943607759311,8192,false
+representation-config,2019,dew-depression-replace,42,8192,12,0.001,80,6744,15837184,98304
+representation-preflight,2019,dew-depression-replace,42,0.716465,0.006181,0.000154,5.505595
+representation-epoch,2019,dew-depression-replace,42,1,0.1554295146
+representation-epoch,2019,dew-depression-replace,42,2,0.1310222734
+representation-epoch,2019,dew-depression-replace,42,3,0.1224675731
+representation-epoch,2019,dew-depression-replace,42,4,0.1153404755
+representation-epoch,2019,dew-depression-replace,42,5,0.1101826022
+representation-epoch,2019,dew-depression-replace,42,6,0.1081460324
+representation-epoch,2019,dew-depression-replace,42,7,0.1067979457
+representation-epoch,2019,dew-depression-replace,42,8,0.1048518301
+representation-epoch,2019,dew-depression-replace,42,9,0.1027492193
+representation-epoch,2019,dew-depression-replace,42,10,0.1027980507
+representation-epoch,2019,dew-depression-replace,42,11,0.1019254388
+representation-epoch,2019,dew-depression-replace,42,12,0.1005505746
+score,2019,dew-depression-replace,7455,1.52916880,1.99072274
+lead,2019,dew-depression-replace,1,0.80223638,1.04826767
+lead,2019,dew-depression-replace,2,0.92368221,1.20089387
+lead,2019,dew-depression-replace,3,1.05878283,1.36857676
+lead,2019,dew-depression-replace,4,1.17842690,1.51711374
+lead,2019,dew-depression-replace,5,1.29645704,1.66628384
+lead,2019,dew-depression-replace,6,1.36591586,1.75503126
+lead,2019,dew-depression-replace,7,1.42643504,1.83395665
+lead,2019,dew-depression-replace,8,1.54293775,1.96454050
+lead,2019,dew-depression-replace,9,1.54247784,1.96494826
+lead,2019,dew-depression-replace,10,1.58318090,2.01442086
+lead,2019,dew-depression-replace,11,1.56110461,1.99237754
+lead,2019,dew-depression-replace,12,1.54632690,1.97892141
+lead,2019,dew-depression-replace,13,1.62122690,2.08638670
+lead,2019,dew-depression-replace,14,1.65781473,2.12696423
+lead,2019,dew-depression-replace,15,1.68323218,2.15978292
+lead,2019,dew-depression-replace,16,1.71103918,2.19089564
+lead,2019,dew-depression-replace,17,1.73410902,2.21314656
+lead,2019,dew-depression-replace,18,1.73592116,2.21526599
+lead,2019,dew-depression-replace,19,1.75003519,2.22863192
+lead,2019,dew-depression-replace,20,1.78036576,2.27308948
+lead,2019,dew-depression-replace,21,1.77342337,2.26508115
+lead,2019,dew-depression-replace,22,1.79995132,2.30084448
+lead,2019,dew-depression-replace,23,1.80396086,2.31149952
+lead,2019,dew-depression-replace,24,1.82100718,2.33739152
+month,2019,dew-depression-replace,1,736,1.68756943,2.22429084
+month,2019,dew-depression-replace,2,567,1.54752856,1.95358926
+month,2019,dew-depression-replace,3,634,1.60644638,2.14183545
+month,2019,dew-depression-replace,4,706,1.35827361,1.77693724
+month,2019,dew-depression-replace,5,716,1.97723793,2.51003195
+month,2019,dew-depression-replace,6,505,1.50413850,1.94508215
+month,2019,dew-depression-replace,7,715,1.49543771,1.96098160
+month,2019,dew-depression-replace,8,706,1.57999473,1.96858733
+month,2019,dew-depression-replace,9,508,1.43391836,1.77707750
+month,2019,dew-depression-replace,10,441,1.42561853,1.84949875
+month,2019,dew-depression-replace,11,615,1.39961549,1.85378786
+month,2019,dew-depression-replace,12,606,1.19657929,1.55628750
+representation-natural,2019,dew-depression-replace,8737,7455,7455
+representation-fit,2019,dew-depression-replace,42,4.542192,0.075057
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:05.34
+	Maximum resident set size (kbytes): 281400
+	Exit status: 0
+representation-rescore,2019,dew-depression-replace,matched,7455,1.52916880,1.99072274,pass
+representation-end,2019,dew-depression-replace,42
+5258c87d9c06267613a3fbd52779c1a92986d348e771f8d03f4e51a7117974f7  fit-origins.txt
+b83cbabddae4c82e59c8eb39c9bdd71ff297afef3f03da1f77a33ee6392d7339  matched-origins.txt
+ca307aba4cee0002eba4b1a773f7430572a4668ca9ee73361bc5755c30932caf  metrics.txt
+7febf7db794eee7be0a1c3dcbcdff194f3acecb1e70162b72effa9338f77b2ac  predictions.csv.gz
+4da8efa8549616d0800484b5c688343b5330b599289710f48c6f685094874e90  rescore.txt
+8970d9e76159f96b985e965f0069600c58874c49d613acf6ddbf021286c51bd3  resources.txt
+cbccba439e5b78f9dbaad1722d1d8dae9c76fa613f8aca99ad783c8a65e00204  train-origins.txt

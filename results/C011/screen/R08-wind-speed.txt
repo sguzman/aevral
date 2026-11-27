@@ -1,0 +1,73 @@
+test result: ok. 185 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.34s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+representation-start,2019,wind-speed,42
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+representation-scale,2019,wind-speed,0,3.3855870225664866,2.0411330955872513,8192,false
+representation-config,2019,wind-speed,42,8192,12,0.001,81,6808,15970552,98304
+representation-preflight,2019,wind-speed,42,1.025302,0.010046,0.000247,8.807948
+representation-epoch,2019,wind-speed,42,1,0.1544017618
+representation-epoch,2019,wind-speed,42,2,0.1310253835
+representation-epoch,2019,wind-speed,42,3,0.1223912100
+representation-epoch,2019,wind-speed,42,4,0.1153925422
+representation-epoch,2019,wind-speed,42,5,0.1106900144
+representation-epoch,2019,wind-speed,42,6,0.1085873287
+representation-epoch,2019,wind-speed,42,7,0.1072676305
+representation-epoch,2019,wind-speed,42,8,0.1056211264
+representation-epoch,2019,wind-speed,42,9,0.1026890285
+representation-epoch,2019,wind-speed,42,10,0.1030036520
+representation-epoch,2019,wind-speed,42,11,0.1014198322
+representation-epoch,2019,wind-speed,42,12,0.1007204379
+score,2019,wind-speed,7455,1.50584971,1.95563110
+lead,2019,wind-speed,1,0.83427058,1.08568471
+lead,2019,wind-speed,2,0.97100258,1.25787212
+lead,2019,wind-speed,3,1.07788518,1.39711308
+lead,2019,wind-speed,4,1.19611575,1.54033856
+lead,2019,wind-speed,5,1.30183232,1.67759191
+lead,2019,wind-speed,6,1.38417501,1.78070631
+lead,2019,wind-speed,7,1.41906699,1.82815343
+lead,2019,wind-speed,8,1.53816136,1.96439905
+lead,2019,wind-speed,9,1.52473205,1.94920692
+lead,2019,wind-speed,10,1.56760130,1.99875589
+lead,2019,wind-speed,11,1.54433910,1.98075546
+lead,2019,wind-speed,12,1.52386863,1.95707075
+lead,2019,wind-speed,13,1.58321600,2.03864509
+lead,2019,wind-speed,14,1.61788433,2.07895905
+lead,2019,wind-speed,15,1.64221252,2.10796048
+lead,2019,wind-speed,16,1.65461126,2.11792531
+lead,2019,wind-speed,17,1.67130500,2.12802267
+lead,2019,wind-speed,18,1.66779781,2.12089896
+lead,2019,wind-speed,19,1.68839823,2.14295873
+lead,2019,wind-speed,20,1.71332788,2.18583761
+lead,2019,wind-speed,21,1.72739074,2.20263048
+lead,2019,wind-speed,22,1.74881798,2.23487061
+lead,2019,wind-speed,23,1.75964310,2.25569805
+lead,2019,wind-speed,24,1.78273731,2.28683610
+month,2019,wind-speed,1,736,1.58703538,2.08809885
+month,2019,wind-speed,2,567,1.50685440,1.92143600
+month,2019,wind-speed,3,634,1.57790717,2.11620936
+month,2019,wind-speed,4,706,1.33448148,1.72884461
+month,2019,wind-speed,5,716,1.85011616,2.35244925
+month,2019,wind-speed,6,505,1.51264346,1.95915211
+month,2019,wind-speed,7,715,1.54541008,2.01625046
+month,2019,wind-speed,8,706,1.63949747,2.04902012
+month,2019,wind-speed,9,508,1.44910982,1.78854491
+month,2019,wind-speed,10,441,1.42115670,1.85529383
+month,2019,wind-speed,11,615,1.38519148,1.80528583
+month,2019,wind-speed,12,606,1.14741887,1.48754849
+representation-natural,2019,wind-speed,8737,7455,7455
+representation-fit,2019,wind-speed,42,7.585430,0.114036
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.75
+	Maximum resident set size (kbytes): 281080
+	Exit status: 0
+representation-rescore,2019,wind-speed,matched,7455,1.50584971,1.95563110,pass
+representation-end,2019,wind-speed,42
+5258c87d9c06267613a3fbd52779c1a92986d348e771f8d03f4e51a7117974f7  fit-origins.txt
+b83cbabddae4c82e59c8eb39c9bdd71ff297afef3f03da1f77a33ee6392d7339  matched-origins.txt
+15cd8414dae085d8d50be852cb0dd72ce13a8b3def7917b141da92860f534a97  metrics.txt
+ed32e5a9d9f332f1389bde8baa3a9e93fed5a2eafa85d2505c0f69f502de313b  predictions.csv.gz
+55bec909216d2145324e7cd3b1c7d5b3e1a8007318ec90e63802677408c7ceef  rescore.txt
+a6a51a36c01d62b5581b584f8db4fcc810f9e3ffb1e80ad6ddc633a4a52c402d  resources.txt
+cbccba439e5b78f9dbaad1722d1d8dae9c76fa613f8aca99ad783c8a65e00204  train-origins.txt

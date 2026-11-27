@@ -15,3 +15,22 @@ R00–R04: 9/9 measured, zero blocked. All nine artifact names reconciled, 179 t
 | rolling-6-24-72 | A-derived | 1.59863373 | 2.04761670 | 7455 | 1.59863373 |
 
 Suffix24 covers 493 additional origins; suffix48 covers 236. Sparse 14d/28d lag all-observed eval counts 7393/7370 of 7455, respectively. No unmatched-score comparison as paired. Next R05–R09.
+
+## R05–R09
+
+10/10 measured, zero blocked. 185 tests per job, all ten artifact names reconciled, independent CI aggregate and per-lead rescoring passed; origin hashes identical to R00–R04. [CI](https://github.com/sguzman/aevral/actions/runs/46071772050).
+
+| Recipe | Track | Matched MAE °C | RMSE °C | All optional observed (eval) |
+|---|---|---:|---:|---:|
+| pressure-tendency-long | B-expanded | 1.49161035 | 1.94371975 | 7455 |
+| dew-depression-add | A-derived | 1.49766716 | 1.94963179 | n/a |
+| weather-history-long | B-expanded | 1.49821302 | 1.93968125 | 6842 |
+| weather-history-short | B-expanded | 1.49938380 | 1.95334423 | 6887 |
+| wind-speed | A-derived | 1.50584971 | 1.95563110 | n/a |
+| pressure-tendency-short | B-expanded | 1.52076605 | 1.97048449 | 7455 |
+| dew-depression-replace | A-derived | 1.52916880 | 1.99072274 | n/a |
+| harmonics-2-4 | A-derived | 1.53064439 | 1.99371573 | n/a |
+| harmonics-2-3 | A-derived | 1.54194257 | 1.98884336 | n/a |
+| wind-unit | A-derived | 1.54274905 | 2.00430055 | n/a |
+
+Best overall screen remains suffix24 (1.43152429°C). All new recipes have 7455 matched and natural origins by design. Raw payloads not separately downloaded. Next R10–R14.
