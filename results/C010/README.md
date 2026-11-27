@@ -14,3 +14,18 @@ F01–F04: 8/28 measured, zero blocked. All eight artifacts matched to frozen re
 | F03 | recursive-h32 | 5.48816306 | 6.76080759 |
 
 Screen only, not annual ranking. Next F05–F07. Recursive teacher-forcing/free-running mismatch is a candidate explanation for poor results, not a demonstrated causal finding.
+
+## F05–F07 target transformations and correction
+
+6/6 measured, zero blocked, 167 tests passed per job. All six artifact names reconciled. Same frozen cohort and training protocol; correction base fit uses purged chronological subset and separate later correction fit. Raw prediction payloads not independently rescored.
+
+| Recipe | MAE °C | RMSE °C |
+|---|---:|---:|
+| correction-h16 | 1.44854255 | 1.89339741 |
+| daily-residual-mlp64 | 1.47634895 | 1.93194096 |
+| daily-residual-nhits64 | 1.47790090 | 1.94161721 |
+| difference-nhits64 | 1.54377350 | 2.05825357 |
+| difference-mlp64 | 1.64026118 | 2.12417854 |
+| correction-affine | 1.80854257 | 2.36242434 |
+
+[CI](https://github.com/sguzman/aevral/actions/runs/46058395640). Total 14/28 screens measured. Best so far joint-nhits64 MAE 1.42065820. Next F08–F10.
