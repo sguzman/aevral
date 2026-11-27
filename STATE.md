@@ -183,3 +183,6 @@ All 17 native finalist jobs succeeded (CI 45917952848); final 18 outcomes and 85
 
 ## C006 phase 19 (upstream ingestion)
 Upstream CI 45918425331: archived 6 completed jobs, 14 additional fold/seed outcomes, 1012 diagnostic records, 104/124 additional outcomes durable. Registry keys fold/model/seed unique; cohorts, sample, seed and per-lead tree records verified. Continue archive by unarchived job ID; compute pooled per-seed rankings and closure when complete. No new data.
+
+## C006 phase 20 (upstream ingestion)
+Upstream CI 45918425331: archived 5 further completed jobs, 14 additional fold/seed outcomes, 1009 diagnostic records, 118/124 additional outcomes durable. Registry keys fold/model/seed unique; cohorts, sample, seed and per-lead tree records verified. Continue archive by unarchived job ID; compute pooled per-seed rankings and closure when complete. No new data.
