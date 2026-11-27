@@ -22,15 +22,27 @@ jobs:
           set -euo pipefail
           root=campaigns/012-optimization
           rung=$(cat "$root/launch.txt")
-          # First-round only until the later promotion matrices and gates are committed.
-          test "$rung" = 1
           file="$root/rung-$rung.csv"
           test "$(head -n1 "$file")" = config,fold,seed
-          awk -F, 'NR>1{print $5 ",2019,42"}' "$root/candidate-grid.csv" | cmp - <(tail -n+2 "$file")
-          test "$(wc -l < "$file")" -eq 49
+          case "$rung" in
+            1)
+              awk -F, 'NR>1{print $5 ",2019,42"}' "$root/candidate-grid.csv" | cmp - <(tail -n+2 "$file")
+              cap=48
+              ;;
+            2|3|final)
+              case "$rung" in 2) previous=1; cap=24;; 3) previous=2; cap=8;; final) previous=3; cap=48;; esac
+              rustc --edition=2021 --test scripts/c012-promote.rs -o /tmp/c012-promote-tests
+              /tmp/c012-promote-tests
+              rustc --edition=2021 -O scripts/c012-promote.rs -o /tmp/c012-promote
+              /tmp/c012-promote "$previous" | cmp - "$file"
+              ;;
+            *) exit 1;;
+          esac
+          count=$(($(wc -l < "$file")-1))
+          test "$count" -gt 0 && test "$count" -le "$cap"
           matrix=$(tail -n+2 "$file" | jq -Rc 'split(",") | {config:.[0],fold:.[1],seed:.[2]}' | jq -sc '{include:.}')
-          test "$(jq '.include|length' <<< "$matrix")" -eq 48
-          test "$(jq '[.include[].config]|unique|length' <<< "$matrix")" -eq 48
+          test "$(jq '.include|length' <<< "$matrix")" -eq "$count"
+          test "$(jq '[.include[]|[.config,.fold,.seed]]|unique|length' <<< "$matrix")" -eq "$count"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
           echo "rung=$rung" >> "$GITHUB_OUTPUT"
   evaluate:

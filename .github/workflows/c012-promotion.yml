@@ -1,0 +1,30 @@
+name: C012 promotion validation
+on:
+  push:
+    paths:
+      - '.github/workflows/c012-promotion.yml'
+      - 'scripts/c012-promote.rs'
+      - 'campaigns/012-optimization/rung-2.csv'
+      - 'campaigns/012-optimization/rung-3.csv'
+      - 'campaigns/012-optimization/rung-final.csv'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          set -euo pipefail
+          rustc --edition=2021 --test scripts/c012-promote.rs -o /tmp/c012-promote-tests
+          /tmp/c012-promote-tests
+          rustc --edition=2021 -O scripts/c012-promote.rs -o /tmp/c012-promote
+          root=campaigns/012-optimization
+          for pair in 1:2 2:3 3:final; do
+            previous=${pair%:*}; next=${pair#*:}
+            if [[ -f "$root/rung-$next.csv" ]]; then
+              /tmp/c012-promote "$previous" | cmp - "$root/rung-$next.csv"
+              echo "promotion-gate,$previous,$next,pass"
+            fi
+          done
