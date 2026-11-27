@@ -1,0 +1,22 @@
+name: C012 implementation tests
+on:
+  push:
+    paths:
+      - '.github/workflows/c012-tests.yml'
+      - 'src/features/tournament/optimization.rs'
+      - 'src/features/tournament/optimization/**'
+      - 'src/features/tournament.rs'
+      - 'campaigns/012-optimization/candidate-grid.csv'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locked native regression tests
+        run: cargo test --locked --release
+      - name: Locked release build
+        run: cargo build --locked --release
