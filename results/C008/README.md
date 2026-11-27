@@ -33,3 +33,18 @@ Full annual promotion follows completion of all nine families; no retuning.
 | D04 | dmd-l12-r4 | 2.76016438 | 3.66100304 | measured |
 | D05 | edmd-l6-l001 | 3.06486570 | 4.12766962 | measured |
 | D05 | edmd-l6-l01 | 3.18803616 | 4.27526135 | measured |
+
+## D06–D07 random-feature learners
+
+[CI](https://github.com/sguzman/aevral/actions/runs/46032441990), 137 numerical tests, 8192 training windows, 7455 matched evaluation origins per measured configuration. Seed42 screening only; fixed hidden weights and trained ridge readout. Both families are neural/hybrid; three-seed finalists will follow promotion.
+
+| Family | Model | MAE °C | RMSE °C | Status |
+|---|---|---:|---:|---|
+| D07 | elm-m128-l001 | 1.48624269 | 1.94727113 | measured |
+| D07 | elm-m128-l01 | 1.49773178 | 1.95946007 | measured |
+| D06 | esn-m128-leak03 | 1.57284555 | 2.05669316 | measured |
+| D06 | esn-m64-leak03 | 1.58162346 | 2.06914311 | measured |
+| D07 | elm-m64-l001 | 1.60349399 | 2.08622951 | measured |
+| D07 | elm-m64-l01 | 1.60754493 | 2.09246551 | measured |
+| D06 | esn-m128-leak1 | 1.64314148 | 2.16326497 | measured |
+| D06 | esn-m64-leak1 | 1.64990894 | 2.17280684 | measured |
