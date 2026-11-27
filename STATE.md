@@ -132,3 +132,6 @@ C006 active; predeclared 28 screening configurations across nine tree/boosting f
 
 ## C006 phase 2
 T01 six exact CART configurations implemented (shared and independent scalar per lead), train sample fixed, numeric SSE splits, 1200s preflight/fit guard, five tests. T01.md batch spec. CI pending; verify compilation and archive six outcomes including any explicit blocks, then T02–T04 ensembles. No new data.
+
+## C006 phase 3
+T01 CI 45914941755 succeeded, 81 numerical tests. Six measured screens archived in results/C006 (registry.csv + six logs, 282 records), exact matched cohort counts and lead count verified. Best cart-lead-d8-l32 MAE1.61833904 RMSE2.14853219 fit18.287183s, best shared cart-shared-d8-l32 MAE1.74356087. All within guard. Next implement T02–T04 bagging/RF/Extra Trees using shared CART and deterministic seed, bootstrap and random feature selection per node, independent random thresholds for Extra Trees. 6/28 screens measured. No new data.
