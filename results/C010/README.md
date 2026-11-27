@@ -43,3 +43,18 @@ Screen only, not annual ranking. Next F05–F07. Recursive teacher-forcing/free-
 | mae-mlp64 | 1.50348015 | 1.96314114 |
 | pinball-median | 1.52824187 | 1.98736169 |
 Multi-quantile crossing leads: 268/178920 (unrearranged).
+
+## F11–F14 regularization and constraints checkpoint
+
+6/8 archived, 26/28 total measured, zero blocked among archived jobs. 173 tests passed per archived job. [CI](https://github.com/sguzman/aevral/actions/runs/46060046667); raw predictions not independently rescored.
+
+| Recipe | MAE °C | RMSE °C |
+|---|---:|---:|
+| lead-early | 1.47598835 | 1.93039143 |
+| trajectory-slope | 1.49719943 | 1.95970325 |
+| multitask-mean-change | 1.50042891 | 1.95906824 |
+| bound-clamp | 1.52449139 | 1.98742079 |
+| multitask-mean | 1.53441585 | 1.99695425 |
+| lead-late | 1.55850193 | 2.02829224 |
+- trajectory-slope: slope MAE/curvature MAE/counts 0.60324108/0.86938682/171465/164010.
+- bound-clamp: outside/clipped/total 0/0/178920.
