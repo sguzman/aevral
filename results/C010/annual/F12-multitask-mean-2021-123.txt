@@ -1,0 +1,63 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+strategy-start,2021,multitask-mean,123
+cohort,2021,136893,7501,8737,7714
+scales,2021,[11.643995464674955, 6.369915113055379, 6.378974251584813, 5.044069639482702, 1017.4178067057464, 7.050946823816145, 0.26877858793517906, 2.139800549110102, 0.8914499366987545, 3.2088313577904324]
+baseline,2021,daily,2.14898785,2.81802465
+strategy-config,2021,multitask-mean,123,8192,12,0.001,6809,3218192,98304
+strategy-preflight,2021,multitask-mean,123,128,32,0.005152,0.000125,3.986259
+strategy-epoch,2021,multitask-mean,123,1,0.1767230369,0
+strategy-epoch,2021,multitask-mean,123,2,0.1476095897,0
+strategy-epoch,2021,multitask-mean,123,3,0.1371472002,0
+strategy-epoch,2021,multitask-mean,123,4,0.1314332651,0
+strategy-epoch,2021,multitask-mean,123,5,0.1272994488,0
+strategy-epoch,2021,multitask-mean,123,6,0.1243595655,0
+strategy-epoch,2021,multitask-mean,123,7,0.1200530232,0
+strategy-epoch,2021,multitask-mean,123,8,0.1192838446,0
+strategy-epoch,2021,multitask-mean,123,9,0.1167228273,0
+strategy-epoch,2021,multitask-mean,123,10,0.1165065095,0
+strategy-epoch,2021,multitask-mean,123,11,0.1149268000,0
+strategy-epoch,2021,multitask-mean,123,12,0.1141943801,0
+strategy-fit,2021,multitask-mean,123,0,3.954714,0.028507
+score,2021,multitask-mean,7501,1.74342831,2.36353932,0.038
+lead,2021,multitask-mean,1,1.28794855,1.82333957
+lead,2021,multitask-mean,2,1.35245323,1.87462984
+lead,2021,multitask-mean,3,1.38435329,1.90251455
+lead,2021,multitask-mean,4,1.40391488,1.91041024
+lead,2021,multitask-mean,5,1.47943609,2.01477619
+lead,2021,multitask-mean,6,1.52245463,2.05213189
+lead,2021,multitask-mean,7,1.56152627,2.09647750
+lead,2021,multitask-mean,8,1.63791428,2.19646549
+lead,2021,multitask-mean,9,1.69558290,2.26868469
+lead,2021,multitask-mean,10,1.77822977,2.38261657
+lead,2021,multitask-mean,11,1.75491508,2.34942524
+lead,2021,multitask-mean,12,1.78115521,2.38006526
+lead,2021,multitask-mean,13,1.81527097,2.42589087
+lead,2021,multitask-mean,14,1.87885785,2.51973109
+lead,2021,multitask-mean,15,1.93652963,2.59721332
+lead,2021,multitask-mean,16,1.89909265,2.54503620
+lead,2021,multitask-mean,17,1.92676940,2.58250709
+lead,2021,multitask-mean,18,1.94337915,2.59250965
+lead,2021,multitask-mean,19,1.95261742,2.60952978
+lead,2021,multitask-mean,20,1.92993430,2.58128008
+lead,2021,multitask-mean,21,1.93446143,2.59670364
+lead,2021,multitask-mean,22,1.94308554,2.59917184
+lead,2021,multitask-mean,23,2.02796145,2.71600108
+lead,2021,multitask-mean,24,2.01443551,2.69629513
+month,2021,multitask-mean,1,644,1.44336139,1.86645657
+month,2021,multitask-mean,2,572,1.32518663,1.68774264
+month,2021,multitask-mean,3,477,1.43160372,1.83729508
+month,2021,multitask-mean,4,692,1.46650154,1.94671633
+month,2021,multitask-mean,5,629,1.45463146,1.85400146
+month,2021,multitask-mean,6,694,2.81594073,3.91895236
+month,2021,multitask-mean,7,707,2.02401913,2.58586716
+month,2021,multitask-mean,8,618,2.11467624,2.70340460
+month,2021,multitask-mean,9,599,1.67637877,2.11369071
+month,2021,multitask-mean,10,509,1.48559938,1.88339959
+month,2021,multitask-mean,11,646,1.67120987,2.17090627
+month,2021,multitask-mean,12,714,1.74401988,2.42726041
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.53
+	Maximum resident set size (kbytes): 350924
+	Exit status: 0
+strategy-end,2021,multitask-mean,123
