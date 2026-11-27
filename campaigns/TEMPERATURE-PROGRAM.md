@@ -25,8 +25,8 @@ Authorized 2026-11-26. Goal: extensive comparative research over major practical
 - [C005 — Classical statistical and state-space forecasting](005-statistical-state-space/README.md) — complete
 - [C006 — Trees and boosted ensembles](006-trees-boosting/README.md) — complete
 - [C007 — Kernel, local and instance-based methods](007-kernels-neighbors/README.md) — complete
-- [C008 — Decomposition, dynamical systems and alternative learners](008-decomposition-reservoir/README.md) — active
-- [C009 — Expanded neural architecture tournament](009-neural-revisit/README.md) — planned
+- [C008 — Decomposition, dynamical systems and alternative learners](008-decomposition-reservoir/README.md) — complete
+- [C009 — Expanded neural architecture tournament](009-neural-revisit/README.md) — active
 - [C010 — Forecast formulation and objective](010-forecast-strategy/README.md) — planned
 - [C011 — Same-archive representation engineering](011-feature-engineering/README.md) — planned
 - [C012 — Budgeted cross-family hyperparameter search](012-optimization/README.md) — planned

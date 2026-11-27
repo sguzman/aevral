@@ -11,3 +11,5 @@ Reservoir and extreme learning machine labeled neural/hybrid where appropriate; 
 Common requirements: versioned configuration manifest before runs; actual matched-origin predictions and aggregate/lead/fold metrics or explicit blocked/skipped status with reason; tested implementation, frozen data hashes, recorded code/backend/seed/budget, CI links and durable results. No undocumented substitutions. No new external data. Follow program gates and checkpoint STATE.md at every verified milestone. Stop at this campaign's predeclared finite budget, even if no improvement.
 
 Screening complete: 36/36 measured, zero blocked. [Frozen annual finalists](FINALISTS.md): 18 configurations, 86 additional annual outcomes pending.
+
+**Closed:** 122/122 measured, zero blocked. [Final report](../../results/C008/REPORT.md).

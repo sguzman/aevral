@@ -67,3 +67,5 @@ Full annual promotion follows completion of all nine families; no retuning.
 All 36 screening outcomes archived: 36 measured, 0 blocked. Annual promotion next.
 
 [Annual finalists frozen](../../campaigns/008-decomposition-reservoir/FINALISTS.md).
+
+**Closed:** [Final pooled rankings and audit](REPORT.md).
