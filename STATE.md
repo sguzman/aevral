@@ -168,3 +168,6 @@ All six official upstream screens passed (CI 45917562327), 95 tests. Archived 42
 
 ## C006 phase 14
 Committed native and upstream annual workflows and common runner, exact 20-model frozen list checked, matrices 17 native jobs/90 outcomes and 14 upstream jobs/34 outcomes. Native triggers on push; upstream dispatch-only after native finishes to keep <=6 fitting jobs. Next check native CI, archive by job IDs with fold/model/seed keys; dispatch upstream only after native fitting jobs finish. No new data.
+
+## C006 phase 15 (native ingestion)
+Native CI 45917952848: archived 6 completed jobs, 32 additional fold/seed outcomes, 1914 diagnostic records, 32/124 additional outcomes durable. Registry keys fold/model/seed unique; cohorts, sample, seed and lead records verified. Continue archive by unarchived job ID; dispatch upstream workflow after native jobs finish. No new data.
