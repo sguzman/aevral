@@ -50,3 +50,16 @@ Frozen manifest: campaigns/007-kernels-neighbors/manifest.md. Full matched 2019 
 | svr-s05-c1 | 1.45846807 | 1.95465293 | 41653 | 26.630543 |
 | svr-s05-c10 | 1.62612259 | 2.16276423 | 42122 | 22.855389 |
 
+
+## K08–K09 exact and FITC Gaussian processes
+[CI](https://github.com/sguzman/aevral/actions/runs/45921039141), code d48e02b0bebe02729d5e64e529859e8cca6a6a7e, 116 tests passed. Exact GP 1024 rows; streaming FITC 8192 rows, 128/256 inducing points. Shared covariance, 24 scalar outputs, fixed noise .05 and jitter 1e-8. Full 7455 matched evaluation origins. 6/6 measured. Latent variance diagnostics first32 evaluation inputs, normalized units, not calibrated uncertainty.
+
+| Model | MAE °C | RMSE °C | Mean latent variance (first32) | Fit seconds | Prediction seconds |
+|---|---:|---:|---:|---:|---:|
+| fitc-s1-m256 | 1.37723166 | 1.82825816 | 1.181206235502e-2 | 0.529687 | 0.135221 |
+| fitc-s1-m128 | 1.41968820 | 1.87521576 | 1.969707387006e-2 | 0.205052 | 0.080702 |
+| gp-s1 | 1.44283129 | 1.90324250 | 1.270628046215e-2 | 0.258039 | 0.548060 |
+| fitc-s05-m256 | 1.53950769 | 2.07118549 | 1.370623360777e-1 | 0.528327 | 0.135327 |
+| gp-s05 | 1.58191727 | 2.10234541 | 8.053827432377e-2 | 0.151878 | 0.273447 |
+| fitc-s05-m128 | 1.63503792 | 2.20456565 | 1.872717991558e-1 | 0.126594 | 0.038258 |
+
