@@ -13,7 +13,18 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: read
+      statuses: write
     steps:
+      - name: Publish validation run link
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c012-promotion -f state=pending \
+            -f description="Validating frozen promotion matrix" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
       - uses: actions/checkout@v4
       - run: |
           set -euo pipefail
@@ -28,3 +39,15 @@ jobs:
               echo "promotion-gate,$previous,$next,pass"
             fi
           done
+      - name: Publish validation outcome
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c012-promotion -f state="$state" \
+            -f description="Frozen promotion matrix validation: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
