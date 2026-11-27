@@ -83,3 +83,7 @@ Frozen 2019 cohort: 7,455 origins, seed42, 8,192 training origins, 12 epochs Ada
 | ssm-h16 | 1.60298236 | 2.11197678 | measured |
 
 [CI](https://github.com/sguzman/aevral/actions/runs/46037920375), 162 tests; Rust CI passed. All 42 frozen screening recipes reconciled against matrix. Annual evaluation pending.
+
+## Frozen promotion and annual evaluation
+
+34 finalists, two per family, chosen by 2019 MAE/RMSE (no exact ties; timing tie-break not needed). Eight screened configurations excluded. See [promotion.csv](promotion.csv). Reuse the 34 seed42 2019 scores. Frozen 374 further evaluations in four sequential batches (96,96,96,86), each at most six concurrent fitting jobs. Ordering is fold, seed, family, within-family rank; no new model recipes. First batch triggered by workflow commit; subsequent batches dispatch only after previous batch is archived. All 42 screening records remain in registry. Full annual completion requires 408 finalist outcomes including reused screens, or explicit blocks. No annual results yet.
