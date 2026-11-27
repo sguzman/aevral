@@ -28,7 +28,7 @@ Authorized 2026-11-26. Goal: extensive comparative research over major practical
 - [C008 — Decomposition, dynamical systems and alternative learners](008-decomposition-reservoir/README.md) — complete
 - [C009 — Expanded neural architecture tournament](009-neural-revisit/README.md) — complete
 - [C010 — Forecast formulation and objective](010-forecast-strategy/README.md) — complete
-- [C011 — Same-archive representation engineering](011-feature-engineering/README.md) — planned
+- [C011 — Same-archive representation engineering](011-feature-engineering/README.md) — active
 - [C012 — Budgeted cross-family hyperparameter search](012-optimization/README.md) — planned
 - [C013 — Cross-family hybrids and ensembles](013-ensembles/README.md) — planned
 - [C014 — Uncertainty and distributional forecasting](014-probabilistic/README.md) — planned
