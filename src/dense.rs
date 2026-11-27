@@ -13,6 +13,7 @@ impl Dense{
         let biases=dims[1..].iter().map(|&d|vec![0.;d]).collect();
         Self{dims:dims.to_vec(),weights,biases}
     }
+    pub fn finite(&self)->bool{self.weights.iter().chain(&self.biases).flatten().all(|v|v.is_finite())}
     pub fn parameters(&self)->usize{self.weights.iter().map(Vec::len).sum::<usize>()+self.biases.iter().map(Vec::len).sum::<usize>()}
     fn activations(&self,x:&[f64])->Vec<Vec<f64>>{
         assert_eq!(x.len(),self.dims[0]);

@@ -218,3 +218,4 @@ pub mod random_learners;
 mod markov;
 mod symbolic;
 pub mod alternative;
+pub mod neural;

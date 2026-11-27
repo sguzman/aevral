@@ -1,6 +1,12 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
+    if args.get(1).map(String::as_str)==Some("neural"){
+        if args.len()!=7{eprintln!("Usage: aevral neural DATA_DIR FOLD OUTPUT.csv CONFIG SEED");std::process::exit(2)}
+        let seed=args[6].parse::<u64>().unwrap_or(0);
+        if let Err(e)=aevral::features::tournament::neural::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5],seed){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("dyn"){
         if args.len()!=6{eprintln!("Usage: aevral dyn DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
         if let Err(e)=aevral::features::tournament::dynamics::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
