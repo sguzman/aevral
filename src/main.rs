@@ -23,6 +23,11 @@ fn main() {
         if let Err(e)=aevral::features::tournament::boosting::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
         return
     }
+    if args.get(1).map(String::as_str)==Some("neighbors"){
+        if args.len()!=6{eprintln!("Usage: aevral neighbors DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
+        if let Err(e)=aevral::features::tournament::neighbors::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("cart"){
         if args.len()!=6{eprintln!("Usage: aevral cart DATA_DIR FOLD OUTPUT.csv CONFIG");std::process::exit(2)}
         if let Err(e)=aevral::features::tournament::cart::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}

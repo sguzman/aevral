@@ -1,6 +1,6 @@
 # Fixed-data temperature program — C003–C006 complete; C007 active
 
-Current checkpoint: C007 manifest frozen, 41 screens in 11 families; no C007 implementation or measurements. Next implement K01–K03 exact subset neighbors/weighted/seasonal analogs and K04 local ridge (or split into bounded batches), synthetic numerical tests, CI on 2019. C006 final report results/C006/REPORT.md, best tree lightgbm-128 pooled MAE1.40602200 vs MLP64 1.34781461. C007 manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
+Current checkpoint: C007 manifest frozen, 41 screens in 11 families; K01–K03 implemented and 12 screens submitted; verify CI, archive measured outcomes, then K04 local ridge. No C007 measurements yet. C006 final report results/C006/REPORT.md, best tree lightgbm-128 pooled MAE1.40602200 vs MLP64 1.34781461. C007 manifest campaigns/007-kernels-neighbors/manifest.md. No new data; no human action. Earlier history below.
 
 
 C001/C002 historical reports immutable; both old holdouts exposed. C003 complete: 27 hashes verified, all five benchmark jobs passed 45892792311, legacy exact, 30138 matched annual origins (2019 7455, 2020 7543, 2021 7501, 2022 7639), pooled MLP64 MAE 1.34781461, daily 2.05372678. Export audit 45895728513 all five passed; 5793120 prediction rows verified, 35 tests, archived results/C003. Program campaigns/TEMPERATURE-PROGRAM.md. C004 manifest campaigns/004-linear-additive/manifest.md predeclares 54 screen configurations across 12 methods. Next implement L01/L02 stable least-squares and ridge first batch in Rust using src/features/tournament.rs API, test numerical correctness, add CLI/CI with frozen data, score 2019. No C004 results or code yet. Subsequent batches per manifest. No new data or local downloads. Keep logs filtered and state durable. No human action required.
@@ -201,3 +201,6 @@ All 152 unique outcomes audited; full 144 finalist matrix plus eight rejected sc
 
 ## C007 phase 1
 Frozen manifest 41 screens (K01–K11), 22 planned finalists, 82 planned additional outcomes; exact subset KNN/kernel/GP/SVR and explicit FITC/RFF/Nystrom approximations, bounded sample budgets, 2019 screen. No code or C007 results yet. Next K01–K04 implementation in bounded batches, using C003 causal harness.
+
+## C007 phase 2
+K01–K03 exact 8192-row subset neighbor heap, deterministic ties, uniform/inverse/Gaussian analog weights, seasonal phase filter and explicit nearest fallback implemented; 5 numerical tests, 12 screen configs through neighbors-screen.yml. Timing preflight and runtime guard, cached causal predictions scored on full cohorts. Await CI; no measurements yet. K04 next after verification.

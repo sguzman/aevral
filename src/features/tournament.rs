@@ -195,3 +195,5 @@ pub mod forest;
 pub mod boosting;
 
 pub mod upstream;
+
+pub mod neighbors;
