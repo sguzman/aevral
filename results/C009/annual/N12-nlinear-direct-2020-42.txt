@@ -1,0 +1,63 @@
+test result: ok. 162 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+neural-start,2020,nlinear-direct,42
+cohort,2020,129327,7543,8761,7719
+scales,2020,[11.622564669338363, 6.378783135855911, 6.359290618183046, 5.0566360012082745, 1017.3711941131394, 7.0754448102803496, 0.26183167124359236, 2.1424190338144085, 0.8749177522395877, 3.191697064449032]
+baseline,2020,daily,2.07087759,2.70871411
+neural-config,2020,nlinear-direct,42,8192,12,0.001,1920,2601136
+neural-preflight,2020,nlinear-direct,42,128,32,0.001192,0.000021,0.920691
+neural-epoch,2020,nlinear-direct,42,1,0.1413642834,0
+neural-epoch,2020,nlinear-direct,42,2,0.1240172724,0
+neural-epoch,2020,nlinear-direct,42,3,0.1228231117,0
+neural-epoch,2020,nlinear-direct,42,4,0.1218073687,0
+neural-epoch,2020,nlinear-direct,42,5,0.1211107250,0
+neural-epoch,2020,nlinear-direct,42,6,0.1207649186,0
+neural-epoch,2020,nlinear-direct,42,7,0.1195636945,0
+neural-epoch,2020,nlinear-direct,42,8,0.1203727575,0
+neural-epoch,2020,nlinear-direct,42,9,0.1196101471,0
+neural-epoch,2020,nlinear-direct,42,10,0.1201894987,0
+neural-epoch,2020,nlinear-direct,42,11,0.1200994458,0
+neural-epoch,2020,nlinear-direct,42,12,0.1200467009,0
+neural-fit,2020,nlinear-direct,42,0,0.833204,0.005466
+score,2020,nlinear-direct,7543,1.69049194,2.25814562,0.040
+lead,2020,nlinear-direct,1,0.61484860,0.82693121
+lead,2020,nlinear-direct,2,0.87851342,1.14456066
+lead,2020,nlinear-direct,3,1.06429718,1.38957808
+lead,2020,nlinear-direct,4,1.22452077,1.59837964
+lead,2020,nlinear-direct,5,1.33020755,1.74996854
+lead,2020,nlinear-direct,6,1.46478000,1.92563122
+lead,2020,nlinear-direct,7,1.56221420,2.04658071
+lead,2020,nlinear-direct,8,1.67320297,2.19188342
+lead,2020,nlinear-direct,9,1.68562274,2.20109866
+lead,2020,nlinear-direct,10,1.73884344,2.26817808
+lead,2020,nlinear-direct,11,1.81125433,2.35706995
+lead,2020,nlinear-direct,12,1.84351516,2.40279352
+lead,2020,nlinear-direct,13,1.87258086,2.45497581
+lead,2020,nlinear-direct,14,1.92893950,2.53021204
+lead,2020,nlinear-direct,15,1.95036018,2.55807186
+lead,2020,nlinear-direct,16,2.03831599,2.66004102
+lead,2020,nlinear-direct,17,2.10803029,2.73322098
+lead,2020,nlinear-direct,18,1.98430296,2.57968070
+lead,2020,nlinear-direct,19,1.98392014,2.56846242
+lead,2020,nlinear-direct,20,1.98322857,2.56737973
+lead,2020,nlinear-direct,21,1.98626499,2.56035540
+lead,2020,nlinear-direct,22,1.94558910,2.50996334
+lead,2020,nlinear-direct,23,1.94475393,2.50378583
+lead,2020,nlinear-direct,24,1.95369969,2.51662302
+month,2020,nlinear-direct,1,640,1.66037005,2.16962855
+month,2020,nlinear-direct,2,594,1.51969539,1.96667527
+month,2020,nlinear-direct,3,729,1.46757499,1.95682376
+month,2020,nlinear-direct,4,507,1.43837071,1.89572978
+month,2020,nlinear-direct,5,625,2.08963653,2.94688189
+month,2020,nlinear-direct,6,699,1.60904158,2.16718373
+month,2020,nlinear-direct,7,622,1.81475319,2.35267877
+month,2020,nlinear-direct,8,715,1.76872215,2.34049378
+month,2020,nlinear-direct,9,345,1.58686811,2.07917634
+month,2020,nlinear-direct,10,733,1.59821469,2.05236176
+month,2020,nlinear-direct,11,717,1.83545215,2.49871941
+month,2020,nlinear-direct,12,617,1.82786536,2.35230285
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.41
+	Maximum resident set size (kbytes): 333072
+	Exit status: 0
+neural-end,2020,nlinear-direct,42
