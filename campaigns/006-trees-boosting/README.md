@@ -1,6 +1,6 @@
 # C006 — Trees and boosted ensembles
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: active; [finite manifest](manifest.md) frozen before fitting. No C006 measurements yet.
 
 ## Scope
 CART, bagged trees, random forests, Extra Trees, histogram gradient boosting, XGBoost, LightGBM, CatBoost, quantile boosting, multi-output vs horizon-specific trees.

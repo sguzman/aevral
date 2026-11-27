@@ -126,3 +126,6 @@ CI 45914280432: all 15 jobs succeeded. Archived final 5 jobs, 22 outcomes, 1413 
 
 ## C005 closed; next C006
 All 108 outcomes audited, 44 job logs present. Final report, pooled.csv and variance-pooled.csv persisted. Best statistical arx-72 MAE 1.59560910 vs MLP64 1.34781461; GARCH evaluated separately. No new data or further C005 fits. Next read C006 scope, freeze finite manifest of faithful tree/ensemble/boosting representatives and then implement first batch. C003–C005 complete; C006–C015 pending. Keep pinned Rust/Nix and hosted CI budget. 
+
+## C006 phase 1
+C006 active; predeclared 28 screening configurations across nine tree/boosting families in campaigns/006-trees-boosting/manifest.md. Fixed 24,576 train-origin budget, full eval cohorts, seed policy, official branded backends require version-pinned Nix/CI verification. No C006 fits yet. Next implement T01 exact CART shared-output and per-lead variants with deterministic splits, minimum leaf and resource guard, numerical tests, then launch 2019 CI. No new data.
