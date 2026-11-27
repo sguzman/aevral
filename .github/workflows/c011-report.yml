@@ -1,0 +1,25 @@
+name: C011 archived diagnostics audit
+on:
+  push:
+    paths:
+      - '.github/workflows/c011-report.yml'
+      - 'scripts/c011-report.rs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit all 348 archived compute diagnostics
+        run: |
+          rustc --edition=2021 -O scripts/c011-report.rs -o /tmp/c011-report
+          /tmp/c011-report | tee /tmp/c011-costs.csv
+          test "$(wc -l </tmp/c011-costs.csv)" -eq 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c011-costs
+          path: /tmp/c011-costs.csv
+          retention-days: 30
