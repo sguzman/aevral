@@ -177,3 +177,6 @@ Native CI 45917952848: archived 5 further completed jobs, 22 additional fold/see
 
 ## C006 phase 17 (native ingestion)
 Native CI 45917952848: archived 3 further completed jobs, 18 additional fold/seed outcomes, 855 diagnostic records, 72/124 additional outcomes durable. Registry keys fold/model/seed unique; cohorts, sample, seed and lead records verified. Continue archive by unarchived job ID; dispatch upstream workflow after native jobs finish. No new data.
+
+## C006 phase 18
+All 17 native finalist jobs succeeded (CI 45917952848); final 18 outcomes and 855 records archived, 90/124 additional outcomes durable. Registry 118 entries including screening, unique fold/model/seed. No native resource blocks. Upstream workflow launched via path-specific push trigger (dispatch action unavailable), only after all native jobs completed; 14 jobs/34 outcomes, locked Nix boosting shell. Next verify upstream CI run and archive results, compute pooled per-seed rankings and closure. No new data.

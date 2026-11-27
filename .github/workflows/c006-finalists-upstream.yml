@@ -1,5 +1,8 @@
 name: C006 upstream annual finalists
 on:
+  push:
+    paths:
+      - '.github/workflows/c006-finalists-upstream.yml'
   workflow_dispatch:
 permissions:
   contents: read
