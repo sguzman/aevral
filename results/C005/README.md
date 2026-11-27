@@ -74,3 +74,20 @@ All eight S08–S09 outcomes archived; 27/36 measured. Provisional finalists: S0
 | dlm-trend-harmonic | 1.92420168 | 2.55612939 |
 
 All five S10–S11 jobs succeeded. 32/36 screening outcomes archived. Structural seasonal and dynamic harmonic models have identical scores, consistent with rotation-equivalent state parameterizations and isotropic seasonal process noise; not independent evidence. Provisional finalists: {"S10":["struct-season","struct-level"],"S11":["dlm-harmonic","dlm-trend-harmonic"]}.
+
+## S12–S13 final screen
+[CI](https://github.com/sguzman/aevral/actions/runs/45914013039), code 0100a9c3d51f41b04babcacb6a44cfd9e84b5528. All four jobs succeeded; 76 tests passed. Switching AR1 reached 40-update cap; AR6 converged at 31. GARCH point means match S01 AR6/24 at printed precision; not point-ranking candidates.
+
+| Model | MAE | RMSE |
+|---|---:|---:|
+| switch-ar6 | 3.26373845 | 4.33920572 |
+| garch-ar24 | 1.64809934 | 2.18433744 |
+| garch-ar6 | 3.27675238 | 4.37092148 |
+| switch-ar1 | 3.27595436 | 4.36507410 |
+
+| Variance model | Gaussian NLL | 90% coverage | Squared error / predicted variance |
+|---|---:|---:|---:|
+| garch-ar24 | 2.14186574 | 0.91028951 | 0.90904665 |
+| garch-ar6 | 2.77041222 | 0.90496870 | 0.87110192 |
+
+All 36 screens measured, 34 point candidates + 2 variance-only. Every registry row has 7455 origins, unique model. Annual finalists frozen in campaign FINALISTS.md. No new data.

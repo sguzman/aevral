@@ -108,3 +108,6 @@ All five Kalman jobs passed; final dlm-trend-harmonic archived (46 records) from
 
 ## C005 phase 14
 Implemented S12/S13 switching and GARCH four configurations with train-only bounded approximate EM, exact regime-weighted first moment, GARCH conditional variance recursion and AR impulse propagation. Batch spec S12-S13.md. Four numerical tests and four CI jobs pending. 32/36 previously measured. Next verify/repair and archive all four outcomes, separate variance metrics; freeze finalist manifest and annual CI. No new data.
+
+## C005 phase 15
+All 36 screens measured; final four archived (238 records) from CI 45914013039, 76 tests. Registry audited unique 36 model rows, all 7455 origins. Separate variance.csv. Frozen finalists 22 point + 2 variance-only in FINALISTS.md, 72 additional annual outcomes planned. Next implement grouped annual workflow and launch CI (<=6 parallel); archive all results, pooled ranking and closure audit. No new data.
