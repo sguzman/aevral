@@ -1,0 +1,48 @@
+name: C009 N16 N17 state space and expert screens
+on:
+  push:
+    paths:
+      - '.github/workflows/c009-state-mixture.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - {method: 'N16', config: 'ssm-h16', fold: '2019', seed: '42'}
+          - {method: 'N16', config: 'ssm-h32', fold: '2019', seed: '42'}
+          - {method: 'N17', config: 'moe-e2-w64', fold: '2019', seed: '42'}
+          - {method: 'N17', config: 'moe-e4-w64', fold: '2019', seed: '42'}
+          - {method: 'N17', config: 'moe-e4-w32', fold: '2019', seed: '42'}
+    env:
+      METHOD: ${{ matrix.method }}
+      CONFIG: ${{ matrix.config }}
+      FOLD: ${{ matrix.fold }}
+      SEED: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Native numerical tests and locked build
+        run: |
+          cargo test --locked --release
+          cargo build --locked --release
+      - name: Evaluate frozen screen
+        run: bash scripts/c009-screen.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c009-screen-${{ matrix.method }}-${{ matrix.fold }}-${{ matrix.config }}-${{ matrix.seed }}
+          path: results-run/
+          retention-days: 30
