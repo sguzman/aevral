@@ -174,3 +174,6 @@ Native CI 45917952848: archived 6 completed jobs, 32 additional fold/seed outcom
 
 ## C006 phase 16 (native ingestion)
 Native CI 45917952848: archived 5 further completed jobs, 22 additional fold/seed outcomes, 1245 diagnostic records, 54/124 additional outcomes durable. Registry keys fold/model/seed unique; cohorts, sample, seed and lead records verified. Continue archive by unarchived job ID; dispatch upstream workflow after native jobs finish. No new data.
+
+## C006 phase 17 (native ingestion)
+Native CI 45917952848: archived 3 further completed jobs, 18 additional fold/seed outcomes, 855 diagnostic records, 72/124 additional outcomes durable. Registry keys fold/model/seed unique; cohorts, sample, seed and lead records verified. Continue archive by unarchived job ID; dispatch upstream workflow after native jobs finish. No new data.
