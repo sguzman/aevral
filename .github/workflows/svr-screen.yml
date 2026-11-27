@@ -1,0 +1,45 @@
+name: C007 K07 official epsilon-SVR screen
+on:
+  push:
+    paths:
+      - '.github/workflows/svr-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        config: [svr-s05-c1, svr-s05-c10, svr-s1-c1, svr-s1-c10]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+      - name: Numerical tests and locked backend
+        run: |
+          nix develop .#svr --no-update-lock-file --command cargo test --locked --release
+          nix develop .#svr --no-update-lock-file --command cargo build --locked --release
+          git diff --exit-code -- flake.lock
+      - name: Fit official epsilon-SVR
+        run: |
+          set -o pipefail
+          /usr/bin/time -v nix develop .#svr --no-update-lock-file --command target/release/aevral svr data/raw/ksea 2019 predictions.csv ${{ matrix.config }} | tee metrics.txt
+          gzip predictions.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c007-svr-2019-${{ matrix.config }}
+          path: |
+            metrics.txt
+            predictions.csv.gz
+          retention-days: 30
