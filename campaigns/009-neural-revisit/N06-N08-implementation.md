@@ -1,0 +1,3 @@
+# N06–N08 implementation notes
+
+C009 convolution uses post-activation residual addition as explicitly stated in frozen manifest; existing historical Temporal constructor actually used pre-activation skip and retains that behavior for regression compatibility. No recipe change or outcome-driven tuning. Seq2Seq uses concatenated affine inputs (patch/state and scalar/covariates/lead/state), shared decoder cell and readout, reverse-time derivatives through scalar feedback. Xavier draw order: layer order encoder, decoder, scalar head, row-major weights and zero biases. Gradient checks absolute tolerance 1e-6. No teacher forcing. Existing workspace bound covers all six compact recipes.

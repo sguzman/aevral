@@ -1,14 +1,16 @@
 //! C009 shared frozen training protocol; full evaluation only after guard checks.
 use super::{load,score,Fold,TrainingRow,D,Y};
 use super::neighbors::{subset,Cached};
-use crate::{adam::Adam,dense::Dense,benchmark::Metrics,recurrent::{Recurrent,Kind}};
+use crate::{adam::Adam,dense::Dense,benchmark::Metrics,recurrent::{Recurrent,Kind},convolution::{Temporal,Kind as CKind}};
 use std::{io::{BufWriter,Write},path::Path,time::Instant};
 mod residual;
+mod seq2seq;
+use seq2seq::Seq2Seq;
 use residual::Residual;
 const BUDGET:usize=8192;
 const EPOCHS:usize=12;
 const GUARD:f64=1400.;
-enum Model{Dense(Dense),Residual(Residual),Recurrent(Recurrent)}
+enum Model{Dense(Dense),Residual(Residual),Recurrent(Recurrent),Temporal(Temporal),Seq2Seq(Seq2Seq)}
 impl Model{
     fn new(label:&str,seed:u64)->Result<Self,String>{
         Ok(match label{
@@ -27,18 +29,24 @@ impl Model{
             "lstm-p6-h16"=>Self::Recurrent(Recurrent::c009(Kind::Lstm,6,seed)),
             "lstm-p3-h16"=>Self::Recurrent(Recurrent::c009(Kind::Lstm,3,seed)),
             "lstm-p1-h16"=>Self::Recurrent(Recurrent::c009(Kind::Lstm,1,seed)),
+            "cnn-p6-c8"=>Self::Temporal(Temporal::c009(CKind::Cnn,6,seed)),
+            "cnn-p3-c8"=>Self::Temporal(Temporal::c009(CKind::Cnn,3,seed)),
+            "tcn-p6-c8"=>Self::Temporal(Temporal::c009(CKind::Tcn,6,seed)),
+            "tcn-p3-c8"=>Self::Temporal(Temporal::c009(CKind::Tcn,3,seed)),
+            "seq2seq-h16"=>Self::Seq2Seq(Seq2Seq::new(16,seed)),
+            "seq2seq-h32"=>Self::Seq2Seq(Seq2Seq::new(32,seed)),
             _=>return Err("unknown C009 recipe".into())
         })
     }
-    fn parameters(&self)->usize{match self{Self::Dense(m)=>m.parameters(),Self::Residual(m)=>m.parameters(),Self::Recurrent(m)=>m.parameters()}}
-    fn finite(&self)->bool{match self{Self::Dense(m)=>m.finite(),Self::Residual(m)=>m.finite(),Self::Recurrent(m)=>m.finite()}}
+    fn parameters(&self)->usize{match self{Self::Dense(m)=>m.parameters(),Self::Residual(m)=>m.parameters(),Self::Recurrent(m)=>m.parameters(),Self::Temporal(m)=>m.parameters(),Self::Seq2Seq(m)=>m.parameters()}}
+    fn finite(&self)->bool{match self{Self::Dense(m)=>m.finite(),Self::Residual(m)=>m.finite(),Self::Recurrent(m)=>m.finite(),Self::Temporal(m)=>m.finite(),Self::Seq2Seq(m)=>m.finite()}}
     fn predict(&self,x:&[f64;D])->Result<[f64;Y],String>{
-        let v=match self{Self::Dense(m)=>m.predict(x),Self::Residual(m)=>m.predict(x),Self::Recurrent(m)=>m.predict(x).to_vec()};
+        let v=match self{Self::Dense(m)=>m.predict(x),Self::Residual(m)=>m.predict(x),Self::Recurrent(m)=>m.predict(x).to_vec(),Self::Temporal(m)=>m.predict(x).to_vec(),Self::Seq2Seq(m)=>m.predict(x)};
         let y:[f64;Y]=v.try_into().map_err(|_|"output shape")?;
         if y.iter().any(|v|!v.is_finite()||v.abs()>1e6){return Err("numerical prediction bound".into())}Ok(y)
     }
     fn step(&mut self,r:&TrainingRow,opt:&mut Adam)->Result<(f64,bool),String>{
-        let(loss,clip)=match self{Self::Dense(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Residual(m)=>m.step(&r.input.x,&r.normalized_target,opt),Self::Recurrent(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt)};
+        let(loss,clip)=match self{Self::Dense(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Residual(m)=>m.step(&r.input.x,&r.normalized_target,opt),Self::Recurrent(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Temporal(m)=>m.adam_step(&r.input.x,&r.normalized_target,opt),Self::Seq2Seq(m)=>m.step(&r.input.x,&r.normalized_target,opt)};
         if !loss.is_finite()||!self.finite(){return Err("nonfinite training".into())}Ok((loss,clip))
     }
 }
@@ -69,7 +77,7 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),Strin
     macro_rules! block{($reason:expr)=>{{println!("blocked,{id},{label},{}",$reason);out.flush().map_err(|e|e.to_string())?;return Ok(())}}}
     macro_rules! checked{($e:expr)=>{match $e{Ok(v)=>v,Err(e)=>{block!(e)}}}}
     let rows=subset(&f.train,BUDGET);let n=rows.len();let mut probe=Model::new(label,seed)?;let params=probe.parameters();
-    // Upper bound for dense/residual and compact recurrent recipes: weights + two Adam buffers +
+    // Upper bound for dense, recurrent, temporal and encoder-decoder recipes: weights + two Adam buffers +
     // gradients, transient activations (at most 73 frames × 112 doubles) and scratch, row refs, order and predictions.
     let workspace=8*(16*params+65536+4*n+m*(Y+2));
     println!("neural-config,{id},{label},{seed},{n},{EPOCHS},0.001,{params},{workspace}");
