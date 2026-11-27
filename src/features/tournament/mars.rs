@@ -161,7 +161,17 @@ pub fn run(data:&Path,id:&str,output:&Path,selection:&str)->Result<(),String>{
 pub(super) fn optimize(f:&super::PreparedFold,rows:&[&TrainingRow],label:&str,degree:usize,cap:usize,out:&mut impl Write)->Result<(),String>{
     if ![1,2].contains(&degree)||![16,32,64].contains(&cap){return Err("invalid C012 MARS configuration".into())}
     let id=f.fold.id;let now=Instant::now();
-    let result=forward_refs(rows,cap,degree).and_then(|terms|{
+    let p=rows.len().min(1024);let small:Vec<_>=(0..p).map(|i|rows[i*rows.len()/p]).collect();
+    let workspace=8*(p*(cap+1+Y+32)+(cap+1)*(cap+1+Y)*4+rows.len()*4+f.eval.len()*25);
+    if workspace>2_000_000_000{println!("blocked,{id},{label},preflight workspace guard");return Ok(())}
+    let timer=Instant::now();let terms=match forward_refs(&small,cap,degree){Ok(v)=>v,Err(e)=>{println!("blocked,{id},{label},preflight {e}");return Ok(())}};let forward_s=timer.elapsed().as_secs_f64();
+    let timer=Instant::now();let stats=stats_refs(&small,&terms);let(active,b,_)=match prune(&stats,(0..terms.len()).collect()){Ok(v)=>v,Err(e)=>{println!("blocked,{id},{label},preflight {e}");return Ok(())}};
+    let probe=Model{terms:active.iter().map(|&j|terms[j].clone()).collect(),b,mean:f.target_mean,sd:f.target_sd};let fit_s=timer.elapsed().as_secs_f64();
+    let q=rows.len().min(32);let timer=Instant::now();for i in 0..q{std::hint::black_box(probe.predict(&rows[i*rows.len()/q].input));}let pp=timer.elapsed().as_secs_f64();
+    let estimate=forward_s+fit_s*rows.len()as f64/p as f64+pp*f.eval.len()as f64/q as f64;
+    println!("optimization-mars-preflight,{id},{label},{p},{q},{workspace},{forward_s:.6},{fit_s:.6},{pp:.6},{estimate:.6}");
+    if 2.*estimate+180.>1400.{println!("blocked,{id},{label},preflight runtime guard");return Ok(())}
+    let now=Instant::now();let result=forward_refs(rows,cap,degree).and_then(|terms|{
         let s=stats_refs(rows,&terms);let(active,b,gcv)=prune(&s,(0..terms.len()).collect())?;
         let chosen=active.iter().map(|&j|terms[j].clone()).collect::<Vec<_>>();Ok((terms.len()-1,chosen,b,gcv))
     });

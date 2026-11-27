@@ -17,6 +17,8 @@ on:
       - 'src/features/tournament/neural/**'
       - 'src/features/tournament/representation.rs'
       - 'src/main.rs'
+      - 'scripts/c012-evaluate.sh'
+      - '.github/workflows/c012-evaluate.yml'
       - 'campaigns/012-optimization/candidate-grid.csv'
   workflow_dispatch:
 permissions:
@@ -27,6 +29,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Audit shell syntax
+        run: bash -n scripts/c012-evaluate.sh
       - name: Locked native regression tests
         run: cargo test --locked --release
       - name: Locked release build

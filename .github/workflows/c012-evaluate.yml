@@ -1,0 +1,83 @@
+name: C012 frozen optimization evaluations
+on:
+  push:
+    paths:
+      - 'campaigns/012-optimization/launch.txt'
+permissions:
+  contents: read
+concurrency:
+  group: c012-scoring
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+      rung: ${{ steps.matrix.outputs.rung }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=campaigns/012-optimization
+          rung=$(cat "$root/launch.txt")
+          # First-round only until the later promotion matrices and gates are committed.
+          test "$rung" = 1
+          file="$root/rung-$rung.csv"
+          test "$(head -n1 "$file")" = config,fold,seed
+          awk -F, 'NR>1{print $5 ",2019,42"}' "$root/candidate-grid.csv" | cmp - <(tail -n+2 "$file")
+          test "$(wc -l < "$file")" -eq 49
+          matrix=$(tail -n+2 "$file" | jq -Rc 'split(",") | {config:.[0],fold:.[1],seed:.[2]}' | jq -sc '{include:.}')
+          test "$(jq '.include|length' <<< "$matrix")" -eq 48
+          test "$(jq '[.include[].config]|unique|length' <<< "$matrix")" -eq 48
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "rung=$rung" >> "$GITHUB_OUTPUT"
+  evaluate:
+    name: evaluate (${{ matrix.config }}, ${{ matrix.fold }}, ${{ matrix.seed }})
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    env:
+      CONFIG: ${{ matrix.config }}
+      FOLD: ${{ matrix.fold }}
+      SEED: ${{ matrix.seed }}
+      RUNG: ${{ needs.prepare.outputs.rung }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen archive
+        run: cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+        if: startsWith(matrix.config, 'O04-')
+      - name: Native regression and build
+        if: "!startsWith(matrix.config, 'O04-')"
+        run: |
+          cargo test --locked --release
+          cargo build --locked --release
+      - name: Pinned backend regression and build
+        if: startsWith(matrix.config, 'O04-')
+        run: |
+          nix develop .#boosting --no-update-lock-file --command cargo test --locked --release
+          nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
+          git diff --exit-code -- flake.lock
+      - name: Native evaluation and independent audit
+        if: "!startsWith(matrix.config, 'O04-')"
+        run: bash scripts/c012-evaluate.sh
+      - name: Pinned LightGBM evaluation and independent audit
+        if: startsWith(matrix.config, 'O04-')
+        run: nix develop .#boosting --no-update-lock-file --command bash scripts/c012-evaluate.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c012-${{ env.RUNG }}-${{ matrix.config }}-${{ matrix.fold }}-${{ matrix.seed }}
+          path: results-run/
+          retention-days: 30

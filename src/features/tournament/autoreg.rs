@@ -136,7 +136,14 @@ pub fn run(data:&Path,id:&str,output:&Path,selection:&str)->Result<(),String>{
 pub(super) fn optimize(f:&super::PreparedFold,rows:&[&TrainingRow],label:&str,order:usize,out:&mut impl Write)->Result<(),String>{
     if ![6,12,24,36,48,72].contains(&order){return Err("invalid C012 ARX order".into())}
     let id=f.fold.id;let kind=Kind::Ar(order,true);let now=Instant::now();
-    let (model,n,rank,mse,growth)=match fit_refs(rows,kind,f.target_mean,f.target_sd){
+    let p=rows.len().min(512);let small:Vec<_>=(0..p).map(|i|rows[i*rows.len()/p]).collect();
+    let timer=Instant::now();let probe=match fit_refs(&small,kind,f.target_mean,f.target_sd){Ok(v)=>v.0,Err(e)=>{println!("blocked,{id},{label},preflight {e}");return Ok(())}};let fp=timer.elapsed().as_secs_f64();
+    let q=rows.len().min(32);let timer=Instant::now();for i in 0..q{std::hint::black_box(probe.predict(&rows[i*rows.len()/q].input));}let pp=timer.elapsed().as_secs_f64();
+    let workspace=8*(kind.dim()*kind.dim()+kind.dim()*16+rows.len()*4+f.eval.len()*25);
+    let estimate=fp*rows.len()as f64/p as f64+pp*f.eval.len()as f64/q as f64;
+    println!("optimization-arx-preflight,{id},{label},{p},{q},{workspace},{fp:.6},{pp:.6},{estimate:.6}");
+    if workspace>2_000_000_000||2.*estimate+180.>1400.{println!("blocked,{id},{label},preflight resource guard");return Ok(())}
+    let now=Instant::now();let (model,n,rank,mse,growth)=match fit_refs(rows,kind,f.target_mean,f.target_sd){
         Ok(v)=>v,Err(e)=>{println!("blocked,{id},{label},{e}");return Ok(())}
     };
     if n!=rows.len(){return Err("C012 ARX row budget mismatch".into())}
