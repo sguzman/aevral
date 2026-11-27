@@ -1,0 +1,63 @@
+test result: ok. 173 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+strategy-start,2019,difference-mlp64,123
+cohort,2019,121849,7455,8737,7673
+scales,2019,[11.612720385128858, 6.359004285883184, 6.403598625256534, 5.0022216207107, 1017.3671062499778, 7.110340951197967, 0.27492170423930146, 2.1428563920747172, 0.9016637834425706, 3.193150037462841]
+baseline,2019,daily,1.88752763,2.50070345
+strategy-config,2019,difference-mlp64,123,8192,12,0.001,6744,3200304,98304
+strategy-preflight,2019,difference-mlp64,123,128,32,0.005371,0.000136,4.156842
+strategy-epoch,2019,difference-mlp64,123,1,0.0255176113,0
+strategy-epoch,2019,difference-mlp64,123,2,0.0201703252,0
+strategy-epoch,2019,difference-mlp64,123,3,0.0193590402,0
+strategy-epoch,2019,difference-mlp64,123,4,0.0191629450,0
+strategy-epoch,2019,difference-mlp64,123,5,0.0188408936,0
+strategy-epoch,2019,difference-mlp64,123,6,0.0185487041,0
+strategy-epoch,2019,difference-mlp64,123,7,0.0182604096,0
+strategy-epoch,2019,difference-mlp64,123,8,0.0178401431,0
+strategy-epoch,2019,difference-mlp64,123,9,0.0175456904,0
+strategy-epoch,2019,difference-mlp64,123,10,0.0173587372,0
+strategy-epoch,2019,difference-mlp64,123,11,0.0170200990,0
+strategy-epoch,2019,difference-mlp64,123,12,0.0167973403,0
+strategy-fit,2019,difference-mlp64,123,0,4.103269,0.028509
+score,2019,difference-mlp64,7455,1.53487967,2.04530207,0.039
+lead,2019,difference-mlp64,1,0.58249048,0.77003616
+lead,2019,difference-mlp64,2,0.81318279,1.06341065
+lead,2019,difference-mlp64,3,1.04145531,1.36213196
+lead,2019,difference-mlp64,4,1.13094413,1.47629298
+lead,2019,difference-mlp64,5,1.26979256,1.64471665
+lead,2019,difference-mlp64,6,1.37735497,1.78883122
+lead,2019,difference-mlp64,7,1.47375732,1.90457084
+lead,2019,difference-mlp64,8,1.53517665,1.97927870
+lead,2019,difference-mlp64,9,1.59759950,2.07063522
+lead,2019,difference-mlp64,10,1.58385220,2.03969500
+lead,2019,difference-mlp64,11,1.60309015,2.07397756
+lead,2019,difference-mlp64,12,1.63805217,2.13258862
+lead,2019,difference-mlp64,13,1.67105512,2.17924095
+lead,2019,difference-mlp64,14,1.72955513,2.24845607
+lead,2019,difference-mlp64,15,1.70231291,2.23440314
+lead,2019,difference-mlp64,16,1.69583748,2.20127424
+lead,2019,difference-mlp64,17,1.72707190,2.24190137
+lead,2019,difference-mlp64,18,1.73599293,2.23715725
+lead,2019,difference-mlp64,19,1.75688319,2.29236147
+lead,2019,difference-mlp64,20,1.74862618,2.29363423
+lead,2019,difference-mlp64,21,1.75976634,2.31265337
+lead,2019,difference-mlp64,22,1.85140927,2.42914871
+lead,2019,difference-mlp64,23,1.94736026,2.54859628
+lead,2019,difference-mlp64,24,1.86449312,2.44100535
+month,2019,difference-mlp64,1,736,1.68089558,2.22326295
+month,2019,difference-mlp64,2,567,1.34641866,1.74168876
+month,2019,difference-mlp64,3,634,1.66963594,2.28372700
+month,2019,difference-mlp64,4,706,1.47330295,1.91673171
+month,2019,difference-mlp64,5,716,1.73805189,2.30065837
+month,2019,difference-mlp64,6,505,1.59838557,2.13523190
+month,2019,difference-mlp64,7,715,1.60390602,2.17560586
+month,2019,difference-mlp64,8,706,1.50135391,2.01290870
+month,2019,difference-mlp64,9,508,1.43871984,1.86654939
+month,2019,difference-mlp64,10,441,1.63894433,2.18363635
+month,2019,difference-mlp64,11,615,1.43548091,1.86709809
+month,2019,difference-mlp64,12,606,1.23502464,1.61176858
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.65
+	Maximum resident set size (kbytes): 315148
+	Exit status: 0
+strategy-end,2019,difference-mlp64,123
