@@ -65,6 +65,36 @@ pub fn early_split(origins:&[i64])->Result<(usize,usize),String>{
  let fit_end=origins[..val_start].partition_point(|&t|t.checked_add(24*60).is_some_and(|end|end<=first_val));
  if fit_end==0{return Err("empty purged early-stop training".into())}Ok((fit_end,val_start))
 }
+/// Only the frozen configuration strings from the candidate grid are accepted.
+pub fn run_native_deterministic(c:Candidate,f:&super::PreparedFold,rows:&[&TrainingRow],out:&mut impl std::io::Write)->Result<(),String>{
+    match (c.family,c.configuration){
+        (Family::Arx,"p6")=>super::autoreg::optimize(f,rows,c.id,6,out),
+        (Family::Arx,"p12")=>super::autoreg::optimize(f,rows,c.id,12,out),
+        (Family::Arx,"p24")=>super::autoreg::optimize(f,rows,c.id,24,out),
+        (Family::Arx,"p36")=>super::autoreg::optimize(f,rows,c.id,36,out),
+        (Family::Arx,"p48")=>super::autoreg::optimize(f,rows,c.id,48,out),
+        (Family::Arx,"p72")=>super::autoreg::optimize(f,rows,c.id,72,out),
+        (Family::Haar,"m16-l001")=>super::decomposition::optimize(f,rows,c.id,16,0.001,out),
+        (Family::Haar,"m16-l01")=>super::decomposition::optimize(f,rows,c.id,16,0.01,out),
+        (Family::Haar,"m32-l001")=>super::decomposition::optimize(f,rows,c.id,32,0.001,out),
+        (Family::Haar,"m32-l01")=>super::decomposition::optimize(f,rows,c.id,32,0.01,out),
+        (Family::Haar,"m64-l001")=>super::decomposition::optimize(f,rows,c.id,64,0.001,out),
+        (Family::Haar,"m64-l01")=>super::decomposition::optimize(f,rows,c.id,64,0.01,out),
+        (Family::Mars,"d1-t16")=>super::mars::optimize(f,rows,c.id,1,16,out),
+        (Family::Mars,"d1-t32")=>super::mars::optimize(f,rows,c.id,1,32,out),
+        (Family::Mars,"d1-t64")=>super::mars::optimize(f,rows,c.id,1,64,out),
+        (Family::Mars,"d2-t16")=>super::mars::optimize(f,rows,c.id,2,16,out),
+        (Family::Mars,"d2-t32")=>super::mars::optimize(f,rows,c.id,2,32,out),
+        (Family::Mars,"d2-t64")=>super::mars::optimize(f,rows,c.id,2,64,out),
+        (Family::Local,"k64-l01-euclid")=>super::local::optimize(f,rows,c.id,64,0.01,false,out),
+        (Family::Local,"k128-l01-euclid")=>super::local::optimize(f,rows,c.id,128,0.01,false,out),
+        (Family::Local,"k256-l01-euclid")=>super::local::optimize(f,rows,c.id,256,0.01,false,out),
+        (Family::Local,"k128-l1-euclid")=>super::local::optimize(f,rows,c.id,128,0.1,false,out),
+        (Family::Local,"k128-l001-euclid")=>super::local::optimize(f,rows,c.id,128,0.001,false,out),
+        (Family::Local,"k128-l01-manhattan")=>super::local::optimize(f,rows,c.id,128,0.01,true,out),
+        _=>Err("C012 configuration not in native deterministic backend".into())
+    }
+}
 #[cfg(test)]
 mod tests{
  use super::*;

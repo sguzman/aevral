@@ -122,6 +122,33 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str)->Result<(),String>{
     println!("decomp-config,{id},{label},{n},{d},{},{},{:.12e},{fit:.6},{:.6}",match r.kind{Kind::Fourier(_)=>"fourier",Kind::Haar(_)=>"haar"},r.lambda,residual,timer.elapsed().as_secs_f64());
     score(&Cached{predictions},label,&f,&mut out)?;out.flush().map_err(|e|e.to_string())?;Ok(())
 }
+/// C012: reuse the same Haar projection and centered readout on the exact rung subset.
+pub(super) fn optimize(f:&super::PreparedFold,rows:&[&TrainingRow],label:&str,m_coeff:usize,lambda:f64,out:&mut impl Write)->Result<(),String>{
+    if ![16,32,64].contains(&m_coeff)||![0.001,0.01].contains(&lambda){return Err("invalid C012 Haar configuration".into())}
+    let id=f.fold.id;let r=Recipe{kind:Kind::Haar(m_coeff),lambda};let n=rows.len();let m=f.eval.len();let d=Map::new(r.kind).dim();
+    let workspace=8*(n*(d+4)+3*d*d+3*d*Y+d*80+m*(Y+1)+1024);
+    let now=Instant::now();
+    macro_rules! block{($reason:expr)=>{{println!("blocked,{id},{label},{}",$reason);return Ok(())}}}
+    if workspace>2_000_000_000{block!("preflight workspace guard")}
+    let p=n.min(512);let small:Vec<_>=(0..p).map(|i|rows[i*n/p]).collect();
+    let timer=Instant::now();let(sm,_)=Model::fit(&small,r,now)?;let fit_probe=timer.elapsed().as_secs_f64();
+    let q=n.min(32);let timer=Instant::now();for i in 0..q{std::hint::black_box(sm.predict(&rows[i*n/q].input.x)?);}
+    let pred_probe=timer.elapsed().as_secs_f64();drop(sm);
+    let estimate=fit_probe*n as f64/p as f64+pred_probe*(m+128) as f64/q as f64;
+    println!("decomp-preflight,{id},{label},{n},{p},{q},{workspace},{fit_probe:.6},{pred_probe:.6},{estimate:.6}");
+    if 2.*estimate+180.>GUARD{block!("preflight runtime guard")}
+    let timer=Instant::now();let(model,residual)=match Model::fit(rows,r,now){Ok(v)=>v,Err(e)if e=="runtime guard"=>{block!(e)},Err(e)=>return Err(e)};
+    let fit=timer.elapsed().as_secs_f64();let timer=Instant::now();let mut predictions=Vec::with_capacity(m);
+    for row in &f.eval{
+        if guard(now).is_err(){block!("runtime guard")}
+        let p=match model.predict(&row.input.x){Ok(p)=>p,Err(e)if e=="numerical prediction bound"=>{block!(e)},Err(e)=>return Err(e)};
+        predictions.push((row.input.origin,f.restore(p)));
+    }
+    let pred=timer.elapsed().as_secs_f64();
+    println!("decomp-config,{id},{label},{n},{d},haar,{lambda},{residual:.12e},{fit:.6},{pred:.6}");
+    score(&Cached{predictions},label,f,out)?;
+    println!("optimization-cost,{id},{label},{fit:.6},{pred:.6},{}",(d+1)*Y);Ok(())
+}
 #[cfg(test)]
 mod tests{
     use super::*;use super::super::OriginInput;

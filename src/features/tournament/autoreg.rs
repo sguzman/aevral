@@ -78,6 +78,10 @@ impl Model{
 }
 impl Predictor for Model{fn predict(&self,x:&OriginInput)->[f64;Y]{self.normalized(x).map(|y|y*self.sd+self.mean)}}
 fn fit(rows:&[TrainingRow],kind:Kind,mean:f64,sd:f64)->Result<(Model,usize,f64,f64,f64),String>{
+    let refs:Vec<_>=rows.iter().collect();
+    fit_refs(&refs,kind,mean,sd)
+}
+fn fit_refs(rows:&[&TrainingRow],kind:Kind,mean:f64,sd:f64)->Result<(Model,usize,f64,f64,f64),String>{
     let mut qr=Qr::new(kind.dim(),kind.outputs());
     let mut mse=0.;
     let mut samples=Vec::new(); // small bounded diagnostic sample, never evaluation
@@ -127,6 +131,19 @@ pub fn run(data:&Path,id:&str,output:&Path,selection:&str)->Result<(),String>{
             },Err(e)=>println!("blocked,{id},{label},{e}"),
         }
     }out.flush().map_err(|e|e.to_string())?;Ok(())
+}
+/// C012 ARX: independent one-step examples, not synthetic adjacent transitions.
+pub(super) fn optimize(f:&super::PreparedFold,rows:&[&TrainingRow],label:&str,order:usize,out:&mut impl Write)->Result<(),String>{
+    if ![6,12,24,36,48,72].contains(&order){return Err("invalid C012 ARX order".into())}
+    let id=f.fold.id;let kind=Kind::Ar(order,true);let now=Instant::now();
+    let (model,n,rank,mse,growth)=match fit_refs(rows,kind,f.target_mean,f.target_sd){
+        Ok(v)=>v,Err(e)=>{println!("blocked,{id},{label},{e}");return Ok(())}
+    };
+    if n!=rows.len(){return Err("C012 ARX row budget mismatch".into())}
+    let fit=now.elapsed().as_secs_f64();
+    println!("ar-config,{id},{label},{n},{},{},{rank:.12e},{mse:.12e},{growth:.12e},{fit:.6}",kind.dim(),kind.dim()*kind.outputs());
+    let timer=Instant::now();score(&model,label,f,out)?;
+    println!("optimization-cost,{id},{label},{fit:.6},{:.6},{}",timer.elapsed().as_secs_f64(),kind.dim()*kind.outputs());Ok(())
 }
 #[cfg(test)]
 mod tests{

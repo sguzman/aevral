@@ -56,6 +56,37 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str)->Result<(),String>{
     println!("local-config,{id},{label},{},{k},{lambda},{P},{residual:.12e},{:.6}",rows.len(),timer.elapsed().as_secs_f64());
     score(&Cached{predictions},label,&f,&mut out)?;out.flush().map_err(|e|e.to_string())?;Ok(())
 }
+fn nearest_l1(rows:&[&TrainingRow],q:&[f64;D],k:usize)->Vec<Neighbor>{
+    let mut heap=std::collections::BinaryHeap::with_capacity(k);
+    for(i,row)in rows.iter().enumerate(){
+        let n=Neighbor{d2:row.input.x.iter().zip(q).map(|(a,b)|(a-b).abs()).sum(),i};
+        if heap.len()<k{heap.push(n)}else if n<*heap.peek().unwrap(){*heap.peek_mut().unwrap()=n;}
+    }heap.into_sorted_vec()
+}
+fn predict_opt(rows:&[&TrainingRow],q:&[f64;D],k:usize,lambda:f64,l1:bool)->Result<([f64;Y],f64),String>{
+    if !l1{return predict(rows,q,k,lambda)}
+    let ids=nearest_l1(rows,q,k);if ids.len()!=k{return Err("local neighbor count mismatch".into())}local_fit(rows,&ids,q,lambda)
+}
+pub(super) fn optimize(f:&super::PreparedFold,rows:&[&TrainingRow],label:&str,k:usize,lambda:f64,l1:bool,out:&mut impl Write)->Result<(),String>{
+    if ![64,128,256].contains(&k)||![0.001,0.01,0.1].contains(&lambda)||rows.len()<k{return Err("invalid C012 local ridge configuration".into())}
+    if rows.iter().any(|r|r.input.x.iter().chain(&r.normalized_target).any(|v|!v.is_finite())){return Err("invalid reference subset".into())}
+    let id=f.fold.id;let m=f.eval.len();
+    let workspace=rows.len()*std::mem::size_of::<&TrainingRow>()+m*std::mem::size_of::<(i64,[f64;Y])>()+k*std::mem::size_of::<Neighbor>()+8*(3*P*P+Y*P+4*P+2*Y);
+    let now=Instant::now();let sample=rows.len().min(32);
+    for i in 0..sample{let _=std::hint::black_box(predict_opt(rows,&rows[i*rows.len()/sample].input.x,k,lambda,l1)?);}
+    let secs=now.elapsed().as_secs_f64();let estimate=secs*m as f64/sample as f64;
+    println!("local-preflight,{id},{label},{},{sample},{workspace},{secs:.6},{estimate:.6}",rows.len());
+    if workspace>2_000_000_000||2.*estimate+180.>GUARD{println!("blocked,{id},{label},preflight workspace or runtime guard");return Ok(())}
+    let timer=Instant::now();let mut predictions=Vec::with_capacity(m);let mut residual:f64=0.;
+    for row in &f.eval{
+        if now.elapsed().as_secs_f64()>GUARD{println!("blocked,{id},{label},runtime guard");return Ok(())}
+        let(p,e)=predict_opt(rows,&row.input.x,k,lambda,l1)?;residual=residual.max(e);predictions.push((row.input.origin,f.restore(p)));
+    }
+    let pred=timer.elapsed().as_secs_f64();
+    println!("local-config,{id},{label},{},{k},{lambda},{P},{residual:.12e},{pred:.6}",rows.len());
+    score(&Cached{predictions},label,f,out)?;
+    println!("optimization-cost,{id},{label},0.000000,{pred:.6},0");Ok(())
+}
 #[cfg(test)]
 mod tests{
     use super::*;use super::super::OriginInput;

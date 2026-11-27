@@ -20,6 +20,9 @@ fn cross(v:&[f64],r:&[[f64;Y]])->[f64;Y]{let mut c=[0.;Y];for (a,row)in v.iter()
 fn remove(v:&[f64],r:&mut[[f64;Y]],c:&[f64;Y]){for(a,row)in v.iter().zip(r){for k in 0..Y{row[k]-=a*c[k]}}}
 fn gain(c:&[f64;Y])->f64{c.iter().map(|x|x*x).sum()}
 fn forward(rows:&[TrainingRow],max_terms:usize,degree:usize)->Result<Vec<Term>,String>{
+    forward_refs(&rows.iter().collect::<Vec<_>>(),max_terms,degree)
+}
+fn forward_refs(rows:&[&TrainingRow],max_terms:usize,degree:usize)->Result<Vec<Term>,String>{
     if rows.len()<4{return Err("too few training rows".into())}
     let n=rows.len().min(SAMPLE);
     let s:Vec<_>=(0..n).map(|i|&rows[i*rows.len()/n]).collect();
@@ -75,6 +78,9 @@ fn forward(rows:&[TrainingRow],max_terms:usize,degree:usize)->Result<Vec<Term>,S
 }
 struct Stats{g:Vec<Vec<f64>>,xy:Vec<[f64;Y]>,yy:f64,n:usize}
 fn stats(rows:&[TrainingRow],terms:&[Term])->Stats{
+    stats_refs(&rows.iter().collect::<Vec<_>>(),terms)
+}
+fn stats_refs(rows:&[&TrainingRow],terms:&[Term])->Stats{
     let p=terms.len();let mut g=vec![vec![0.;p];p];let mut xy=vec![[0.;Y];p];let mut yy=0.;
     for r in rows{
         let z:Vec<_>=terms.iter().map(|t|value(t,&r.input.x)).collect();
@@ -151,6 +157,23 @@ pub fn run(data:&Path,id:&str,output:&Path,selection:&str)->Result<(),String>{
         },
         Err(e)=>println!("blocked,{id},{selection},{e}"),
     }out.flush().map_err(|e|e.to_string())?;Ok(())
+}
+pub(super) fn optimize(f:&super::PreparedFold,rows:&[&TrainingRow],label:&str,degree:usize,cap:usize,out:&mut impl Write)->Result<(),String>{
+    if ![1,2].contains(&degree)||![16,32,64].contains(&cap){return Err("invalid C012 MARS configuration".into())}
+    let id=f.fold.id;let now=Instant::now();
+    let result=forward_refs(rows,cap,degree).and_then(|terms|{
+        let s=stats_refs(rows,&terms);let(active,b,gcv)=prune(&s,(0..terms.len()).collect())?;
+        let chosen=active.iter().map(|&j|terms[j].clone()).collect::<Vec<_>>();Ok((terms.len()-1,chosen,b,gcv))
+    });
+    match result{
+        Ok((forward_count,terms,b,gcv))=>{
+            let fit=now.elapsed().as_secs_f64();let params=terms.len()*Y;
+            println!("mars-config,{id},{label},{degree},{cap},{forward_count},{},{params},{gcv:.12e},{fit:.6}",terms.len()-1);
+            for(i,t)in terms.iter().enumerate(){println!("mars-term,{id},{label},{i},{t:?}")}
+            let model=Model{terms,b,mean:f.target_mean,sd:f.target_sd};let timer=Instant::now();score(&model,label,f,out)?;
+            println!("optimization-cost,{id},{label},{fit:.6},{:.6},{params}",timer.elapsed().as_secs_f64());
+        },Err(e)=>println!("blocked,{id},{label},{e}")
+    }Ok(())
 }
 #[cfg(test)]
 mod tests{

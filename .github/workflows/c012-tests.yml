@@ -6,6 +6,10 @@ on:
       - 'src/features/tournament/optimization.rs'
       - 'src/features/tournament/optimization/**'
       - 'src/features/tournament.rs'
+      - 'src/features/tournament/autoreg.rs'
+      - 'src/features/tournament/decomposition.rs'
+      - 'src/features/tournament/mars.rs'
+      - 'src/features/tournament/local.rs'
       - 'campaigns/012-optimization/candidate-grid.csv'
   workflow_dispatch:
 permissions:
