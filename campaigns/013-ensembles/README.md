@@ -1,6 +1,6 @@
 # C013 — Cross-family hybrids and ensembles
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: active (manifest preparation); authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
 
 ## Scope
 Mean/median, nonnegative convex weights, horizon-specific weights, ridge stacking, residual correction, regime-gated mixtures, diversity-aware ensembles, calibrated blending.
