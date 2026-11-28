@@ -1,7 +1,13 @@
 use aevral::Mlp;
 mod weather_cli;
+mod weather_audit;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
+    if args.get(1).map(String::as_str)==Some("weather-audit"){
+        if args.len()!=3{eprintln!("Usage: aevral weather-audit LAX_DATA_DIR");std::process::exit(2)}
+        if let Err(e)=weather_audit::run(std::path::Path::new(&args[2])){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("weather"){
         if let Err(e)=weather_cli::run(&args[2..]){eprintln!("weather: {e}");std::process::exit(1)}
         return
