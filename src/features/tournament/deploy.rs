@@ -1,0 +1,113 @@
+//! Reusable weather forecast bundle; fitting, calibration and inference are separate.
+use super::{artifact::{self,Artifact,Recipe,SourceFingerprint},local::LocalRidge,neural::AdamMlp,p13::{P13,CalibrationOrigin,SUPPORT},upstream::LightGbm,station::StationBins,Incumbent,OriginScales,OriginInput,TrainingRow,Predictor,Y};
+use crate::weather::Station;
+use std::path::Path;
+
+pub struct Members{incumbent:Incumbent,light:LightGbm,ridge:LocalRidge,adam:AdamMlp}
+impl Members{
+    pub fn fit(train:&[TrainingRow],scales:OriginScales)->Result<Self,String>{
+        let v=scales.values();let(mean,sd)=(v[0],v[1]);
+        Ok(Self{incumbent:Incumbent::fit(train,mean,sd,42)?,light:LightGbm::fit(train,mean,sd)?,ridge:LocalRidge::fit(train,mean,sd)?,adam:AdamMlp::fit(train,mean,sd)?})
+    }
+    pub fn predict_batch(&self,rows:&[OriginInput])->Result<Vec<[[f64;Y];4]>,String>{
+        let l=self.light.predict_batch(rows)?;
+        rows.iter().zip(l).map(|(x,l)|{
+            let p=[self.incumbent.predict(x),l,self.ridge.predict(x)?,self.adam.predict(x)?];
+            if p.iter().flatten().any(|v|!v.is_finite()){return Err("nonfinite member prediction".into())}Ok(p)
+        }).collect()
+    }
+}
+enum Model{Mlp(Incumbent),P13(Members,P13)}
+pub struct ForecastBundle{pub station:Station,pub cutoff:i64,pub scales:OriginScales,model:Model}
+pub struct Forecast{pub origin:i64,pub point:[f64;Y],pub support:Option<[[f64;SUPPORT];Y]>}
+impl ForecastBundle{
+    /// Fits from station-bound completed training labels only.
+    /// P13 calibration inputs must be separately generated out of fold.
+    pub fn train(data:&StationBins,cutoff:i64,recipe:Recipe,calibration:&[CalibrationOrigin])->Result<Self,String>{
+        if cutoff<=data.first||cutoff>data.last+60{return Err("fit cutoff outside archive".into())}
+        let (rows,scales)=super::prepare_training(&data.bins,data.first,cutoff)?;
+        let v=scales.values();
+        let model=match recipe{
+            Recipe::Mlp=>{if !calibration.is_empty(){return Err("unexpected MLP calibration".into())}Model::Mlp(Incumbent::fit(&rows,v[0],v[1],42)?)}
+            Recipe::P13=>{let p=P13::fit(calibration,cutoff)?;Model::P13(Members::fit(&rows,scales)?,p)}
+        };
+        Ok(Self{station:data.station.clone(),cutoff,scales,model})
+    }
+    pub fn artifact(&self,sources:Vec<SourceFingerprint>)->Result<Artifact,String>{
+        let (recipe,components)=match &self.model{
+            Model::Mlp(m)=>(Recipe::Mlp,vec![("I".into(),m.model_bytes()?)]),
+            Model::P13(m,p)=>(Recipe::P13,vec![("I".into(),m.incumbent.model_bytes()?),("L".into(),m.light.model_bytes()?),("R".into(),m.ridge.model_bytes()?),("M".into(),m.adam.model_bytes()?),("P13".into(),p.model_bytes()?)]),
+        };
+        Ok(Artifact{station:self.station.clone(),cutoff:self.cutoff,scales:self.scales,recipe,sources,components})
+    }
+    pub fn from_artifact(a:Artifact)->Result<Self,String>{
+        let v=a.scales.values();let(mean,sd)=(v[0],v[1]);
+        let mut c=a.components.into_iter();
+        let mut take=|expected:&str|->Result<Vec<u8>,String>{
+            let(id,p)=c.next().ok_or("missing component")?;
+            if id!=expected{return Err("component order mismatch".into())}Ok(p)
+        };
+        let incumbent=Incumbent::from_model_bytes(&take("I")?,mean,sd)?;
+        let model=match a.recipe{
+            Recipe::Mlp=>Model::Mlp(incumbent),
+            Recipe::P13=>{
+                let light=LightGbm::from_model_bytes(&take("L")?,mean,sd)?;
+                let ridge=LocalRidge::from_model_bytes(&take("R")?,mean,sd)?;
+                let adam=AdamMlp::from_model_bytes(&take("M")?,mean,sd)?;
+                let p=P13::from_model_bytes(&take("P13")?)?;
+                Model::P13(Members{incumbent,light,ridge,adam},p)
+            }
+        };
+        if c.next().is_some(){return Err("extra components".into())}
+        Ok(Self{station:a.station,cutoff:a.cutoff,scales:a.scales,model})
+    }
+    pub fn load(path:&Path)->Result<Self,String>{Self::from_artifact(Artifact::load(path)?)}
+    pub fn forecast(&self,data:&StationBins,issue:i64)->Result<Forecast,String>{
+        if data.station!=self.station{return Err("forecast station mismatch".into())}
+        self.forecast_inner(data,issue)
+    }
+    /// Explicit transfer evaluation only: never silently relabel station identity.
+    pub fn transfer_forecast(&self,data:&StationBins,issue:i64)->Result<Forecast,String>{
+        self.forecast_inner(data,issue)
+    }
+    fn forecast_inner(&self,data:&StationBins,issue:i64)->Result<Forecast,String>{
+        if issue<self.cutoff{return Err("forecast precedes model cutoff".into())}
+        let x=self.scales.encode(&data.origin(issue)?)?;
+        let(point,support)=match &self.model{
+            Model::Mlp(m)=>(m.predict(&x),None),
+            Model::P13(m,p)=>{
+                let members=m.predict_batch(std::slice::from_ref(&x))?;
+                let s=p.support(&members[0])?;let point=std::array::from_fn(|h|P13::median(&s[h]));(point,Some(s))
+            }
+        };
+        if point.iter().any(|v|!v.is_finite()){return Err("nonfinite forecast".into())}
+        Ok(Forecast{origin:issue,point,support})
+    }
+}
+/// Fingerprint actual source bytes; callers verify these again after reading.
+pub fn fingerprints(paths:&[std::path::PathBuf])->Result<Vec<SourceFingerprint>,String>{
+    let mut out=Vec::with_capacity(paths.len());
+    for p in paths{
+        let name=p.file_name().and_then(|v|v.to_str()).ok_or("invalid source filename")?.to_owned();
+        let bytes=std::fs::read(p).map_err(|e|format!("{}: {e}",p.display()))?;
+        out.push(SourceFingerprint{name,sha256:artifact::sha256(&bytes)?});
+    }
+    out.sort_by(|a,b|a.name.cmp(&b.name));
+    if out.is_empty()||out.windows(2).any(|w|w[0].name==w[1].name){return Err("empty or duplicate source names".into())}
+    Ok(out)
+}
+#[cfg(test)]
+mod tests{
+    use super::*;
+    #[test]fn incumbent_bundle_exact_reload(){
+        let station=Station::new("LAX").unwrap();let first=60;let cutoff=180*60;
+        let bins=(0..200).map(|i|Some(crate::covariates::Weather{minute:first+i*60,temperature:Some((i%23)as f64),dew_c:Some((i%17)as f64),pressure_hpa:Some(1000.+(i%13)as f64),wind_ms:Some([(i%11)as f64,(i%7)as f64])})).collect();
+        let data=StationBins{station:station.clone(),first,last:200*60,bins,quarantined:vec![]};
+        let model=ForecastBundle::train(&data,cutoff,Recipe::Mlp,&[]).unwrap();
+        let a=model.artifact(vec![SourceFingerprint{name:"synthetic.csv".into(),sha256:[0;32]}]).unwrap();
+        let bytes=a.encode().unwrap();let reloaded=ForecastBundle::from_artifact(Artifact::decode(&bytes).unwrap()).unwrap();
+        assert_eq!(model.forecast(&data,cutoff).unwrap().point,reloaded.forecast(&data,cutoff).unwrap().point);
+        assert!(reloaded.forecast(&data,cutoff-60).is_err());
+        let mut other=data;other.station=Station::default();assert!(reloaded.forecast(&other,cutoff).is_err());
+    }
+}
