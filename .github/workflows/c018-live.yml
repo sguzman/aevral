@@ -61,21 +61,7 @@ jobs:
             echo forecast-issued > live/outcome.txt
           else
             cat live/forecast.log
-            if grep -Eq '^weather: (missing history report|missing/nonfinite temperature|missing wind|missing dew point|missing pressure)
-          fi
-          git diff --exit-code -- flake.lock
-          cd live
-          find . -type f ! -path ./SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
-          sha256sum -c SHA256SUMS
-          cat outcome.txt
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: c018-live-lax
-          path: live/
-          if-no-files-found: warn
-          retention-days: 90
- live/forecast.log; then
+            if grep -Eq '(missing history report|missing/nonfinite temperature|missing wind|missing dew point|missing pressure)$' live/forecast.log; then
               test ! -e live/forecast.csv
               echo forecast-unavailable-missing-observations > live/outcome.txt
             else
@@ -85,7 +71,7 @@ jobs:
           fi
           git diff --exit-code -- flake.lock
           cd live
-          sha256sum * > SHA256SUMS
+          find . -type f ! -path ./SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
           sha256sum -c SHA256SUMS
           cat outcome.txt
       - uses: actions/upload-artifact@v4
