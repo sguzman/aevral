@@ -1,0 +1,25 @@
+name: C018 partial-day acquisition probe
+on:
+  push:
+    paths:
+      - '.github/workflows/c018-cutoff-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Historical partial-day cutoff and immutable reuse
+        run: |
+          set -euo pipefail
+          bash -n scripts/fetch-weather.sh
+          bash scripts/fetch-weather.sh KLAX 2025-01-01 2025-01-05 probe 2025-01-04T12:00
+          bash scripts/fetch-weather.sh KLAX 2025-01-01 2025-01-05 probe 2025-01-04T12:00
+          cd probe
+          sha256sum -c *.sha256
+          awk -F, 'NR==1{next} $2>"2025-01-04 12:00" {exit 1} END{if(NR!=85)exit 1}' *.csv
+          tail -n1 *.csv
+          echo cutoff-probe,84,pass
