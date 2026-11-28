@@ -209,14 +209,12 @@ fn request(year: &str, id: &str, seed: u64) -> Result<Request, String> {
     }
     selected.ok_or_else(||"request not in frozen C015 matrix".into())
 }
-/// Adapter for the incumbent and seven C012 source recipes.
+/// Adapter for all twelve frozen C015 single-model recipes.
 /// CI must verify the archived cohort hashes before launching any fit.
 pub fn run(data: &Path, year: &str, output: &Path, id: &str, seed: u64) -> Result<(), String> {
     use super::{optimization, neural, Baseline, Incumbent, score};
     let req = request(year,id,seed)?;
-    if !matches!(id,"I"|"L"|"R"|"M"|"S"|"A"|"H"|"X") {
-        return Err("C015 adapter not implemented for this candidate yet".into());
-    }
+    let prep_start=std::time::Instant::now();
     let (first,bins,fold)=load_bins(data,year)?;
     let f=collect(&bins,first,fold)?;
     let a=verify(&bins,first,&f)?;
@@ -231,21 +229,47 @@ pub fn run(data: &Path, year: &str, output: &Path, id: &str, seed: u64) -> Resul
     println!("scales,{year},{:?}",f.scales);
     if id=="I" {
         if req.recipe!="mlp64"||req.budget.is_some()||seed!=42 {return Err("invalid incumbent identity".into());}
-        let now=std::time::Instant::now();
-        let model=Incumbent::fit(&f.train,f.target_mean,f.target_sd,seed)?;
-        println!("fit-seconds,{year},mlp64,{:.6}",now.elapsed().as_secs_f64());
-        if now.elapsed().as_secs_f64()>1400. {
-            println!("blocked,{year},mlp64,runtime guard");
-            return Ok(());
-        }
-        let mut out=BufWriter::new(File::create(output).map_err(|e|e.to_string())?);
-        writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
-        score(&model,"mlp64",&f,&mut out)?;
-        out.flush().map_err(|e|e.to_string())?;
         let mut daily=BufWriter::new(File::create(dir.join("daily-predictions.csv")).map_err(|e|e.to_string())?);
         writeln!(daily,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
         score(&Baseline{daily:true},"daily",&f,&mut daily)?;
         daily.flush().map_err(|e|e.to_string())?;
+        let now=std::time::Instant::now();
+        match Incumbent::fit_guarded(&f.train,f.target_mean,f.target_sd,seed,Some(now+std::time::Duration::from_secs(1400))) {
+            Ok(model)=>{
+                println!("fit-seconds,{year},mlp64,{:.6}",now.elapsed().as_secs_f64());
+                let mut out=BufWriter::new(File::create(output).map_err(|e|e.to_string())?);
+                writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
+                score(&model,"mlp64",&f,&mut out)?;
+                out.flush().map_err(|e|e.to_string())?;
+            },
+            Err(e) if e=="runtime guard"=>println!("blocked,{year},mlp64,{e}"),
+            Err(e)=>return Err(e),
+        }
+    } else if matches!(id,"G"|"K"|"N"|"W") {
+        let expected=match id {
+            "G"=>("xgboost-128",24576),
+            "K"=>("fitc-s1-m256",8192),
+            "N"=>("mae-nhits64",8192),
+            "W"=>("pressure-tendency-short",8192),
+            _=>unreachable!(),
+        };
+        if req.recipe!=expected.0||req.budget!=Some(expected.1){return Err("C015 source recipe mismatch".into());}
+        let rows=super::neighbors::subset(&f.train,expected.1);
+        if rows.len()!=indices.len()||rows.iter().zip(&indices).any(|(r,&i)|r.input.origin!=f.train[i].input.origin){
+            return Err("source subset mismatch".into());
+        }
+        let result=match id {
+            "G"=>super::upstream::run_prepared(&f,output,req.recipe,seed),
+            "K"=>super::gp::run_prepared(&f,output,req.recipe),
+            "N"=>neural::strategy::run_prepared(&f,output,req.recipe,seed),
+            "W"=>representation::run_prepared(&f,first,&bins,output,req.recipe,seed,prep_start),
+            _=>unreachable!(),
+        };
+        match result {
+            Ok(())=>{},
+            Err(e) if e=="runtime guard"=>println!("blocked,{year},{},{e}",req.recipe),
+            Err(e)=>return Err(e),
+        }
     } else {
         let candidate=optimization::candidates()?.into_iter().find(|c|c.id==req.recipe).ok_or("missing C012 source recipe")?;
         if req.budget!=Some(32768)||candidate.track!=req.track||(!candidate.stochastic&&seed!=42) {
