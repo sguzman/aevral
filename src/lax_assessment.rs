@@ -1,5 +1,6 @@
 //! Fixed C018 2025 matched assessment, with saved model reload before scoring.
-use aevral::{weather::{self,Station},features::tournament::{deploy::{self,ForecastBundle},artifact::{Recipe,Artifact},station::ConflictPolicy,p13::{P13,SUPPORT},Y}};
+use aevral::{weather::{self,Station},features::tournament::{deploy::{self,ForecastBundle},artifact::{Recipe,Artifact},station::ConflictPolicy,p13::{P13,SUPPORT}}};
+const Y:usize=24;
 use std::{path::Path,fs::{self,File},io::{BufWriter,Write}};
 #[derive(Default)]
 struct Metric{n:usize,ae:f64,se:f64,crps:f64,covered:[usize;4],width:[f64;4]}
