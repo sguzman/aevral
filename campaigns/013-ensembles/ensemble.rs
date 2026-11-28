@@ -168,3 +168,104 @@ mod linear_tests{
  #[test]fn ridge_collinear(){let r=[row(4.,4.,6.,1),row(2.,2.,4.,1)];let refs:Vec<_>=r.iter().collect();let m=ridge(&refs,U);assert!((m.intercept-2.).abs()<1e-12);assert!(m.objective<1e-12);}
  #[test]fn all_linear_recipes(){let rows:Vec<_>=(1..=24).flat_map(|h|[row(0.,2.,1.,h),row(0.,4.,2.,h)]).collect();let refs:Vec<_>=rows.iter().collect();for id in 11..=18{let m=fit_linear(id,&refs);for r in &rows{assert!(m.predict(&r.x).is_finite());}assert!(matches!(m,Learned::Lead(_))==(id%2==0));}}
 }
+
+pub fn spread(x:&Features)->f64{
+ let mut lo=f64::INFINITY;let mut hi=f64::NEG_INFINITY;
+ for &i in T{lo=lo.min(x.base[i]);hi=hi.max(x.base[i]);}hi-lo
+}
+pub fn season(month:usize)->usize{match month{12|1|2=>0,3..=5=>1,6..=8=>2,9..=11=>3,_=>panic!("invalid month")}}
+#[derive(Clone,Debug)]
+pub enum Model{
+ Static(u8),Linear(Learned),Corrected{base:Box<Model>,bias:[f64;24]},
+ Spread{threshold:f64,models:Vec<Linear>,counts:Vec<usize>},
+ Seasonal{models:Vec<Linear>,counts:Vec<usize>},
+ Selected{cols:Vec<usize>,correlations:[[Option<f64>;N];N]}
+}
+impl Model{
+ pub fn predict(&self,x:&Features)->f64{
+  match self{
+   Self::Static(id)=>static_predict(*id,x),
+   Self::Linear(m)=>m.predict(x),
+   Self::Corrected{base,bias}=>base.predict(x)+bias[x.lead-1],
+   Self::Spread{threshold,models,..}=>models[usize::from(spread(x)>*threshold)].predict(x),
+   Self::Seasonal{models,..}=>models[season(x.month)].predict(x),
+   Self::Selected{cols,..}=>mean(x,cols),
+  }
+ }
+}
+fn correction(base:Model,rows:&[&Row],shrink:f64)->Model{
+ let(mut sum,mut count)=([0.;24],[0usize;24]);
+ for r in rows{let h=r.x.lead-1;sum[h]+=r.target-base.predict(&r.x);count[h]+=1;}
+ let bias=std::array::from_fn(|h|{assert!(count[h]>0);shrink*sum[h]/count[h]as f64});
+ Model::Corrected{base:Box::new(base),bias}
+}
+fn incumbent()->Model{
+ let mut weights=[0.;N];weights[0]=1.;
+ Model::Linear(Learned::Global(Linear{weights,intercept:0.,iterations:0,converged:true,objective:0.}))
+}
+fn gated(rows:&[&Row],groups:usize,group:impl Fn(&Features)->usize)->(Vec<Linear>,Vec<usize>){
+ let fallback=convex(rows,T);
+ let mut models=Vec::new();let mut counts=Vec::new();
+ for g in 0..groups{
+  let r:Vec<_>=rows.iter().copied().filter(|r|group(&r.x)==g).collect();
+  counts.push(r.len());models.push(if r.len()<1000{fallback.clone()}else{convex(&r,T)});
+ }
+ (models,counts)
+}
+pub fn correlations(rows:&[&Row])->[[Option<f64>;N];N]{
+ assert!(!rows.is_empty());let n=rows.len()as f64;
+ let mut mu=[0.;N];for r in rows{for i in U.iter().copied(){mu[i]+=r.x.base[i]-r.target;}}
+ for v in &mut mu{*v/=n;}
+ let mut cov=[[0.;N];N];
+ for r in rows{
+  let e:[f64;N]=std::array::from_fn(|i|r.x.base[i]-r.target-mu[i]);
+  for i in 0..N{for j in 0..N{cov[i][j]+=e[i]*e[j];}}
+ }
+ std::array::from_fn(|i|std::array::from_fn(|j|{
+  let denom=(cov[i][i]*cov[j][j]).sqrt();
+  if denom>0.{Some((cov[i][j]/denom).clamp(-1.,1.))}else{None}
+ }))
+}
+fn select_three(rows:&[&Row])->Vec<usize>{
+ assert!(!rows.is_empty());let mut cols=Vec::new();
+ for _ in 0..3{
+  let mut best:Option<(usize,f64)>=None;
+  for i in 0..N{
+   if cols.contains(&i){continue;}
+   let mut trial=cols.clone();trial.push(i);
+   let s=rows.iter().map(|r|(mean(&r.x,&trial)-r.target).powi(2)).sum::<f64>();
+   assert!(s.is_finite());
+   if best.map_or(true,|(_,b)|s<b){best=Some((i,s));}
+  }
+  cols.push(best.unwrap().0);
+ }cols
+}
+pub fn fit(id:u8,rows:&[&Row])->Model{
+ assert!((1..=24).contains(&id));
+ if id<=10{return Model::Static(id);}
+ assert!(!rows.is_empty());
+ match id{
+  11..=18=>Model::Linear(fit_linear(id,rows)),
+  19=>correction(incumbent(),rows,1.),
+  20=>correction(Model::Static(1),rows,1.),
+  21=>{let threshold=median(rows.iter().map(|r|spread(&r.x)).collect());let(models,counts)=gated(rows,2,|x|usize::from(spread(x)>threshold));Model::Spread{threshold,models,counts}},
+  22=>{let(models,counts)=gated(rows,4,|x|season(x.month));Model::Seasonal{models,counts}},
+  23=>Model::Selected{cols:select_three(rows),correlations:correlations(rows)},
+  24=>correction(Model::Linear(fit_linear(12,rows)),rows,0.5),
+  _=>unreachable!()
+ }
+}
+#[cfg(test)]
+mod final_tests{
+ use super::*;
+ fn row(h:usize,m:usize,b:[f64;N],target:f64)->Row{Row{x:Features{origin:0,lead:h,month:m,base:b},target,daily:0.}}
+ fn fixture()->Vec<Row>{(1..=24).flat_map(|h|[row(h,1,[2.;N],4.),row(h,7,[4.;N],6.)]).collect()}
+ #[test]fn residual_bias(){let r=fixture();let a:Vec<_>=r.iter().collect();for id in [19,20]{let model=fit(id,&a);for r in &r{assert!((model.predict(&r.x)-r.target).abs()<1e-12);}}}
+ #[test]fn calibrated_half_bias(){let r=fixture();let a:Vec<_>=r.iter().collect();let m=fit(24,&a);for r in &r{assert!((m.predict(&r.x)-r.target+1.).abs()<1e-12);}}
+ #[test]fn season_boundaries(){assert_eq!((1..=12).map(season).collect::<Vec<_>>(),vec![0,0,1,1,1,2,2,2,3,3,3,0]);}
+ #[test]fn spread_tie_and_fallback(){let r=fixture();let a:Vec<_>=r.iter().collect();let m=fit(21,&a);if let Model::Spread{threshold,models,counts}=m{assert_eq!(threshold,0.);assert_eq!(counts,vec![48,0]);assert_eq!(models[0].weights,models[1].weights);}else{panic!("wrong model");}}
+ #[test]fn seasonal_fallback(){let r=fixture();let a:Vec<_>=r.iter().collect();if let Model::Seasonal{models,counts}=fit(22,&a){assert_eq!(counts,vec![24,0,24,0]);assert!(models.iter().all(|m|m.weights==models[0].weights));}else{panic!("wrong model");}}
+ #[test]fn diversity_ties(){let r=fixture();let a:Vec<_>=r.iter().collect();assert_eq!(select_three(&a),vec![0,1,2]);assert_eq!(correlations(&a)[0][0],None);}
+ #[test]fn diversity_residual_cancel(){let r=[row(1,1,[1.,-2.,9.,9.,9.,9.,9.,9.],0.),row(1,1,[-1.,2.,9.,9.,9.,9.,9.,9.],0.)];let a:Vec<_>=r.iter().collect();let c=select_three(&a);assert_eq!(&c[..2],&[0,1]);assert!((correlations(&a)[0][1].unwrap()+1.).abs()<1e-12);}
+ #[test]fn all_recipes_finite(){let r=fixture();let a:Vec<_>=r.iter().collect();for id in 1..=24{let m=fit(id,&a);assert!(r.iter().all(|r|m.predict(&r.x).is_finite()));}}
+}
