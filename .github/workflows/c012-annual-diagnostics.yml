@@ -1,0 +1,44 @@
+name: C012 annual diagnostic reproduction
+on:
+  push:
+    paths:
+      - '.github/workflows/c012-annual-diagnostics.yml'
+      - 'campaigns/012-optimization/aggregate-diagnostics.rs'
+permissions:
+  contents: read
+  statuses: write
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify archived annual summary
+        run: |
+          cd results/C012
+          printf '%s\n' '8469ce34f4ed21fab61935abfa1187cd74fd28b5e89791383992378465e9a394  annual-summary.csv' 'af4171f326115371dce49a5bc03840c24a8ef4068648665adfabfc633e88090a  annual-folds.csv' | sha256sum -c -
+      - name: Compile and reproduce diagnostic tables
+        run: |
+          rustc --edition=2021 -O campaigns/012-optimization/aggregate-diagnostics.rs -o /tmp/c012-diagnostics
+          /tmp/c012-diagnostics results/C012 /tmp/diagnostics
+          test "$(wc -l < /tmp/diagnostics/annual-diagnostics.csv)" -eq 325
+          test "$(wc -l < /tmp/diagnostics/annual-diagnostic-fold-seeds.csv)" -eq 2341
+          cat /tmp/diagnostics/annual-diagnostics.csv
+          sha256sum /tmp/diagnostics/*.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c012-annual-diagnostics
+          path: /tmp/diagnostics/
+          retention-days: 30
+      - name: Publish reproduction result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c012-annual-diagnostics -f state="$state" \
+            -f description="Annual diagnostics reproduction: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
