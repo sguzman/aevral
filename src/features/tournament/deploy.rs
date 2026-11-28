@@ -39,6 +39,26 @@ pub fn evaluation(data:&StationBins,start:i64,end:i64,scales:OriginScales)->Resu
     if rows.is_empty(){return Err("empty matched assessment cohort".into())}
     Ok(rows)
 }
+#[derive(Debug,Default)]
+pub struct Coverage{pub possible:usize,pub temperature_complete:usize,pub matched:usize}
+/// Count the natural and matched cohorts without fitting a model.
+pub fn coverage(data:&StationBins,start:i64,end:i64)->Result<Coverage,String>{
+    if start<data.first||end<=start||start%60!=0||end%60!=0||end>data.last+60{return Err("invalid coverage interval".into())}
+    let mut c=Coverage::default();
+    for i in super::H-1..data.bins.len().saturating_sub(Y){
+        let origin=data.first+i as i64*60;
+        if origin+60<start{continue}
+        if origin+1440>=end{break}
+        c.possible+=1;
+        if !data.bins[i+1-super::H..=i+Y].iter().enumerate().all(|(j,b)|{
+            let t=origin+(j as i64-(super::H as i64-1))*60;
+            b.is_some_and(|r|r.minute>=t-59&&r.minute<=t&&r.temperature.is_some_and(|v|v.is_finite()))
+        }){continue}
+        c.temperature_complete+=1;
+        if data.origin(origin).is_ok(){c.matched+=1;}
+    }
+    Ok(c)
+}
 /// Generate prior-only calibration from contiguous complete calendar-year folds.
 /// The earliest eligible calibration year is 2020, matching C015. CLI chooses
 /// an explicit finite range; no assessment rows may enter the calibrator.
@@ -196,6 +216,9 @@ mod tests{
         let eval=evaluation(&data,120*60,170*60,scales).unwrap();
         assert_eq!(eval.first().unwrap().input.origin,119*60);
         assert_eq!(eval.last().unwrap().input.origin,145*60);
+        let counts=coverage(&data,120*60,170*60).unwrap();
+        assert_eq!(counts.possible,eval.len());assert_eq!(counts.matched,eval.len());
+
         assert!(calibrate(&data,2020,2021,cutoff).is_err());
         let model=ForecastBundle::train(&data,cutoff,Recipe::Mlp,&[]).unwrap();
         let a=model.artifact(vec![SourceFingerprint{name:"synthetic.csv".into(),sha256:[0;32]}]).unwrap();
