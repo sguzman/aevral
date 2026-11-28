@@ -95,6 +95,12 @@ pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),Strin
     let mut daily=Metrics::default();for row in &f.eval{daily.add(&row.target,&row.input.recent)}
     if(daily.mae()-baseline).abs()>1e-6{return Err("daily baseline mismatch".into())}
     println!("cohort,{id},{n},{m},{},{}",f.possible,f.temperature_complete);println!("scales,{id},{:?}",f.scales);println!("baseline,{id},daily,{:.8},{:.8}",daily.mae(),daily.rmse());
+    run_prepared(&f,output,label,seed)
+}
+pub(in crate::features::tournament) fn run_prepared(f:&super::super::PreparedFold,output:&Path,label:&str,seed:u64)->Result<(),String>{
+    let id=f.fold.id;
+    if ![42,123,2026].contains(&seed){return Err("seed outside frozen recipe".into())}
+    let m=f.eval.len();
     let mut out=BufWriter::new(std::fs::File::create(output).map_err(|e|e.to_string())?);
     writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
     macro_rules! block{($reason:expr)=>{{println!("blocked,{id},{label},{}",$reason);out.flush().map_err(|e|e.to_string())?;return Ok(())}}}
