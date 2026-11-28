@@ -236,3 +236,55 @@ mod tests{
         let mut other=data;other.station=Station::default();assert!(reloaded.forecast(&other,cutoff).is_err());
     }
 }
+
+#[cfg(test)]
+mod frozen_member_parity{
+    use super::*;
+    use std::io::{BufRead,BufReader};
+    #[test]
+    #[ignore = "requires frozen C015 source and prediction artifacts"]
+    fn ksea_2025(){
+        let dir=std::path::PathBuf::from(std::env::var("AEVRAL_PARITY_DATA").unwrap());
+        let reference=std::path::PathBuf::from(std::env::var("AEVRAL_PARITY_PREDICTIONS").unwrap());
+        let start=crate::weather::minute("2025-01-01 00:00").unwrap();
+        let end=crate::weather::minute("2026-01-01 00:00").unwrap();
+        let paths=(2000..=2025).map(|y|dir.join(format!("SEA-{y}.csv"))).collect::<Vec<_>>();
+        let data=StationBins::load(Station::default(),&paths,60,end-60,super::super::station::ConflictPolicy::LegacyExposed).unwrap();
+        let (train,scales)=super::super::prepare_training(&data.bins,data.first,start).unwrap();
+        let eval=evaluation(&data,start,end,scales).unwrap();
+        assert_eq!(eval.len(),7998);
+        let model=Members::fit(&train,scales).unwrap();
+        let inputs:Vec<_>=eval.iter().map(|r|r.input.clone()).collect();
+        let actual=model.predict_batch(&inputs).unwrap();
+        let v=scales.values();
+        let reload=Members{
+            incumbent:Incumbent::from_model_bytes(&model.incumbent.model_bytes().unwrap(),v[0],v[1]).unwrap(),
+            light:LightGbm::from_model_bytes(&model.light.model_bytes().unwrap(),v[0],v[1]).unwrap(),
+            ridge:LocalRidge::from_model_bytes(&model.ridge.model_bytes().unwrap(),v[0],v[1]).unwrap(),
+            adam:AdamMlp::from_model_bytes(&model.adam.model_bytes().unwrap(),v[0],v[1]).unwrap(),
+        };
+        for (i,id) in ["I","L","R","M"].into_iter().enumerate(){
+            let mut lines=BufReader::new(std::fs::File::open(reference.join(format!("{id}.csv"))).unwrap()).lines();
+            assert_eq!(lines.next().unwrap().unwrap(),"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c");
+            let mut max:f64=0.;
+            for (r,p) in eval.iter().zip(&actual){
+                for h in 0..Y{
+                    let line=lines.next().unwrap().unwrap();let x:Vec<_>=line.split(',').collect();
+                    assert_eq!(x.len(),6);assert_eq!(x[0],"2025");
+                    assert_eq!(x[2].parse::<i64>().unwrap(),r.input.origin);
+                    assert_eq!(x[3].parse::<usize>().unwrap(),h+1);
+                    let target=x[4].parse::<f64>().unwrap();let prediction=x[5].parse::<f64>().unwrap();
+                    assert!((target-r.target[h]).abs()<=1e-8);
+                    let delta=(p[i][h]-prediction).abs();max=max.max(delta);
+                    assert!(delta<=1e-8,"{id} {} {} {} {}",r.input.origin,h+1,p[i][h],prediction);
+                }
+            }
+            assert!(lines.next().is_none());
+            println!("frozen-member-parity,{id},{},{max},pass",eval.len()*Y);
+        }
+        let sample:Vec<_>=inputs.iter().step_by(257).cloned().collect();
+        let expected:Vec<_>=actual.iter().step_by(257).copied().collect();
+        assert_eq!(reload.predict_batch(&sample).unwrap(),expected);
+        println!("frozen-member-reload,{},pass",sample.len()*Y);
+    }
+}
