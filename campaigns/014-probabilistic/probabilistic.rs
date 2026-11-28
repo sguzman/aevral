@@ -3,3 +3,4 @@
 pub mod ensemble;
 pub mod core;
 pub mod residual;
+pub mod regression;
