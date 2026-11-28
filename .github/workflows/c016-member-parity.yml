@@ -1,0 +1,51 @@
+name: C016 frozen member prediction parity
+on:
+  push:
+    paths:
+      - '.github/workflows/c016-member-parity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+      - name: Restore original C015 predictions and verify checksums
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          (cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256)
+          mkdir -p reference
+          for id in I L R M; do
+            gh run download 46096402389 -n "c015-fit-2025-$id-42" -D "reference/$id"
+            manifest=$(find "reference/$id" -name SHA256SUMS)
+            test -f "$manifest"
+            dir=$(dirname "$manifest")
+            (cd "$dir" && sha256sum -c SHA256SUMS)
+            gzip -dc "$dir/predictions.csv.gz" > "reference/$id.csv"
+          done
+      - name: Full frozen fit and reload parity
+        run: |
+          set -euo pipefail
+          export AEVRAL_PARITY_DATA="$PWD/data/raw/ksea"
+          export AEVRAL_PARITY_PREDICTIONS="$PWD/reference"
+          nix develop .#boosting --no-update-lock-file --command cargo test --locked --release features::tournament::deploy::frozen_member_parity::ksea_2025 -- --ignored --exact --nocapture | tee parity.log
+          test "$(grep -c '^frozen-member-parity,.*,191952,.*,pass$' parity.log)" -eq 4
+          grep -E '^frozen-member-reload,.*pass$' parity.log
+          git diff --exit-code -- flake.lock
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c016-frozen-member-parity
+          path: parity.log
+          if-no-files-found: warn
