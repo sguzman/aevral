@@ -163,11 +163,19 @@ pub fn load(data:&Path,fold:Fold)->Result<PreparedFold,String>{let(first,c)=load
 pub trait Predictor{fn predict(&self,x:&OriginInput)->[f64;Y];}
 pub struct Incumbent{model:Model,mean:f64,sd:f64}
 impl Incumbent{
+    pub fn model_bytes(&self)->Result<Vec<u8>,String>{
+        match &self.model{Model::Dense(m)=>m.to_bytes(),_=>Err("unexpected incumbent architecture".into())}
+    }
+    pub fn from_model_bytes(bytes:&[u8],mean:f64,sd:f64)->Result<Self,String>{
+        if !mean.is_finite()||!sd.is_finite()||sd<=0.{return Err("invalid incumbent scales".into())}
+        let model=crate::dense::Dense::from_bytes(bytes,&[D,64,Y])?;
+        Ok(Self{model:Model::Dense(model),mean,sd})
+    }
     pub fn fit(train:&[TrainingRow],mean:f64,sd:f64,seed:u64)->Result<Self,String>{
         Self::fit_guarded(train,mean,sd,seed,None)
     }
     fn fit_guarded(train:&[TrainingRow],mean:f64,sd:f64,seed:u64,deadline:Option<Instant>)->Result<Self,String>{
-        if train.is_empty()||![42,123,2026].contains(&seed){return Err("invalid fit".into())}
+        if train.is_empty()||!mean.is_finite()||!sd.is_finite()||sd<=0.||![42,123,2026].contains(&seed){return Err("invalid fit".into())}
         let mut model=Model::new("mlp64",seed)?;let mut order:Vec<_>=(0..train.len()).collect();let mut rng=seed;
         for epoch in 1..=30{
             for i in (1..order.len()).rev(){rng^=rng<<13;rng^=rng>>7;rng^=rng<<17;order.swap(i,(rng%(i as u64+1))as usize);}
