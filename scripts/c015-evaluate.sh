@@ -7,6 +7,21 @@ IFS=, read -r year id recipe seed budget track backend role <<< "$row"
 dir=results-run
 cohort=cohort-run
 mkdir -p "$dir" "$cohort"
+# Preserve diagnostics for every failed execution; an audit error is never a score.
+on_exit(){
+  local rc=$?
+  trap - EXIT
+  if (( rc != 0 )); then
+    printf '%s,%s,%s,error,runner-or-audit-exit-%s\n' "$year" "$id" "$seed" "$rc" > "$dir/outcome.csv"
+    for f in predictions.csv predictions.csv.gz natural-predictions.csv natural-predictions.csv.gz; do
+      if [[ -f "$dir/$f" ]]; then mv "$dir/$f" "$dir/unverified-$f"; fi
+    done
+    (cd "$dir"; rm -f SHA256SUMS; sha256sum * > SHA256SUMS; cat SHA256SUMS) || true
+    cat "$dir/outcome.csv"
+  fi
+  exit "$rc"
+}
+trap on_exit EXIT
 test "$(wc -l < results/AEV-015/snapshot.sha256)" -eq 27
 (cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256)
 # Reconstruct the cohort from the exact frozen source, then compare every archived
@@ -46,6 +61,9 @@ rc=${PIPESTATUS[0]}
 set -e
 cat "$dir/resources.txt"
 if [[ "$rc" == 124 || "$rc" == 137 ]]; then
+  if [[ "$id" == I && -f "$dir/daily-predictions.csv" ]] && /tmp/c015-audit "$cohort/matched-targets.csv" "$dir/daily-predictions.csv" "$dir/metrics.txt" "$year" daily matched "$dir/daily-audit.csv"; then
+    gzip "$dir/daily-predictions.csv"
+  fi
   printf '%s,%s,%s,blocked,outer-runtime-limit\n' "$year" "$id" "$seed" > "$dir/outcome.csv"
 elif [[ "$rc" != 0 ]]; then
   printf '%s,%s,%s,error,process-exit-%s\n' "$year" "$id" "$seed" "$rc" > "$dir/outcome.csv"
@@ -115,6 +133,8 @@ else
   fi
 fi
 # Never expose partial forecasts as measured output.
-if [[ -f "$dir/predictions.csv" ]]; then mv "$dir/predictions.csv" "$dir/blocked-predictions.csv"; fi
+for f in predictions.csv natural-predictions.csv daily-predictions.csv; do
+  if [[ -f "$dir/$f" ]]; then mv "$dir/$f" "$dir/blocked-$f"; fi
+done
 cat "$dir/outcome.csv"
 (cd "$dir"; sha256sum * > SHA256SUMS; sha256sum -c SHA256SUMS; cat SHA256SUMS)
