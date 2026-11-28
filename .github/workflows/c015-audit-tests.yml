@@ -1,0 +1,32 @@
+name: C015 independent prediction audit tests
+on:
+  push:
+    paths:
+      - '.github/workflows/c015-audit-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  statuses: write
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Synthetic prediction and metric audit
+        run: |
+          set -euo pipefail
+          rustc --edition=2021 --test campaigns/015-tournament/audit-predictions.rs -o /tmp/audit-tests
+          /tmp/audit-tests
+          rustc --edition=2021 -O campaigns/015-tournament/audit-predictions.rs -o /tmp/audit
+      - name: Publish verification
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c015-audit-tests -f state="$state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
