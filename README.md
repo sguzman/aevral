@@ -18,7 +18,7 @@ The first campaign studies neural networks for hourly air-temperature forecastin
 
 ## Active research program
 
-[C003–C015: comprehensive fixed-data temperature forecasting](campaigns/TEMPERATURE-PROGRAM.md). Same KSEA archive, broad model families, controlled rolling-origin development folds, bounded optimization and final retrospective ranking. C003–C012 complete; C013 ensembles active. [Latest report](campaigns/012-optimization/REPORT.md): LightGBM leads the complete-cohort development comparison at 1.367°C pooled MAE (2019–2022); N-HiTS has lower available-case error but three runtime-blocked fits.
+[C003–C015: comprehensive fixed-data temperature forecasting](campaigns/TEMPERATURE-PROGRAM.md). Same KSEA archive, broad model families, controlled rolling-origin development folds, bounded optimization and final retrospective ranking. C003–C013 complete; C014 probabilistic forecasting active. [Latest report](campaigns/013-ensembles/REPORT.md): four-model equal-weight ensemble achieved 1.35048°C pooled development MAE (2021–2022), 2.04% below the matched full-training incumbent. This is not an independent holdout result.
 
 ## Research principles
 
