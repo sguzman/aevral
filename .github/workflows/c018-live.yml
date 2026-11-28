@@ -40,6 +40,9 @@ jobs:
           done
           bash scripts/fetch-weather.sh KLAX "$year-01-01" "$(date -u -d "${issue:0:10} +1 day" +%F)" data/raw/lax "$issue"
           (cd data/raw/lax; sha256sum -c *.csv.sha256; cat *.csv.sha256 | sort -k2) > live/training-source-verification.txt
+          mkdir -p live/training-provenance
+          cp data/raw/lax/*.url data/raw/lax/*.retrieved live/training-provenance/
+          (cd live/training-provenance && sha256sum * > SHA256SUMS)
           nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
           nix develop .#boosting --no-update-lock-file --command target/release/aevral weather train --station KLAX --model p13 --as-of "$issue" --calibration-start 2022 --calibration-end 2024 --data data/raw/lax --artifact live/KLAX-p13.aev | tee live/train.log
       - name: Issue forecast using freshly acquired 72-hour history
@@ -58,7 +61,27 @@ jobs:
             echo forecast-issued > live/outcome.txt
           else
             cat live/forecast.log
-            echo forecast-unavailable > live/outcome.txt
+            if grep -Eq '^weather: (missing history report|missing/nonfinite temperature|missing wind|missing dew point|missing pressure)
+          fi
+          git diff --exit-code -- flake.lock
+          cd live
+          find . -type f ! -path ./SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
+          cat outcome.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c018-live-lax
+          path: live/
+          if-no-files-found: warn
+          retention-days: 90
+ live/forecast.log; then
+              test ! -e live/forecast.csv
+              echo forecast-unavailable-missing-observations > live/outcome.txt
+            else
+              echo forecast-error > live/outcome.txt
+              exit 1
+            fi
           fi
           git diff --exit-code -- flake.lock
           cd live
