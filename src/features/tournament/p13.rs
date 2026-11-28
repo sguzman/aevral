@@ -123,3 +123,53 @@ mod tests{
         let mut bad=bytes;bad.push(0);assert!(P13::from_model_bytes(&bad).is_err());
     }
 }
+
+#[cfg(test)]
+mod frozen_p13_parity{
+    use super::*;
+    use std::{fs::File,io::{BufRead,BufReader},path::Path};
+    fn read(path:&Path,year:i64)->Vec<CalibrationOrigin>{
+        let mut lines=BufReader::new(File::open(path).unwrap()).lines();
+        let header=lines.next().unwrap().unwrap();
+        assert!(header.starts_with("fold,origin,lead,target,daily,I,L,R,M"));
+        let cutoff=crate::weather::minute(&format!("{year}-01-01 00:00")).unwrap();
+        let mut rows:Vec<CalibrationOrigin>=vec![];
+        for l in lines{
+            let l=l.unwrap();let p:Vec<_>=l.split(',').collect();
+            assert_eq!(p[0].parse::<i64>().unwrap(),year);
+            let t=p[1].parse::<i64>().unwrap();let h=p[2].parse::<usize>().unwrap()-1;
+            if h==0{rows.push(CalibrationOrigin{origin:t,fit_cutoff:cutoff,target:[0.;Y],members:[[0.;Y];4]});}
+            let r=rows.last_mut().unwrap();assert_eq!(t,r.origin);
+            r.target[h]=p[3].parse().unwrap();
+            for k in 0..4{r.members[k][h]=p[5+k].parse().unwrap();}
+        }rows
+    }
+    #[test]
+    #[ignore="requires archived C015 joined and distribution data"]
+    fn ksea_2025(){
+        let root=std::path::PathBuf::from(std::env::var("AEVRAL_P13_PARITY").unwrap());
+        let mut calibration=vec![];
+        for y in 2020..2025{
+            calibration.extend(read(&root.join("joined").join(if y<=2022{format!("{y}.csv")}else{format!("{y}-4.csv")}),y));
+        }
+        let cutoff=crate::weather::minute("2025-01-01 00:00").unwrap();
+        let model=P13::fit(&calibration,cutoff).unwrap();
+        let reload=P13::from_model_bytes(&model.model_bytes().unwrap()).unwrap();
+        let eval=read(&root.join("joined/2025-4.csv"),2025);
+        assert_eq!(eval.len(),7998);
+        let mut lines=BufReader::new(File::open(root.join("distribution.csv")).unwrap()).lines();
+        assert!(lines.next().unwrap().unwrap().starts_with("origin,lead,target,median,"));
+        let mut max:f64=0.;
+        for r in &eval{
+            let v=model.support(&r.members).unwrap();assert_eq!(v,reload.support(&r.members).unwrap());
+            for h in 0..Y{
+                let l=lines.next().unwrap().unwrap();let p:Vec<_>=l.split(',').collect();assert_eq!(p.len(),103);
+                assert_eq!(p[0].parse::<i64>().unwrap(),r.origin);assert_eq!(p[1].parse::<usize>().unwrap(),h+1);
+                assert_eq!(p[2].parse::<f64>().unwrap(),r.target[h]);
+                assert!((p[3].parse::<f64>().unwrap()-P13::median(&v[h])).abs()<=1e-10);
+                for j in 0..SUPPORT{let delta=(p[4+j].parse::<f64>().unwrap()-v[h][j]).abs();max=max.max(delta);assert!(delta<=1e-10);}
+            }
+        }
+        assert!(lines.next().is_none());println!("frozen-p13-parity,{},{},{max},pass",eval.len()*Y,eval.len()*Y*SUPPORT);
+    }
+}
