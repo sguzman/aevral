@@ -1,0 +1,74 @@
+name: C018 live LAX forecast
+on:
+  push:
+    paths:
+      - 'campaigns/018-lax/live-launch.txt'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  forecast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/lax
+          key: lax-routine-utc-2000-2025-v1
+          fail-on-cache-miss: true
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+      - name: Verify assessment and historical source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          read -r verify < campaigns/018-lax/live-launch.txt
+          [[ "$verify" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$verify" | jq -e '.name=="C018 independent assessment verification" and .conclusion=="success"'
+          test -s results/C018/assessment-summary.csv
+          (cd data/raw/lax && sha256sum -c ../../../results/C018/snapshot.sha256)
+      - name: Train final model at immutable completed-hour cutoff
+        run: |
+          set -euo pipefail
+          mkdir -p live
+          issue=$(date -u +%FT%H:00)
+          printf '%s\n' "$issue" > live/train-issue.txt
+          year=$(date -u -d "$issue" +%Y)
+          for ((y=2026;y<year;y++)); do
+            bash scripts/fetch-weather.sh KLAX "$y-01-01" "$((y+1))-01-01" data/raw/lax
+          done
+          bash scripts/fetch-weather.sh KLAX "$year-01-01" "$(date -u -d "${issue:0:10} +1 day" +%F)" data/raw/lax "$issue"
+          (cd data/raw/lax; sha256sum -c *.csv.sha256; cat *.csv.sha256 | sort -k2) > live/training-source-verification.txt
+          nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
+          nix develop .#boosting --no-update-lock-file --command target/release/aevral weather train --station KLAX --model p13 --as-of "$issue" --calibration-start 2022 --calibration-end 2024 --data data/raw/lax --artifact live/KLAX-p13.aev | tee live/train.log
+      - name: Issue forecast using freshly acquired 72-hour history
+        run: |
+          set -euo pipefail
+          issue=$(date -u +%FT%H:00)
+          printf '%s\n' "$issue" > live/forecast-issue.txt
+          start=$(date -u -d "${issue:0:10} -4 days" +%F)
+          end=$(date -u -d "${issue:0:10} +1 day" +%F)
+          mkdir -p live-input
+          bash scripts/fetch-weather.sh KLAX "$start" "$end" live-input "$issue"
+          cp live-input/*.csv* live/
+          if nix develop .#boosting --no-update-lock-file --command target/release/aevral weather forecast --station KLAX --hours 24 --as-of "$issue" --data live-input --artifact live/KLAX-p13.aev --output live/forecast.csv 2>live/forecast.log; then
+            test "$(wc -l < live/forecast.csv)" -eq 25
+            cat live/forecast.csv
+            echo forecast-issued > live/outcome.txt
+          else
+            cat live/forecast.log
+            echo forecast-unavailable > live/outcome.txt
+          fi
+          git diff --exit-code -- flake.lock
+          cd live
+          sha256sum * > SHA256SUMS
+          sha256sum -c SHA256SUMS
+          cat outcome.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c018-live-lax
+          path: live/
+          if-no-files-found: warn
+          retention-days: 90
