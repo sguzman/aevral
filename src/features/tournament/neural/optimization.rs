@@ -84,6 +84,11 @@ pub struct AdamMlp {
     sd:f64,
 }
 impl AdamMlp {
+    pub fn model_bytes(&self)->Result<Vec<u8>,String>{self.model.to_bytes()}
+    pub fn from_model_bytes(bytes:&[u8],mean:f64,sd:f64)->Result<Self,String>{
+        if !mean.is_finite()||!sd.is_finite()||sd<=0.{return Err("invalid Adam MLP scales".into())}
+        Ok(Self{model:Dense::from_bytes(bytes,&[D,64,Y])?,mean,sd})
+    }
     pub fn fit(rows:&[TrainingRow],mean:f64,sd:f64)->Result<Self,String>{
         use super::super::optimization::{candidates,subset,Rung};
         if !mean.is_finite()||!sd.is_finite()||sd<=0.{return Err("invalid Adam MLP scales".into())}
