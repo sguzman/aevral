@@ -43,8 +43,7 @@ fn ingest_pair(a:&mut weather::Archive,b:&mut covariates::Archive,temp:impl BufR
     b.ingest_policy(met,quarantine)
 }
 fn finish(station:Station,mut a:weather::Archive,mut b:covariates::Archive,first:i64,last:i64)->Result<StationBins,String>{
-    // The historical parsers currently support calendar years 2000–2026.
-    let end=weather::minute("2026-12-31 23:59")?;
+    let end=weather::minute_limit()-1;
     if first<60 || last<first || last>end || first%60!=0 || last%60!=0 {
         return Err("invalid completed-hour interval".into());
     }
