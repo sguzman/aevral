@@ -67,6 +67,36 @@ fn predict_opt(rows:&[&TrainingRow],q:&[f64;D],k:usize,lambda:f64,l1:bool)->Resu
     if !l1{return predict(rows,q,k,lambda)}
     let ids=nearest_l1(rows,q,k);if ids.len()!=k{return Err("local neighbor count mismatch".into())}local_fit(rows,&ids,q,lambda)
 }
+/// Reusable frozen C015 local ridge member (R, O05-02).
+/// The reference cohort is selected exactly as in the tournament.
+pub struct LocalRidge {
+    rows: Vec<TrainingRow>,
+    mean: f64,
+    sd: f64,
+}
+impl LocalRidge {
+    pub fn fit(train: &[TrainingRow], mean: f64, sd: f64) -> Result<Self,String> {
+        let selected=super::optimization::subset(train,super::optimization::Rung::Final)?;
+        Self::from_selected(selected.into_iter().cloned().collect(),mean,sd)
+    }
+    pub(crate) fn from_selected(rows:Vec<TrainingRow>,mean:f64,sd:f64)->Result<Self,String>{
+        if rows.len()!=32768 || !mean.is_finite() || !sd.is_finite() || sd<=0.
+            || rows.windows(2).any(|w|w[0].input.origin>=w[1].input.origin)
+            || rows.iter().any(|r|r.input.x.iter().chain(&r.normalized_target).any(|v|!v.is_finite())){
+            return Err("invalid frozen local ridge reference".into());
+        }
+        Ok(Self{rows,mean,sd})
+    }
+    pub fn reference_rows(&self)->&[TrainingRow]{&self.rows}
+    pub fn predict(&self, x:&super::OriginInput)->Result<[f64;Y],String>{
+        if x.x.iter().any(|v|!v.is_finite()){return Err("nonfinite local ridge query".into())}
+        let refs:Vec<_>=self.rows.iter().collect();
+        let (y,_)=predict_opt(&refs,&x.x,128,0.01,false)?;
+        let y=y.map(|v|v*self.sd+self.mean);
+        if y.iter().any(|v|!v.is_finite()){return Err("nonfinite local ridge output".into())}
+        Ok(y)
+    }
+}
 pub(super) fn optimize(f:&super::PreparedFold,rows:&[&TrainingRow],label:&str,k:usize,lambda:f64,l1:bool,out:&mut impl Write)->Result<(),String>{
     if ![64,128,256].contains(&k)||![0.001,0.01,0.1].contains(&lambda)||rows.len()<k{return Err("invalid C012 local ridge configuration".into())}
     if rows.iter().any(|r|r.input.x.iter().chain(&r.normalized_target).any(|v|!v.is_finite())){return Err("invalid reference subset".into())}
@@ -99,5 +129,26 @@ mod tests{
         let rows:Vec<_>=d.iter().collect();let q=[0.;D];
         let l1=nearest_l1(&rows,&q,2);assert_eq!(l1.iter().map(|n|n.i).collect::<Vec<_>>(),vec![0,1]);
         let a=predict(&rows,&q,3,0.01).unwrap();let b=predict_opt(&rows,&q,3,0.01,false).unwrap();assert_eq!(a,b);
+    }
+}
+
+#[cfg(test)]
+mod deployment_tests {
+    use super::*;
+    use super::super::OriginInput;
+    #[test]
+    fn deployment_local_ridge_matches_frozen_backend() {
+        let train:Vec<_>=(0..33000).map(|i|{
+            let x=std::array::from_fn(|j|((i*(j+1))%97)as f64/97.);
+            let y=std::array::from_fn(|j|((i+j)%51)as f64/51.);
+            TrainingRow{input:OriginInput{origin:i as i64*60,x,recent:[0.;Y]},target:y,normalized_target:y}
+        }).collect();
+        let model=LocalRidge::fit(&train,12.,3.).unwrap();
+        let selected=super::super::optimization::subset(&train,super::super::optimization::Rung::Final).unwrap();
+        assert_eq!(model.reference_rows().iter().map(|r|r.input.origin).collect::<Vec<_>>(),selected.iter().map(|r|r.input.origin).collect::<Vec<_>>());
+        let q=&train[42].input;
+        let (expected,_)=predict_opt(&selected,&q.x,128,0.01,false).unwrap();
+        assert_eq!(model.predict(q).unwrap(),expected.map(|v|v*3.+12.));
+        assert!(LocalRidge::fit(&train[..100],12.,3.).is_err());
     }
 }
