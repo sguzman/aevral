@@ -48,7 +48,7 @@ pub fn run(args:&[String])->Result<(),String>{
     let station=Station::new(provider)?;
     let clock=now()?;let issue=get("--as-of").map(timestamp).transpose()?.unwrap_or(clock);
     if issue>clock{return Err("as-of is in the future".into())}
-    let dir=get("--data").map(PathBuf::from).unwrap_or_else(||PathBuf::from(format!("data/raw/{}",provider.to_ascii_lowercase())));
+    let dir=get("--data").map(PathBuf::from).unwrap_or_else(||PathBuf::from(format!("data/raw/{}",if icao=="KSEA"{"ksea"}else{"lax"})));
     let path=get("--artifact").map(PathBuf::from).unwrap_or_else(||PathBuf::from(format!("models/{icao}-{name}.aev")));
     let sources=files(&dir)?;
     let policy=if icao=="KSEA"{ConflictPolicy::LegacyExposed}else{ConflictPolicy::Strict};
@@ -86,6 +86,10 @@ pub fn run(args:&[String])->Result<(),String>{
                 csv.push('\n');
             }
             eprintln!("forecast-source-count,{}",hashes.len());
+            for s in &hashes{
+                let hex=s.sha256.iter().map(|b|format!("{b:02x}")).collect::<String>();
+                eprintln!("forecast-source,{},{hex}",s.name);
+            }
             if let Some(p)=get("--output"){let mut f=std::fs::OpenOptions::new().write(true).create_new(true).open(p).map_err(|e|e.to_string())?;f.write_all(csv.as_bytes()).map_err(|e|e.to_string())?;f.sync_all().map_err(|e|e.to_string())?;}
             else{print!("{csv}");}
         }
@@ -95,6 +99,34 @@ pub fn run(args:&[String])->Result<(),String>{
 #[cfg(test)]
 mod tests{
     use super::*;
+    #[test]fn filesystem_training_and_forecast(){
+        let root=std::env::temp_dir().join(format!("aevral-cli-roundtrip-{}",std::process::id()));
+        std::fs::create_dir(&root).unwrap();
+        struct Cleanup(PathBuf);
+        impl Drop for Cleanup{fn drop(&mut self){let _=std::fs::remove_dir_all(&self.0);}}
+        let _cleanup=Cleanup(root.clone());
+        let data=root.join("data");std::fs::create_dir(&data).unwrap();
+        let first=weather::minute("2024-01-01 00:00").unwrap();
+        let mut csv=String::from("station,valid,tmpf,dwpf,alti,drct,sknt\n");
+        for i in 0..240{
+            use std::fmt::Write as _;
+            writeln!(&mut csv,"LAX,{},{},{},{},{},{}",weather::format_minute(first+i*60+59).unwrap(),60+i%23,40+i%17,29.8+(i%13)as f64/100.,(i*17)%360,5+i%11).unwrap();
+        }
+        std::fs::write(data.join("LAX-test.csv"),csv).unwrap();
+        let model=root.join("mlp.aev");let output=root.join("forecast.csv");
+        let base=vec!["--station".into(),"KLAX".into(),"--model".into(),"mlp".into(),"--data".into(),data.display().to_string(),"--artifact".into(),model.display().to_string()];
+        let mut train=vec!["train".into()];train.extend(base.clone());train.extend(["--as-of".into(),"2024-01-08T12:00".into()]);
+        run(&train).unwrap();assert!(run(&train).is_err());
+        let mut forecast=vec!["forecast".into()];forecast.extend(base);forecast.extend(["--as-of".into(),"2024-01-09T00:00".into(),"--hours".into(),"24".into(),"--output".into(),output.display().to_string()]);
+        run(&forecast).unwrap();assert!(run(&forecast).is_err());
+        let s=std::fs::read_to_string(output).unwrap();
+        assert_eq!(s.lines().count(),25);
+        for (i,line) in s.lines().skip(1).enumerate(){
+            let p:Vec<_>=line.split(',').collect();
+            assert_eq!(p.len(),13);assert_eq!(p[0],"KLAX");assert_eq!(p[3].parse::<usize>().unwrap(),i+1);
+            assert!(p[4].parse::<f64>().unwrap().is_finite());assert!(p[5..].iter().all(|v|v.is_empty()));
+        }
+    }
     #[test]fn command_validation(){
         assert!(timestamp("2025-01-01T00:00").is_ok());
         assert!(timestamp("2025-01-01T00:01").is_err());
