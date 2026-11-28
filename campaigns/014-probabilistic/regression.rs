@@ -26,7 +26,7 @@ impl Quantile{
   let support=(0..M).map(|j|{
    let p=((j as f64+0.5)/M as f64*20.-1.).clamp(0.,18.);
    let k=p.floor()as usize;let t=p-k as f64;
-   c+v[k]*(1.-t)+v[(k+1).min(18)]*t
+   let upper=v[(k+1).min(18)];c+(v[k]+(upper-v[k])*t).clamp(v[k],upper)
   }).collect();(support,crossed)
  }
 }
