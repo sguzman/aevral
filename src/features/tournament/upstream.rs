@@ -161,13 +161,19 @@ pub fn smoke(backend:&str)->Result<(),String>{
     println!("upstream-smoke,{backend},{:.8},{:.8},pass",v[0][0],v[1][0]);Ok(())
 }
 pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),String>{
-    let(backend,rounds)=config(label)?;if ![42,123,2026].contains(&seed){return Err("seed not in manifest".into())}
+    config(label)?;if ![42,123,2026].contains(&seed){return Err("seed not in manifest".into())}
     let f=load(data,Fold::development(id)?)?;
     let(n,m,baseline)=match id{"2019"=>(121849,7455,1.88752763),"2020"=>(129327,7543,2.07087759),"2021"=>(136893,7501,2.14898785),"2022"=>(144417,7639,2.10544725),_=>return Err("annual folds only".into())};
     if(f.train.len(),f.eval.len())!=(n,m){return Err("frozen cohort mismatch".into())}
     let mut daily=Metrics::default();for r in &f.eval{daily.add(&r.target,&r.input.recent)}
     if(daily.mae()-baseline).abs()>1e-6{return Err("daily baseline mismatch".into())}
     println!("cohort,{id},{n},{m},{},{}",f.possible,f.temperature_complete);println!("scales,{id},{:?}",f.scales);println!("baseline,{id},daily,{:.8},{:.8}",daily.mae(),daily.rmse());
+    run_prepared(&f,output,label,seed)
+}
+pub(super) fn run_prepared(f:&super::PreparedFold,output:&Path,label:&str,seed:u64)->Result<(),String>{
+    let id=f.fold.id;
+    let(backend,rounds)=config(label)?;
+    let m=f.eval.len();
     let mut out=BufWriter::new(std::fs::File::create(output).map_err(|e|e.to_string())?);writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
     let now=Instant::now();let d=Data::from_rows(&f.train);let ev:Vec<_>=f.eval.iter().map(|r|r.input.x).collect();
     match all_leads(backend,&d,&ev,rounds,seed,Y,now){
