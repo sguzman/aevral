@@ -10,6 +10,17 @@ impl Fold{
         let (id,a,b)=match id{"legacy"=>("legacy",2019,2023),"2019"=>("2019",2019,2020),"2020"=>("2020",2020,2021),"2021"=>("2021",2021,2022),"2022"=>("2022",2022,2023),_=>return Err("unknown development fold".into())};
         Ok(Self{id,start:minute(&format!("{a}-01-01 00:00"))?,end:minute(&format!("{b}-01-01 00:00"))?})
     }
+    /// Explicit C015 entry; development requests remain unchanged.
+    pub fn retrospective(id:&str)->Result<Self,String>{
+        let (id,start,end)=match id{
+            "2023"=>("2023","2023-01-01 00:00","2024-01-01 00:00"),
+            "2024"=>("2024","2024-01-01 00:00","2025-01-01 00:00"),
+            "2025"=>("2025","2025-01-01 00:00","2026-01-01 00:00"),
+            "2026"=>("2026","2026-01-01 00:00","2026-11-01 00:00"),
+            _=>return Err("unknown retrospective fold".into())
+        };
+        Ok(Self{id,start:minute(start)?,end:minute(end)?})
+    }
     pub fn partition(&self,t:i64)->Option<Split>{
         let a=t+60;let b=t+60*Y as i64;
         if b<self.start{Some(Split::Train)}else if a>=self.start&&b<self.end{Some(Split::Validation)}else{None}
@@ -224,3 +235,5 @@ pub mod neural;
 pub mod representation;
 
 pub mod optimization;
+
+pub mod retrospective;
