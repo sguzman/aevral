@@ -1,6 +1,6 @@
 # C012 — Budgeted cross-family hyperparameter search
 
-Status: active; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). Frozen [manifest](manifest.md) and [candidate grid](candidate-grid.csv): eight families, maximum 128 fit/evaluation outcomes inclusive of annual finalists. No C012 results yet.
+Status: **complete** (125 measured outcomes, three documented runtime blocks, all 128 scheduled outcomes resolved). [Final report](REPORT.md) · [Frozen manifest](manifest.md) · [Candidate grid](candidate-grid.csv) · [Annual summary](../../results/C012/annual-summary.csv) · [Reproduction CI](https://github.com/sguzman/aevral/actions/runs/46089192627).
 
 ## Scope
 Learning rates, schedules, optimizers, batch sizes, weight decay, dropout, early stopping, tree depths and leaves, regularization, lag/order, kernel scales, neighbor distances; deterministic random search or successive halving, then multi-seed finalists.
