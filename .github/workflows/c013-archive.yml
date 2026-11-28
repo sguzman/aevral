@@ -1,0 +1,59 @@
+name: C013 assessment archival evidence
+on:
+  push:
+    paths:
+      - '.github/workflows/c013-archive.yml'
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify exact assessment artifact and archive metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          d=/tmp/c013-assessment
+          mkdir -p "$d"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15240823025" > /tmp/c013-meta.json
+          jq -e '.name=="c013-assessment" and .expired==false and .workflow_run.id==46090210039 and .workflow_run.head_sha=="a6b3ec25a92667981038d515a2546e8c3f86dca8"' /tmp/c013-meta.json >/dev/null
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/15240823025/zip" > /tmp/c013.zip
+          unzip -tq /tmp/c013.zip >/dev/null
+          unzip -q /tmp/c013.zip -d "$d"
+          awk '$1 ~ /^[0-9a-f]+$/ && length($1)==64 && NF==2 {print}' results/C013/assessment-audit.txt > /tmp/c013-frozen.sha256
+          test "$(wc -l < /tmp/c013-frozen.sha256)" -eq 7
+          cmp /tmp/c013-frozen.sha256 "$d/SHA256SUMS"
+          (cd "$d" && sha256sum -c /tmp/c013-frozen.sha256)
+          { head -n1 results/C013/fold-scores.csv; grep '^score,' "$d/metrics.csv" | cut -d, -f2-; } | cmp - results/C013/fold-scores.csv
+      - name: Export metrics for durable archival
+        run: |
+          echo C013_METRICS_BEGIN
+          cat /tmp/c013-assessment/metrics.csv
+          echo C013_METRICS_END
+      - name: Export fitted coefficients
+        run: |
+          echo C013_COEFFICIENTS_BEGIN
+          cat /tmp/c013-assessment/coefficients.csv
+          echo C013_COEFFICIENTS_END
+      - name: Export fitted parameter records
+        run: |
+          echo C013_PARAMETERS_BEGIN
+          cat /tmp/c013-assessment/parameters.csv
+          echo C013_PARAMETERS_END
+      - name: Publish archival gate
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c013-archive -f state="$state" \
+            -f description="C013 archival gate: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
