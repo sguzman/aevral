@@ -60,7 +60,7 @@ fn command(bin:&str,args:&[String],dir:&Path,now:Instant)->Result<(),String>{
     if !o.status.success(){let s=String::from_utf8_lossy(&o.stderr);let t=String::from_utf8_lossy(&o.stdout);return Err(format!("backend command failed {}: {} {}",o.status,s.chars().take(3000).collect::<String>(),t.chars().take(3000).collect::<String>()))}Ok(())
 }
 struct Scratch(PathBuf);
-impl Scratch{fn new()->Result<Self,String>{let p=std::env::temp_dir().join(format!("aevral-upstream-{}",std::process::id()));std::fs::create_dir(&p).map_err(|e|e.to_string())?;Ok(Self(p))}}
+impl Scratch{fn new()->Result<Self,String>{static NEXT:std::sync::atomic::AtomicU64=std::sync::atomic::AtomicU64::new(0);let id=NEXT.fetch_add(1,std::sync::atomic::Ordering::Relaxed);let p=std::env::temp_dir().join(format!("aevral-upstream-{}-{id}",std::process::id()));std::fs::create_dir(&p).map_err(|e|e.to_string())?;Ok(Self(p))}}
 impl Drop for Scratch{fn drop(&mut self){let _=std::fs::remove_dir_all(&self.0);}}
 fn write_rows(path:&Path,x:&[[f64;D]],y:Option<&[f64]>)->Result<(),String>{
     let mut w=BufWriter::new(std::fs::File::create(path).map_err(|e|e.to_string())?);
@@ -108,6 +108,72 @@ fn optimization_light_config(label:&str)->Result<LightConfig,String>{
         _=>return Err("unknown frozen C012 LightGBM configuration".into())
     };Ok(LightConfig{rounds,depth,leaves,eta,min_leaf})
 }
+/// Frozen O04-04 LightGBM member, with independent training and prediction.
+pub struct LightGbm {
+    models: Vec<String>,
+    mean: f64,
+    sd: f64,
+}
+fn light_predict(bin:&str,dir:&Path,n:usize,now:Instant)->Result<Vec<f64>,String>{
+    command(bin,&["task=predict","data=eval.tsv","input_model=model.txt","output_result=pred.txt","num_threads=2","verbosity=-1"].map(String::from),dir,now)?;
+    read_predictions(&dir.join("pred.txt"),n,false)
+}
+fn light_model_counts(s:&str,cfg:LightConfig)->Result<(usize,usize),String>{
+    let counts:Vec<usize>=s.lines().filter_map(|l|l.strip_prefix("num_leaves=")).map(|v|v.parse::<usize>().map_err(|_|"invalid leaf count".to_string())).collect::<Result<_,_>>()?;
+    if counts.is_empty()||counts.len()>cfg.rounds||counts.iter().any(|&n|n==0||n>cfg.leaves){return Err("invalid LightGBM tree counts".into())}
+    Ok((counts.len(),counts.iter().sum()))
+}
+impl LightGbm {
+    fn config()->LightConfig{optimization_light_config("r256-d6-l32-eta005-min32").expect("frozen recipe")}
+    pub fn fit(rows:&[super::TrainingRow],mean:f64,sd:f64)->Result<Self,String>{
+        let selected=super::optimization::subset(rows,super::optimization::Rung::Final)?;
+        Self::fit_selected(&selected,mean,sd)
+    }
+    fn fit_selected(rows:&[&super::TrainingRow],mean:f64,sd:f64)->Result<Self,String>{
+        if rows.is_empty()||!mean.is_finite()||!sd.is_finite()||sd<=0.||rows.iter().any(|r|r.input.x.iter().chain(&r.normalized_target).any(|v|!v.is_finite())){return Err("invalid LightGBM training data".into())}
+        let bin=std::env::var("AEVRAL_LIGHTGBM").map_err(|_|"use locked boosting shell")?;
+        let scratch=Scratch::new()?;let dir=&scratch.0;let now=Instant::now();
+        let x:Vec<_>=rows.iter().map(|r|r.input.x).collect();
+        let mut models=Vec::with_capacity(Y);
+        for h in 0..Y{
+            let y:Vec<_>=rows.iter().map(|r|r.normalized_target[h]).collect();
+            write_rows(&dir.join("train.tsv"),&x,Some(&y))?;
+            let _=std::fs::remove_file(dir.join("model.txt"));
+            command(&bin,&Self::config().args(42),dir,now)?;
+            let s=std::fs::read_to_string(dir.join("model.txt")).map_err(|e|e.to_string())?;
+            light_model_counts(&s,Self::config())?;
+            models.push(s);
+        }
+        Self::from_models(models,mean,sd)
+    }
+    pub(crate) fn from_models(models:Vec<String>,mean:f64,sd:f64)->Result<Self,String>{
+        if models.len()!=Y||!mean.is_finite()||!sd.is_finite()||sd<=0.{return Err("invalid LightGBM artifact dimensions/scales".into())}
+        for s in &models{
+            if !s.lines().any(|l|l=="max_feature_idx=79"){return Err("invalid LightGBM feature count".into())}
+            light_model_counts(s,Self::config())?;
+        }
+        Ok(Self{models,mean,sd})
+    }
+    pub fn model_texts(&self)->&[String]{&self.models}
+    pub fn predict_batch(&self,rows:&[OriginInput])->Result<Vec<V>,String>{
+        if rows.is_empty(){return Ok(Vec::new())}
+        if rows.iter().any(|r|r.x.iter().any(|v|!v.is_finite())){return Err("nonfinite LightGBM query".into())}
+        let bin=std::env::var("AEVRAL_LIGHTGBM").map_err(|_|"use locked boosting shell")?;
+        let scratch=Scratch::new()?;let dir=&scratch.0;let now=Instant::now();
+        let x:Vec<_>=rows.iter().map(|r|r.x).collect();
+        write_rows(&dir.join("eval.tsv"),&x,None)?;
+        let mut result=vec![[0.;Y];rows.len()];
+        for (h,s) in self.models.iter().enumerate(){
+            std::fs::write(dir.join("model.txt"),s).map_err(|e|e.to_string())?;
+            let _=std::fs::remove_file(dir.join("pred.txt"));
+            for (i,p) in light_predict(&bin,dir,rows.len(),now)?.into_iter().enumerate(){
+                let v=p*self.sd+self.mean;if !v.is_finite(){return Err("nonfinite LightGBM output".into())}result[i][h]=v;
+            }
+        }
+        Ok(result)
+    }
+    pub fn predict(&self,row:&OriginInput)->Result<V,String>{Ok(self.predict_batch(std::slice::from_ref(row))?[0])}
+}
 fn cli_fit(backend:&str,d:&Data,eval:&[[f64;D]],y:&[f64],rounds:usize,seed:u64,dir:&Path,now:Instant,light:Option<LightConfig>)->Result<(Vec<f64>,usize,usize),String>{
     write_rows(&dir.join("train.tsv"),&d.x,Some(y))?;
     write_rows(&dir.join("eval.tsv"),eval,None)?;
@@ -116,11 +182,11 @@ fn cli_fit(backend:&str,d:&Data,eval:&[[f64;D]],y:&[f64],rounds:usize,seed:u64,d
         let bin=std::env::var("AEVRAL_LIGHTGBM").map_err(|_|"use locked boosting shell")?;
         let args=light.unwrap_or_else(||LightConfig::old(rounds)).args(seed);
         command(&bin,&args,dir,now)?;
-        command(&bin,&["task=predict","data=eval.tsv","input_model=model.txt","output_result=pred.txt","num_threads=2","verbosity=-1"].map(String::from),dir,now)?;
+        let predictions=light_predict(&bin,dir,eval.len(),now)?;
         let s=std::fs::read_to_string(dir.join("model.txt")).map_err(|e|e.to_string())?;
         let counts:Vec<usize>=s.lines().filter_map(|l|l.strip_prefix("num_leaves=")).map(|s|s.parse::<usize>().map_err(|_|"invalid leaf count".to_string())).collect::<Result<_,_>>()?;
         if counts.is_empty(){return Err("empty LightGBM model".into())}
-        Ok((read_predictions(&dir.join("pred.txt"),eval.len(),false)?,counts.len(),counts.iter().sum()))
+        Ok((predictions,counts.len(),counts.iter().sum()))
     }else{
         let bin=std::env::var("AEVRAL_CATBOOST").map_err(|_|"use locked boosting shell")?;
         let mut cd=String::from("0\tLabel\n");for i in 0..D{cd.push_str(&format!("{}\tNum\n",i+1))}
