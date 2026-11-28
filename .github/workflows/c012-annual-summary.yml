@@ -1,0 +1,35 @@
+name: C012 annual summary reproduction
+on:
+  push:
+    paths:
+      - '.github/workflows/c012-annual-summary.yml'
+      - 'campaigns/012-optimization/aggregate-final.rs'
+permissions:
+  contents: read
+  statuses: write
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and reproduce annual summary
+        run: |
+          rustc --edition=2021 -O campaigns/012-optimization/aggregate-final.rs -o /tmp/c012-aggregate
+          /tmp/c012-aggregate results/C012/registry.csv campaigns/012-optimization/rung-final.csv /tmp/annual
+          test "$(wc -l < /tmp/annual/annual-summary.csv)" -eq 9
+          test "$(wc -l < /tmp/annual/annual-folds.csv)" -eq 33
+          cat /tmp/annual/annual-summary.csv /tmp/annual/annual-folds.csv
+          sha256sum /tmp/annual/*.csv
+      - name: Publish reproduction result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c012-annual-summary -f state="$state" \
+            -f description="Annual aggregation reproduction: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
