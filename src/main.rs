@@ -1,6 +1,12 @@
 use aevral::Mlp;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
+    if args.get(1).map(String::as_str)==Some("retrospective"){
+        if args.len()!=7{eprintln!("Usage: aevral retrospective DATA_DIR YEAR OUT_CSV ID SEED");std::process::exit(2)}
+        let seed=args[6].parse::<u64>().unwrap_or(0);
+        if let Err(e)=aevral::features::tournament::retrospective::run(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4]),&args[5],seed){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("retrospective-cohort"){
         if args.len()!=5{eprintln!("Usage: aevral retrospective-cohort DATA_DIR YEAR OUT_DIR");std::process::exit(2)}
         if let Err(e)=aevral::features::tournament::retrospective::cohort(std::path::Path::new(&args[2]),&args[3],std::path::Path::new(&args[4])){eprintln!("{e}");std::process::exit(1)}
