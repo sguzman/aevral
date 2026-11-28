@@ -1,0 +1,64 @@
+name: C014 archival-only retrieval
+on:
+  push:
+    paths:
+      - '.github/workflows/c014-archive.yml'
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+jobs:
+  retrieve:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - year: 2021
+            artifact: 15241032976
+          - year: 2022
+            artifact: 15241106780
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify exact assessment artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          YEAR: ${{ matrix.year }}
+          ARTIFACT: ${{ matrix.artifact }}
+        run: |
+          set -euo pipefail
+          d=/tmp/c014-archive
+          mkdir -p "$d"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT" > /tmp/c014-meta.json
+          jq -e --arg name "c014-assessment-$YEAR" '.name==$name and .expired==false and .workflow_run.id==46091343709 and .workflow_run.head_sha=="6e0a0c0ae46af8a8ede501399846080718cd38d8"' /tmp/c014-meta.json >/dev/null
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT/zip" > /tmp/c014.zip
+          unzip -tq /tmp/c014.zip >/dev/null
+          unzip -q /tmp/c014.zip -d "$d"
+          awk '$1 ~ /^[0-9a-f]+$/ && length($1)==64 && NF==2 {print}' "results/C014/$YEAR/assessment-audit.txt" > /tmp/c014-frozen.sha256
+          test "$(wc -l < /tmp/c014-frozen.sha256)" -eq 53
+          cmp /tmp/c014-frozen.sha256 "$d/SHA256SUMS"
+          (cd "$d" && sha256sum -c /tmp/c014-frozen.sha256)
+          grep ',all,0,' "$d/metrics.csv" | cmp - "results/C014/$YEAR/overall.csv"
+          cmp "$d/costs.csv" "results/C014/$YEAR/costs.csv"
+      - name: Emit exact metadata in bounded base64 records
+        run: |
+          set -euo pipefail
+          cd /tmp/c014-archive
+          for file in metrics.csv P*-parameters.csv; do
+            printf 'C014_FILE_BEGIN %s\n' "$file"
+            base64 -w 120 "$file"
+            printf 'C014_FILE_END %s\n' "$file"
+          done
+      - name: Publish archival status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c014-archive-${{ matrix.year }} -f state="$state" \
+            -f description="C014 archival verification ${{ matrix.year }}: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
