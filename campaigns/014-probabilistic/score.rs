@@ -2,12 +2,12 @@
 #[path="probabilistic.rs"] mod probabilistic;
 use probabilistic::{ensemble::{self,Row},core::{self,Metrics,Issued},Model,regression::Node};
 use std::{fs,io::{BufWriter,Write},path::Path,process::{Command,Stdio},time::Instant};
-fn values(out:&mut impl Write,v:&[f64]){for x in v{write!(out,",{x:.17}").unwrap();}writeln!(out).unwrap();}
+fn values(out:&mut impl Write,v:&[f64]){for x in v{write!(out,",{x:.17e}").unwrap();}writeln!(out).unwrap();}
 fn node(out:&mut impl Write,h:usize,path:&str,n:&Node){
  match n{
- Node::Leaf{count,impurity,support}=>{write!(out,"leaf,{h},{path},{count},{impurity:.17}").unwrap();values(out,support);}
+ Node::Leaf{count,impurity,support}=>{write!(out,"leaf,{h},{path},{count},{impurity:.17e}").unwrap();values(out,support);}
  Node::Split{count,impurity,objective,feature,threshold,left,right}=>{
- writeln!(out,"split,{h},{path},{count},{impurity:.17},{objective:.17},{feature},{threshold:.17}").unwrap();
+ writeln!(out,"split,{h},{path},{count},{impurity:.17e},{objective:.17e},{feature},{threshold:.17e}").unwrap();
  node(out,h,&format!("{path}L"),left);node(out,h,&format!("{path}R"),right);
  }}
 }
@@ -16,14 +16,14 @@ fn parameters(out:&mut impl Write,m:&Model,year:u16,id:u8,rows:usize){
  match m{
  Model::Residual(r)=>{
  writeln!(out,"residual,{},{},{}",r.b,r.global,r.conditional).unwrap();
- for (h,t) in r.thresholds.iter().enumerate(){writeln!(out,"threshold,{},{t:.17}",h+1).unwrap();}
- for (i,g) in r.groups.iter().enumerate(){write!(out,"group,{i},{},{},{:.17},{:.17}",g.count,g.fallback,g.mean,g.sd).unwrap();values(out,&g.support);}
+ for (h,t) in r.thresholds.iter().enumerate(){writeln!(out,"threshold,{},{t:.17e}",h+1).unwrap();}
+ for (i,g) in r.groups.iter().enumerate(){write!(out,"group,{i},{},{},{:.17e},{:.17e}",g.count,g.fallback,g.mean,g.sd).unwrap();values(out,&g.support);}
  }
- Model::Quantile(q)=>{writeln!(out,"quantile,{}",q.b).unwrap();for(h,c)in q.curves.iter().enumerate(){for(j,v)in c.iter().enumerate(){writeln!(out,"curve,{},{},{:.17},{:.17},{:.17}",h+1,j+1,v.intercept,v.slope,v.loss).unwrap();}}}
+ Model::Quantile(q)=>{writeln!(out,"quantile,{}",q.b).unwrap();for(h,c)in q.curves.iter().enumerate(){for(j,v)in c.iter().enumerate(){writeln!(out,"curve,{},{},{:.17e},{:.17e},{:.17e}",h+1,j+1,v.intercept,v.slope,v.loss).unwrap();}}}
  Model::Tree(t)=>{writeln!(out,"tree,{}",t.b).unwrap();for(h,n)in t.roots.iter().enumerate(){node(out,h+1,"R",n);}}
  Model::Analog(a)=>{writeln!(out,"analog,{},{},128,{}",a.b,a.by_spread,if year==2021{"2020"}else{"2020+2021"}).unwrap();for(h,v)in a.leads.iter().enumerate(){writeln!(out,"analog-count,{},{}",h+1,v.len()).unwrap();}}
  Model::Mixture(m)=>{writeln!(out,"mixture,{}",m.id).unwrap();for(h,v)in m.residuals.iter().enumerate(){for(j,s)in v.iter().enumerate(){write!(out,"member-support,{},{j}",h+1).unwrap();values(out,s);}}}
- Model::Conformal(m)=>{writeln!(out,"conformal,{},{}",m.b,m.normalized).unwrap();for(h,v)in m.bands.iter().enumerate(){write!(out,"bands,{},{}",h+1,m.counts[h]).unwrap();for(l,u)in v{write!(out,",{l:.17},{u:.17}").unwrap();}writeln!(out).unwrap();}}
+ Model::Conformal(m)=>{writeln!(out,"conformal,{},{}",m.b,m.normalized).unwrap();for(h,v)in m.bands.iter().enumerate(){write!(out,"bands,{},{}",h+1,m.counts[h]).unwrap();for(l,u)in v{write!(out,",{l:.17e},{u:.17e}").unwrap();}writeln!(out).unwrap();}}
  }
 }
 fn f(out:&mut impl Write,x:f64){out.write_all(&x.to_le_bytes()).unwrap();}
