@@ -1,0 +1,54 @@
+name: C015 fit runner preflight
+on:
+  push:
+    paths:
+      - '.github/workflows/c015-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - {fold: '2023', id: 'I', backend: native}
+          - {fold: '2024', id: 'L', backend: lightgbm}
+          - {fold: '2025', id: 'G', backend: xgboost}
+          - {fold: '2026', id: 'W', backend: native}
+    env:
+      FOLD: ${{ matrix.fold }}
+      ID: ${{ matrix.id }}
+      SEED: '42'
+      PREFLIGHT_ONLY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+        if: matrix.backend != 'native'
+      - name: Native preflight (no scores)
+        if: matrix.backend == 'native'
+        run: |
+          bash -n scripts/c015-evaluate.sh
+          cargo test --locked --release
+          cargo build --locked --release
+          bash scripts/c015-evaluate.sh
+      - name: Pinned backend preflight (synthetic smoke only)
+        if: matrix.backend != 'native'
+        run: |
+          nix develop .#boosting --no-update-lock-file --command cargo test --locked --release
+          nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
+          nix develop .#boosting --no-update-lock-file --command bash scripts/c015-evaluate.sh
+          git diff --exit-code -- flake.lock
+      - name: Confirm no assessment output
+        run: |
+          test ! -e results-run/predictions.csv
+          test ! -e results-run/metrics.txt
+          test ! -e results-run/outcome.csv
