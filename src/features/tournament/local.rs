@@ -87,6 +87,44 @@ impl LocalRidge {
         }
         Ok(Self{rows,mean,sd})
     }
+    /// Exact reference cohort, including origin and original/normalized target.
+    /// Normalization scales are stored separately in the enclosing model artifact.
+    pub fn model_bytes(&self)->Result<Vec<u8>,String>{
+        const ROW_BYTES:usize=8*(1+D+3*Y);
+        let mut out=Vec::with_capacity(9+4+self.rows.len()*ROW_BYTES);
+        out.extend(b"AEVRIDGE\x01");
+        out.extend((self.rows.len()as u32).to_le_bytes());
+        for r in &self.rows{
+            out.extend(r.input.origin.to_le_bytes());
+            for &v in r.input.x.iter().chain(&r.input.recent).chain(&r.target).chain(&r.normalized_target){
+                if !v.is_finite(){return Err("nonfinite local ridge reference value".into())}
+                out.extend(v.to_le_bytes());
+            }
+        }
+        Ok(out)
+    }
+    pub fn from_model_bytes(bytes:&[u8],mean:f64,sd:f64)->Result<Self,String>{
+        const ROW_BYTES:usize=8*(1+D+3*Y);
+        let data=bytes.strip_prefix(b"AEVRIDGE\x01").ok_or("local ridge magic/version mismatch")?;
+        if data.len()!=4+32768*ROW_BYTES || u32::from_le_bytes(data[..4].try_into().unwrap())!=32768{
+            return Err("local ridge payload length/count mismatch".into());
+        }
+        fn take<const N:usize>(input:&mut &[u8])->Result<[f64;N],String>{
+            let mut a=[0.;N];
+            for v in &mut a{
+                *v=f64::from_le_bytes(input[..8].try_into().unwrap());*input=&input[8..];
+                if !v.is_finite(){return Err("nonfinite local ridge payload".into())}
+            }
+            Ok(a)
+        }
+        let mut rows=Vec::with_capacity(32768);
+        for mut r in data[4..].chunks_exact(ROW_BYTES){
+            let origin=i64::from_le_bytes(r[..8].try_into().unwrap());r=&r[8..];
+            let x=take(&mut r)?;let recent=take(&mut r)?;let target=take(&mut r)?;let normalized_target=take(&mut r)?;
+            rows.push(TrainingRow{input:super::OriginInput{origin,x,recent},target,normalized_target});
+        }
+        Self::from_selected(rows,mean,sd)
+    }
     pub fn reference_rows(&self)->&[TrainingRow]{&self.rows}
     pub fn predict(&self, x:&super::OriginInput)->Result<[f64;Y],String>{
         if x.x.iter().any(|v|!v.is_finite()){return Err("nonfinite local ridge query".into())}
@@ -149,6 +187,14 @@ mod deployment_tests {
         let q=&train[42].input;
         let (expected,_)=predict_opt(&selected,&q.x,128,0.01,false).unwrap();
         assert_eq!(model.predict(q).unwrap(),expected.map(|v|v*3.+12.));
+        let bytes=model.model_bytes().unwrap();
+        let reloaded=LocalRidge::from_model_bytes(&bytes,12.,3.).unwrap();
+        assert_eq!(reloaded.predict(q).unwrap(),model.predict(q).unwrap());
+        assert_eq!(reloaded.model_bytes().unwrap(),bytes);
+        assert!(LocalRidge::from_model_bytes(&bytes[..bytes.len()-1],12.,3.).is_err());
+        let mut corrupt=bytes;
+        corrupt[21..29].copy_from_slice(&f64::NAN.to_le_bytes());
+        assert!(LocalRidge::from_model_bytes(&corrupt,12.,3.).is_err());
         assert!(LocalRidge::fit(&train[..100],12.,3.).is_err());
     }
 }
