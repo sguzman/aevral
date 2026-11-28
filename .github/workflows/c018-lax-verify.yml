@@ -1,0 +1,46 @@
+name: C018 independent assessment verification
+on:
+  push:
+    paths:
+      - 'campaigns/018-lax/verify-launch.txt'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve and verify completed assessment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          read -r run < campaigns/018-lax/verify-launch.txt
+          [[ "$run" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run" | jq -e '.name=="C018 frozen LAX assessment" and .conclusion=="success"'
+          mkdir -p verified
+          for id in transfer mlp p13; do
+            gh run download "$run" -n "c018-lax-$id" -D "download-$id"
+            manifest=$(find "download-$id" -name SHA256SUMS)
+            test -f "$manifest"
+            dir=$(dirname "$manifest")
+            (cd "$dir" && sha256sum -c SHA256SUMS)
+            mv "$dir" "verified/$id"
+          done
+          rustc --edition=2021 -O campaigns/018-lax/audit.rs -o audit
+          ./audit verified | tee audit.log
+          test "$(grep -c ',177744,pass$' audit.log)" -eq 3
+          mkdir -p evidence
+          cp audit.log evidence/
+          for id in transfer mlp p13; do
+            cp "verified/$id/metrics.csv" "evidence/$id-metrics.csv"
+            cp "verified/$id/SHA256SUMS" "evidence/$id.sha256"
+            grep -E '^(daily|transfer|mlp|p13),0,' "evidence/$id-metrics.csv"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c018-verified-metrics
+          path: evidence/
+          if-no-files-found: error
