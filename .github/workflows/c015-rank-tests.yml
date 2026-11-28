@@ -1,0 +1,22 @@
+name: C015 pooled ranking regression
+on:
+  push:
+    paths:
+      - '.github/workflows/c015-rank-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          rustc --edition=2021 --test campaigns/015-tournament/rank.rs -o /tmp/rank-tests
+          /tmp/rank-tests
+          rustc --edition=2021 -O campaigns/015-tournament/rank.rs -o /tmp/rank
+          mkdir -p /tmp/empty
+          /tmp/rank /tmp/empty /tmp/output
+          test "$(wc -l < /tmp/output/ranking.csv)" -eq 1
+          test "$(grep -c ',incomplete$' /tmp/output/pooled.csv)" -eq 25
