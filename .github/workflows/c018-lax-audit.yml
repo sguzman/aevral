@@ -1,0 +1,39 @@
+name: C018 LAX coverage audit
+on:
+  push:
+    paths:
+      - '.github/workflows/c018-lax-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/lax
+          key: lax-routine-utc-2000-2025-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen raw snapshot
+        run: |
+          cd data/raw/lax
+          test "$(wc -l < SHA256SUMS)" -eq 26
+          sha256sum -c SHA256SUMS
+      - name: Build and audit before fitting
+        run: |
+          set -euo pipefail
+          cargo build --locked --release
+          mkdir -p audit
+          cp data/raw/lax/SHA256SUMS audit/snapshot.sha256
+          cp data/raw/lax/*.url data/raw/lax/*.retrieved audit/
+          target/release/aevral weather-audit data/raw/lax > audit/coverage.csv 2> audit/provenance.log
+          cat audit/coverage.csv audit/provenance.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c018-lax-audit
+          path: audit/
+          if-no-files-found: error
