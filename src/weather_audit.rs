@@ -9,8 +9,8 @@ pub fn run(dir:&Path)->Result<(),String>{
     for y in 2000..=2025{
         let start=weather::minute(&format!("{y}-01-01 00:00"))?;
         let stop=weather::minute(&format!("{}-01-01 00:00",y+1))?;
-        let a=((start-data.first).max(0)/60)as usize;
-        let b=((stop-data.first)/60)as usize;
+        let a=((start+60-data.first).max(0)/60)as usize;
+        let b=(((stop+60-data.first)/60)as usize).min(data.bins.len());
         let bins=&data.bins[a..b];
         let absent=bins.iter().filter(|r|r.is_none()).count();
         let missing=bins.iter().filter(|r|r.is_some_and(|w|w.temperature.is_none())).count();
