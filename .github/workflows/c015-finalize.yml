@@ -4,7 +4,7 @@ on:
     paths:
       - 'campaigns/015-tournament/finalize-launch.txt'
 permissions:
-  contents: read
+  contents: write
   actions: read
 jobs:
   finalize:
@@ -25,3 +25,20 @@ jobs:
           path: final-work/final/
           if-no-files-found: error
           retention-days: 90
+      - name: Persist verified numerical archive to Git
+        run: |
+          set -euo pipefail
+          (cd final-work/final; sha256sum -c SHA256SUMS)
+          test ! -e results/C015/final
+          mkdir -p results/C015/final
+          cp -a final-work/final/. results/C015/final/
+          (cd results/C015/final; sha256sum -c SHA256SUMS)
+          git add -- results/C015/final
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Archive independently verified C015 numerical evidence'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+          git fetch origin main
+          git diff --exit-code HEAD origin/main -- results/C015/final
