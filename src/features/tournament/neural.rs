@@ -124,3 +124,4 @@ mod tests{
 pub mod strategy;
 
 pub(super) mod optimization;
+pub use optimization::AdamMlp;
