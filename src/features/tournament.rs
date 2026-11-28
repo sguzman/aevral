@@ -96,7 +96,8 @@ pub fn score(p:&dyn Predictor,label:&str,fold:&PreparedFold,out:&mut impl Write)
     let mut m=Metrics::default();
     let mut months:[Metrics;12]=std::array::from_fn(|_|Metrics::default());
     let start_year=if fold.fold.id=="legacy"{2019}else{fold.fold.id.parse::<i64>().map_err(|e|e.to_string())?};
-    let edges:Vec<_>=(start_year..=2022).flat_map(|y|(1..=12).map(move|m|(y,m))).map(|(y,m)|minute(&format!("{y}-{m:02}-01 00:00")).map(|t|(t,m as usize))).collect::<Result<_,_>>()?;
+    let end_year=if fold.fold.id=="legacy"{2022}else{start_year};
+    let edges:Vec<_>=(start_year..=end_year).flat_map(|y|(1..=12).map(move|m|(y,m))).map(|(y,m)|minute(&format!("{y}-{m:02}-01 00:00")).map(|t|(t,m as usize))).collect::<Result<_,_>>()?;
     let now=Instant::now();for r in &fold.eval{
         let pred=p.predict(&r.input);
         if pred.iter().any(|v|!v.is_finite()){return Err("nonfinite prediction".into())}
