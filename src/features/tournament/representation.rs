@@ -148,8 +148,13 @@ pub(super) fn suffix24_natural(f:&PreparedFold,first:i64,bins:&[Bin],matched:&[(
  if overlap!=matched.len()||matched.len()!=f.eval.len(){return Err("natural missing matched origins".into())}Ok((possible,natural))
 }
 pub fn run(data:&Path,id:&str,output:&Path,label:&str,seed:u64)->Result<(),String>{
- if ![42,123,2026].contains(&seed){return Err("seed outside frozen recipe".into())}let recipe=Recipe::parse(label)?;let now=Instant::now();let fold=Fold::development(id)?;let(first,bins)=load_bins(data,fold)?;let f=collect(&bins,first,fold)?;verify(&f,&bins,first)?;
+ if ![42,123,2026].contains(&seed){return Err("seed outside frozen recipe".into())}Recipe::parse(label)?;let now=Instant::now();let fold=Fold::development(id)?;let(first,bins)=load_bins(data,fold)?;let f=collect(&bins,first,fold)?;verify(&f,&bins,first)?;
  let(n,m)=match id{"2019"=>(121849,7455),"2020"=>(129327,7543),"2021"=>(136893,7501),"2022"=>(144417,7639),_=>return Err("annual folds only".into())};if(f.train.len(),f.eval.len())!=(n,m){return Err("frozen cohort".into())}
+    run_prepared(&f,first,&bins,output,label,seed,now)
+}
+pub(super) fn run_prepared(f:&super::PreparedFold,first:i64,bins:&[Bin],output:&Path,label:&str,seed:u64,now:Instant)->Result<(),String>{
+    let id=f.fold.id;
+ let recipe=Recipe::parse(label)?;let fold=f.fold;let(n,m)=(f.train.len(),f.eval.len());
  let dir=output.parent().ok_or("output directory")?;origins(&dir.join("train-origins.txt"),f.train.iter().map(|r|r.input.origin))?;origins(&dir.join("matched-origins.txt"),f.eval.iter().map(|r|r.input.origin))?;
  let mut daily=Metrics::default();for r in &f.eval{daily.add(&r.target,&r.input.recent)}println!("cohort,{id},{n},{m},{},{}",f.possible,f.temperature_complete);println!("scales,{id},{:?}",f.scales);println!("baseline,{id},daily,{:.8},{:.8}",daily.mae(),daily.rmse());
  let subset:Vec<_>=(0..8192).map(|i|&f.train[i*n/8192]).collect();origins(&dir.join("fit-origins.txt"),subset.iter().map(|r|r.input.origin))?;
