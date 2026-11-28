@@ -1,0 +1,56 @@
+name: C013 source artifact inventory gate
+on:
+  push:
+    paths:
+      - '.github/workflows/c013-source-inventory.yml'
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact source artifacts and verify available hashes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c013
+          tail -n+2 campaigns/013-ensembles/source-inventory.csv | while IFS=, read -r fold alias model run artifact name code job origins mae rmse cost evidence; do
+            d="/tmp/c013/$fold/$alias"
+            mkdir -p "$d"
+            gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact" > "$d/metadata.json"
+            jq -e --arg name "$name" --arg code "$code" --argjson run "$run" '.name==$name and .expired==false and .workflow_run.id==$run and .workflow_run.head_sha==$code' "$d/metadata.json" >/dev/null
+            gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact/zip" > "$d/source.zip"
+            unzip -tq "$d/source.zip" >/dev/null
+            unzip -q "$d/source.zip" -d "$d/files"
+            test -f "$d/files/predictions.csv.gz"
+            gzip -t "$d/files/predictions.csv.gz"
+            if [[ "$alias" != I ]]; then
+              hash=$(awk '$2=="predictions.csv.gz" && length($1)==64 {print $1}' "$evidence")
+              test "${#hash}" -eq 64
+              printf '%s  %s\n' "$hash" "$d/files/predictions.csv.gz" | sha256sum -c -
+            fi
+            printf 'source,%s,%s,%s,%s,%s\n' "$fold" "$alias" "$artifact" "$(sha256sum "$d/files/predictions.csv.gz" | cut -d' ' -f1)" "$(stat -c%s "$d/files/predictions.csv.gz")"
+            if [[ "$alias" == I ]]; then
+              find "$d/files" -type f -printf 'incumbent-file,%P\n'
+              gzip -dc "$d/files/predictions.csv.gz" | awk 'NR<=3 {print "incumbent-sample," $0}'
+            fi
+            touch "$d/verified"
+          done
+          test "$(find /tmp/c013 -name verified | wc -l)" -eq 24
+      - name: Publish source inventory gate result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c013-source-inventory -f state="$state" \
+            -f description="Source artifact inventory: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
