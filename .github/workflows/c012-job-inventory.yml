@@ -1,0 +1,39 @@
+name: C012 job metadata inventory
+on:
+  push:
+    paths:
+      - '.github/workflows/c012-job-inventory.yml'
+permissions:
+  actions: read
+  statuses: write
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SCORING_RUN: '46085630766'
+    steps:
+      - name: Publish inventory run link
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c012-inventory -f state=pending \
+            -f description="Reading scoring job metadata" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+      - name: Read every page of scoring job metadata
+        run: |
+          set -euo pipefail
+          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$SCORING_RUN/jobs?per_page=100" | jq -s '[.[].jobs[] | {id,name,status,conclusion,run_id,head_sha}]' > /tmp/jobs.json
+          jq -e --argjson run "$SCORING_RUN" 'length == 49 and ([.[].id]|unique|length) == 49 and all(.[]; .run_id == $run and .head_sha == "f16b1e1439add1e99216f1e406ced4637019df6e")' /tmp/jobs.json
+          jq -c '.[]' /tmp/jobs.json | sed 's/^/c012-job,/'
+      - name: Publish inventory outcome
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c012-inventory -f state="$state" \
+            -f description="Job metadata inventory: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
