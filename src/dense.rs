@@ -13,6 +13,36 @@ impl Dense{
         let biases=dims[1..].iter().map(|&d|vec![0.;d]).collect();
         Self{dims:dims.to_vec(),weights,biases}
     }
+    /// Versioned, little-endian, exact inference state (not optimizer state).
+    /// Shape is checked against the caller's expected architecture before allocation.
+    pub fn to_bytes(&self)->Result<Vec<u8>,String>{
+        if !self.finite(){return Err("nonfinite dense model".into())}
+        let mut out=b"AEVDENSE\x01".to_vec();
+        out.extend(u32::try_from(self.dims.len()).map_err(|_|"dense dimension count")?.to_le_bytes());
+        for &d in &self.dims{out.extend(u32::try_from(d).map_err(|_|"dense dimension")?.to_le_bytes());}
+        for (w,b) in self.weights.iter().zip(&self.biases){
+            for &v in w.iter().chain(b){out.extend(v.to_le_bytes());}
+        }
+        Ok(out)
+    }
+    pub fn from_bytes(bytes:&[u8],expected:&[usize])->Result<Self,String>{
+        if expected.len()<2||expected.len()>64||expected.iter().any(|&d|d==0||d>u32::MAX as usize){return Err("invalid expected dense architecture".into())}
+        let mut input=bytes.strip_prefix(b"AEVDENSE\x01").ok_or("dense magic/version mismatch")?;
+        fn take<const N:usize>(input:&mut &[u8])->Result<[u8;N],String>{
+            let v=input.get(..N).ok_or("truncated dense model")?.try_into().unwrap();*input=&input[N..];Ok(v)
+        }
+        let n=u32::from_le_bytes(take(&mut input)?) as usize;
+        if n!=expected.len(){return Err("dense architecture length mismatch".into())}
+        for &d in expected{if u32::from_le_bytes(take(&mut input)?) as usize!=d{return Err("dense architecture mismatch".into())}}
+        let total=expected.windows(2).try_fold(0usize,|a,d|a.checked_add(d[0].checked_mul(d[1])?.checked_add(d[1])?)).ok_or("dense parameter overflow")?;
+        if total.checked_mul(8)!=Some(input.len()){return Err("dense payload length mismatch".into())}
+        fn values(input:&mut &[u8],n:usize)->Result<Vec<f64>,String>{
+            (0..n).map(|_|{let v=f64::from_le_bytes(take(input)?);if !v.is_finite(){return Err("nonfinite dense parameter".into())}Ok(v)}).collect()
+        }
+        let mut weights=Vec::new();let mut biases=Vec::new();
+        for d in expected.windows(2){weights.push(values(&mut input,d[0]*d[1])?);biases.push(values(&mut input,d[1])?);}
+        Ok(Self{dims:expected.to_vec(),weights,biases})
+    }
     pub fn finite(&self)->bool{self.weights.iter().chain(&self.biases).flatten().all(|v|v.is_finite())}
     pub fn parameters(&self)->usize{self.weights.iter().map(Vec::len).sum::<usize>()+self.biases.iter().map(Vec::len).sum::<usize>()}
     fn activations(&self,x:&[f64])->Vec<Vec<f64>>{
@@ -121,5 +151,28 @@ mod tests{
         a.optimization_batch(&[(&x,&y)],&mut oa,0.,None);b.optimization_batch(&[(&x,&y)],&mut ob,0.,Some(&[vec![1.;3]]));assert_eq!(a.predict(&x),b.predict(&x));
         let mut c=Dense::new(&[2,3,2],42);let old=c.clone();let mut oc=crate::adam::Adam::new(c.parameters(),0.001);
         c.optimization_batch(&[(&x,&y)],&mut oc,0.0001,Some(&[vec![0.;3]]));assert_ne!(old.weights[0],c.weights[0]);assert_eq!(old.biases[0],c.biases[0]);assert!(c.finite());
+    }
+}
+
+#[cfg(test)]
+mod persistence_tests{
+    use super::*;
+    #[test]
+    fn exact_dense_roundtrip_and_rejections(){
+        let mut m=Dense::new(&[80,64,24],42);
+        let x=std::array::from_fn::<_,80,_>(|i|i as f64/80.);
+        for _ in 0..5{m.train_step(&x,&[0.2;24],0.005);}
+        let bytes=m.to_bytes().unwrap();
+        let restored=Dense::from_bytes(&bytes,&[80,64,24]).unwrap();
+        assert_eq!(m.predict(&x),restored.predict(&x));
+        assert_eq!(bytes,restored.to_bytes().unwrap());
+        assert!(Dense::from_bytes(&bytes,&[80,32,24]).is_err());
+        assert!(Dense::from_bytes(&bytes[..bytes.len()-1],&[80,64,24]).is_err());
+        let mut bad=bytes.clone();bad.push(0);
+        assert!(Dense::from_bytes(&bad,&[80,64,24]).is_err());
+        let mut bad=bytes.clone();bad[8]=2;
+        assert!(Dense::from_bytes(&bad,&[80,64,24]).is_err());
+        let mut bad=bytes;let n=bad.len();bad[n-8..].copy_from_slice(&f64::NAN.to_le_bytes());
+        assert!(Dense::from_bytes(&bad,&[80,64,24]).is_err());
     }
 }
