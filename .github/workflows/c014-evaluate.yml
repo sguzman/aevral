@@ -1,0 +1,42 @@
+name: C014 frozen probabilistic assessment
+on:
+  push:
+    paths:
+      - '.github/workflows/c014-evaluate.yml'
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+jobs:
+  evaluate:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        year: [2021, 2022]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute 24 frozen distributional evaluations
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/c014-evaluate.sh ${{ matrix.year }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c014-assessment-${{ matrix.year }}
+          path: results-run/C014/${{ matrix.year }}/out/
+          retention-days: 30
+          compression-level: 0
+      - name: Publish fold status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c014-evaluate-${{ matrix.year }} -f state="$state" \
+            -f description="C014 frozen assessment ${{ matrix.year }}: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
