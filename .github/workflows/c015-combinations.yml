@@ -1,0 +1,82 @@
+name: C015 frozen combinations
+on:
+  push:
+    paths:
+      - 'campaigns/015-tournament/combinations-launch.txt'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: c015-combinations
+  cancel-in-progress: false
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify fixed combination identities
+        id: matrix
+        run: |
+          set -euo pipefail
+          file=campaigns/015-tournament/combination-matrix.csv
+          test "$(git hash-object "$file")" = 2c39232a782f947d6a1420b3d7c384c24984c70e
+          matrix=$(tail -n+2 "$file" | jq -Rc 'split(",")|{fold:.[0],id:.[1]}' | jq -sc '{include:.}')
+          jq -e '.include|length==16' <<< "$matrix"
+          jq -e '[.include[]|[.fold,.id]]|unique|length==16' <<< "$matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          bash -n scripts/c015-ingest.sh scripts/c015-combine.sh
+      - name: Verify completed source fits and join inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run=$(cat campaigns/015-tournament/combinations-launch.txt)
+          bash scripts/c015-ingest.sh "$run" ingest
+          mkdir -p combination-inputs/cohorts
+          mv ingest/joined combination-inputs/
+          for y in 2023 2024 2025 2026; do
+            cp "ingest/cohorts/$y/matched-targets.csv" "combination-inputs/cohorts/$y-matched-targets.csv"
+          done
+          (cd combination-inputs/cohorts; sha256sum *.csv > SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c015-combination-inputs
+          path: combination-inputs/
+          retention-days: 30
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c015-fit-ingestion-registry
+          path: ingest/registry/
+          retention-days: 30
+          if-no-files-found: error
+  evaluate:
+    name: combination (${{ matrix.fold }}, ${{ matrix.id }})
+    needs: ingest
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.ingest.outputs.matrix) }}
+    env:
+      FOLD: ${{ matrix.fold }}
+      ID: ${{ matrix.id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: c015-combination-inputs
+          path: combination-inputs
+      - name: Score frozen combination and independently verify
+        run: bash scripts/c015-combine.sh combination-inputs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c015-combination-${{ matrix.fold }}-${{ matrix.id }}
+          path: results-run/
+          retention-days: 30
+          if-no-files-found: error
