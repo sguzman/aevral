@@ -1,0 +1,17 @@
+fold,id,recipe,required_members,calibration
+2023,E08,mean,I+L+R+M,none
+2023,E13,global-convex,I+L+R+M+S+A+H+X,2020-2022
+2023,E14,lead-convex,I+L+R+M+S+A+H+X,2020-2022
+2023,P13,distributional-tree,I+L+R+M,2020-2022
+2024,E08,mean,I+L+R+M,none
+2024,E13,global-convex,I+L+R+M+S+A+H+X,2020-2023
+2024,E14,lead-convex,I+L+R+M+S+A+H+X,2020-2023
+2024,P13,distributional-tree,I+L+R+M,2020-2023
+2025,E08,mean,I+L+R+M,none
+2025,E13,global-convex,I+L+R+M+S+A+H+X,2020-2024
+2025,E14,lead-convex,I+L+R+M+S+A+H+X,2020-2024
+2025,P13,distributional-tree,I+L+R+M,2020-2024
+2026,E08,mean,I+L+R+M,none
+2026,E13,global-convex,I+L+R+M+S+A+H+X,2020-2025
+2026,E14,lead-convex,I+L+R+M+S+A+H+X,2020-2025
+2026,P13,distributional-tree,I+L+R+M,2020-2025
