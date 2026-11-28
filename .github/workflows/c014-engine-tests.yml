@@ -17,6 +17,7 @@ jobs:
         run: |
           rustc --edition=2021 --test campaigns/014-probabilistic/probabilistic.rs -O -o /tmp/c014-tests
           /tmp/c014-tests
+          rustc --edition=2021 -O campaigns/014-probabilistic/score.rs -o /tmp/c014-score
       - name: Publish test gate
         if: always()
         env:
