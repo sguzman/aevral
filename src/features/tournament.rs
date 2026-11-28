@@ -34,6 +34,96 @@ pub struct PreparedFold{pub fold:Fold,pub train:Vec<TrainingRow>,pub eval:Vec<Ev
 impl PreparedFold{
     pub fn restore(&self,y:[f64;Y])->[f64;Y]{y.map(|v|v*self.target_sd+self.target_mean)}
 }
+/// Origin-only weather input; no target or future observation is required.
+#[derive(Clone, Debug)]
+pub struct RawOrigin {
+    pub origin: i64,
+    pub history: [f64; H],
+    pub weather: [f64; 4],
+}
+impl RawOrigin {
+    /// Bins are consecutive completed UTC hours ending at the issue origin.
+    pub fn from_history(origin: i64, bins: &[Option<Weather>]) -> Result<Self, String> {
+        if origin % 60 != 0 || origin < (H as i64-1)*60 || bins.len() != H {
+            return Err("invalid origin or history length".into());
+        }
+        let mut history = [0.; H];
+        for (i, b) in bins.iter().enumerate() {
+            let r = b.ok_or("missing history report")?;
+            let end = origin - (H-1-i) as i64*60;
+            if r.minute < end-59 || r.minute > end { return Err("report outside causal hour".into()); }
+            history[i] = r.temperature.filter(|x| x.is_finite()).ok_or("missing/nonfinite temperature")?;
+        }
+        let r = bins[H-1].unwrap();
+        let wind = r.wind_ms.ok_or("missing wind")?;
+        let weather = [r.dew_c.ok_or("missing dew point")?, r.pressure_hpa.ok_or("missing pressure")?, wind[0], wind[1]];
+        if weather.iter().any(|x| !x.is_finite()) { return Err("nonfinite weather input".into()); }
+        Ok(Self { origin, history, weather })
+    }
+}
+/// Frozen 80-column recipe; training scales in the historical C015 order.
+#[derive(Clone, Copy, Debug)]
+pub struct OriginScales([f64; 10]);
+impl OriginScales {
+    pub fn from_values(values: [f64; 10]) -> Result<Self, String> {
+        if values.iter().any(|x| !x.is_finite()) || values.iter().skip(1).step_by(2).any(|&x| x <= 0.) {
+            return Err("invalid origin scales".into());
+        }
+        Ok(Self(values))
+    }
+    pub fn values(self) -> [f64; 10] { self.0 }
+    fn temp(self) -> Scale { Scale { mean: self.0[0], sd: self.0[1] } }
+    fn weather(self) -> [Scale; 4] {
+        std::array::from_fn(|i| Scale { mean: self.0[2+2*i], sd: self.0[3+2*i] })
+    }
+    fn encode_parts(self, origin: i64, history: &[f64; H], weather: &[f64; 4]) -> OriginInput {
+        let mut x: Vec<_> = history.iter().map(|&v| self.temp().norm(v)).collect();
+        x.extend(crate::windows::Calendar::Both.features(origin));
+        let scales = self.weather();
+        x.extend((0..4).map(|i| scales[i].norm(weather[i])));
+        OriginInput { origin, x: x.try_into().unwrap(), recent: history[H-Y..].try_into().unwrap() }
+    }
+    pub fn encode(self, raw: &RawOrigin) -> Result<OriginInput, String> {
+        if raw.origin % 60 != 0 || raw.origin < (H as i64-1)*60 ||
+            raw.history.iter().chain(raw.weather.iter()).any(|x| !x.is_finite()) {
+            return Err("invalid raw origin".into());
+        }
+        let row = self.encode_parts(raw.origin, &raw.history, &raw.weather);
+        if row.x.iter().any(|x| !x.is_finite()) { return Err("nonfinite normalized input".into()); }
+        Ok(row)
+    }
+}
+fn fit_scales(tr: &[Case]) -> Result<OriginScales,String> {
+    let temp=Scale::fit(tr.iter().flat_map(|r|r.x))?;
+    let weather:[Scale;4]=(0..4).map(|i|Scale::fit(tr.iter().map(move|r|r.weather[i]))).collect::<Result<Vec<_>,_>>()?.try_into().unwrap();
+    OriginScales::from_values([temp.mean,temp.sd,weather[0].mean,weather[0].sd,weather[1].mean,weather[1].sd,weather[2].mean,weather[2].sd,weather[3].mean,weather[3].sd])
+}
+fn training_rows(tr: &[Case], scales: OriginScales) -> Vec<TrainingRow> {
+    tr.iter().map(|r|TrainingRow{input:scales.encode_parts(r.origin,&r.x,&r.weather),target:r.y,normalized_target:r.y.map(|v|scales.temp().norm(v))}).collect()
+}
+/// Fit only from completed labels strictly before cutoff; no assessment rows needed.
+pub fn prepare_training(bins: &[Option<Weather>], first: i64, cutoff: i64) -> Result<(Vec<TrainingRow>, OriginScales), String> {
+    if first < 0 || first % 60 != 0 || cutoff % 60 != 0 || cutoff <= first { return Err("invalid training interval".into()); }
+    let mut tr = Vec::new();
+    for i in H-1..bins.len().saturating_sub(Y) {
+        let origin = first+i as i64*60;
+        if origin+60*Y as i64 >= cutoff { break; }
+        let Ok(raw) = RawOrigin::from_history(origin, &bins[i+1-H..=i]) else { continue; };
+        let mut target = [0.; Y];
+        let mut valid = true;
+        for (j, bin) in bins[i+1..=i+Y].iter().enumerate() {
+            let end=origin+(j+1) as i64*60;
+            match bin {
+                Some(r) if r.minute>=end-59 && r.minute<=end && r.temperature.is_some_and(|x| x.is_finite()) => target[j]=r.temperature.unwrap(),
+                _ => { valid=false; break; }
+            }
+        }
+        if valid { tr.push(Case{origin,split:Split::Train,x:raw.history,y:target,weather:raw.weather}); }
+    }
+    if tr.is_empty() { return Err("empty training interval".into()); }
+    let scales=fit_scales(&tr)?;
+    Ok((training_rows(&tr,scales),scales))
+}
 fn collect(bins:&[Option<Weather>],first:i64,fold:Fold)->Result<PreparedFold,String>{
     let(mut tr,mut ev)=(Vec::new(),Vec::new());let(mut possible,mut temperature_complete)=(0,0);
     for i in H-1..bins.len().saturating_sub(Y){
@@ -49,11 +139,9 @@ fn collect(bins:&[Option<Weather>],first:i64,fold:Fold)->Result<PreparedFold,Str
         if split==Split::Train{tr.push(row)}else{ev.push(row)}
     }
     if tr.is_empty()||ev.is_empty(){return Err("empty fold".into())}
-    let temp=Scale::fit(tr.iter().flat_map(|r|r.x))?;
-    let weather:[Scale;4]=(0..4).map(|i|Scale::fit(tr.iter().map(move|r|r.weather[i]))).collect::<Result<Vec<_>,_>>()?.try_into().unwrap();
-    let make=|r:&Case|OriginInput{origin:r.origin,x:input(r,7,temp,weather).try_into().unwrap(),recent:r.x[H-Y..].try_into().unwrap()};
-    let scales=[temp.mean,temp.sd,weather[0].mean,weather[0].sd,weather[1].mean,weather[1].sd,weather[2].mean,weather[2].sd,weather[3].mean,weather[3].sd];
-    Ok(PreparedFold{fold,train:tr.iter().map(|r|TrainingRow{input:make(r),target:r.y,normalized_target:r.y.map(|v|temp.norm(v))}).collect(),eval:ev.iter().map(|r|EvaluationRow{input:make(r),target:r.y}).collect(),possible,temperature_complete,target_mean:temp.mean,target_sd:temp.sd,scales})
+    let scales=fit_scales(&tr)?;
+    let make=|r:&Case|scales.encode_parts(r.origin,&r.x,&r.weather);
+    Ok(PreparedFold{fold,train:training_rows(&tr,scales),eval:ev.iter().map(|r|EvaluationRow{input:make(r),target:r.y}).collect(),possible,temperature_complete,target_mean:scales.0[0],target_sd:scales.0[1],scales:scales.values()})
 }
 /// Only reads through the selected development fold. Historical holdout bytes not parsed.
 fn load_bins(data:&Path,fold:Fold)->Result<(i64,Vec<Option<Weather>>),String>{
@@ -241,3 +329,39 @@ pub mod representation;
 pub mod optimization;
 
 pub mod retrospective;
+
+#[cfg(test)]
+mod deployment_tests {
+    use super::*;
+    #[test]
+    fn origin_only_matches_legacy_features_and_training_rows() {
+        let fold=Fold::development("2019").unwrap();
+        let first=fold.start-200*60;
+        let mut bins:Vec<_>=(0..400).map(|i|Some(Weather{minute:first+i*60-1,temperature:Some((i%31)as f64),dew_c:Some((i%17)as f64),pressure_hpa:Some(1000.+(i%13)as f64),wind_ms:Some([(i%11)as f64,(i%7)as f64])})).collect();
+        let old=collect(&bins,first,fold).unwrap();
+        let (rows,scales)=prepare_training(&bins,first,fold.start).unwrap();
+        assert_eq!(scales.values(),old.scales);
+        assert_eq!(rows.len(),old.train.len());
+        for (a,b) in rows.iter().zip(&old.train) {
+            assert_eq!(a.input.x,b.input.x); assert_eq!(a.target,b.target); assert_eq!(a.normalized_target,b.normalized_target);
+        }
+        let i=225;
+        let origin=first+i as i64*60;
+        let raw=RawOrigin::from_history(origin,&bins[i+1-H..=i]).unwrap();
+        let case=Case{origin,split:Split::Validation,x:raw.history,y:[0.;Y],weather:raw.weather};
+        let x=scales.encode(&raw).unwrap();
+        assert_eq!(x.x.as_slice(),input(&case,7,scales.temp(),scales.weather()).as_slice());
+        bins.truncate(i+1);
+        let actual=scales.encode(&RawOrigin::from_history(origin,&bins[i+1-H..=i]).unwrap()).unwrap();
+        assert_eq!(x.x,actual.x);
+        bins[i].as_mut().unwrap().minute=origin+1;
+        assert!(RawOrigin::from_history(origin,&bins[i+1-H..=i]).is_err());
+        let (cut,cs)=prepare_training(&bins[..200],first,fold.start).unwrap();
+        assert_eq!(cut.len(),rows.len());assert_eq!(cs.values(),scales.values());
+    }
+    #[test]
+    fn invalid_scales_rejected() {
+        assert!(OriginScales::from_values([0.;10]).is_err());
+        assert!(OriginScales::from_values([f64::NAN;10]).is_err());
+    }
+}
