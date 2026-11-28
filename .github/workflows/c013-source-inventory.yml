@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - '.github/workflows/c013-source-inventory.yml'
+      - 'campaigns/013-ensembles/join-sources.rs'
 permissions:
   contents: read
   actions: read
@@ -39,9 +40,30 @@ jobs:
               find "$d/files" -type f -printf 'incumbent-file,%P\n'
               gzip -dc "$d/files/predictions.csv.gz" | awk 'NR<=3 {print "incumbent-sample," $0}'
             fi
+            expected=$(awk -F, -v y="$fold" -v a="$alias" -v id="$artifact" '$1==y&&$2==a&&$3==id{print $4}' campaigns/013-ensembles/source-hashes.csv)
+            test "${#expected}" -eq 64
+            printf '%s  %s\n' "$expected" "$d/files/predictions.csv.gz" | sha256sum -c -
+            gzip -dc "$d/files/predictions.csv.gz" > "$d/predictions.csv"
             touch "$d/verified"
           done
           test "$(find /tmp/c013 -name verified | wc -l)" -eq 24
+      - name: Audit and join matched predictions
+        run: |
+          set -euo pipefail
+          rustc --edition=2021 --test campaigns/013-ensembles/join-sources.rs -o /tmp/c013-join-tests
+          /tmp/c013-join-tests
+          rustc --edition=2021 -O campaigns/013-ensembles/join-sources.rs -o /tmp/c013-join
+          /tmp/c013-join /tmp/c013 campaigns/013-ensembles/source-inventory.csv /tmp/c013-joined
+          for fold in 2020 2021 2022; do
+            expected=$(awk -F, -v y="$fold" '$1==y{print $3}' campaigns/012-optimization/cohort-hashes.csv)
+            printf '%s  %s\n' "$expected" "/tmp/c013-joined/$fold-origins.txt" | sha256sum -c -
+          done
+          (cd /tmp/c013-joined && sha256sum *.csv *-origins.txt > SHA256SUMS && cat SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c013-joined-sources
+          path: /tmp/c013-joined/
+          retention-days: 30
       - name: Publish source inventory gate result
         if: always()
         env:
