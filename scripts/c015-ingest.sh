@@ -82,6 +82,7 @@ while IFS=, read -r y id recipe seed budget track backend role; do
     gzip -dc "$dest/predictions.csv.gz" > "$root/exports/$key.csv"
     "$root/audit" "$root/cohorts/$y/matched-targets.csv" "$root/exports/$key.csv" "$dest/metrics.txt" "$y" "$recipe" matched "$root/registry/$key.csv"
     cmp "$root/registry/$key.csv" "$dest/independent-metrics.csv"
+    bash scripts/c015-cost.sh "$y" "$id" "$recipe" "$seed" "$dest" > "$root/registry/$key-cost.csv"
     if [[ "$id" == S ]]; then
       gzip -dc "$dest/natural-predictions.csv.gz" > "$root/exports/$key-natural.csv"
       "$root/audit" "$root/cohorts/$y/natural-targets.csv" "$root/exports/$key-natural.csv" "$dest/metrics.txt" "$y" "$recipe" natural "$root/registry/$key-natural.csv"
