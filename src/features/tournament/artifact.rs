@@ -2,7 +2,7 @@
 use super::OriginScales;
 use crate::weather::{self,Station};
 use std::{fs::{self,File,OpenOptions},io::{Read,Write},path::Path,process::{Command,Stdio}};
-const MAGIC:&[u8]=b"AEVFORECAST\x01";
+const MAGIC:&[u8]=b"AEVFORECAST\x02";
 const SCHEMA:&str="weather80-utc-c015-v1";
 const MAX_BYTES:usize=256*1024*1024;
 #[derive(Clone,Copy,Debug,PartialEq,Eq)]
@@ -18,6 +18,7 @@ pub struct Artifact{
     pub cutoff:i64,
     pub scales:OriginScales,
     pub recipe:Recipe,
+    pub calibration_years:Option<(i64,i64)>,
     pub sources:Vec<SourceFingerprint>,
     pub components:Vec<(String,Vec<u8>)>,
 }
@@ -44,9 +45,17 @@ impl<'a> Reader<'a>{
     fn string(&mut self,max:usize)->Result<String,String>{String::from_utf8(self.field(max)?.to_vec()).map_err(|_|"invalid artifact text".into())}
 }
 impl Artifact{
-    fn validate(&self)->Result<(),String>{
+    pub(crate) fn validate(&self)->Result<(),String>{
         if self.cutoff<=0||self.cutoff>=weather::minute_limit()||self.cutoff%60!=0{return Err("invalid artifact cutoff".into())}
         OriginScales::from_values(self.scales.values())?;
+        match (self.recipe,self.calibration_years){
+            (Recipe::Mlp,None)=>{},
+            (Recipe::P13,Some((a,b))) if a>=2020&&b>=a&&b-a<=9&&b<weather::MAX_YEAR=>{
+                let end=weather::minute(&format!("{}-01-01 00:00",b+1))?;
+                if end>self.cutoff{return Err("calibration exceeds fit cutoff".into())}
+            }
+            _=>return Err("invalid calibration provenance".into())
+        }
         if self.sources.is_empty()||self.sources.len()>4096||self.sources.windows(2).any(|w|w[0].name>=w[1].name){return Err("source fingerprints must be unique and sorted".into())}
         if self.sources.iter().any(|s|s.name.is_empty()||s.name.len()>256||!s.name.bytes().all(|b|b.is_ascii_alphanumeric()||b"._-".contains(&b))){return Err("invalid source fingerprint name".into())}
         if self.components.len()!=self.recipe.ids().len()||self.components.iter().zip(self.recipe.ids()).any(|((id,payload),expected)|id!=expected||payload.is_empty()){return Err("missing, unordered, or empty model component".into())}
@@ -56,6 +65,9 @@ impl Artifact{
         self.validate()?;
         let mut out=MAGIC.to_vec();put(&mut out,SCHEMA.as_bytes())?;put(&mut out,self.recipe.name().as_bytes())?;
         put(&mut out,self.station.as_str().as_bytes())?;out.extend(self.cutoff.to_le_bytes());
+        let (a,b)=self.calibration_years.unwrap_or((0,0));
+        out.extend(a.to_le_bytes());out.extend(b.to_le_bytes());
+        put(&mut out,if self.recipe==Recipe::P13{b"lightgbm-4.6.0"}else{b"native-dense-v1"})?;
         for v in self.scales.values(){out.extend(v.to_le_bytes());}
         out.extend((self.sources.len() as u32).to_le_bytes());
         for s in &self.sources{put(&mut out,s.name.as_bytes())?;out.extend(s.sha256);}
@@ -72,6 +84,10 @@ impl Artifact{
         let recipe=match r.string(64)?.as_str(){"mlp64-sgd-seed42"=>Recipe::Mlp,"p13-c015-seed42"=>Recipe::P13,_=>return Err("unknown artifact recipe".into())};
         let station=Station::new(&r.string(8)?)?;
         let cutoff=i64::from_le_bytes(r.take(8)?.try_into().unwrap());
+        let a=i64::from_le_bytes(r.take(8)?.try_into().unwrap());let b=i64::from_le_bytes(r.take(8)?.try_into().unwrap());
+        let calibration_years=if (a,b)==(0,0){None}else{Some((a,b))};
+        let backend=r.string(64)?;
+        if backend!=if recipe==Recipe::P13{"lightgbm-4.6.0"}else{"native-dense-v1"}{return Err("backend version mismatch".into())}
         let mut scales=[0.;10];for v in &mut scales{*v=f64::from_le_bytes(r.take(8)?.try_into().unwrap());}
         let scales=OriginScales::from_values(scales)?;
         let n=r.u32()? as usize;if !(1..=4096).contains(&n){return Err("invalid source count".into())}
@@ -81,7 +97,7 @@ impl Artifact{
         let mut components=Vec::new();
         for &expected in recipe.ids(){let id=r.string(8)?;if id!=expected{return Err("unexpected component identity".into())}components.push((id,r.field(MAX_BYTES)?.to_vec()));}
         if !r.0.is_empty(){return Err("trailing artifact data".into())}
-        let a=Self{station,cutoff,scales,recipe,sources,components};a.validate()?;Ok(a)
+        let a=Self{station,cutoff,scales,recipe,calibration_years,sources,components};a.validate()?;Ok(a)
     }
     /// Publish only after a complete, synced write. Refuse replacing an existing artifact.
     pub fn save(&self,path:&Path)->Result<(),String>{
@@ -103,7 +119,7 @@ impl Artifact{
 mod tests{
     use super::*;
     #[test]fn envelope_roundtrip_and_rejections(){
-        let a=Artifact{station:Station::new("LAX").unwrap(),cutoff:weather::minute("2025-01-01 00:00").unwrap(),scales:OriginScales::from_values([1.;10]).unwrap(),recipe:Recipe::Mlp,sources:vec![SourceFingerprint{name:"LAX-2024.csv".into(),sha256:sha256(b"abc").unwrap()}],components:vec![("I".into(),vec![1,2,3])]};
+        let a=Artifact{station:Station::new("LAX").unwrap(),cutoff:weather::minute("2025-01-01 00:00").unwrap(),scales:OriginScales::from_values([1.;10]).unwrap(),recipe:Recipe::Mlp,calibration_years:None,sources:vec![SourceFingerprint{name:"LAX-2024.csv".into(),sha256:sha256(b"abc").unwrap()}],components:vec![("I".into(),vec![1,2,3])]};
         assert_eq!(a.sources[0].sha256,[0xba,0x78,0x16,0xbf,0x8f,0x01,0xcf,0xea,0x41,0x41,0x40,0xde,0x5d,0xae,0x22,0x23,0xb0,0x03,0x61,0xa3,0x96,0x17,0x7a,0x9c,0xb4,0x10,0xff,0x61,0xf2,0x00,0x15,0xad]);
         let bytes=a.encode().unwrap();let b=Artifact::decode(&bytes).unwrap();
         assert_eq!(b.station,a.station);assert_eq!(b.cutoff,a.cutoff);assert_eq!(b.scales.values(),a.scales.values());assert_eq!(b.sources,a.sources);assert_eq!(b.components,a.components);assert_eq!(b.encode().unwrap(),bytes);
