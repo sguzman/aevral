@@ -18,16 +18,41 @@ impl Default for Station {
 }
 pub const WINDOW:usize=24;
 pub const HORIZON:usize=24;
-fn leap(y:i64)->bool{y%4==0&&(y%100!=0||y%400==0)}
+pub(crate) fn leap(y:i64)->bool{y%4==0&&(y%100!=0||y%400==0)}
+pub const MIN_YEAR:i64=2000;
+pub const MAX_YEAR:i64=9999;
+// Gregorian day count relative to 2000-01-01, without an O(year) loop.
+fn days_before(y:i64)->i64{
+    let n=y-1;
+    let base=MIN_YEAR-1;
+    365*(y-MIN_YEAR)+n/4-base/4-n/100+base/100+n/400-base/400
+}
 pub fn minute(s:&str)->Result<i64,String>{
     let s=s.trim();
     if s.len()!=16||!s.is_ascii()||&s[4..5]!="-"||&s[7..8]!="-"||&s[10..11]!=" "||&s[13..14]!=":"{return Err(format!("bad UTC minute {s}"))}
     let p=|a,b|s[a..b].parse::<i64>().map_err(|_|format!("bad UTC minute {s}"));
     let(y,m,d,h,n)=(p(0,4)?,p(5,7)?,p(8,10)?,p(11,13)?,p(14,16)?);
-    if !(2000..=2026).contains(&y)||!(1..=12).contains(&m)||!(0..24).contains(&h)||!(0..60).contains(&n){return Err(format!("invalid UTC minute {s}"))}
+    if !(MIN_YEAR..=MAX_YEAR).contains(&y)||!(1..=12).contains(&m)||!(0..24).contains(&h)||!(0..60).contains(&n){return Err(format!("invalid UTC minute {s}"))}
     let lengths=[31,if leap(y){29}else{28},31,30,31,30,31,31,30,31,30,31];
     if d<1||d>lengths[(m-1)as usize]{return Err(format!("invalid day {s}"))}
-    Ok(((2000..y).map(|y|if leap(y){366}else{365}).sum::<i64>()+lengths[..(m-1)as usize].iter().sum::<i64>()+d-1)*1440+h*60+n)
+    Ok((days_before(y)+lengths[..(m-1)as usize].iter().sum::<i64>()+d-1)*1440+h*60+n)
+}
+/// Exclusive upper bound of supported UTC minutes.
+pub fn minute_limit()->i64{days_before(MAX_YEAR+1)*1440}
+/// Resolve year and UTC minute of year in O(log years).
+pub fn year_start(t:i64)->Result<(i64,i64),String>{
+    if !(0..minute_limit()).contains(&t){return Err("UTC minute outside supported range".into())}
+    let mut lo=MIN_YEAR;let mut hi=MAX_YEAR+1;
+    while hi-lo>1{let mid=lo+(hi-lo)/2;if days_before(mid)*1440<=t{lo=mid}else{hi=mid}}
+    Ok((lo,days_before(lo)*1440))
+}
+pub fn format_minute(t:i64)->Result<String,String>{
+    let(y,start)=year_start(t)?;
+    let mut day=(t-start)/1440;
+    let lengths=[31,if leap(y){29}else{28},31,30,31,30,31,31,30,31,30,31];
+    let mut m=0;while day>=lengths[m]{day-=lengths[m];m+=1}
+    let n=t.rem_euclid(1440);
+    Ok(format!("{y:04}-{:02}-{:02} {:02}:{:02}",m+1,day+1,n/60,n%60))
 }
 #[derive(Clone,Copy,Debug,PartialEq)]
 pub struct Report{pub minute:i64,pub celsius:Option<f64>}
@@ -153,5 +178,23 @@ mod station_tests {
         assert_eq!(b.station().as_str(), "LAX");
         assert!(Station::new(" lax").is_err());
         assert!(Station::new("../LAX").is_err());
+    }
+}
+
+#[cfg(test)]
+mod date_range_tests{
+    use super::*;
+    #[test]
+    fn extended_gregorian_roundtrips(){
+        for s in ["2000-01-01 00:00","2026-12-31 23:59","2027-01-01 00:00","2028-02-29 12:34","2100-03-01 00:00","2400-02-29 23:59","9999-12-31 23:59"]{
+            assert_eq!(format_minute(minute(s).unwrap()).unwrap(),s);
+        }
+        assert!(minute("2100-02-29 00:00").is_err());
+        assert!(format_minute(minute_limit()).is_err());
+        assert!(format_minute(-1).is_err());
+        for y in 2000..=2026{
+            let legacy=(2000..y).map(|v|if leap(v){366}else{365}).sum::<i64>()*1440;
+            assert_eq!(minute(&format!("{y}-01-01 00:00")).unwrap(),legacy);
+        }
     }
 }
