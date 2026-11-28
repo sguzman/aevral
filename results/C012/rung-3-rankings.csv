@@ -1,0 +1,9 @@
+rank,config,model,mae_c,rmse_c,fit_predict_s,seed_policy
+1,O03-04,mae-nhits64,1.32647315,1.78799194,426.528262,stochastic
+2,O04-04,lightgbm,1.34042436,1.79009762,45.106801,deterministic
+3,O05-02,local-ridge,1.35129742,1.79588971,20.060111,deterministic
+4,O01-06,mlp80,1.35158260,1.78652215,22.206510,stochastic
+5,O02-06,suffix24-mlp,1.40954853,1.84961093,11.089943,stochastic
+6,O06-06,mars,1.43486663,1.88227496,0.377581,deterministic
+7,O08-06,haar-ridge,1.47351708,1.94089593,0.224627,deterministic
+8,O07-06,arx,1.51601775,2.00247829,0.603088,deterministic
