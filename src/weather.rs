@@ -1,5 +1,21 @@
 //! UTC routine-report ingestion and causal forecast windows.
 use std::{collections::{BTreeMap,BTreeSet},io::BufRead};
+/// Exact source station identifier. ICAO-to-provider aliases belong in the
+/// source adapter, never in the parser; mixed station rows are rejected.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Station(String);
+impl Station {
+    pub fn new(id: &str) -> Result<Self, String> {
+        if !(3..=8).contains(&id.len()) || !id.bytes().all(|b| b.is_ascii_uppercase() || b.is_ascii_digit()) {
+            return Err("invalid source station identifier".into());
+        }
+        Ok(Self(id.to_owned()))
+    }
+    pub fn as_str(&self) -> &str { &self.0 }
+}
+impl Default for Station {
+    fn default() -> Self { Self("SEA".into()) }
+}
 pub const WINDOW:usize=24;
 pub const HORIZON:usize=24;
 fn leap(y:i64)->bool{y%4==0&&(y%100!=0||y%400==0)}
@@ -16,8 +32,10 @@ pub fn minute(s:&str)->Result<i64,String>{
 #[derive(Clone,Copy,Debug,PartialEq)]
 pub struct Report{pub minute:i64,pub celsius:Option<f64>}
 #[derive(Default,Debug)]
-pub struct Archive{reports:BTreeMap<i64,Option<f64>>,pub duplicates:usize,pub conflicts:BTreeSet<i64>}
+pub struct Archive{station:Station,reports:BTreeMap<i64,Option<f64>>,pub duplicates:usize,pub conflicts:BTreeSet<i64>}
 impl Archive{
+    pub fn for_station(station: Station) -> Self { Self { station, ..Self::default() } }
+    pub fn station(&self) -> &Station { &self.station }
     pub fn ingest(&mut self,reader:impl BufRead)->Result<(),String>{self.ingest_policy(reader,false)}
     pub fn ingest_policy(&mut self,reader:impl BufRead,quarantine_test:bool)->Result<(),String>{
         let mut header=None;
@@ -31,7 +49,7 @@ impl Archive{
                 header=Some((c.len(),pos("station")?,pos("valid")?,pos("tmpf")?));continue
             }
             let(w,s,t,f)=header.unwrap();
-            if c.len()!=w||c[s]!="SEA"{return Err(format!("invalid row {}",i+1))}
+            if c.len()!=w||c[s]!=self.station.as_str(){return Err(format!("invalid row {}",i+1))}
             let t=minute(c[t])?;
             let v=c[f].trim();
             let value=if v=="M"||v.is_empty(){None}else{
@@ -113,5 +131,27 @@ mod tests{
         let(r,a)=examples(&b,0);
         assert_eq!(a.eligible,3);assert_eq!(r[0].origin,23*60);assert_eq!(r[0].x[23],23.0);assert_eq!(r[0].y[0],24.0);assert_eq!(r[0].y[23],47.0);
         b[24]=None;let(_,a)=examples(&b,0);assert_eq!(a.eligible,0);assert_eq!(a.excluded_missing,3);
+    }
+}
+
+#[cfg(test)]
+mod station_tests {
+    use super::*;
+    #[test]
+    fn exact_station_identity_and_default_compatibility() {
+        let sea = "station,valid,tmpf\nSEA,2024-01-01 00:59,68\n";
+        let lax = sea.replace("SEA,", "LAX,");
+        let mut a = Archive::default();
+        let mut b = Archive::for_station(Station::new("LAX").unwrap());
+        a.ingest(sea.as_bytes()).unwrap();
+        b.ingest(lax.as_bytes()).unwrap();
+        let t = minute("2024-01-01 01:00").unwrap();
+        assert_eq!(a.hourly(t,t), b.hourly(t,t));
+        assert!(b.ingest(sea.as_bytes()).is_err());
+        assert!(a.ingest(lax.as_bytes()).is_err());
+        assert!(b.ingest(lax.replace("LAX,", "KLAX,").as_bytes()).is_err());
+        assert_eq!(b.station().as_str(), "LAX");
+        assert!(Station::new(" lax").is_err());
+        assert!(Station::new("../LAX").is_err());
     }
 }
