@@ -29,8 +29,8 @@ Authorized 2026-11-26. Goal: extensive comparative research over major practical
 - [C009 — Expanded neural architecture tournament](009-neural-revisit/README.md) — complete
 - [C010 — Forecast formulation and objective](010-forecast-strategy/README.md) — complete
 - [C011 — Same-archive representation engineering](011-feature-engineering/README.md) — complete
-- [C012 — Budgeted cross-family hyperparameter search](012-optimization/README.md) — active
-- [C013 — Cross-family hybrids and ensembles](013-ensembles/README.md) — planned
+- [C012 — Budgeted cross-family hyperparameter search](012-optimization/README.md) — complete (three documented N-HiTS runtime blocks)
+- [C013 — Cross-family hybrids and ensembles](013-ensembles/README.md) — active
 - [C014 — Uncertainty and distributional forecasting](014-probabilistic/README.md) — planned
 - [C015 — Final fixed-data tournament and report](015-tournament/README.md) — planned
 
