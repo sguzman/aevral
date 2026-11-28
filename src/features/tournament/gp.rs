@@ -69,12 +69,18 @@ impl Model{
     }}
 }
 pub fn run(data:&Path,id:&str,output:&Path,label:&str)->Result<(),String>{
-    let recipe=config(label)?;let f=load(data,Fold::development(id)?)?;
+    config(label)?;let f=load(data,Fold::development(id)?)?;
     let(n,m,baseline)=match id{"2019"=>(121849,7455,1.88752763),"2020"=>(129327,7543,2.07087759),"2021"=>(136893,7501,2.14898785),"2022"=>(144417,7639,2.10544725),_=>return Err("annual folds only".into())};
     if(f.train.len(),f.eval.len())!=(n,m){return Err("frozen cohort mismatch".into())}
     let mut daily=Metrics::default();for r in &f.eval{daily.add(&r.target,&r.input.recent)}
     if(daily.mae()-baseline).abs()>1e-6{return Err("daily baseline mismatch".into())}
     println!("cohort,{id},{n},{m},{},{}",f.possible,f.temperature_complete);println!("scales,{id},{:?}",f.scales);println!("baseline,{id},daily,{:.8},{:.8}",daily.mae(),daily.rmse());
+    run_prepared(&f,output,label)
+}
+pub(super) fn run_prepared(f:&super::PreparedFold,output:&Path,label:&str)->Result<(),String>{
+    let id=f.fold.id;
+    let recipe=config(label)?;
+    let m=f.eval.len();
     let mut out=BufWriter::new(std::fs::File::create(output).map_err(|e|e.to_string())?);
     writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
     let rows=subset(&f.train,recipe.budget());let n=rows.len();
