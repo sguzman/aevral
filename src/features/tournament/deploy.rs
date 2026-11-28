@@ -119,8 +119,8 @@ impl ForecastBundle{
         }
     }
     pub fn load(path:&Path)->Result<Self,String>{Self::from_artifact(Artifact::load(path)?)}
-    /// Evaluate a frozen cohort in one backend batch; callback receives only
-    /// issued predictions, not training labels. Explicitly opt into station transfer.
+    /// Evaluate a frozen cohort in one backend batch. Labels are exposed only
+    /// to the scoring callback, after prediction. Explicitly opt into station transfer.
     /// C015's first eligible origin is cutoff-60 (all fit labels <= that origin).
     pub fn evaluate_batch(&self,data:&StationBins,start:i64,end:i64,transfer:bool,mut consume:impl FnMut(&super::EvaluationRow,&[f64;Y],Option<&[[f64;Y];4]>,Option<&[[f64;SUPPORT];Y]>)->Result<(),String>)->Result<usize,String>{
         if start<self.cutoff{return Err("assessment starts before fit cutoff".into())}
