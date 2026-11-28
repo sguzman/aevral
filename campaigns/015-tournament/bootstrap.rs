@@ -11,12 +11,12 @@ fn num(s:&str)->f64{let x=s.parse::<f64>().unwrap();assert!(x.is_finite());x}
 struct Origin{t:i64,y:[f64;24],loss:f64}
 fn load(path:&Path,year:u16,recipe:&str)->Vec<Origin>{
  let(start,end,n)=cohort(year);let mut l=BufReader::new(File::open(path).unwrap()).lines();assert_eq!(l.next().unwrap().unwrap(),HEADER);
- let mut out:Vec<Origin>=Vec::with_capacity(n);
+ let mut out:Vec<Origin>=Vec::with_capacity(n);let mut rows=0;
  for(i,l)in l.enumerate(){let l=l.unwrap();let p:Vec<_>=l.split(',').collect();assert_eq!(p.len(),6);assert_eq!(p[0].parse::<u16>().unwrap(),year);assert_eq!(p[1],recipe);let t=p[2].parse::<i64>().unwrap();let h=i%24;assert_eq!(p[3].parse::<usize>().unwrap(),h+1);let y=num(p[4]);let v=num(p[5]);assert!(t%60==0&&t+60>=start&&t+1440<end);
   if h==0{assert!(out.last().is_none_or(|r|r.t<t));out.push(Origin{t,y:[0.;24],loss:0.});}
-  let r=out.last_mut().unwrap();assert_eq!(r.t,t);r.y[h]=y;r.loss+=(v-y).abs()/24.;
+  let r=out.last_mut().unwrap();assert_eq!(r.t,t);r.y[h]=y;r.loss+=(v-y).abs()/24.;rows+=1;
  }
- assert_eq!(out.len(),n);assert!(out.iter().all(|r|r.loss.is_finite()));out
+ assert_eq!(rows,n*24);assert_eq!(out.len(),n);assert!(out.iter().all(|r|r.loss.is_finite()));out
 }
 #[derive(Clone,Copy,Default,Debug)]
 struct Block{n:usize,d:f64}
