@@ -1,0 +1,101 @@
+name: C015 retrospective cohort gate
+on:
+  push:
+    paths:
+      - '.github/workflows/c015-cohort.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  statuses: write
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locked regression tests
+        run: cargo test --locked --release
+      - name: Locked build
+        run: cargo build --locked --release
+      - name: Publish test gate
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c015-cohort-tests -f state="$state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+  cohort:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        year: ['2023','2024','2025','2026']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Frozen data identity
+        run: |
+          set -euo pipefail
+          cd data/raw/ksea
+          test "$(wc -l < ../../../results/AEV-015/snapshot.sha256)" -eq 27
+          sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Cohort-only gate
+        env:
+          YEAR: ${{ matrix.year }}
+        run: |
+          set -euo pipefail
+          cargo build --locked --release
+          mkdir -p cohort-run
+          target/release/aevral retrospective-cohort data/raw/ksea "$YEAR" cohort-run | tee cohort-run/audit.txt
+          grep -Fxq "retrospective-cohort-audit,$YEAR,pass" cohort-run/audit.txt
+          IFS=, read -r year start end n m natural possible temp < <(tail -n 1 cohort-run/cohort.csv)
+          test "$year" = "$YEAR"
+          test "$(wc -l < cohort-run/train-origins.txt)" -eq "$n"
+          test "$(wc -l < cohort-run/matched-origins.txt)" -eq "$m"
+          test "$(wc -l < cohort-run/natural-origins.txt)" -eq "$natural"
+          test "$(wc -l < cohort-run/matched-targets.csv)" -eq "$((24*m+1))"
+          test "$(wc -l < cohort-run/natural-targets.csv)" -eq "$((24*natural+1))"
+          test "$(wc -l < cohort-run/pressure-masks.csv)" -eq "$((n+m+1))"
+          for budget in 8192 24576 32768; do
+            awk -v n="$n" -v b="$budget" 'BEGIN{i=0} i<b && NR==int(i*n/b)+1{print;i++} END{if(i!=b)exit 1}' cohort-run/train-origins.txt | cmp - "cohort-run/fit-$budget-origins.txt"
+          done
+          for cohort in train matched natural; do
+            awk -v s="$start" -v e="$end" -v c="$cohort" '
+              NR>1 && $1+0<=p{exit 1}
+              c=="train" && $1+1440>=s{exit 1}
+              c!="train" && ($1+60<s || $1+1440>=e){exit 1}
+              {p=$1+0}' "cohort-run/$cohort-origins.txt"
+          done
+          awk 'FILENAME==ARGV[1]{a[$1]=1;next} !a[$1]{exit 1}' cohort-run/natural-origins.txt cohort-run/matched-origins.txt
+          if grep -Eq '^(score|fit|lead|month),' cohort-run/audit.txt; then exit 1; fi
+          (cd cohort-run; sha256sum *.txt *.csv > SHA256SUMS; sha256sum -c SHA256SUMS; cat SHA256SUMS)
+          cat cohort-run/cohort.csv cohort-run/scales.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c015-cohort-${{ matrix.year }}
+          path: cohort-run/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Publish cohort gate
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          YEAR: ${{ matrix.year }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context="aevral/c015-cohort-$YEAR" -f state="$state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
