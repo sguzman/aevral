@@ -1,0 +1,72 @@
+name: C018 frozen LAX assessment
+on:
+  push:
+    paths:
+      - '.github/workflows/c018-lax-assessment.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        model: [transfer, mlp, p13]
+    env:
+      MODEL: ${{ matrix.model }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/lax
+          key: lax-routine-utc-2000-2025-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify immutable sources and pre-fit coverage
+        run: |
+          set -euo pipefail
+          (cd data/raw/lax && sha256sum -c ../../../results/C018/snapshot.sha256)
+          (cd data/raw/ksea && sha256sum -c ../../../results/AEV-015/snapshot.sha256)
+          test "$(tail -n1 results/C018/coverage.csv)" = '2025,8759,21,0,419,8737,7790,7406'
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+        if: matrix.model == 'p13'
+      - name: Native build and fit
+        if: matrix.model != 'p13'
+        run: |
+          set -euo pipefail
+          cargo build --locked --release
+          target/release/aevral lax-assessment data/raw/lax data/raw/ksea assessment "$MODEL" | tee fit.log
+      - name: Pinned ensemble build and fit
+        if: matrix.model == 'p13'
+        run: |
+          set -euo pipefail
+          nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
+          nix develop .#boosting --no-update-lock-file --command target/release/aevral lax-assessment data/raw/lax data/raw/ksea assessment "$MODEL" | tee fit.log
+          git diff --exit-code -- flake.lock
+      - name: Verify completion and archive hashes
+        run: |
+          set -euo pipefail
+          grep -Fx "lax-assessment,$MODEL,7406,pass" fit.log
+          test "$(wc -l < assessment/predictions.csv)" -eq 177745
+          test "$(wc -l < assessment/metrics.csv)" -eq 51
+          if [[ "$MODEL" == p13 ]]; then test "$(wc -l < assessment/distribution.csv)" -eq 177745; fi
+          cp fit.log assessment/
+          cd assessment
+          sha256sum * > SHA256SUMS
+          sha256sum -c SHA256SUMS
+          grep -E '^(daily|transfer|mlp|p13),0,' metrics.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c018-lax-${{ matrix.model }}
+          path: |
+            assessment/
+            fit.log
+          if-no-files-found: warn
+          retention-days: 90
