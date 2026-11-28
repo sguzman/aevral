@@ -119,6 +119,30 @@ impl ForecastBundle{
         }
     }
     pub fn load(path:&Path)->Result<Self,String>{Self::from_artifact(Artifact::load(path)?)}
+    /// Evaluate a frozen cohort in one backend batch; callback receives only
+    /// issued predictions, not training labels. Explicitly opt into station transfer.
+    /// C015's first eligible origin is cutoff-60 (all fit labels <= that origin).
+    pub fn evaluate_batch(&self,data:&StationBins,start:i64,end:i64,transfer:bool,mut consume:impl FnMut(&super::EvaluationRow,&[f64;Y],Option<&[[f64;Y];4]>,Option<&[[f64;SUPPORT];Y]>)->Result<(),String>)->Result<usize,String>{
+        if start<self.cutoff{return Err("assessment starts before fit cutoff".into())}
+        if data.station!=self.station&&!transfer{return Err("assessment station mismatch".into())}
+        let rows=evaluation(data,start,end,self.scales)?;
+        match &self.model{
+            Model::Mlp(m)=>{
+                for r in &rows{let point=m.predict(&r.input);if point.iter().any(|v|!v.is_finite()){return Err("nonfinite assessment".into())}consume(r,&point,None,None)?;}
+            }
+            Model::P13(m,p)=>{
+                let inputs:Vec<_>=rows.iter().map(|r|r.input.clone()).collect();
+                let members=m.predict_batch(&inputs)?;
+                if members.len()!=rows.len(){return Err("assessment prediction count mismatch".into())}
+                for (r,b) in rows.iter().zip(&members){
+                    let s=p.support(b)?;
+                    let point=std::array::from_fn(|h|P13::median(&s[h]));
+                    consume(r,&point,Some(b),Some(&s))?;
+                }
+            }
+        }
+        Ok(rows.len())
+    }
     pub fn forecast(&self,data:&StationBins,issue:i64)->Result<Forecast,String>{
         if data.station!=self.station{return Err("forecast station mismatch".into())}
         self.forecast_inner(data,issue)
@@ -178,6 +202,14 @@ mod tests{
         let bytes=a.encode().unwrap();let reloaded=ForecastBundle::from_artifact(Artifact::decode(&bytes).unwrap()).unwrap();
         assert_eq!(model.forecast(&data,cutoff).unwrap().point,reloaded.forecast(&data,cutoff).unwrap().point);
         assert!(reloaded.forecast(&data,cutoff-60).is_err());
+        let mut count=0;
+        let n=reloaded.evaluate_batch(&data,cutoff,200*60,false,|r,p,b,s|{
+            assert!(r.input.origin+60>=cutoff);
+            assert!(p.iter().all(|v|v.is_finite()));assert!(b.is_none()&&s.is_none());count+=1;Ok(())
+        });
+        // This short fixture has no complete 24h assessment after the fit cutoff.
+        assert!(n.is_err());assert_eq!(count,0);
+
         let mut other=data;other.station=Station::default();assert!(reloaded.forecast(&other,cutoff).is_err());
     }
 }
