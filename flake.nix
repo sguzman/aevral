@@ -19,6 +19,7 @@
         packages = with pkgs; [ rustc cargo rustfmt clippy coreutils xgboost lightgbm catboost ];
         AEVRAL_XGBOOST_LIB = "${pkgs.xgboost}/lib/libxgboost.so";
         AEVRAL_LIGHTGBM = "${pkgs.lightgbm}/bin/lightgbm";
+        AEVRAL_LIGHTGBM_VERSION = pkgs.lightgbm.version;
         AEVRAL_CATBOOST = "${pkgs.catboost}/bin/catboost";
       };
     };
