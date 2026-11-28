@@ -1,6 +1,6 @@
 # C014 — Uncertainty and distributional forecasting
 
-Status: active (manifest preparation); authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: **complete**. All 48 frozen outcomes measured and independently audited. [Report](REPORT.md) · [Manifest](manifest.md) · [Results](../../results/C014/) · [Final verification](https://github.com/sguzman/aevral/actions/runs/46093205838).
 
 ## Scope
 Quantile regression, distributional trees, Gaussian/Student-t heads, empirical analog distributions, split conformal with chronological calibration, ensemble distributions.
