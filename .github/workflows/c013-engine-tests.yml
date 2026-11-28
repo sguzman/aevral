@@ -1,0 +1,31 @@
+name: C013 ensemble engine tests
+on:
+  push:
+    paths:
+      - '.github/workflows/c013-engine-tests.yml'
+      - 'campaigns/013-ensembles/ensemble.rs'
+permissions:
+  contents: read
+  statuses: write
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and test synthetic fixtures only
+        run: |
+          rustc --edition=2021 --test campaigns/013-ensembles/ensemble.rs -o /tmp/c013-tests
+          /tmp/c013-tests
+      - name: Publish test gate
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c013-engine-tests -f state="$state" \
+            -f description="C013 engine tests: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
