@@ -19,7 +19,7 @@ Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neura
 
 ## C003–C015: Fixed-data temperature research program
 
-**C003–C014 complete; C015 active.** [Program and benchmark contract](campaigns/TEMPERATURE-PROGRAM.md). Extensive but bounded model-family tournament, advanced feature representations from the same frozen observations, optimization, ensembles and uncertainty, followed by retrospective ranking. No new external data or domains. [C012 report](campaigns/012-optimization/REPORT.md) · [C013 report](campaigns/013-ensembles/REPORT.md). [C014 report](campaigns/014-probabilistic/REPORT.md). Final retrospective tournament is the remaining campaign.
+**Complete.** [Program and benchmark contract](campaigns/TEMPERATURE-PROGRAM.md) · [Final C015 report](campaigns/015-tournament/REPORT.md) · [Numerical archive](results/C015/final/). All 96 final tournament evaluations measured and independently audited; P13 won with 1.29559°C retrospective pooled MAE. Earlier documented resource blocks remain in the historical records. No additional fixed-data campaign is authorized.
 
 ## Later campaigns
 
