@@ -20,3 +20,12 @@ jobs:
           /tmp/rank /tmp/empty /tmp/output
           test "$(wc -l < /tmp/output/ranking.csv)" -eq 1
           test "$(grep -c ',incomplete$' /tmp/output/pooled.csv)" -eq 25
+          bash -n scripts/c015-cost.sh scripts/c015-ingest.sh scripts/c015-combine.sh scripts/c015-finalize.sh
+          mkdir -p /tmp/cost
+          printf 'Maximum resident set size (kbytes): 12345\n' > /tmp/cost/resources.txt
+          printf 'optimization-cost,2023,O04-04,1.25,2.5,0\n' > /tmp/cost/metrics.txt
+          test "$(bash scripts/c015-cost.sh 2023 L O04-04 42 /tmp/cost)" = '3.750000000,12345'
+          printf 'fit-seconds,2023,mlp64,1.25\nscore,2023,mlp64,8026,1,2,2.5\n' > /tmp/cost/metrics.txt
+          test "$(bash scripts/c015-cost.sh 2023 I mlp64 42 /tmp/cost)" = '3.750000000,12345'
+          printf 'combination-cost,2023,E13,1.25,2.5\n' > /tmp/cost/metrics.txt
+          test "$(bash scripts/c015-cost.sh 2023 E13 E13 42 /tmp/cost)" = '3.750000000,12345'
