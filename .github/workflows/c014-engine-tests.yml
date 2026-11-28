@@ -19,6 +19,9 @@ jobs:
           /tmp/c014-tests
           rustc --edition=2021 --test campaigns/014-probabilistic/reconstruct.rs -O -o /tmp/c014-reconstruct-tests
           /tmp/c014-reconstruct-tests
+          rustc --edition=2021 --test campaigns/014-probabilistic/audit.rs -O -o /tmp/c014-audit-tests
+          /tmp/c014-audit-tests
+          rustc --edition=2021 -O campaigns/014-probabilistic/audit.rs -o /tmp/c014-audit
           rustc --edition=2021 -O campaigns/014-probabilistic/score.rs -o /tmp/c014-score
       - name: Publish test gate
         if: always()
