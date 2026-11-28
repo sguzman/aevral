@@ -105,7 +105,11 @@ pub(in crate::features::tournament) fn run_prepared(f:&super::super::PreparedFol
     writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
     macro_rules! block{($reason:expr)=>{{println!("blocked,{id},{label},{}",$reason);out.flush().map_err(|e|e.to_string())?;return Ok(())}}}
     macro_rules! checked{($e:expr)=>{match $e{Ok(v)=>v,Err(e)=>{block!(e)}}}}
-    let rows=subset(&f.train,8192);let n=rows.len();let mut probe=Forecast::new(label,seed,f.target_mean,f.target_sd)?;let params=probe.parameters();let updates=if matches!(&probe.mode,Mode::Correction(..)){let(a,b,_)=checked!(correction_split(&rows));12*(a.len()+b.len())}else{n*12*probe.updates()};
+    let rows=subset(&f.train,8192);let n=rows.len();
+    if super::super::Fold::retrospective(id).is_ok(){
+        super::super::representation::origins(&output.parent().ok_or("output directory")?.join("backend-fit-origins.txt"),rows.iter().map(|r|r.input.origin))?;
+    }
+    let mut probe=Forecast::new(label,seed,f.target_mean,f.target_sd)?;let params=probe.parameters();let updates=if matches!(&probe.mode,Mode::Correction(..)){let(a,b,_)=checked!(correction_split(&rows));12*(a.len()+b.len())}else{n*12*probe.updates()};
     let workspace=8*(16*params+65536+4*n+m*(Y+2));
     println!("strategy-config,{id},{label},{seed},{n},12,0.001,{params},{workspace},{}",updates);
     if workspace>2_000_000_000{block!("preflight workspace guard")}
