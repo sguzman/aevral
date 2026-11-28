@@ -77,6 +77,35 @@ pub(super) fn train(c:Candidate,rows:&[&TrainingRow],seed:u64,now:Instant,probe:
  }
  if let Some(b)=best{model=b;}Ok((model,a))
 }
+/// Reusable frozen C015 Adam MLP member M (O01-06).
+pub struct AdamMlp {
+    model: Dense,
+    mean:f64,
+    sd:f64,
+}
+impl AdamMlp {
+    pub fn fit(rows:&[TrainingRow],mean:f64,sd:f64)->Result<Self,String>{
+        use super::super::optimization::{candidates,subset,Rung};
+        if !mean.is_finite()||!sd.is_finite()||sd<=0.{return Err("invalid Adam MLP scales".into())}
+        let selected=subset(rows,Rung::Final)?;
+        if selected.iter().any(|r|r.input.x.iter().chain(&r.normalized_target).any(|v|!v.is_finite())){return Err("nonfinite Adam MLP training data".into())}
+        let c=candidates()?.into_iter().find(|c|c.id=="O01-06").ok_or("missing frozen Adam recipe")?;
+        let (model,a)=train(c,&selected,42,Instant::now(),false,None)?;
+        if (a.epochs,a.selected_epoch,a.fit,a.val,a.purged,a.updates,a.examples)!=(30,30,32768,0,0,30720,983040){
+            return Err("Adam MLP training accounting mismatch".into());
+        }
+        match model{Backbone::Mlp(model)=>Ok(Self{model,mean,sd}),_=>Err("unexpected backbone".into())}
+    }
+    pub fn predict(&self,x:&OriginInput)->Result<[f64;Y],String>{
+        if x.x.iter().any(|v|!v.is_finite()){return Err("nonfinite Adam MLP input".into())}
+        let y:[f64;Y]=self.model.predict(&x.x).try_into().map_err(|_|"prediction shape")?;
+        if y.iter().any(|v|!v.is_finite()||v.abs()>1e6){return Err("numerical prediction bound".into())}
+        let y=y.map(|v|v*self.sd+self.mean);
+        if y.iter().any(|v|!v.is_finite()){return Err("nonfinite Adam MLP output".into())}
+        Ok(y)
+    }
+    pub(crate) fn dense(&self)->&Dense{&self.model}
+}
 /// Preflight uses only selected training examples. No scored model is fitted until it passes.
 pub(in crate::features::tournament) fn evaluate(c:Candidate,f:&PreparedFold,rows:&[&TrainingRow],seed:u64,output:&Path,first:i64,bins:&[Option<Weather>])->Result<(),String>{
  let id=f.fold.id;let label=c.id;let cfg=config(c)?;let n=rows.len();let m=f.eval.len();
