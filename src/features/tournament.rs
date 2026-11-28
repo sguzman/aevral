@@ -75,11 +75,14 @@ pub trait Predictor{fn predict(&self,x:&OriginInput)->[f64;Y];}
 pub struct Incumbent{model:Model,mean:f64,sd:f64}
 impl Incumbent{
     pub fn fit(train:&[TrainingRow],mean:f64,sd:f64,seed:u64)->Result<Self,String>{
+        Self::fit_guarded(train,mean,sd,seed,None)
+    }
+    fn fit_guarded(train:&[TrainingRow],mean:f64,sd:f64,seed:u64,deadline:Option<Instant>)->Result<Self,String>{
         if train.is_empty()||![42,123,2026].contains(&seed){return Err("invalid fit".into())}
         let mut model=Model::new("mlp64",seed)?;let mut order:Vec<_>=(0..train.len()).collect();let mut rng=seed;
         for epoch in 1..=30{
             for i in (1..order.len()).rev(){rng^=rng<<13;rng^=rng>>7;rng^=rng<<17;order.swap(i,(rng%(i as u64+1))as usize);}
-            let mut loss=0.;for &i in &order{let r=&train[i];loss+=model.train_step(&r.input.x,&r.normalized_target,0.005).0;}
+            let mut loss=0.;for &i in &order{if deadline.is_some_and(|t|Instant::now()>=t){return Err("runtime guard".into())}let r=&train[i];loss+=model.train_step(&r.input.x,&r.normalized_target,0.005).0;}
             if !loss.is_finite(){return Err("nonfinite incumbent training".into())}
             println!("fit,mlp64,{epoch},{:.8}",loss/train.len()as f64);
         }
