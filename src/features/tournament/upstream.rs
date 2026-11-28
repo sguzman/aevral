@@ -154,6 +154,27 @@ impl LightGbm {
         }
         Ok(Self{models,mean,sd})
     }
+    /// Framed official LightGBM 4.6.0 text models, one per lead.
+    pub fn model_bytes(&self)->Result<Vec<u8>,String>{
+        let mut out=b"AEVLGBM\x01".to_vec();out.extend(b"4.6.0\0");
+        for s in &self.models{
+            let n=u32::try_from(s.len()).map_err(|_|"LightGBM model too large")?;
+            out.extend(n.to_le_bytes());out.extend(s.as_bytes());
+        }
+        Ok(out)
+    }
+    pub fn from_model_bytes(bytes:&[u8],mean:f64,sd:f64)->Result<Self,String>{
+        let mut r=bytes.strip_prefix(b"AEVLGBM\x014.6.0\0").ok_or("LightGBM format/backend mismatch")?;
+        let mut models=Vec::with_capacity(Y);
+        for _ in 0..Y{
+            let n=u32::from_le_bytes(r.get(..4).ok_or("truncated LightGBM model length")?.try_into().unwrap())as usize;r=&r[4..];
+            if n==0||n>16*1024*1024{return Err("invalid LightGBM model length".into())}
+            let s=std::str::from_utf8(r.get(..n).ok_or("truncated LightGBM model")?).map_err(|_|"invalid LightGBM model encoding")?;
+            models.push(s.to_owned());r=&r[n..];
+        }
+        if !r.is_empty(){return Err("trailing LightGBM payload".into())}
+        Self::from_models(models,mean,sd)
+    }
     pub fn model_texts(&self)->&[String]{&self.models}
     pub fn predict_batch(&self,rows:&[OriginInput])->Result<Vec<V>,String>{
         if rows.is_empty(){return Ok(Vec::new())}
@@ -323,7 +344,7 @@ mod deployment_tests {
         let model=LightGbm::fit_selected(&refs,10.,2.).unwrap();
         let query:Vec<_>=rows.iter().step_by(23).map(|r|r.input.clone()).collect();
         let actual=model.predict_batch(&query).unwrap();
-        let restored=LightGbm::from_models(model.model_texts().to_vec(),10.,2.).unwrap();
+        let restored=LightGbm::from_model_bytes(&model.model_bytes().unwrap(),10.,2.).unwrap();
         assert_eq!(actual,restored.predict_batch(&query).unwrap());
         let d=Data{x:rows.iter().map(|r|r.input.x).collect(),y:rows.iter().map(|r|r.normalized_target).collect()};
         let ev:Vec<_>=query.iter().map(|r|r.x).collect();
