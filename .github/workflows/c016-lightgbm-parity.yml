@@ -1,4 +1,5 @@
 name: C016 split LightGBM parity
+# Verify v2 artifact framing and locked backend metadata.
 on:
   push:
     paths:
