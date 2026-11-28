@@ -1,6 +1,11 @@
 use aevral::Mlp;
+mod weather_cli;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
+    if args.get(1).map(String::as_str)==Some("weather"){
+        if let Err(e)=weather_cli::run(&args[2..]){eprintln!("weather: {e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("retrospective"){
         if args.len()!=7{eprintln!("Usage: aevral retrospective DATA_DIR YEAR OUT_CSV ID SEED");std::process::exit(2)}
         let seed=args[6].parse::<u64>().unwrap_or(0);
