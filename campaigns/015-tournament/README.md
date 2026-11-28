@@ -1,6 +1,6 @@
 # C015 — Final fixed-data tournament and report
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: active (shortlist and manifest preparation); authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
 
 ## Scope
 Rank all measured configurations and families; top representatives across chronological folds, paired block bootstrap sensitivity, season and horizon diagnostics, performance/compute Pareto front, reproducibility audit and final locked retrospective winner.
