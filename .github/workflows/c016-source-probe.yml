@@ -1,0 +1,32 @@
+name: C016 LAX observation source probe
+on:
+  push:
+    paths:
+      - '.github/workflows/c016-source-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test adapter and acquire fixed seven-day sample
+        run: |
+          set -euo pipefail
+          bash -n scripts/fetch-weather.sh
+          if bash scripts/fetch-weather.sh XXXX 2025-01-01 2025-01-08 probe; then exit 1; fi
+          bash scripts/fetch-weather.sh KLAX 2025-01-01 2025-01-08 probe
+          bash scripts/fetch-weather.sh KLAX 2025-01-01 2025-01-08 probe
+          cd probe
+          sha256sum -c LAX-2025-01-01-2025-01-08.csv.sha256
+          wc -l *.csv
+          head -n 3 *.csv
+          tail -n 2 *.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c016-lax-source-probe
+          path: probe/
+          if-no-files-found: error
+          retention-days: 30
