@@ -1,6 +1,6 @@
 # C014 — Uncertainty and distributional forecasting
 
-Status: planned; authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
+Status: active (manifest preparation); authorized as part of [the fixed-data temperature program](../../campaigns/TEMPERATURE-PROGRAM.md). No results yet.
 
 ## Scope
 Quantile regression, distributional trees, Gaussian/Student-t heads, empirical analog distributions, split conformal with chronological calibration, ensemble distributions.
