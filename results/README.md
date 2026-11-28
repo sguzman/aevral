@@ -33,4 +33,6 @@
 
 - [C013 ensemble comparison](../campaigns/013-ensembles/REPORT.md) — all 48 outcomes measured; [pooled diagnostics](C013/pooled-diagnostics.csv), [fold scores](C013/fold-scores.csv), [coefficients](C013/coefficients.csv), [parameters](C013/parameters.csv).
 
+- [C014 probabilistic forecasting](../campaigns/014-probabilistic/REPORT.md) — all 48 outcomes measured; [pooled diagnostics](C014/pooled-diagnostics.csv), [2021](C014/2021/), [2022](C014/2022/).
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.
