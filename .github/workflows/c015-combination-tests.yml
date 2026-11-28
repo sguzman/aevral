@@ -1,0 +1,19 @@
+name: C015 combination regression
+on:
+  push:
+    paths:
+      - '.github/workflows/c015-combination-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          set -euo pipefail
+          rustc --edition=2021 --test campaigns/015-tournament/combinations.rs -o /tmp/combinations-tests
+          /tmp/combinations-tests
+          rustc --edition=2021 -O campaigns/015-tournament/combinations.rs -o /tmp/combinations
