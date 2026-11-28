@@ -124,6 +124,10 @@ fn light_model_counts(s:&str,cfg:LightConfig)->Result<(usize,usize),String>{
     Ok((counts.len(),counts.iter().sum()))
 }
 impl LightGbm {
+    fn backend()->Result<String,String>{
+        if std::env::var("AEVRAL_LIGHTGBM_VERSION").as_deref()!=Ok("4.6.0"){return Err("use pinned LightGBM 4.6.0 boosting shell".into())}
+        std::env::var("AEVRAL_LIGHTGBM").map_err(|_|"use locked boosting shell".into())
+    }
     fn config()->LightConfig{optimization_light_config("r256-d6-l32-eta005-min32").expect("frozen recipe")}
     pub fn fit(rows:&[super::TrainingRow],mean:f64,sd:f64)->Result<Self,String>{
         let selected=super::optimization::subset(rows,super::optimization::Rung::Final)?;
@@ -131,7 +135,7 @@ impl LightGbm {
     }
     fn fit_selected(rows:&[&super::TrainingRow],mean:f64,sd:f64)->Result<Self,String>{
         if rows.is_empty()||!mean.is_finite()||!sd.is_finite()||sd<=0.||rows.iter().any(|r|r.input.x.iter().chain(&r.normalized_target).any(|v|!v.is_finite())){return Err("invalid LightGBM training data".into())}
-        let bin=std::env::var("AEVRAL_LIGHTGBM").map_err(|_|"use locked boosting shell")?;
+        let bin=Self::backend()?;
         let scratch=Scratch::new()?;let dir=&scratch.0;let now=Instant::now();
         let x:Vec<_>=rows.iter().map(|r|r.input.x).collect();
         let mut models=Vec::with_capacity(Y);
@@ -179,7 +183,7 @@ impl LightGbm {
     pub fn predict_batch(&self,rows:&[OriginInput])->Result<Vec<V>,String>{
         if rows.is_empty(){return Ok(Vec::new())}
         if rows.iter().any(|r|r.x.iter().any(|v|!v.is_finite())){return Err("nonfinite LightGBM query".into())}
-        let bin=std::env::var("AEVRAL_LIGHTGBM").map_err(|_|"use locked boosting shell")?;
+        let bin=Self::backend()?;
         let scratch=Scratch::new()?;let dir=&scratch.0;let now=Instant::now();
         let x:Vec<_>=rows.iter().map(|r|r.x).collect();
         write_rows(&dir.join("eval.tsv"),&x,None)?;
