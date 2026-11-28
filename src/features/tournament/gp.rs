@@ -84,6 +84,10 @@ pub(super) fn run_prepared(f:&super::PreparedFold,output:&Path,label:&str)->Resu
     let mut out=BufWriter::new(std::fs::File::create(output).map_err(|e|e.to_string())?);
     writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
     let rows=subset(&f.train,recipe.budget());let n=rows.len();
+    if super::Fold::retrospective(id).is_ok(){
+        super::representation::origins(&output.parent().ok_or("output directory")?.join("backend-fit-origins.txt"),rows.iter().map(|r|r.input.origin))?;
+    }
+    
     if n!=recipe.budget()||rows.iter().any(|r|r.input.x.iter().chain(&r.normalized_target).any(|v|!v.is_finite())){return Err("invalid GP training subset".into())}
     let dim=recipe.inducing.unwrap_or(n);let workspace=8*(3*dim*dim+3*dim*Y+dim*(D+Y+5)+n+m*(Y+1));
     let now=Instant::now();let p=n.min(512);let small:Vec<_>=(0..p).map(|i|rows[i*n/p]).collect();
