@@ -18,7 +18,7 @@ The first campaign studies neural networks for hourly air-temperature forecastin
 
 ## Active research program
 
-[C003–C015: comprehensive fixed-data temperature forecasting](campaigns/TEMPERATURE-PROGRAM.md). Same KSEA archive, broad model families, controlled rolling-origin development folds, bounded optimization and final retrospective ranking. C003–C013 complete; C014 probabilistic forecasting active. [Latest report](campaigns/013-ensembles/REPORT.md): four-model equal-weight ensemble achieved 1.35048°C pooled development MAE (2021–2022), 2.04% below the matched full-training incumbent. This is not an independent holdout result.
+[C003–C015: comprehensive fixed-data temperature forecasting](campaigns/TEMPERATURE-PROGRAM.md). Same KSEA archive, broad model families, controlled rolling-origin development folds, bounded optimization and final retrospective ranking. C003–C014 complete; C015 final retrospective tournament active. [C013 report](campaigns/013-ensembles/REPORT.md): four-model ensemble 1.35048°C pooled development MAE. [C014 report](campaigns/014-probabilistic/REPORT.md): distributional tree 0.97157°C CRPS and 89.86% empirical coverage at nominal 90%. These are development results, not independent holdout confirmation.
 
 ## Research principles
 
