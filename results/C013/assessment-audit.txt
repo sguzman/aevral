@@ -1,0 +1,25 @@
+C013 frozen assessment
+CI run 46090210039; job 140809111652; code a6b3ec25a92667981038d515a2546e8c3f86dca8
+Artifact 15240823025 c013-assessment (finite retention)
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.67
+	Maximum resident set size (kbytes): 59032
+export-rows,2021,180024,pass
+export-rows,2022,183336,pass
+metric-audit,66,2442,pass
+coefficient-audit,262,pass
+parameter-audit,228,pass
+calibration,2021,2020,181032
+spread-threshold,2021,E21,0.70044947071817631
+selected,2021,E23,IRL
+calibration,2022,2020+2021,361056
+spread-threshold,2022,E21,0.71576958811028879
+selected,2022,E23,IRL
+02fb375547efd1f2b6ac8d70aea82f2116e08f907a9f9c5d06cf95f9087c8fbb  audit.txt
+8e7b3a7ba64d4aae539abdce536f4fbf966c4a76f75ace978d34732058a66839  coefficients.csv
+b90d664f50b1cec3e94665c3dac0b5d1cdb32fff877c63f609afa9208fe55b18  metrics.csv
+3b20703f37a3cdd5716556be037ea13f84c6df7b477c71be18da94abf070462f  parameters.csv
+9dc9ff4894d0f388063e1ef01f3fb7532fac180918fe8fd0a40aefbdb27907a9  predictions-2021.csv.gz
+429587aad1f95f5f40943d05da4410c46aa435f3fe6777f4d4069195884484c1  predictions-2022.csv.gz
+5b8a4647443329a49077a63a8e503ad9be9be5c4e38cc1347bada9654403d48e  resources.txt
+c013-evaluation,48,pass
