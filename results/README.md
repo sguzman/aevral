@@ -35,4 +35,6 @@
 
 - [C014 probabilistic forecasting](../campaigns/014-probabilistic/REPORT.md) — all 48 outcomes measured; [pooled diagnostics](C014/pooled-diagnostics.csv), [2021](C014/2021/), [2022](C014/2022/).
 
+- [C015 final retrospective tournament](../campaigns/015-tournament/REPORT.md) — 96/96 measured; [rankings](C015/final/ranking.csv), [paired bootstrap](C015/final/bootstrap.csv), [numerical archive](C015/final/).
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.
