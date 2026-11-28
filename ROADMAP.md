@@ -25,6 +25,10 @@ Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neura
 
 Approved: [reusable Rust interfaces, persistent model artifacts and weather CLI, bounded KLAX deployment and transfer test](campaigns/DEPLOYMENT-PROGRAM.md). C016 pending; completed KSEA research remains frozen. Next-domain proposal: high-dimensional point-in-time macroeconomic forecasting; precise target and manifest pending approval.
 
+## Deferred proposal: Global temperature predictability atlas
+
+[Roadmap and 169-place candidate catalog](campaigns/global-temperature-atlas/ROADMAP.md). Compare absolute forecast error, baseline-relative skill and calibrated uncertainty across climate regimes using frozen reusable models. Planning only; campaign number, station eligibility, execution budget and ordering relative to macroeconomic research await approval. Do not launch until C018 is closed and the user explicitly approves execution.
+
 ## Later campaigns
 
 Cross-station transfer; spatial weather inputs; prospective forecast ledger; climate, economics, finance, energy and culture. No commitment to a specific later domain yet.
