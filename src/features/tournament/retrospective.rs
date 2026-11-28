@@ -184,6 +184,92 @@ pub fn cohort(data: &Path, id: &str, out: &Path) -> Result<(), String> {
     Ok(())
 }
 
+
+const MATRIX: &str = include_str!("../../../campaigns/015-tournament/fit-matrix.csv");
+#[derive(Debug, PartialEq, Eq)]
+struct Request {
+    recipe: &'static str,
+    budget: Option<usize>,
+    track: &'static str,
+    backend: &'static str,
+}
+fn request(year: &str, id: &str, seed: u64) -> Result<Request, String> {
+    Fold::retrospective(year)?;
+    let mut selected = None;
+    for line in MATRIX.lines().skip(1) {
+        let p: Vec<_> = line.split(',').collect();
+        if p.len()!=8 { return Err("malformed frozen C015 fit matrix".into()); }
+        if p[0]==year && p[1]==id && p[3].parse::<u64>().ok()==Some(seed) {
+            if selected.is_some() { return Err("duplicate C015 request".into()); }
+            let budget = if p[4]=="full" { None } else {
+                Some(p[4].parse::<usize>().map_err(|e| e.to_string())?)
+            };
+            selected=Some(Request{recipe:p[2],budget,track:p[5],backend:p[6]});
+        }
+    }
+    selected.ok_or_else(||"request not in frozen C015 matrix".into())
+}
+/// Adapter for the incumbent and seven C012 source recipes.
+/// CI must verify the archived cohort hashes before launching any fit.
+pub fn run(data: &Path, year: &str, output: &Path, id: &str, seed: u64) -> Result<(), String> {
+    use super::{optimization, neural, Baseline, Incumbent, score};
+    let req = request(year,id,seed)?;
+    if !matches!(id,"I"|"L"|"R"|"M"|"S"|"A"|"H"|"X") {
+        return Err("C015 adapter not implemented for this candidate yet".into());
+    }
+    let (first,bins,fold)=load_bins(data,year)?;
+    let f=collect(&bins,first,fold)?;
+    let a=verify(&bins,first,&f)?;
+    let dir=output.parent().filter(|p|!p.as_os_str().is_empty()).ok_or("output must have a parent directory")?;
+    fs::create_dir_all(dir).map_err(|e|e.to_string())?;
+    representation::origins(&dir.join("train-origins.txt"),f.train.iter().map(|r|r.input.origin))?;
+    representation::origins(&dir.join("matched-origins.txt"),f.eval.iter().map(|r|r.input.origin))?;
+    let indices=match req.budget { Some(n)=>subset(f.train.len(),n)?,None=>(0..f.train.len()).collect() };
+    representation::origins(&dir.join("fit-origins.txt"),indices.iter().map(|&i|f.train[i].input.origin))?;
+    println!("retrospective-request,{year},{id},{seed},{},{},{},{}",req.recipe,indices.len(),req.track,req.backend);
+    println!("cohort,{year},{},{},{},{}",a.train.len(),a.matched.len(),a.possible,a.temperature_complete);
+    println!("scales,{year},{:?}",f.scales);
+    if id=="I" {
+        if req.recipe!="mlp64"||req.budget.is_some()||seed!=42 {return Err("invalid incumbent identity".into());}
+        let now=std::time::Instant::now();
+        let model=Incumbent::fit(&f.train,f.target_mean,f.target_sd,seed)?;
+        println!("fit-seconds,{year},mlp64,{:.6}",now.elapsed().as_secs_f64());
+        if now.elapsed().as_secs_f64()>1400. {
+            println!("blocked,{year},mlp64,runtime guard");
+            return Ok(());
+        }
+        let mut out=BufWriter::new(File::create(output).map_err(|e|e.to_string())?);
+        writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
+        score(&model,"mlp64",&f,&mut out)?;
+        out.flush().map_err(|e|e.to_string())?;
+        let mut daily=BufWriter::new(File::create(dir.join("daily-predictions.csv")).map_err(|e|e.to_string())?);
+        writeln!(daily,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
+        score(&Baseline{daily:true},"daily",&f,&mut daily)?;
+        daily.flush().map_err(|e|e.to_string())?;
+    } else {
+        let candidate=optimization::candidates()?.into_iter().find(|c|c.id==req.recipe).ok_or("missing C012 source recipe")?;
+        if req.budget!=Some(32768)||candidate.track!=req.track||(!candidate.stochastic&&seed!=42) {
+            return Err("C012 recipe identity mismatch".into());
+        }
+        let rows=optimization::subset(&f.train,optimization::Rung::Final)?;
+        if rows.iter().zip(&indices).any(|(r,&i)|r.input.origin!=f.train[i].input.origin) {
+            return Err("C012 fit subset mismatch".into());
+        }
+        println!("optimization-request,{year},{},{seed},Final,32768,{},{}",candidate.id,candidate.track,candidate.configuration);
+        if candidate.stochastic {
+            neural::optimization::evaluate(candidate,&f,&rows,seed,output,first,&bins)?;
+        } else {
+            let mut out=BufWriter::new(File::create(output).map_err(|e|e.to_string())?);
+            writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
+            optimization::run_native_deterministic(candidate,&f,&rows,&mut out)?;
+            out.flush().map_err(|e|e.to_string())?;
+        }
+        println!("optimization-end,{year},{},{seed},Final",candidate.id);
+    }
+    println!("retrospective-end,{year},{id},{seed}");
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -196,6 +282,23 @@ mod tests {
             pressure_hpa:Some(1000.+(i%13) as f64),wind_ms:Some([(i%11) as f64,(i%7) as f64]),
         })).collect();
         (f,first,b)
+    }
+    #[test] fn frozen_request_matrix() {
+        for year in ["2023","2024","2025","2026"] {
+            let mut n=0;
+            for id in ["I","L","R","M","S","A","H","X","G","K","N","W"] {
+                for seed in [42,123,2026] {
+                    let r=request(year,id,seed);
+                    assert_eq!(r.is_ok(),seed==42||matches!(id,"M"|"S"|"N"|"W"));
+                    n+=usize::from(r.is_ok());
+                }
+            }
+            assert_eq!(n,20);
+        }
+        assert_eq!(MATRIX.lines().count(),81);
+        assert!(request("2022","I",42).is_err());
+        assert!(request("2026","O03-04",42).is_err());
+        assert_eq!(request("2026","M",123).unwrap().recipe,"O01-06");
     }
     #[test] fn explicit_folds_and_boundaries() {
         for id in ["2023","2024","2025","2026"] {
