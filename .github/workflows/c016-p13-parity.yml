@@ -1,0 +1,37 @@
+name: C016 frozen P13 distribution parity
+on:
+  push:
+    paths:
+      - '.github/workflows/c016-p13-parity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore and verify frozen joined inputs and distribution
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 46097863362 -n c015-combination-inputs -D reference
+          gh run download 46097863362 -n c015-combination-2025-P13 -D original
+          (cd reference/joined && sha256sum -c SHA256SUMS)
+          (cd original && sha256sum -c SHA256SUMS)
+          gzip -dc original/distribution.csv.gz > reference/distribution.csv
+      - name: Fit and reload exact P13 distribution
+        run: |
+          set -euo pipefail
+          export AEVRAL_P13_PARITY="$PWD/reference"
+          cargo test --locked --release features::tournament::p13::frozen_p13_parity::ksea_2025 -- --ignored --exact --nocapture | tee parity.log
+          grep -E '^frozen-p13-parity,191952,19003248,.*,pass$' parity.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c016-frozen-p13-parity
+          path: parity.log
+          if-no-files-found: warn
