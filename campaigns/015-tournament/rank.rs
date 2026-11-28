@@ -64,6 +64,24 @@ fn main(){
   rows.push(Entry{id,seed,folds,s,compute,rss,groups});
  }
  annual.flush().unwrap();
+ // Shared model costs counted once per combination per fold. The sum is a
+ // serial-compute proxy, not elapsed time when members run in parallel.
+ let mut shared=BufWriter::new(File::create(out.join("combination-costs.csv")).unwrap());
+ writeln!(shared,"fold,id,incremental_s,shared_base_s,inclusive_serial_s").unwrap();
+ for id in ["E08","E13","E14","P13"]{
+  let members:&[&str]=if id=="E08"||id=="P13"{&["I","L","R","M"]}else{&["I","L","R","M","S","A","H","X"]};
+  let mut incremental=Vec::new();let mut base=Vec::new();let mut inclusive=Vec::new();
+  for y in years{
+   let cost=root.join(format!("{y}-{id}-42-cost.csv"));
+   if !cost.is_file(){continue}
+   let i=read_cost(&cost).fit_predict;
+   let all:Option<Vec<f64>>=members.iter().map(|m|{let p=root.join(format!("{y}-{m}-42-cost.csv"));if p.is_file(){Some(read_cost(&p).fit_predict)}else{None}}).collect();
+   if let Some(v)=all{let b=v.iter().sum::<f64>();writeln!(shared,"{y},{id},{i:.9},{b:.9},{:.9}",i+b).unwrap();incremental.push(i);base.push(b);inclusive.push(i+b);}
+   else{writeln!(shared,"{y},{id},{i:.9},NA,NA").unwrap();}
+  }
+  if inclusive.len()==4{writeln!(shared,"median,{id},{:.9},{:.9},{:.9}",median(incremental),median(base),median(inclusive)).unwrap();}
+ }
+ shared.flush().unwrap();
  let mut pooled=BufWriter::new(File::create(out.join("pooled.csv")).unwrap());
  writeln!(pooled,"id,seed,folds,targets,mae,rmse,median_fit_predict_s,median_rss_kib,status").unwrap();
  let mut diag=BufWriter::new(File::create(out.join("diagnostics.csv")).unwrap());
