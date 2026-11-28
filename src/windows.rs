@@ -92,9 +92,7 @@ impl Calendar {
             let a=TAU*t.rem_euclid(1440)as f64/1440.0;x.extend([a.sin(),a.cos()]);
         }
         if matches!(self,Self::Year|Self::Both){
-            let mut y=2000;
-            while y<2026&&t>=crate::weather::minute(&format!("{}-01-01 00:00",y+1)).unwrap(){y+=1}
-            let a=crate::weather::minute(&format!("{y}-01-01 00:00")).unwrap();
+            let (y,a)=crate::weather::year_start(t).expect("valid UTC minute for calendar features");
             let b=a+1440*if y%4==0&&(y%100!=0||y%400==0){366}else{365};
             let p=TAU*(t-a)as f64/(b-a)as f64;x.extend([p.sin(),p.cos()]);
         }x
