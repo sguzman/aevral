@@ -7,7 +7,7 @@ fn num(s:&str)->f64{let x:f64=s.parse().unwrap();assert!(x.is_finite()&&x>=0.);x
 fn main(){
  let args:Vec<_>=std::env::args().collect();assert_eq!(args.len(),3,"usage: aggregate-diagnostics RESULTS_DIR OUTPUT_DIR");
  let root=Path::new(&args[1]);let raw=fs::read_to_string(root.join("registry.csv")).unwrap();
- let rows:Vec<Vec<&str>>=raw.lines().skip(1).map(|l|l.split(',').collect()).filter(|r|matches!(r[0],"3"|"final")).collect();
+ let rows:Vec<Vec<&str>>=raw.lines().skip(1).map(|l|l.split(',').collect::<Vec<&str>>()).filter(|r|matches!(r[0],"3"|"final")).collect();
  assert_eq!(rows.len(),56);
  let mut counts=BTreeMap::new();for r in &rows {if r[21]=="measured"{*counts.entry((r[1],r[2])).or_insert(0usize)+=1;}}
  assert_eq!(counts.values().sum::<usize>(),53);
