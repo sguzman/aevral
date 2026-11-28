@@ -365,3 +365,5 @@ mod deployment_tests {
         assert!(OriginScales::from_values([f64::NAN;10]).is_err());
     }
 }
+
+pub mod station;
