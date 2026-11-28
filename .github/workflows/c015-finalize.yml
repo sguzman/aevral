@@ -1,0 +1,27 @@
+name: C015 final numerical archive
+on:
+  push:
+    paths:
+      - 'campaigns/015-tournament/finalize-launch.txt'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify and aggregate frozen results
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          read -r fits combinations < campaigns/015-tournament/finalize-launch.txt
+          bash scripts/c015-finalize.sh "$fits" "$combinations" final-work
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c015-final-numerical-archive
+          path: final-work/final/
+          if-no-files-found: error
+          retention-days: 90
