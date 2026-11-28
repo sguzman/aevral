@@ -5,6 +5,7 @@ on:
       - '.github/workflows/c013-engine-tests.yml'
       - 'campaigns/013-ensembles/ensemble.rs'
       - 'campaigns/013-ensembles/score-ensembles.rs'
+      - 'campaigns/013-ensembles/audit-exports.rs'
 permissions:
   contents: read
   statuses: write
@@ -19,6 +20,7 @@ jobs:
           rustc --edition=2021 --test campaigns/013-ensembles/ensemble.rs -o /tmp/c013-tests
           /tmp/c013-tests
           rustc --edition=2021 -O campaigns/013-ensembles/score-ensembles.rs -o /tmp/c013-score
+          rustc --edition=2021 -O campaigns/013-ensembles/audit-exports.rs -o /tmp/c013-audit
       - name: Publish test gate
         if: always()
         env:
