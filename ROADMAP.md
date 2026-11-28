@@ -21,6 +21,10 @@ Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neura
 
 **Complete.** [Program and benchmark contract](campaigns/TEMPERATURE-PROGRAM.md) · [Final C015 report](campaigns/015-tournament/REPORT.md) · [Numerical archive](results/C015/final/). All 96 final tournament evaluations measured and independently audited; P13 won with 1.29559°C retrospective pooled MAE. Earlier documented resource blocks remain in the historical records. No additional fixed-data campaign is authorized.
 
+## C016–C018: Deployment bridge
+
+Approved: [reusable Rust interfaces, persistent model artifacts and weather CLI, bounded KLAX deployment and transfer test](campaigns/DEPLOYMENT-PROGRAM.md). C016 pending; completed KSEA research remains frozen. Next-domain proposal: high-dimensional point-in-time macroeconomic forecasting; precise target and manifest pending approval.
+
 ## Later campaigns
 
 Cross-station transfer; spatial weather inputs; prospective forecast ledger; climate, economics, finance, energy and culture. No commitment to a specific later domain yet.
