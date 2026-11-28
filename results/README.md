@@ -29,4 +29,6 @@
 
 - [C003 rolling-origin benchmark](C003/README.md) — verified complete.
 
+- [C012 bounded optimization and annual comparison](../campaigns/012-optimization/REPORT.md) — 128 outcomes resolved; [annual summary](C012/annual-summary.csv), [fold statistics](C012/annual-folds.csv), [diagnostics](C012/annual-diagnostics.csv).
+
 Each result identifies code, data snapshot, split, metrics and limitations. Synthetic checks are not weather results.
