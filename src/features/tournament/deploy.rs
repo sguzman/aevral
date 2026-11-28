@@ -64,7 +64,7 @@ pub fn calibrate(data:&StationBins,first_year:i64,last_year:i64,cutoff:i64)->Res
     Ok(result)
 }
 enum Model{Mlp(Incumbent),P13(Members,P13)}
-pub struct ForecastBundle{pub station:Station,pub cutoff:i64,pub scales:OriginScales,model:Model}
+pub struct ForecastBundle{pub station:Station,pub cutoff:i64,pub scales:OriginScales,calibration_years:Option<(i64,i64)>,model:Model}
 pub struct Forecast{pub origin:i64,pub point:[f64;Y],pub support:Option<[[f64;SUPPORT];Y]>}
 impl ForecastBundle{
     /// Fits from station-bound completed training labels only.
@@ -77,16 +77,17 @@ impl ForecastBundle{
             Recipe::Mlp=>{if !calibration.is_empty(){return Err("unexpected MLP calibration".into())}Model::Mlp(Incumbent::fit(&rows,v[0],v[1],42)?)}
             Recipe::P13=>{let p=P13::fit(calibration,cutoff)?;Model::P13(Members::fit(&rows,scales)?,p)}
         };
-        Ok(Self{station:data.station.clone(),cutoff,scales,model})
+        Ok(Self{station:data.station.clone(),cutoff,scales,calibration_years:None,model})
     }
     pub fn artifact(&self,sources:Vec<SourceFingerprint>)->Result<Artifact,String>{
         let (recipe,components)=match &self.model{
             Model::Mlp(m)=>(Recipe::Mlp,vec![("I".into(),m.model_bytes()?)]),
             Model::P13(m,p)=>(Recipe::P13,vec![("I".into(),m.incumbent.model_bytes()?),("L".into(),m.light.model_bytes()?),("R".into(),m.ridge.model_bytes()?),("M".into(),m.adam.model_bytes()?),("P13".into(),p.model_bytes()?)]),
         };
-        Ok(Artifact{station:self.station.clone(),cutoff:self.cutoff,scales:self.scales,recipe,sources,components})
+        Ok(Artifact{station:self.station.clone(),cutoff:self.cutoff,scales:self.scales,recipe,calibration_years:self.calibration_years,sources,components})
     }
     pub fn from_artifact(a:Artifact)->Result<Self,String>{
+        a.validate()?;
         let v=a.scales.values();let(mean,sd)=(v[0],v[1]);
         let mut c=a.components.into_iter();
         let mut take=|expected:&str|->Result<Vec<u8>,String>{
@@ -105,12 +106,15 @@ impl ForecastBundle{
             }
         };
         if c.next().is_some(){return Err("extra components".into())}
-        Ok(Self{station:a.station,cutoff:a.cutoff,scales:a.scales,model})
+        Ok(Self{station:a.station,cutoff:a.cutoff,scales:a.scales,calibration_years:a.calibration_years,model})
     }
     pub fn train_chronological(data:&StationBins,cutoff:i64,recipe:Recipe,years:Option<(i64,i64)>)->Result<Self,String>{
         match (recipe,years){
             (Recipe::Mlp,None)=>Self::train(data,cutoff,recipe,&[]),
-            (Recipe::P13,Some((a,b)))=>Self::train(data,cutoff,recipe,&calibrate(data,a,b,cutoff)?),
+            (Recipe::P13,Some((a,b)))=>{
+                let mut model=Self::train(data,cutoff,recipe,&calibrate(data,a,b,cutoff)?)?;
+                model.calibration_years=Some((a,b));Ok(model)
+            },
             _=>Err("calibration years required only for P13".into())
         }
     }
@@ -136,6 +140,14 @@ impl ForecastBundle{
         if point.iter().any(|v|!v.is_finite()){return Err("nonfinite forecast".into())}
         Ok(Forecast{origin:issue,point,support})
     }
+}
+/// Load only verified station observations, binding the returned fingerprints
+/// to the exact inputs consumed by the station archive.
+pub fn load_verified(station:Station,paths:&[std::path::PathBuf],first:i64,last:i64,policy:super::station::ConflictPolicy)->Result<(StationBins,Vec<SourceFingerprint>),String>{
+    let before=fingerprints(paths)?;
+    let data=StationBins::load(station,paths,first,last,policy)?;
+    if fingerprints(paths)?!=before{return Err("source changed during ingestion".into())}
+    Ok((data,before))
 }
 /// Fingerprint actual source bytes; callers verify these again after reading.
 pub fn fingerprints(paths:&[std::path::PathBuf])->Result<Vec<SourceFingerprint>,String>{
