@@ -306,3 +306,34 @@ mod tests{
         assert!(optimization_light_config("r999").is_err());
     }
 }
+
+#[cfg(test)]
+mod deployment_tests {
+    use super::*;
+    use super::super::TrainingRow;
+    #[test]
+    #[ignore = "requires pinned LightGBM backend"]
+    fn split_lightgbm_parity(){
+        let rows:Vec<_>=(0..512).map(|i|{
+            let x=std::array::from_fn(|j|((i*(j+1))%127)as f64/127.);
+            let y=std::array::from_fn(|j|((i+j)%59)as f64/59.);
+            TrainingRow{input:OriginInput{origin:i as i64*60,x,recent:[0.;Y]},target:y,normalized_target:y}
+        }).collect();
+        let refs:Vec<_>=rows.iter().collect();
+        let model=LightGbm::fit_selected(&refs,10.,2.).unwrap();
+        let query:Vec<_>=rows.iter().step_by(23).map(|r|r.input.clone()).collect();
+        let actual=model.predict_batch(&query).unwrap();
+        let restored=LightGbm::from_models(model.model_texts().to_vec(),10.,2.).unwrap();
+        assert_eq!(actual,restored.predict_batch(&query).unwrap());
+        let d=Data{x:rows.iter().map(|r|r.input.x).collect(),y:rows.iter().map(|r|r.normalized_target).collect()};
+        let ev:Vec<_>=query.iter().map(|r|r.x).collect();
+        let scratch=Scratch::new().unwrap();let now=Instant::now();
+        for h in 0..Y{
+            let y:Vec<_>=d.y.iter().map(|r|r[h]).collect();
+            let (p,_,_)=cli_fit("lightgbm",&d,&ev,&y,256,42,&scratch.0,now,Some(LightGbm::config())).unwrap();
+            for (i,v) in p.iter().enumerate(){assert_eq!(actual[i][h],v*2.+10.);}
+        }
+        assert!(LightGbm::from_models(vec![],10.,2.).is_err());
+        println!("lightgbm-split-parity,24,pass");
+    }
+}
