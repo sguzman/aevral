@@ -1,0 +1,96 @@
+name: C015 frozen single-model tournament
+on:
+  push:
+    paths:
+      - 'campaigns/015-tournament/launch.txt'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: c015-scoring
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Enforce successful preflight and frozen matrix
+        id: matrix
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          root=campaigns/015-tournament
+          read -r mode preflight < "$root/launch.txt"
+          test "$mode" = all
+          [[ "$preflight" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$preflight" > /tmp/preflight.json
+          jq -e '.name=="C015 fit runner preflight" and .conclusion=="success" and .head_branch=="main"' /tmp/preflight.json
+          verified=$(jq -r .head_sha /tmp/preflight.json)
+          git diff --exit-code "$verified" HEAD -- src Cargo.toml Cargo.lock flake.nix flake.lock campaigns/015-tournament/fit-matrix.csv campaigns/015-tournament/audit-predictions.rs results/C015 results/AEV-015/snapshot.sha256
+          test "$(git hash-object "$root/fit-matrix.csv")" = b2ac045702bd22f9f12b32b9b96f4677e3c5b6cb
+          test "$(head -n1 "$root/fit-matrix.csv")" = fold,id,recipe,seed,budget,track,backend,role
+          test "$(wc -l < "$root/fit-matrix.csv")" -eq 81
+          bash -n scripts/c015-evaluate.sh
+          rustc --edition=2021 --test "$root/audit-predictions.rs" -o /tmp/audit-tests
+          /tmp/audit-tests
+          matrix=$(tail -n+2 "$root/fit-matrix.csv" | jq -Rc 'split(",")|{fold:.[0],id:.[1],seed:.[3],backend:.[6]}' | jq -sc '{include:.}')
+          jq -e '.include|length==80' <<< "$matrix"
+          jq -e '[.include[]|[.fold,.id,.seed]]|unique|length==80' <<< "$matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+  evaluate:
+    name: fit (${{ matrix.fold }}, ${{ matrix.id }}, ${{ matrix.seed }})
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    env:
+      FOLD: ${{ matrix.fold }}
+      ID: ${{ matrix.id }}
+      SEED: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086
+        if: matrix.backend != 'native'
+      - name: Native locked build
+        if: matrix.backend == 'native'
+        run: cargo build --locked --release
+      - name: Pinned backend locked build
+        if: matrix.backend != 'native'
+        run: |
+          nix develop .#boosting --no-update-lock-file --command cargo build --locked --release
+          git diff --exit-code -- flake.lock
+      - name: Native fit and independent audit
+        if: matrix.backend == 'native'
+        run: bash scripts/c015-evaluate.sh
+      - name: Pinned backend fit and independent audit
+        if: matrix.backend != 'native'
+        run: nix develop .#boosting --no-update-lock-file --command bash scripts/c015-evaluate.sh
+      - name: Preserve failure status
+        if: failure()
+        run: |
+          mkdir -p results-run
+          if [[ ! -f results-run/outcome.csv ]]; then
+            printf '%s,%s,%s,error,workflow-or-infrastructure-failure\n' "$FOLD" "$ID" "$SEED" > results-run/outcome.csv
+          fi
+          cat results-run/outcome.csv
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c015-fit-${{ matrix.fold }}-${{ matrix.id }}-${{ matrix.seed }}
+          path: results-run/
+          retention-days: 30
+          if-no-files-found: error
