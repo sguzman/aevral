@@ -17,6 +17,52 @@ impl Members{
         }).collect()
     }
 }
+/// Matched evaluation origins, using training-fitted transforms only.
+pub fn evaluation(data:&StationBins,start:i64,end:i64,scales:OriginScales)->Result<Vec<super::EvaluationRow>,String>{
+    if start<data.first||end<=start||start%60!=0||end%60!=0||end>data.last+60{return Err("invalid assessment interval".into())}
+    let mut rows=Vec::new();
+    for i in super::H-1..data.bins.len().saturating_sub(Y){
+        let origin=data.first+i as i64*60;
+        if origin+60<start{continue}
+        if origin+1440>=end{break}
+        let Ok(raw)=data.origin(origin) else{continue};
+        let mut target=[0.;Y];let mut valid=true;
+        for (j,b) in data.bins[i+1..=i+Y].iter().enumerate(){
+            let t=origin+60*(j+1)as i64;
+            match b{
+                Some(r) if r.minute>=t-59&&r.minute<=t&&r.temperature.is_some_and(|v|v.is_finite())=>target[j]=r.temperature.unwrap(),
+                _=>{valid=false;break}
+            }
+        }
+        if valid{rows.push(super::EvaluationRow{input:scales.encode(&raw)?,target});}
+    }
+    if rows.is_empty(){return Err("empty matched assessment cohort".into())}
+    Ok(rows)
+}
+/// Generate prior-only calibration from contiguous complete calendar-year folds.
+/// The earliest eligible calibration year is 2020, matching C015. CLI chooses
+/// an explicit finite range; no assessment rows may enter the calibrator.
+pub fn calibrate(data:&StationBins,first_year:i64,last_year:i64,cutoff:i64)->Result<Vec<CalibrationOrigin>,String>{
+    if first_year<2020||last_year<first_year||last_year-first_year>9||last_year>=crate::weather::MAX_YEAR{return Err("invalid calibration years".into())}
+    let final_end=crate::weather::minute(&format!("{}-01-01 00:00",last_year+1))?;
+    if final_end>cutoff||cutoff>data.last+60{return Err("calibration overlaps final fit cutoff".into())}
+    let mut result=Vec::new();
+    for year in first_year..=last_year{
+        let start=crate::weather::minute(&format!("{year}-01-01 00:00"))?;
+        let end=crate::weather::minute(&format!("{}-01-01 00:00",year+1))?;
+        let (train,scales)=super::prepare_training(&data.bins,data.first,start)?;
+        let eval=evaluation(data,start,end,scales)?;
+        println!("calibration-fold,{year},{},{}",train.len(),eval.len());
+        let model=Members::fit(&train,scales)?;
+        let inputs:Vec<_>=eval.iter().map(|r|r.input.clone()).collect();
+        let predictions=model.predict_batch(&inputs)?;
+        if predictions.len()!=eval.len(){return Err("calibration prediction count mismatch".into())}
+        for (r,members) in eval.into_iter().zip(predictions){
+            result.push(CalibrationOrigin{origin:r.input.origin,fit_cutoff:start,target:r.target,members});
+        }
+    }
+    Ok(result)
+}
 enum Model{Mlp(Incumbent),P13(Members,P13)}
 pub struct ForecastBundle{pub station:Station,pub cutoff:i64,pub scales:OriginScales,model:Model}
 pub struct Forecast{pub origin:i64,pub point:[f64;Y],pub support:Option<[[f64;SUPPORT];Y]>}
@@ -61,6 +107,13 @@ impl ForecastBundle{
         if c.next().is_some(){return Err("extra components".into())}
         Ok(Self{station:a.station,cutoff:a.cutoff,scales:a.scales,model})
     }
+    pub fn train_chronological(data:&StationBins,cutoff:i64,recipe:Recipe,years:Option<(i64,i64)>)->Result<Self,String>{
+        match (recipe,years){
+            (Recipe::Mlp,None)=>Self::train(data,cutoff,recipe,&[]),
+            (Recipe::P13,Some((a,b)))=>Self::train(data,cutoff,recipe,&calibrate(data,a,b,cutoff)?),
+            _=>Err("calibration years required only for P13".into())
+        }
+    }
     pub fn load(path:&Path)->Result<Self,String>{Self::from_artifact(Artifact::load(path)?)}
     pub fn forecast(&self,data:&StationBins,issue:i64)->Result<Forecast,String>{
         if data.station!=self.station{return Err("forecast station mismatch".into())}
@@ -103,6 +156,11 @@ mod tests{
         let station=Station::new("LAX").unwrap();let first=60;let cutoff=180*60;
         let bins=(0..200).map(|i|Some(crate::covariates::Weather{minute:first+i*60,temperature:Some((i%23)as f64),dew_c:Some((i%17)as f64),pressure_hpa:Some(1000.+(i%13)as f64),wind_ms:Some([(i%11)as f64,(i%7)as f64])})).collect();
         let data=StationBins{station:station.clone(),first,last:200*60,bins,quarantined:vec![]};
+        let (_,scales)=super::super::prepare_training(&data.bins,data.first,cutoff).unwrap();
+        let eval=evaluation(&data,120*60,170*60,scales).unwrap();
+        assert_eq!(eval.first().unwrap().input.origin,119*60);
+        assert_eq!(eval.last().unwrap().input.origin,145*60);
+        assert!(calibrate(&data,2020,2021,cutoff).is_err());
         let model=ForecastBundle::train(&data,cutoff,Recipe::Mlp,&[]).unwrap();
         let a=model.artifact(vec![SourceFingerprint{name:"synthetic.csv".into(),sha256:[0;32]}]).unwrap();
         let bytes=a.encode().unwrap();let reloaded=ForecastBundle::from_artifact(Artifact::decode(&bytes).unwrap()).unwrap();
