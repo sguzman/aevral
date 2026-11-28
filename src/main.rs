@@ -1,8 +1,14 @@
 use aevral::Mlp;
 mod weather_cli;
 mod weather_audit;
+mod lax_assessment;
 fn main() {
     let args:Vec<_>=std::env::args().collect();
+    if args.get(1).map(String::as_str)==Some("lax-assessment"){
+        if args.len()!=6{eprintln!("Usage: aevral lax-assessment LAX_DATA SEA_DATA OUTPUT_DIR transfer|mlp|p13");std::process::exit(2)}
+        if let Err(e)=lax_assessment::run(std::path::Path::new(&args[2]),std::path::Path::new(&args[3]),std::path::Path::new(&args[4]),&args[5]){eprintln!("{e}");std::process::exit(1)}
+        return
+    }
     if args.get(1).map(String::as_str)==Some("weather-audit"){
         if args.len()!=3{eprintln!("Usage: aevral weather-audit LAX_DATA_DIR");std::process::exit(2)}
         if let Err(e)=weather_audit::run(std::path::Path::new(&args[2])){eprintln!("{e}");std::process::exit(1)}
