@@ -28,6 +28,7 @@ impl Fold{
 }
 #[derive(Clone)]
 pub struct OriginInput{pub origin:i64,pub x:[f64;D],pub recent:[f64;Y]}
+#[derive(Clone)]
 pub struct TrainingRow{pub input:OriginInput,pub target:[f64;Y],pub normalized_target:[f64;Y]}
 pub struct EvaluationRow{pub input:OriginInput,pub target:[f64;Y]}
 pub struct PreparedFold{pub fold:Fold,pub train:Vec<TrainingRow>,pub eval:Vec<EvaluationRow>,pub possible:usize,pub temperature_complete:usize,pub target_mean:f64,pub target_sd:f64,pub scales:[f64;10]}
