@@ -1,4 +1,5 @@
 name: C016 frozen feature and station parity
+# Recheck all four frozen folds after extended Gregorian calendar.
 on:
   push:
     paths:
