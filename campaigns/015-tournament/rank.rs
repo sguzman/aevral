@@ -76,16 +76,17 @@ fn main(){
  }
  pooled.flush().unwrap();diag.flush().unwrap();
  let mut ranking=BufWriter::new(File::create(out.join("ranking.csv")).unwrap());
- writeln!(ranking,"rank,id,mae,rmse,median_fit_predict_s,pareto_scope,pareto").unwrap();
- let mut complete:Vec<_>=rows.iter().filter(|r|r.seed==42&&r.folds==4&&r.id!="daily").collect();
+ writeln!(ranking,"track,rank,id,mae,rmse,median_fit_predict_s,pareto_scope,pareto").unwrap();
+ let mut complete:Vec<_>=rows.iter().filter(|r|r.seed==42&&r.folds==4&&r.id!="daily"&&r.id!="W").collect();
  // Exact f64 pooled metrics, deterministic tie-break by compute then ID.
  complete.sort_by(|a,b|a.s.mae().total_cmp(&b.s.mae()).then(a.s.rmse().total_cmp(&b.s.rmse())).then(a.compute.unwrap_or(f64::INFINITY).total_cmp(&b.compute.unwrap_or(f64::INFINITY))).then(a.id.cmp(&b.id)));
  for(i,r)in complete.iter().enumerate(){
   let scope=if r.id.starts_with('E')||r.id=="P13"{"combination-incremental"}else{"single-model"};
   let front=if r.compute.is_none(){"NA"}else if complete.iter().any(|x|{let other=if x.id.starts_with('E')||x.id=="P13"{"combination-incremental"}else{"single-model"};scope==other&&dominates(x,r)}){"no"}else{"yes"};
   let c=r.compute.map(|v|format!("{v:.9}")).unwrap_or("NA".into());
-  writeln!(ranking,"{},{},{:.12},{:.12},{c},{scope},{front}",i+1,r.id,r.s.mae(),r.s.rmse()).unwrap();
+  writeln!(ranking,"A,{},{},{:.12},{:.12},{c},{scope},{front}",i+1,r.id,r.s.mae(),r.s.rmse()).unwrap();
  }
+ if let Some(r)=rows.iter().find(|r|r.id=="W"&&r.seed==42&&r.folds==4){let c=r.compute.map(|v|format!("{v:.9}")).unwrap_or("NA".into());writeln!(ranking,"B,1,W,{:.12},{:.12},{c},expanded-input,NA",r.s.mae(),r.s.rmse()).unwrap();}
  ranking.flush().unwrap();
  let mut sens=BufWriter::new(File::create(out.join("seed-sensitivity.csv")).unwrap());
  writeln!(sens,"id,seed42_mae,seed123_mae,seed2026_mae,range,population_sd,status").unwrap();
