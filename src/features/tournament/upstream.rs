@@ -175,7 +175,13 @@ pub(super) fn run_prepared(f:&super::PreparedFold,output:&Path,label:&str,seed:u
     let(backend,rounds)=config(label)?;
     let m=f.eval.len();
     let mut out=BufWriter::new(std::fs::File::create(output).map_err(|e|e.to_string())?);writeln!(out,"fold,model,origin_utc_minutes_since_2000,lead,target_c,prediction_c").map_err(|e|e.to_string())?;
-    let now=Instant::now();let d=Data::from_rows(&f.train);let ev:Vec<_>=f.eval.iter().map(|r|r.input.x).collect();
+    let now=Instant::now();let d=Data::from_rows(&f.train);
+    if super::Fold::retrospective(id).is_ok(){
+        let n=d.x.len();
+        let sampled=super::neighbors::subset(&f.train,n);
+        if n!=24576||sampled.iter().zip(d.x.iter().zip(&d.y)).any(|(r,(x,y))|r.input.x!=*x||r.normalized_target!=*y){return Err("XGBoost actual matrix mismatch".into())}
+        super::representation::origins(&output.parent().ok_or("output directory")?.join("backend-fit-origins.txt"),sampled.iter().map(|r|r.input.origin))?;
+    }let ev:Vec<_>=f.eval.iter().map(|r|r.input.x).collect();
     match all_leads(backend,&d,&ev,rounds,seed,Y,now){
         Ok(pred)=>{let mut map=BTreeMap::new();for(r,p)in f.eval.iter().zip(pred){let v=std::array::from_fn(|h|p[h]*f.target_sd+f.target_mean);if map.insert(r.input.origin,v).is_some(){return Err("duplicate origin".into())}}if map.len()!=m{return Err("prediction coverage mismatch".into())}
             println!("upstream-config,{id},{label},{seed},{},{rounds},24,2,{:.6}",d.x.len(),now.elapsed().as_secs_f64());score(&Model{pred:map},label,&f,&mut out)?;},
