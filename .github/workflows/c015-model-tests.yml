@@ -1,0 +1,49 @@
+name: C015 model adapter regression
+on:
+  push:
+    paths:
+      - '.github/workflows/c015-model-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  statuses: write
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locked tests and release build
+        run: |
+          set -euo pipefail
+          cargo test --locked --release
+          cargo build --locked --release
+      - name: Retain historical command guards
+        run: |
+          set -euo pipefail
+          for spec in 'tournament 2023' 'gp 2023' 'upstream 2023' 'strategy 2023' 'representation 2023' 'optimization 2023'; do
+            read -r cmd year <<< "$spec"
+            case "$cmd" in
+              tournament) args=();;
+              gp) args=(fitc-s1-m256);;
+              upstream) args=(xgboost-128 42);;
+              strategy) args=(mae-nhits64 42);;
+              representation) args=(pressure-tendency-short 42);;
+              optimization) args=(O01-06 final 42);;
+            esac
+            if target/release/aevral "$cmd" /no-such-data "$year" /tmp/no-score.csv "${args[@]}" > /tmp/reject.txt 2>&1; then exit 1; fi
+            grep -Eq 'unknown development fold|invalid or reused annual finalist request' /tmp/reject.txt
+          done
+          if target/release/aevral retrospective /no-such-data 2026 /tmp/no-score.csv L 123 > /tmp/reject.txt 2>&1; then exit 1; fi
+          grep -Fq 'request not in frozen C015 matrix' /tmp/reject.txt
+      - name: Publish verification
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          state=failure
+          if [[ "$JOB_STATUS" == success ]]; then state=success; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f context=aevral/c015-model-tests -f state="$state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
