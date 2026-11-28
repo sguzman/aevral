@@ -31,8 +31,8 @@ Authorized 2026-11-26. Goal: extensive comparative research over major practical
 - [C011 — Same-archive representation engineering](011-feature-engineering/README.md) — complete
 - [C012 — Budgeted cross-family hyperparameter search](012-optimization/README.md) — complete (three documented N-HiTS runtime blocks)
 - [C013 — Cross-family hybrids and ensembles](013-ensembles/README.md) — complete (48/48 measured)
-- [C014 — Uncertainty and distributional forecasting](014-probabilistic/README.md) — active
-- [C015 — Final fixed-data tournament and report](015-tournament/README.md) — planned
+- [C014 — Uncertainty and distributional forecasting](014-probabilistic/README.md) — complete (48/48 measured)
+- [C015 — Final fixed-data tournament and report](015-tournament/README.md) — active
 
 ## Continuation rules
 STATE.md is source of truth for next unfinished work. Each continue runs next bounded step; verify CI and persist actual results, update registry/checkpoint, then proceed in order. Never invent measurements or commits. GitHub CI handles computations; no local machine access required. On chat restart read STATE.md, this program, current campaign manifest and last verified results. Keep outputs small. Finish with appropriate continuation sentinel. Program is a research design, not completed experiments.
