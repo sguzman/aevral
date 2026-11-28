@@ -1,0 +1,36 @@
+name: C018 immutable LAX historical acquisition
+on:
+  push:
+    paths:
+      - '.github/workflows/c018-lax-acquire.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: data/raw/lax
+          key: lax-routine-utc-2000-2025-v1
+      - name: Acquire and verify annual snapshots
+        run: |
+          set -euo pipefail
+          for y in $(seq 2000 2025); do
+            bash scripts/fetch-weather.sh KLAX "$y-01-01" "$((y+1))-01-01" data/raw/lax
+          done
+          cd data/raw/lax
+          for f in *.csv.sha256; do sha256sum -c "$f"; done
+          test "$(find . -maxdepth 1 -name '*.csv' | wc -l)" -eq 26
+          cat *.csv.sha256 | sort -k2 > SHA256SUMS
+          sha256sum -c SHA256SUMS
+          wc -l *.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c018-lax-raw-snapshot
+          path: data/raw/lax/
+          if-no-files-found: error
+          retention-days: 90
