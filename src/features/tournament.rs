@@ -44,7 +44,7 @@ pub struct RawOrigin {
 impl RawOrigin {
     /// Bins are consecutive completed UTC hours ending at the issue origin.
     pub fn from_history(origin: i64, bins: &[Option<Weather>]) -> Result<Self, String> {
-        if origin % 60 != 0 || origin < (H as i64-1)*60 || bins.len() != H {
+        if origin % 60 != 0 || origin < (H as i64-1)*60 || origin >= crate::weather::minute_limit() || bins.len() != H {
             return Err("invalid origin or history length".into());
         }
         let mut history = [0.; H];
@@ -84,7 +84,7 @@ impl OriginScales {
         OriginInput { origin, x: x.try_into().unwrap(), recent: history[H-Y..].try_into().unwrap() }
     }
     pub fn encode(self, raw: &RawOrigin) -> Result<OriginInput, String> {
-        if raw.origin % 60 != 0 || raw.origin < (H as i64-1)*60 ||
+        if raw.origin % 60 != 0 || raw.origin < (H as i64-1)*60 || raw.origin >= crate::weather::minute_limit() ||
             raw.history.iter().chain(raw.weather.iter()).any(|x| !x.is_finite()) {
             return Err("invalid raw origin".into());
         }
@@ -103,7 +103,7 @@ fn training_rows(tr: &[Case], scales: OriginScales) -> Vec<TrainingRow> {
 }
 /// Fit only from completed labels strictly before cutoff; no assessment rows needed.
 pub fn prepare_training(bins: &[Option<Weather>], first: i64, cutoff: i64) -> Result<(Vec<TrainingRow>, OriginScales), String> {
-    if first < 0 || first % 60 != 0 || cutoff % 60 != 0 || cutoff <= first { return Err("invalid training interval".into()); }
+    if first < 0 || first % 60 != 0 || cutoff % 60 != 0 || cutoff <= first || cutoff > crate::weather::minute_limit() || bins.len() as i64 > (crate::weather::minute_limit()-first)/60+1 { return Err("invalid training interval".into()); }
     let mut tr = Vec::new();
     for i in H-1..bins.len().saturating_sub(Y) {
         let origin = first+i as i64*60;
