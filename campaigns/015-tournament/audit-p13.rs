@@ -74,7 +74,7 @@ fn main(){
         for k in [("all",0),("lead",r.h),("month",m),("season",s)]{sums.entry(k).or_default().add(r.y,&v);}
     }assert!(d.next().is_none());
     let mut metrics=reader(&out.join("probabilistic-metrics.csv")).lines();assert_eq!(metrics.next().unwrap().unwrap().split(',').count(),27);
-    let mut seen=0;for l in metrics{let l=l.unwrap();let p:Vec<_>=l.split(',').collect();assert_eq!(p.len(),27);let k=(p[0],count(p[1]));let s=sums.remove(&k).expect("unexpected or duplicate metric");assert_eq!(count(p[2]),s.n);for(i,v)in s.v.iter().enumerate(){close(num(p[3+i])/s.n as f64,*v/s.n as f64,1e-7);}seen+=1;}
+    let mut seen=0;for l in metrics{let l=l.unwrap();let p:Vec<_>=l.split(',').collect();assert_eq!(p.len(),27);let group=match p[0]{"all"=>"all","lead"=>"lead","month"=>"month","season"=>"season",_=>panic!("unknown metric group")};let k=(group,count(p[1]));let s=sums.remove(&k).expect("unexpected or duplicate metric");assert_eq!(count(p[2]),s.n);for(i,v)in s.v.iter().enumerate(){close(num(p[3+i])/s.n as f64,*v/s.n as f64,1e-7);}seen+=1;}
     assert!(sums.is_empty());println!("p13-reconstruction,{y},{},{seen},pass",rows.len());
 }
 #[cfg(test)]
