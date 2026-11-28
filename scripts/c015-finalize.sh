@@ -69,6 +69,8 @@ while IFS=, read -r y id recipe members calibration; do
 done < campaigns/015-tournament/combination-matrix.csv
 test "$(wc -l < "$root/final/combinations.csv")" -eq 17
 "$root/rank" "$root/fit/registry" "$root/final"
+rustc --edition=2021 -O campaigns/015-tournament/report-diagnostics.rs -o "$root/report-diagnostics"
+"$root/report-diagnostics" "$root/fit/registry" "$root/final"
 "$root/bootstrap" "$root/fit/exports" > "$root/final/bootstrap.csv"
 cp "$root/fit/registry/fits.csv" "$root/final/fits.csv"
 # Archive annual independent summaries and original evidence digests, separately
