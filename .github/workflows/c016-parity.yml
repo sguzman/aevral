@@ -1,0 +1,49 @@
+name: C016 frozen feature and station parity
+on:
+  push:
+    paths:
+      - '.github/workflows/c016-parity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        year: ['2023','2024','2025','2026']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw/ksea
+          key: ksea-routine-utc-2000-2026-jan-oct-v1
+          fail-on-cache-miss: true
+      - name: Verify frozen snapshot
+        run: |
+          cd data/raw/ksea
+          sha256sum -c ../../../results/AEV-015/snapshot.sha256
+      - name: Test station API and exact historical feature parity
+        env:
+          AEVRAL_PARITY_DATA: data/raw/ksea
+          AEVRAL_PARITY_YEAR: ${{ matrix.year }}
+        run: |
+          set -euo pipefail
+          cargo test --locked --release
+          cargo test --locked --release features::tournament::station::tests::frozen_ksea_parity -- --ignored --exact --nocapture | tee parity.txt
+          grep -Eq "^station-parity,$AEVRAL_PARITY_YEAR,[0-9]+,[0-9]+,pass$" parity.txt
+      - name: Verify frozen cohort output hashes
+        env:
+          YEAR: ${{ matrix.year }}
+        run: |
+          set -euo pipefail
+          cargo build --locked --release
+          mkdir -p parity-cohort
+          target/release/aevral retrospective-cohort data/raw/ksea "$YEAR" parity-cohort | tee parity-cohort/audit.txt
+          test "$(head -n 1 results/C015/cohort-hashes.csv)" = "fold,file,sha256"
+          awk -F, -v y="$YEAR" '$1==y{print $3"  "$2}' results/C015/cohort-hashes.csv > parity-cohort/expected.sha256
+          test "$(wc -l < parity-cohort/expected.sha256)" -eq 12
+          (cd parity-cohort; sha256sum -c expected.sha256)
