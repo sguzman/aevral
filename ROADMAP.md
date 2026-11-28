@@ -19,7 +19,7 @@ Initial milestone (steps 1–7) **complete**. [Final report](campaigns/001-neura
 
 ## C003–C015: Fixed-data temperature research program
 
-**C003–C012 complete; C013 active.** [Program and benchmark contract](campaigns/TEMPERATURE-PROGRAM.md). Extensive but bounded model-family tournament, advanced feature representations from the same frozen observations, optimization, ensembles and uncertainty, followed by retrospective ranking. No new external data or domains. [C012 report](campaigns/012-optimization/REPORT.md). C014–C015 remain planned.
+**C003–C013 complete; C014 active.** [Program and benchmark contract](campaigns/TEMPERATURE-PROGRAM.md). Extensive but bounded model-family tournament, advanced feature representations from the same frozen observations, optimization, ensembles and uncertainty, followed by retrospective ranking. No new external data or domains. [C012 report](campaigns/012-optimization/REPORT.md) · [C013 report](campaigns/013-ensembles/REPORT.md). C015 remains planned.
 
 ## Later campaigns
 
