@@ -73,7 +73,7 @@ mod tests{
  #[test]fn conformal(){assert_eq!(conformal_rank(0.9,9),8);assert_eq!(conformal_rank(0.8,99),79);assert_eq!(conformal_rank(0.95,2),1);}
  #[test]fn crps_point(){let p=distribution(&[3.],1.);assert_eq!(p.crps,Some(2.));assert_eq!(p.median,3.);}
  #[test]fn crps_pair(){let p=distribution(&[0.,2.],1.);assert_eq!(p.crps,Some(0.5));assert_eq!(p.median,0.);}
- #[test]fn crps_pairwise_parity(){let v=[-2.,0.,0.,1.,5.];let y=0.4;let a=v.iter().map(|x|(x-y).abs()).sum::<f64>()/5.;let b=v.iter().flat_map(|x|v.iter().map(move|z|(x-z).abs())).sum::<f64>()/50.;assert!((distribution(&v,y).crps.unwrap()-a+b).abs()<1e-12);}
+ #[test]fn crps_pairwise_parity(){let v:[f64;5]=[-2.,0.,0.,1.,5.];let y=0.4_f64;let a=v.iter().map(|x|(x-y).abs()).sum::<f64>()/5.;let b=v.iter().flat_map(|x|v.iter().map(move|z|(x-z).abs())).sum::<f64>()/50.;assert!((distribution(&v,y).crps.unwrap()-a+b).abs()<1e-12);}
  #[test]fn loss(){assert!((pinball(2.,1.,0.1)-0.1).abs()<1e-12);assert!((pinball(0.,1.,0.1)-0.9).abs()<1e-12);assert_eq!(interval(1.,1.,3.,0.8),(1.,2.,2.));assert!((interval(0.,1.,3.,0.8).2-12.).abs()<1e-12);}
  #[test]fn normal_reference(){assert!((inverse(0.975,normal_cdf)-1.95996398454).abs()<1e-8);assert!((inverse(0.005,normal_cdf)+2.57582930355).abs()<1e-8);}
  #[test]fn student_reference(){assert!((inverse(0.975,t3_cdf)-3.18244630528).abs()<1e-8);assert!((t3_cdf(0.)-0.5).abs()<1e-12);}
