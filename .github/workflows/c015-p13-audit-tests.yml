@@ -17,3 +17,5 @@ jobs:
           rustc --edition=2021 --test campaigns/015-tournament/audit-p13.rs -o /tmp/p13-tests
           /tmp/p13-tests
           rustc --edition=2021 -O campaigns/015-tournament/audit-p13.rs -o /tmp/p13-audit
+
+# Recheck corrected metric-group ownership.
