@@ -1,6 +1,6 @@
 //! Origin-time weather covariates from the same routine report as temperature.
 use std::{collections::{BTreeMap,BTreeSet},io::BufRead};
-use crate::weather::{minute,Report,Split,split_for};
+use crate::weather::{minute,Report,Split,split_for,Station};
 #[derive(Clone,Copy,Debug,PartialEq)]
 pub struct Weather {
     pub minute:i64,
@@ -11,6 +11,7 @@ pub struct Weather {
 }
 #[derive(Default)]
 pub struct Archive {
+    station:Station,
     reports:BTreeMap<i64,Weather>,
     pub invalid:[usize;4],
     pub conflicts:BTreeSet<i64>,
@@ -24,6 +25,8 @@ fn numeric(s:&str,lo:f64,hi:f64,invalid:&mut usize)->Option<f64>{
     }
 }
 impl Archive{
+    pub fn for_station(station: Station) -> Self { Self { station, ..Self::default() } }
+    pub fn station(&self) -> &Station { &self.station }
     pub fn ingest(&mut self,reader:impl BufRead)->Result<(),String>{self.ingest_policy(reader,false)}
     pub fn ingest_policy(&mut self,reader:impl BufRead,quarantine_test:bool)->Result<(),String>{
         let mut header=None;
@@ -37,7 +40,7 @@ impl Archive{
                 header=Some((c.len(),pos("station")?,pos("valid")?,pos("tmpf")?,pos("dwpf")?,pos("alti")?,pos("drct")?,pos("sknt")?));continue
             }
             let(w,s,t,f,d,p,dir,speed)=header.unwrap();
-            if c.len()!=w||c[s]!="SEA"{return Err(format!("bad row {}",i+1))}
+            if c.len()!=w||c[s]!=self.station.as_str(){return Err(format!("bad row {}",i+1))}
             let t=minute(c[t])?;
             let temperature=if c[f].trim()=="M"||c[f].trim().is_empty(){None}else{
                 let v=c[f].trim().parse::<f64>().map_err(|_|"bad temperature")?;
@@ -131,5 +134,26 @@ mod quarantine_tests{
         let old=s.replace("2024","2018");
         assert!(Archive::default().ingest_policy(old.as_bytes(),true).is_err());
         assert!(crate::weather::Archive::default().ingest_policy(old.as_bytes(),true).is_err());
+    }
+}
+
+#[cfg(test)]
+mod station_tests {
+    use super::*;
+    #[test]
+    fn station_identity_and_weather_parity() {
+        let sea = "station,valid,tmpf,dwpf,alti,drct,sknt\nSEA,2024-01-01 00:59,68,41,30,90,10\n";
+        let lax = sea.replace("SEA,", "LAX,");
+        let mut a = Archive::default();
+        let mut b = Archive::for_station(Station::new("LAX").unwrap());
+        a.ingest(sea.as_bytes()).unwrap();
+        b.ingest(lax.as_bytes()).unwrap();
+        let t = minute("2024-01-01 01:00").unwrap();
+        assert_eq!(a.hourly(t,t), b.hourly(t,t));
+        assert_eq!(b.station().as_str(), "LAX");
+        assert!(a.ingest(lax.as_bytes()).is_err());
+        assert!(b.ingest(sea.as_bytes()).is_err());
+        let mixed = format!("{lax}SEA,2024-01-01 01:59,68,41,30,90,10\n");
+        assert!(Archive::for_station(Station::new("LAX").unwrap()).ingest(mixed.as_bytes()).is_err());
     }
 }
