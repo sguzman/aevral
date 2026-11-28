@@ -85,3 +85,86 @@ mod tests{
  #[test]#[should_panic]fn future_calibration_rejected(){let f=[Fold{year:2020,rows:vec![row()]},Fold{year:2021,rows:vec![row()]}];calibration(&f,2021);}
  #[test]#[should_panic]fn wrong_calibration_order(){let f=[Fold{year:2021,rows:vec![row()]},Fold{year:2020,rows:vec![row()]}];calibration(&f,2022);}
 }
+
+/// Affine model in original Celsius coordinates, optionally anchored on a base column.
+#[derive(Clone,Debug)]
+pub struct Linear { pub weights:[f64;N],pub intercept:f64,pub iterations:usize,pub converged:bool,pub objective:f64 }
+impl Linear {
+ pub fn predict(&self,x:&Features)->f64{self.intercept+self.weights.iter().zip(x.base).map(|(w,p)|w*p).sum::<f64>()}
+}
+pub fn simplex(v:&[f64])->Vec<f64>{
+ assert!(!v.is_empty()&&v.iter().all(|x|x.is_finite()));
+ let mut u:Vec<(usize,f64)>=v.iter().copied().enumerate().collect();
+ u.sort_by(|a,b|b.1.total_cmp(&a.1).then(a.0.cmp(&b.0)));
+ let(mut sum,mut theta)=(0.,0.);
+ for (k,&(_,x)) in u.iter().enumerate(){sum+=x;let t=(sum-1.)/(k+1)as f64;if x>t{theta=t;}}
+ let w:Vec<_>=v.iter().map(|x|(x-theta).max(0.)).collect();
+ assert!((w.iter().sum::<f64>()-1.).abs()<1e-9);w
+}
+pub fn convex(rows:&[&Row],cols:&[usize])->Linear{
+ assert!(!rows.is_empty()&&!cols.is_empty());
+ let k=cols.len();let anchor=cols[0];let(mut gram,mut cross,mut yy)=([[0.;N];N],[0.;N],0.);
+ for r in rows{
+  let y=r.target-r.x.base[anchor];let d:[f64;N]=std::array::from_fn(|i|if i<k{r.x.base[cols[i]]-r.x.base[anchor]}else{0.});
+  yy+=y*y;
+  for i in 0..k{cross[i]+=d[i]*y;for j in 0..k{gram[i][j]+=d[i]*d[j];}}
+ }
+ let n=rows.len()as f64;yy/=n;for i in 0..k{cross[i]/=n;for j in 0..k{gram[i][j]/=n;}}
+ let step=1./(2.*(0..k).map(|i|gram[i][i]).sum::<f64>()).max(1e-12);
+ let mut w=vec![1./k as f64;k];let(mut iterations,mut converged)=(0,false);
+ for it in 1..=2000{
+  let v:Vec<_>=(0..k).map(|i|w[i]-step*2.*((0..k).map(|j|gram[i][j]*w[j]).sum::<f64>()-cross[i])).collect();
+  let next=simplex(&v);let delta=next.iter().zip(&w).map(|(a,b)|(a-b).abs()).fold(0.,f64::max);w=next;iterations=it;
+  if delta<=1e-10{converged=true;break;}
+ }
+ let mut weights=[0.;N];for(i,&c)in cols.iter().enumerate(){weights[c]=w[i];}
+ let objective=yy-2.*(0..k).map(|i|cross[i]*w[i]).sum::<f64>()+(0..k).map(|i|(0..k).map(|j|w[i]*gram[i][j]*w[j]).sum::<f64>()).sum::<f64>();
+ assert!(objective.is_finite()&&objective>=-1e-9);
+ Linear{weights,intercept:0.,iterations,converged,objective:objective.max(0.)}
+}
+fn cholesky(a:[[f64;N];N],b:[f64;N],k:usize)->[f64;N]{
+ let mut l=[[0.;N];N];
+ for i in 0..k{for j in 0..=i{let s=a[i][j]-(0..j).map(|p|l[i][p]*l[j][p]).sum::<f64>();if i==j{assert!(s>0.&&s.is_finite());l[i][j]=s.sqrt();}else{l[i][j]=s/l[j][j];}}}
+ let(mut y,mut x)=([0.;N],[0.;N]);
+ for i in 0..k{y[i]=(b[i]-(0..i).map(|j|l[i][j]*y[j]).sum::<f64>())/l[i][i];}
+ for i in (0..k).rev(){x[i]=(y[i]-(i+1..k).map(|j|l[j][i]*x[j]).sum::<f64>())/l[i][i];}
+ x
+}
+pub fn ridge(rows:&[&Row],cols:&[usize])->Linear{
+ assert!(!rows.is_empty()&&cols.len()>=2&&cols[0]==0);
+ let k=cols.len()-1;let n=rows.len()as f64;let(mut mx,mut my)=([0.;N],0.);
+ for r in rows{my+=r.target-r.x.base[0];for i in 0..k{mx[i]+=r.x.base[cols[i+1]]-r.x.base[0];}}
+ my/=n;for m in &mut mx[..k]{*m/=n;}
+ let(mut a,mut b)=([[0.;N];N],[0.;N]);
+ for r in rows{
+  let y=r.target-r.x.base[0]-my;
+  let d:[f64;N]=std::array::from_fn(|i|if i<k{r.x.base[cols[i+1]]-r.x.base[0]-mx[i]}else{0.});
+  for i in 0..k{b[i]+=d[i]*y;for j in 0..k{a[i][j]+=d[i]*d[j];}}
+ }
+ for i in 0..k{b[i]/=n;for j in 0..k{a[i][j]/=n;}a[i][i]+=0.1;}
+ let beta=cholesky(a,b,k);let intercept=my-(0..k).map(|i|beta[i]*mx[i]).sum::<f64>();
+ let mut weights=[0.;N];weights[0]=1.-beta[..k].iter().sum::<f64>();for i in 0..k{weights[cols[i+1]]=beta[i];}
+ let mut model=Linear{weights,intercept,iterations:1,converged:true,objective:0.};
+ model.objective=rows.iter().map(|r|(r.target-model.predict(&r.x)).powi(2)).sum::<f64>()/n+0.1*beta[..k].iter().map(|b|b*b).sum::<f64>();
+ assert!(model.objective.is_finite()&&model.weights.iter().all(|w|w.is_finite())&&model.intercept.is_finite());model
+}
+#[derive(Clone,Debug)]
+pub enum Learned { Global(Linear),Lead(Vec<Linear>) }
+impl Learned{pub fn predict(&self,x:&Features)->f64{match self{Self::Global(m)=>m.predict(x),Self::Lead(m)=>m[x.lead-1].predict(x)}}}
+pub fn fit_linear(id:u8,rows:&[&Row])->Learned{
+ let (solver,cols,by_lead):(fn(&[&Row],&[usize])->Linear,&[usize],bool)=match id{
+  11=>(convex,T,false),12=>(convex,T,true),13=>(convex,U,false),14=>(convex,U,true),
+  15=>(ridge,T,false),16=>(ridge,T,true),17=>(ridge,U,false),18=>(ridge,U,true),_=>panic!("not linear recipe")};
+ if by_lead{Learned::Lead((1..=24).map(|lead|{let group:Vec<_>=rows.iter().copied().filter(|r|r.x.lead==lead).collect();solver(&group,cols)}).collect())}else{Learned::Global(solver(rows,cols))}
+}
+#[cfg(test)]
+mod linear_tests{
+ use super::*;
+ fn row(a:f64,b:f64,y:f64,lead:usize)->Row{Row{x:Features{origin:10519140,lead,month:1,base:[a,b,a,a,a,a,a,a]},target:y,daily:0.}}
+ #[test]fn projection(){assert_eq!(simplex(&[2.,0.,-1.]),vec![1.,0.,0.]);let w=simplex(&[0.2,0.2]);assert!((w[0]-0.5).abs()<1e-12&&w[0]==w[1]);}
+ #[test]fn convex_known_mix(){let r=[row(0.,2.,1.,1),row(0.,4.,2.,1)];let refs:Vec<_>=r.iter().collect();let m=convex(&refs,&[0,1]);assert!((m.weights[0]-0.5).abs()<1e-8);assert!(m.objective<1e-12&&m.converged);}
+ #[test]fn convex_identical(){let r=[row(2.,2.,3.,1)];let m=convex(&[&r[0]],T);assert!(m.converged);assert!((m.predict(&r[0].x)-2.).abs()<1e-12);}
+ #[test]fn ridge_analytic(){let r=[row(0.,-1.,1.,1),row(0.,1.,3.,1)];let refs:Vec<_>=r.iter().collect();let m=ridge(&refs,&[0,1]);assert!((m.intercept-2.).abs()<1e-12);assert!((m.weights[1]-1./1.1).abs()<1e-12);assert!((m.weights.iter().sum::<f64>()-1.).abs()<1e-12);}
+ #[test]fn ridge_collinear(){let r=[row(4.,4.,6.,1),row(2.,2.,4.,1)];let refs:Vec<_>=r.iter().collect();let m=ridge(&refs,U);assert!((m.intercept-2.).abs()<1e-12);assert!(m.objective<1e-12);}
+ #[test]fn all_linear_recipes(){let rows:Vec<_>=(1..=24).flat_map(|h|[row(0.,2.,1.,h),row(0.,4.,2.,h)]).collect();let refs:Vec<_>=rows.iter().collect();for id in 11..=18{let m=fit_linear(id,&refs);for r in &rows{assert!(m.predict(&r.x).is_finite());}assert!(matches!(m,Learned::Lead(_))==(id%2==0));}}
+}
